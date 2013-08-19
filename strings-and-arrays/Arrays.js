@@ -253,3 +253,50 @@ var isAnagram = function(str1, str2) {
 console.log('\nTesting isAnagram()...');
 console.log( isAnagram('Tom Marvolo Riddle', 'I am Lord Voldemort') );
 console.log( isAnagram('Tom Marvolo Riddle', 'I sdf') );
+
+/*
+ * Write a method to replace all spaces in a String with %20.
+ */
+/* using substring and concat 
+var replaceSpaces = function(str) {
+	for (var i = 0; i < str.length; i++) {
+		if (str[i] === ' ') {
+			str = str.substring(0, i).concat('%20').concat(str.substring(i + 1));
+		}
+	}
+	return str;
+}
+*/
+
+/* Using splice 
+var replaceSpaces = function(str) {
+	var strArray = str.split('');
+	for (var i = 0; i < strArray.length; i++) {
+		if (strArray[i] === ' ') {
+			strArray.splice(i, 1, '%20');
+		}
+	}
+
+	return strArray.join('');
+}
+*/
+
+var replaceSpaces = function(str) {
+	var newArray = [];	
+	var newArrayIndex = 0;
+	for (var i = 0; i < str.length; i++) {
+		if (str[i] === ' ') {
+			newArray[newArrayIndex++] = '%';
+			newArray[newArrayIndex++] = '2';
+			newArray[newArrayIndex++] = '0';
+		} else {
+			newArray[newArrayIndex++] = str[i];
+		}
+	}
+
+	return newArray.join('');
+}
+
+
+console.log('\nTesting replaceSpaces()...');
+console.log( replaceSpaces('recursion is to know what recursion is.'));

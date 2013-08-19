@@ -1,4 +1,4 @@
-/* Binary Tree implementation */
+/* Binary Tree implementation - NOTE: THIS IS WRONG */
 
 function BinaryTree() {
 	this.root = null;
@@ -8,11 +8,28 @@ function BinaryTree() {
 		         leftChild : null,
 		         rightChild : null
 		       };
+	}
+
+	BinaryTree.BinaryTree = function() {
+		console.log('hello');	
 	}	
+
+	this.print = function() {
+		this.print(this.root);
+	}
+	this.print = function(node) {
+		if (node === null) {
+			return;
+		}
+
+		print(node.leftChild);
+		console.log(node.data);
+		print(node.rightChild);
+	}
 }
 
-var bt = new BinaryTree();
-bt.root = BinaryTree.makeNode(1);
+
+var root = new Node();
 root.leftChild = BinaryTree.makeNode(2);
 root.rightChild = BinaryTree.makeNode(3);
 root.rightChild.leftChild = BinaryTree.makeNode(6);
@@ -28,3 +45,5 @@ root.rightChild.rightChild.rightChild = BinaryTree.makeNode(8);
 root.rightChild.rightChild.rightChild.leftChild = BinaryTree.makeNode(7);
 root.rightChild.rightChild.rightChild.rightChild = BinaryTree.makeNode(9);
 root.rightChild.rightChild.rightChild.rightChild.rightChild = BinaryTree.makeNode(10);
+//	console.log(bt.root.leftChild.data);
+//bt.print();

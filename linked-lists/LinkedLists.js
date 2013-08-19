@@ -44,6 +44,7 @@ function List() {
 			}
 			current = current.next;
 		}
+		++this.size;
 	}
 
 	this.delete = function(data) {
@@ -54,6 +55,7 @@ function List() {
 				if (current === this.head) {	// Node to delete is the head Node
 					this.head = current.next;
 					delete current;
+					--this.size;
 					return;
 				}
 
@@ -61,17 +63,18 @@ function List() {
 					previous.next = null;
 					this.tail = previous;
 					delete current;
+					--this.size;
 					return;
 				}
 
 				previous.next = current.next;
 				delete current;
+				--this.size;
 			} 
 			
 			previous = current;
 			current = current.next;
 		}
-		--this.size;
 	}
 
 	this.get = function(index) {
@@ -85,6 +88,10 @@ function List() {
 		}
 
 		return current;
+	}
+
+	this.getSize = function() {
+		return this.size;
 	}
 
 	this.print = function() {
@@ -109,6 +116,8 @@ function List() {
 }
 
 // test cases for add and delete 
+/*
+console.log('\nTesting List()...');
 var list = new List();
 for (var i = 0; i < 10; ++i) {
 	list.add(i);
@@ -128,3 +137,78 @@ list.add(10);
 list.print();
 console.log(list.get(6).data);
 list.get(-1);
+*/
+
+/* Implement a Stack using a Linked List
+*/
+function Stack() {
+	var stack = new List();
+	
+	this.getSize = function() {
+		return stack.getSize();
+	}
+
+	this.push = function(data) {
+		stack.insertAtHead(data);
+	}
+
+	this.pop = function() {
+		if (stack.getSize() === 0) {
+			throw "Stack is empty!!!";
+		}
+
+		var top = stack.get(0).data;
+		stack.delete(top);
+		return top;
+	}
+}
+
+/*
+console.log('\nTesting Stack()...');
+var s = new Stack();
+s.push(5);
+console.log('size: ' + s.getSize());
+s.push(3);
+console.log('size: ' + s.getSize());
+console.log(s.pop());
+console.log('size: ' + s.getSize());
+console.log(s.pop());
+s.pop();
+*/
+
+/*
+ * Devise a time and space efficient algorithm to find the mth-to-last element
+ * of a singly linked list.
+ */
+var getKthToLast = function(list, k) {
+	if (k > list.getSize() || k < 1) {
+		throw "Invalid index!!";
+	}
+	
+	var slow = list.head;
+	var fast = list.head;
+	for (var i = 1; i <= k; i++) {
+		fast = fast.next;
+	}
+
+	while (fast !== null) {
+		slow = slow.next;
+		fast = fast.next;
+	}
+
+	return slow;
+}
+
+/*
+console.log('\nTesting getKthToLast()...');
+var list = new List();
+list.add(1);
+list.add(2);
+list.add(3);
+list.add(4);
+list.add(5);
+list.add(6);
+list.add(7);
+list.add(8);
+console.log(getKthToLast(list, 7).data);
+*/

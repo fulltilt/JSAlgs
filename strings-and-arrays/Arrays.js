@@ -24,82 +24,91 @@ console.log( findFirstNonRepeatedChar('lorem ipsum dolar pit ahmets') ); // expe
 /*
  * Design an algorithm to remove duplicate characters in an Array of characters
  * without using any additional buffer.
+ NOTE: NOT FINISHED
  */
 var removeDuplicatesWithoutBuffer = function(str) {
 	if (str === null || str.length === 0)
 		return undefined;
 
 	str = str.split('');
-	for (var i = 0; i < str.length; i++) {
-		for (var j = i + 1; j < str.length; j++) {
-			if (str[i] === str[j]) {
-				str[i++] = str[j];
+	
+/*	for (var trailing = 0; trailing < str.length; trailing++) {
+		for (var leading = trailing + 1; leading < str.length; leading++) {
+			//if (str[trailing] === str[leading])
+			while (str[trailing] === str[leading]) {
+				++leading;
 				/*console.log(str.slice(0, j));
  				console.log(str.slice(j + 1));
 				str = str.slice(0, j).concat(str.slice(j + 1));
 				console.log(str);
 				console.log();
-				*/
+				
 			}
 		}
 	}
-/*
+*/
+
 	var slow = 0;
 	var fast = 1;
 	while (fast < str.length) {
-		while (str[slow] === str[fast]) {
-			++fast;
+		if (str[slow] === str[fast] || str[fast] === ' ') {
+			while (str[fast] === str[slow] || str[fast] === ' ') {
+				str[fast] = ' ';
+				++fast;
+			}
+			str[slow++] = str[fast++];
 		}
-		str[slow++] = str[fast++];
+		++slow;
+		fast = slow + 1;
 	}
-*/
+
 	str = str.join('');
-	return str.substring(0, i);
+	return str.slice(0, slow);
 }
 
 console.log('\nTesting removeDuplicatesWithoutBuffer()...');
 console.log( removeDuplicatesWithoutBuffer( 'abcdefghij'          ) );
 console.log( removeDuplicatesWithoutBuffer( 'aaaaaaaaaaaaaa'      ) );
-//console.log( removeDuplicatesWithoutBuffer( ''                    ) );
-//console.log( removeDuplicatesWithoutBuffer( null                            ) );
-//console.log( removeDuplicatesWithoutBuffer( 'aaabbbcccddeeffgg'   ) );
-//console.log( removeDuplicatesWithoutBuffer( 'ababcdefdecdefababac') ); 
+console.log( removeDuplicatesWithoutBuffer( ''                    ) );
+console.log( removeDuplicatesWithoutBuffer( null                            ) );
+console.log( removeDuplicatesWithoutBuffer( 'aaabbbcccddeeffgg'   ) );
+console.log( removeDuplicatesWithoutBuffer( 'ababcdefdecdefababac') ); 
 
 /*
- * RRemoves duplicate characters in an Array of characters.
+ * Removes duplicate characters in an Array of characters.
  * You can use an additional buffer to obtain algorithmic efficiency.
- * Assume you are dealing with ASCII characters only.
+    -algorithm: put values in a hash table that increments by one for each letter. Use two pointers: trailing and leading. The trick
+                to this is to mix the the trailing and leading operations with the hash table operations so it would be O(n) instead
+                of O(n + m)
  */
 var removeDuplicates = function(str) {
-	var hashTable = {};
-	for (var i = 0; i < str.length; i++) {
-		if (!hashTable[str[i]]) {
-			hashTable[str[i]] = 1;
-		} else {
-			++hashTable[str[i]];
-		}
-	}
+	if (str === null || str.length < 2)
+		return undefined;
 
+	str = str.split('');
+
+	var hashTable = {};
 	var trailingIndex = 0;
 	for (var i = 0; i < str.length; i++) {
-		if (hashTable[str[i]] > 1) {
+		if (!hashTable[str[i]]) {
+			hashTable[str[i]] = true;
 			str[trailingIndex++] = str[i];
+		} else {
+			++i;
 		}
 	}
 
-	//str = str.join("");
-	//console.log(trailingIndex);
-	//return str.substring(0, trailingIndex);
-	return str.slice(0, trailingIndex + 1);
+	str = str.join('');
+	return str.slice(0, trailingIndex);
 }
 
 console.log('\nTesting removeDuplicates()...');
 console.log( removeDuplicates( 'abcdefghij'          ) );
 console.log( removeDuplicates( 'aaaaaaaaaaaaaa'      ) );
-//console.log( removeDuplicates( ''                    ) );
-//console.log( removeDuplicates( null                            ) );
-//console.log( removeDuplicates( 'aaabbbcccddeeffgg'   ) );
-//console.log( removeDuplicates( 'ababcdefdecdefababac') ); 
+console.log( removeDuplicates( ''                    ) );
+console.log( removeDuplicates( null                            ) );
+console.log( removeDuplicates( 'aaabbbcccddeeffgg'   ) );
+console.log( removeDuplicates( 'ababcdefdecdefababac') ); 
 
 /*
  * Write a JavaScript function that deletes characters from a string.
@@ -140,6 +149,36 @@ var removeChars = function(str, remove) {
 console.log('\nTesting removeChars()...');
 console.log(removeChars('The Elder Scrolls of Morrowind', 'eEoi'));
 
+    /* Write a method that when given a list, ensures that all consecutive repeated elements of the list are removed. The order of the elements should remain the same.
+
+       simplify(['a','a','a','a','b','c','c','a','a','d','e','e','e','e'])
+       returns ['a','b','c','a','d','e']
+       The tricky part is if you look at the 2 sets of a's 
+       Note: with JavaScripts splice() fxns, this fxn would probably be easier to write 
+       -algorithm: have 2 pointers. One that is ahead by the other by at least 1. Have a loop that runs as long as fast is less
+                   than the length of the array. If slow and fast are equal or fast == ' ', set fast to ' ' and advance fast. Else
+                   advance slow and set slow to fast and set fast to be one greater than slow. By default, this will blank out the
+                   array all the way to the end if need be 
+    */
+    function simplify(array) {
+        var slow = 0;
+        var fast = 1;
+        while (fast < array.length) {
+            if (array[slow] === array[fast]) {
+                var temparr1 = array.slice(0, fast);
+                var temparr2 = array.slice(fast + 1);
+                array = temparr1.concat(temparr2); // when I used '+', I got weird results
+            } else {
+                ++slow;
+                fast = slow + 1;
+            }
+        }
+
+        return array;
+    } 
+
+console.log('\nTesting simplify()...');
+console.log(simplify(['a','a','a','a','b','c','c','a','a','d','e','e','e','e']));
  /*
   * Write a function to reverse words of a String.
   * Assume that words are delimeted by a space.

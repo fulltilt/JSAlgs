@@ -3,6 +3,7 @@ function Dictionary() {
 	this.add = add;
 	this.find = find;
 	this.remove = remove;
+	this.clear = clear;
 	this.showAll = showAll;
 	this.size = size;
 }
@@ -19,13 +20,22 @@ function remove(key) {
 	delete this.dataStore[key];
 }
 
+/* NOTE: if I did: for (var key in keys) { ... }, 'key' ended up just being an integer index value i.e. 0,1,etc.
+*/
+function clear() {
+	var keys = Object.keys(this.dataStore);
+	for (var i = 0; i < keys.length; i++) {;
+		delete this.dataStore[keys[i]];
+	}
+}
+
 function showAll() {
-	var keys = Object.keys(this.dataStore).sort();
+	var keys = Object.keys(this.dataStore).sort();	// sort the keys before displaying
 	for (var i = 0; i < keys.length; i++)
 		console.log(keys[i] + ' -> ' + this.dataStore[keys[i]]);
 }
 
-/* Note: we couldn't simply just use: return Object.keys(this.dataStore).length 
+/* Note: we couldn't simply just use: return Object.keys(this.dataStore).length; 
     because 'length' doesn't work with string keys
 */
 function size() {
@@ -37,12 +47,4 @@ function size() {
 	return s;
 }
 
-// Test #1
-var pbook = new Dictionary();
-pbook.add("Mike","123");
-pbook.add("David", "345");
-pbook.add("Cynthia", "456");
-console.log("David's extension: " + pbook.find("David"));
-pbook.remove("David");
-pbook.showAll();
-console.log("Size of dictionary: " + pbook.size());
+module.exports = Dictionary;

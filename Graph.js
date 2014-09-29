@@ -21,6 +21,7 @@ function Graph(v) {
   }
 
   this.bfs = bfs;
+  this.edgeTo = []; // use to determine shortest path
 }
 
 function addEdge(v, w) {
@@ -55,8 +56,49 @@ function dfs(vertex) {
   }
 }
 
-function dfs(vertex) {
+/*
+function bfs(vertex) {
+  this.visited[vertex] = true;
+  console.log('Visiting vertex ' + vertex);
 
+  var adjacentVertices = this.adj[vertex];
+  for (var i = 0; i < adjacentVertices.length; i++) {
+    var currentVertex = adjacentVertices[i];
+    if (this.visited[currentVertex] === false) {
+      this.visited[currentVertex] = true;
+      console.log('Visiting vertex ' + currentVertex);      
+    }
+
+    // for every vertex on the current level, push their adjacent unvisited vertices to the back of the adjacent Vertices list
+    var currentVertexAdjacencyList = this.adj[currentVertex];
+    for (var j = 0; j < currentVertexAdjacencyList.length; j++) {
+      if (this.visited[currentVertexAdjacencyList[j]] === false) {
+        adjacentVertices.push(currentVertexAdjacencyList[j]);
+      }
+    }
+  }
+}
+*/
+
+function bfs(s) {
+  var graph = this; // need this due to the closure in the forEach loop
+  var queue = [];
+  this.visited[s] = true;
+  console.log("Visited vertex: " + s);
+  queue.push(s);          // add to back of queue 
+  
+  while (queue.length > 0) {
+    var v = queue.shift();  // remove from front of queue
+    
+    this.adj[v].forEach(function(w) {
+      if (graph.visited[w] === false) {
+        graph.edgeTo[w] = v; 
+        graph.visited[w] = true;
+        console.log("Visited vertex: " + w);
+        queue.push(w);
+      } 
+    });
+  } 
 }
 
 module.exports = Graph;

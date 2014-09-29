@@ -12,6 +12,7 @@ describe("Graph", function() {
       g.visited[i] = false;
     }
 
+    g.edgeTo = [];
     g.addEdge(0,1);
     g.addEdge(0,2);
     g.addEdge(1,3);
@@ -27,7 +28,20 @@ describe("Graph", function() {
   });
 
   it("tests bfs", function() {
-    g.bfs(0);console.log(g.edgeTo[0]);
+    g.bfs(0);
   });
 
+  it("tests pathTo", function() {
+    var start = 0, end = 4;
+    var paths = g.pathTo(start, end);
+    var pathString = '';
+    while (paths.length > 0) {
+      if (paths.length > 1) {
+        pathString += paths.pop() + ' -> ';
+      } else {
+        pathString += paths.pop();
+      }
+    }
+    console.log('Path from vertex ' + start + ' to vertex ' + end + ': ' + pathString);
+  });
 });

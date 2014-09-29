@@ -22,6 +22,9 @@ function Graph(v) {
 
   this.bfs = bfs;
   this.edgeTo = []; // use to determine shortest path
+  this.pathTo = pathTo;
+
+  this.topologicalSort = topologicalSort;
 }
 
 function addEdge(v, w) {
@@ -99,6 +102,26 @@ function bfs(s) {
       } 
     });
   } 
+}
+
+function pathTo(start, end) {
+  // build graph in terms of the start vertex
+  this.bfs(start);
+
+  if (start === end) {
+    return start;
+  }
+
+  if (this.edgeTo[end] === undefined) {
+    return undefined;
+  }
+
+  var path = [];
+  for (var i = end; i !== start; i = this.edgeTo[i]) {
+    path.push(i);
+  }
+  path.push(start);
+  return path;
 }
 
 module.exports = Graph;

@@ -7,6 +7,7 @@ describe("Dynamic", function() {
     expect(d.lcs('back', 'cace')).toEqual('ac');
     expect(d.lcs('abbcc', 'dbbcc')).toEqual('bbcc');
     expect(d.lcs('abbcc', 'dbbccc')).toEqual('bbcc');
+    expect(d.lcs('aafweajfiewajofij309afweajfiewajofij309u90sduf3j32oi22u90sduf3j32oi22bbcc', '2gdfgsf23afweaafweajfiewajofij309u90sduf3j32oi22jfiewajofij309u90sduf3j32oi22mbnmm3454354')).toEqual('afweajfiewajofij309u90sduf3j32oi22');
     expect(d.lcs('abbcc', 'vsz')).toEqual('');
   });
 

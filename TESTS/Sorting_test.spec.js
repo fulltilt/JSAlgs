@@ -32,4 +32,30 @@ describe("Sorting", function() {
     console.log('After insertionSort()...'); 
     arr.print();  
   });
+
+  it("tests shellSort", function() { 
+    console.log('Before shellSort()...'); 
+    arr.print();
+    arr.shellSort();
+    console.log('After shellSort()...'); 
+    arr.print();  
+  });
+  
+/*
+  it("tests mergeSort", function() { 
+    console.log('Before mergeSort()...'); 
+    arr.print();
+    arr.mergeSort();
+    console.log('After mergeSort()...'); 
+    arr.print();  
+  });
+*/
+
+  it("tests quickSort", function() { 
+    console.log('Before quickSort()...'); 
+    arr.print();
+    arr.quickSort();
+    console.log('After quickSort()...'); 
+    arr.print();  
+  });
 });

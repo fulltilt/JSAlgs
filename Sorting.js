@@ -18,9 +18,11 @@ function Sorting(numElements) {
   this.insertionSort = insertionSort;
   this.shellSort = shellSort;
   this.mergeSort = mergeSort;
-  this.quickSort = quickSort;
+  this.quickSort = quickSort; // inplace version of quicksort
   this._quickSort = _quickSort;
   this.partition = partition;
+  this.qSort = qSort; // non-inplace version of quicksort
+  this._qSort = _qSort;
 }
 
 function setData() {
@@ -188,6 +190,29 @@ function partition(arr, lo, hi) {
   this.swap(arr, lo, j);  // swap pivot into the correct position, swapping with the low value since values less than pivot should be on the left
 
   return j;
+}
+
+function qSort() {
+  this.dataStore = this._qSort(this.dataStore);
+}
+
+function _qSort(arr) {
+  if (arr.length === 0) {
+    return [];
+  }
+
+  var lesser = [];
+  var greater = [];
+  var pivot = arr[0];
+
+  for (var i = 1; i < arr.length; i++) {
+    if (arr[i] < pivot) {
+      lesser.push(arr[i]);
+    } else {
+      greater.push(arr[i]);
+    }
+  }
+  return this._qSort(lesser).concat(pivot, this._qSort(greater));
 }
 
 module.exports = Sorting;

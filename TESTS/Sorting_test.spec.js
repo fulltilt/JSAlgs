@@ -40,7 +40,7 @@ describe("Sorting", function() {
     console.log('After shellSort()...'); 
     arr.print();  
   });
-  
+
 /*
   it("tests mergeSort", function() { 
     console.log('Before mergeSort()...'); 
@@ -58,4 +58,12 @@ describe("Sorting", function() {
     console.log('After quickSort()...'); 
     arr.print();  
   });
+
+  it("tests non-inplace version quickSort", function() { 
+    console.log('Before non-inplace quickSort()...'); 
+    arr.print();
+    arr.qSort();
+    console.log('After non-inplace quickSort()...'); 
+    arr.print();  
+  });  
 });

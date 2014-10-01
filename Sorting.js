@@ -217,7 +217,7 @@ function _qSort(arr) {
   return this._qSort(lesser).concat(pivot, this._qSort(greater));
 }
 
-function binSearch(arr, data) {
+function binarySearch(arr, data) {
   var upperBound = arr.length - 1; 
   var lowerBound = 0;
   

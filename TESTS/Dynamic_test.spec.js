@@ -18,5 +18,11 @@ describe("Dynamic", function() {
     var n = 5;
     expect(d.recursiveKnapsack(capacity, size, value, n)).toEqual(23);
     expect(d.dynamicKnapsack(capacity, size, value, n)).toEqual(23);
-  })
+  });
+
+  it('tests dynamicCoinChange', function() {
+    var sum = 11;
+    var values = [1, 3, 5];
+    expect(d.dynamicCoinChange(sum, values)).toEqual(3);
+  });
 });

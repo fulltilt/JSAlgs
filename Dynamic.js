@@ -3,6 +3,7 @@ function Dynamic() {
 
   this.recursiveKnapsack = recursiveKnapsack;
   this.dynamicKnapsack = dynamicKnapsack;
+  this.dynamicCoinChange = dynamicCoinChange;
 }
 
 function lcs(string1, string2) {
@@ -129,6 +130,59 @@ Notes:
   [ 0, 0, 0, 4, 5, 5, 5, 10, 11, 11, 14, 15, 16, 16, 19, 21, 21 ],
   [ 0, 0, 0, 4, 5, 5, 5, 10, 11, 13, 14, 15, 17, 18, 19, 21, 23 ] ]    
 */
+
+// http://www.topcoder.com/tc?d1=tutorials&d2=dynProg&module=Static
+function dynamicCoinChange(sum, values) {
+  var table = [];
+  table[0] = 0
+  for (var i = 1; i <= sum; i++) {
+    table[i] = Infinity;
+  }
+
+  for (currentSum = 1; currentSum <= sum; currentSum++) {
+    for (var currentCoin = 0; currentCoin < values.length; currentCoin++) {
+      if (values[currentCoin] <= currentSum) {
+        if ((table[currentSum - values[currentCoin]] + 1) < table[currentSum]) {
+          if (table[currentSum] === Infinity) { // this clause is kind of out of place but we need this else table[currentSum] will be Infinity
+            table[currentSum] = 0;
+          }
+          table[currentSum] = table[currentSum - values[currentCoin]] + 1;
+        }
+      }
+    }
+  }
+
+  return table[sum];
+}
+
+/* same as above but keeps track if which coins are used */
+function dynamicCoinChange2(sum, values) {
+  var table = [];
+  table[0] = [0, 0, 0];
+  for (var i = 1; i <= sum; i++) {
+    table[i] = [Infinity, Infinity, Infinity];
+  }
+
+  for (currentSum = 1; currentSum <= sum; currentSum++) {
+    for (var currentCoin = 0; currentCoin < values.length; currentCoin++) {
+      if (values[currentCoin] <= currentSum) {
+        if ((table[currentSum - values[currentCoin]][0] + 1) < table[currentSum][0]) {
+          if (table[currentSum][0] === Infinity) { // this clause is kind of out of place but we need this else table[currentSum] will be Infinity
+            table[currentSum][0] = 0;
+          }
+          table[currentSum][0] = table[currentSum - values[currentCoin]][0] + 1;
+          table[currentSum][1] = currentSum - values[currentCoin];  // keep track of the smaller sum used to obtain this sum
+          table[currentSum][2] = values[currentCoin];               // keep track of the coin used
+        }
+      }
+    }
+  }
+  console.log(table);
+  for (i = table[sum]; i[2] !== 0; i = table[i[1]]) {
+    console.log(i[2]);
+  }
+  return table[sum][0];
+}
 
 module.exports = Dynamic;
 

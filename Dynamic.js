@@ -54,6 +54,8 @@ function lcs(string1, string2) {
 Notes: 
  -the far left column and top column don't get touched but is used for the calculations
  -based on: http://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Longest_common_substring#JavaScript
+ -each row represents the starting position in the first string and each column represents the corresponding index in the 2nd string (assuming 
+  the first row and first column were omitted)
  -for the line: 'table[i + 1][j + 1] = table[i][j] + 1', I stripped out if/else statement as it seemed redundant. Check if there's errors later
 
  ex.('abbcc', 'dbbccc')
@@ -70,13 +72,13 @@ function max(a, b) {
   return (a > b) ? a : b;
 }
 
-// inefficient as many subproblems are revisited
+// inefficient as many subproblems are repeated
 function recursiveKnapsack(capacity, size, value, n) {
   if (n == 0 || capacity == 0) {
     return 0; 
   }
   
-  if (size[n-1] > capacity) {
+  if (size[n - 1] > capacity) {
     return this.recursiveKnapsack(capacity, size, value, n - 1);
   } else {
     return max(value[n - 1] + this.recursiveKnapsack(capacity - size[n - 1], size, value, n - 1), 
@@ -84,30 +86,49 @@ function recursiveKnapsack(capacity, size, value, n) {
   }
 }
 
-
+// n: number of items
 function dynamicKnapsack(capacity, size, value, n) {
-  var K=[];
-  for (var i = 0; i <= capacity + 1; i++) { 
+  // initialize dynamic table (instead of just 'n', book initialized it to 'capacity + 1' which resulted in a lot of unused rows)
+  var K = []; 
+  for (var i = 0; i <= n; i++) { 
     K[i] = [];
-  } 
-
-  for (var i = 0; i <= n; i++) {
-var output = '';    
-    for (var w = 0; w <= capacity; w++) { 
-      if (i == 0 || w == 0) {
-        K[i][w] = 0; 
-      } else if (size[i - 1] <= w) {
-        K[i][w] = max(value[i - 1] + K[i - 1][w - size[i - 1]], K[i - 1][w]);
-      } else {
-        K[i][w] = K[i - 1][w];
-      }
-           
-output += K[i][w] + ' ';
-    }
-console.log(output);
   }
-console.log(K[n][capacity]);
+
+  for (var row = 0; row <= n; row++) {
+    for (var col = 0; col <= capacity; col++) { 
+      if (row == 0 || col == 0) { // this clause is to set the top row and far left row to all zeroes
+        K[row][col] = 0; 
+      } else if (size[row - 1] <= col) { // if size of current item <= column value (i.e. the current max capacity)
+        // set the column to be the max between the cell directly above it and (the value of the current item) + K[previous row][(the value of the current capacity - the size of the current item)]
+        K[row][col] = max(value[row - 1] + K[row - 1][col - size[row - 1]], K[row - 1][col]);
+      } else {  // if size of current item > column value, set the index to equal the one above it
+        K[row][col] = K[row - 1][col];
+      }
+    }
+  }
+
   return K[n][capacity];
 }
 
+/*
+Notes: 
+ -just like in least common substring problem, top row and far left row stay all zeroes
+ -each row represents having the first n items available i.e. row 0 has no items available, row 1 only has the first item available, etc.
+ -each column represents the total capacity i.e. the capacity is 0 in column 0, the capacity is 1 in column 1, etc.
+ -the most confusing part is: K[row][col] = max(value[row - 1] + K[row - 1][col - size[row - 1]], K[row - 1][col]);
+
+    var value = [4,5,10,11,13];
+    var size = [3,4,7,8,9];
+    var capacity = 16;
+    var n = 5;
+
+[ [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+  [ 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 ],
+  [ 0, 0, 0, 4, 5, 5, 5, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9 ],
+  [ 0, 0, 0, 4, 5, 5, 5, 10, 10, 10, 14, 15, 15, 15, 19, 19, 19 ],
+  [ 0, 0, 0, 4, 5, 5, 5, 10, 11, 11, 14, 15, 16, 16, 19, 21, 21 ],
+  [ 0, 0, 0, 4, 5, 5, 5, 10, 11, 13, 14, 15, 17, 18, 19, 21, 23 ] ]    
+*/
+
 module.exports = Dynamic;
+

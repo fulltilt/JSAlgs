@@ -16,11 +16,6 @@ describe("Greedy", function() {
   });
 
   it('tests greedy knapsack', function() {
-    var values = [4,5,10,11,13];
-    var weights = [3,4,7,8,9];
-    var capacity = 16;
-    expect(g.greedyKnapsack(values, weights, capacity)).toEqual(220);
-    
     var values = [50, 140, 60, 60];
     var weights = [5, 20, 10, 12];
     var capacity = 30;

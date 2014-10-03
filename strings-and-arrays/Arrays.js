@@ -1,6 +1,5 @@
  /*
-  * Write an efficient function to find the first non-repeated character
-  * in a String.
+  * Write an efficient function to find the first non-repeated character in a String.
   */
 var findFirstNonRepeatedChar = function(str) {
   	var hashTable = {};
@@ -21,6 +20,39 @@ var findFirstNonRepeatedChar = function(str) {
 console.log('Testing findFirstNonRepeatedChar()...');
 console.log( findFirstNonRepeatedChar('lorem ipsum dolar pit ahmets') ); // expected: u
 
+/* 
+ * Find duplicate number in an array. No extra buffer allowed.
+ * Assumes the array is of size n and the range of values are from 0 through n-1
+ * Tricky part: use a for loop and have inner while loop that stays at a particular index until the correct value is in that index 
+ */
+var getDuplicateWithoutBuffer = function(arr) {
+  var length = arr.length;
+  for (var i = 0; i < length; i++) {
+    if (arr[i] < 0 || arr[i] >= arr.length ) {
+      throw 'Invalid Argument Exception';
+    }
+  }
+
+  var currentIndex = 0;
+  for (i = 0; i < length; i++) {
+    while (arr[i] !== i) {
+      if (arr[i] === arr[arr[i]]) {
+        return arr[i];
+      } else {
+        var temp = arr[i];
+        arr[i] = arr[temp];
+        arr[temp] = temp;
+      }
+    }
+  }
+
+  return -1;
+}
+
+console.log('Testing getDuplicateWithoutBuffer()...');
+console.log(getDuplicateWithoutBuffer([2, 3, 1, 0, 2, 5, 3])); // expects: 2
+console.log(getDuplicateWithoutBuffer([2, 3, 1, 0, 6, 5, 4])); // expects: -1
+
 /*
  * Design an algorithm to remove duplicate characters in an Array of characters
  * without using any additional buffer.
@@ -30,7 +62,7 @@ var removeDuplicatesWithoutBuffer = function(str) {
 	if (str === null || str.length === 0)
 		return undefined;
 
-	str = str.split('');
+	//str = str.split('');
 	
 /*	for (var trailing = 0; trailing < str.length; trailing++) {
 		for (var leading = trailing + 1; leading < str.length; leading++) {
@@ -47,7 +79,7 @@ var removeDuplicatesWithoutBuffer = function(str) {
 		}
 	}
 */
-
+/*
 	var slow = 0;
 	var fast = 1;
 	while (fast < str.length) {
@@ -64,6 +96,7 @@ var removeDuplicatesWithoutBuffer = function(str) {
 
 	str = str.join('');
 	return str.slice(0, slow);
+*/
 }
 
 console.log('\nTesting removeDuplicatesWithoutBuffer()...');

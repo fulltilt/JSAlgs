@@ -1,9 +1,19 @@
+/*
+Common themes with dynamic programming solutions:
+ -there is always a table to store previous values. This can be either a 1-dimensional or 2-dimensional array.
+ -if it's a 1-dimensional array, the 0th column is always zero. For a 2-dimensional array, the first row is all zeroes and the 0th column is all zeroes
+ -there is a lot of potential fence post errors that one must be wary of
+ -updating the table can get crazy but the code tends to be relatively short. However, to get the actual values could bloat the code a lot
+  The reason it gets bloated is another pitfall: you have to keep track of the index of longest/greatest/etc and you also have to keep track 
+  of the value
+*/
 function Dynamic() {
   this.lcs = lcs;
 
   this.recursiveKnapsack = recursiveKnapsack;
   this.dynamicKnapsack = dynamicKnapsack;
   this.dynamicCoinChange = dynamicCoinChange;
+  this.longestIncreasingSequence = longestIncreasingSequence;
 }
 
 function lcs(string1, string2) {
@@ -155,7 +165,7 @@ function dynamicCoinChange(sum, values) {
   return table[sum];
 }
 
-/* same as above but keeps track if which coins are used */
+/* same as above but keeps track of which coins are used */
 function dynamicCoinChange2(sum, values) {
   var table = [];
   table[0] = [0, 0, 0];
@@ -182,6 +192,40 @@ function dynamicCoinChange2(sum, values) {
     console.log(i[2]);
   }
   return table[sum][0];
+}
+
+function longestIncreasingSequence(arr) {
+  var length = arr.length;
+  if (length === 0) {
+    return 0;
+  }
+
+  var table = [];
+  table[0] = -Infinity;
+  table[1] = 1; // first digit is increasing by default
+  
+  for (var i = 2; i <= length; i++) {
+    table[i] = 0;
+  }
+
+  // the '+ 1''s are needed as the table as its zero index represents the zero part of the table that represents an array of size 0
+  var indexOfEnd = 0, longestSequenceLength = 1;
+  for (var currentDigit = 1; currentDigit < length; currentDigit++) {
+    if (arr[currentDigit] < arr[currentDigit - 1]) { // since there isn't a -1 index for the array, above we set table[1] to 1
+      table[currentDigit + 1] = 1;
+    } else {
+      table[currentDigit + 1] = table[currentDigit] + 1;
+
+      // keep track of the longest sequence length and the index of where it ends
+      if ((table[currentDigit + 1] > table[currentDigit]) && (table[currentDigit + 1] > longestSequenceLength)) {
+        longestSequenceLength = table[currentDigit + 1];
+        indexOfEnd = currentDigit;
+      }
+    }
+  }
+
+  // '- 1' because indexOfEnd includes the last index else it will splice an extra index at the end
+  return arr.splice(indexOfEnd - (longestSequenceLength - 1), longestSequenceLength);
 }
 
 module.exports = Dynamic;

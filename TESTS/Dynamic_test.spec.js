@@ -25,4 +25,11 @@ describe("Dynamic", function() {
     var values = [1, 3, 5];
     expect(d.dynamicCoinChange(sum, values)).toEqual(3);
   });
+
+  it('tests longestIncreasingSequence', function() {
+    var values = [5, 3, 4, 8, 6, 7];
+    expect(d.longestIncreasingSequence(values)).toEqual([3,4,8]);
+    values = [4, 5, 6, 2, 4, 9, 10, 4, 5, 6, 7, 10, 30, 4, 5];
+    expect(d.longestIncreasingSequence(values)).toEqual([4,5,6,7,10,30]);
+  });
 });

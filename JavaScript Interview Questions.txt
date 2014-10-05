@@ -1,0 +1,79 @@
+-there isn't a standard yet in JavaScript for constants and enums. You can declare by contract for constants by naming the variable in all caps. You can simulate an enum by:
+
+var colors = {
+  RED: 0,
+  BLUE: 1,
+  YELLOW: 3
+};
+
+DIFFERENT WAYS TO CREATE "CLASSES" IN JAVASCRIPT
+1. Create a singleton/namespace using an object literal
+  var app = {
+
+  };
+
+2. Create a namespace using Object() constructor
+  var app2 = new Object();
+
+3. Using "Object.create()" (for modern browsers)
+  var baz = Object.create(Object.prototype, {
+
+    }
+  });
+
+4. Using "Constructor Functions" to initialize objects
+  function TwitterProvider(username) { 
+    this.username = username;
+    var dummy = 20;
+    function privateMethod() {
+      alert(dummy);
+      dummy--;
+    }
+  
+    this.privilegedMethod = function() {
+      privateMethod(); 
+      return dummy > 18;
+    }; 
+  }
+  
+  TwitterProvider.constructor = TwitterProvider;
+  
+  var volkan = new TwitterProvider('@linkibol'); 
+  alert(volkan.privilegedMethod()); // This will alert "true".
+  alert(volkan.privilegedMethod()); // This will alert "false".
+
+5. Constructor function returns an object
+  var Account = function(accountNumber) {
+    var num = accountNumber;
+
+    return {
+      getAccountNumber: function() {
+        return num; 
+      },
+      setAccountNumber: function(newNumber) {
+        num = newNumber;
+      }
+    }
+  }
+
+  var bar = new Account('42'); 
+  alert(bar.getAccountNumber());
+
+6. Using immediately invoked function expressions with the new operator
+var user1 = (new function(id, name) { 
+  this.id = id;
+  this.name = name; 
+  this.toString = function() {
+    return this.id + ' / ' + this.name; 
+  };
+}('vvic', 'Vector Victor'));
+
+alert(user1);  // This will alert "vvic / Vector Victor"
+
+
+PRIVATE VARIABLES AND METHODS
+-Since there’s no access modifier in JavaScript4, the best definition we can rely on is Douglas Crockford’s terminology:
+  -Public Properties: Any data stored on the instance.
+  -Private Properties: Data is stored in the environment is only accessible to the constructor and functions created inside the constructor.
+  -Privileged Methods: Functions created inside the constructor, and are added to the instance.
+-see p.53-9

@@ -53,6 +53,44 @@ console.log('Testing getDuplicateWithoutBuffer()...');
 console.log(getDuplicateWithoutBuffer([2, 3, 1, 0, 2, 5, 3])); // expects: 2
 console.log(getDuplicateWithoutBuffer([2, 3, 1, 0, 6, 5, 4])); // expects: -1
 
+
+/*
+ * Removes duplicate characters in an Array of characters.
+ * You can use an additional buffer to obtain algorithmic efficiency.
+    -algorithm: put values in a hash table that increments by one for each letter. Use two pointers: trailing and leading. The trick
+                to this is to mix the the trailing and leading operations with the hash table operations so it would be O(n) instead
+                of O(n + m)
+ */
+var removeDuplicates = function(str) {
+  if (str === null || str.length < 2)
+    return undefined;
+
+  str = str.split('');
+
+  var hashTable = {};
+  var trailingIndex = 0;
+  for (var i = 0; i < str.length; i++) {
+    if (!hashTable[str[i]]) {
+      hashTable[str[i]] = true;
+      str[trailingIndex++] = str[i];
+    } else {
+      ++i;
+    }
+  }
+
+  str = str.join('');
+  return str.slice(0, trailingIndex);
+}
+
+console.log('\nTesting removeDuplicates()...');
+console.log( removeDuplicates( 'abcdefghij'          ) );
+console.log( removeDuplicates( 'aaaaaaaaaaaaaa'      ) );
+console.log( removeDuplicates( ''                    ) );
+console.log( removeDuplicates( null                            ) );
+console.log( removeDuplicates( 'aaabbbcccddeeffgg'   ) );
+console.log( removeDuplicates( 'ababcdefdecdefababac') ); 
+
+
 /*
  * Design an algorithm to remove duplicate characters in an Array of characters
  * without using any additional buffer.
@@ -107,41 +145,6 @@ console.log( removeDuplicatesWithoutBuffer( null                            ) );
 console.log( removeDuplicatesWithoutBuffer( 'aaabbbcccddeeffgg'   ) );
 console.log( removeDuplicatesWithoutBuffer( 'ababcdefdecdefababac') ); 
 
-/*
- * Removes duplicate characters in an Array of characters.
- * You can use an additional buffer to obtain algorithmic efficiency.
-    -algorithm: put values in a hash table that increments by one for each letter. Use two pointers: trailing and leading. The trick
-                to this is to mix the the trailing and leading operations with the hash table operations so it would be O(n) instead
-                of O(n + m)
- */
-var removeDuplicates = function(str) {
-	if (str === null || str.length < 2)
-		return undefined;
-
-	str = str.split('');
-
-	var hashTable = {};
-	var trailingIndex = 0;
-	for (var i = 0; i < str.length; i++) {
-		if (!hashTable[str[i]]) {
-			hashTable[str[i]] = true;
-			str[trailingIndex++] = str[i];
-		} else {
-			++i;
-		}
-	}
-
-	str = str.join('');
-	return str.slice(0, trailingIndex);
-}
-
-console.log('\nTesting removeDuplicates()...');
-console.log( removeDuplicates( 'abcdefghij'          ) );
-console.log( removeDuplicates( 'aaaaaaaaaaaaaa'      ) );
-console.log( removeDuplicates( ''                    ) );
-console.log( removeDuplicates( null                            ) );
-console.log( removeDuplicates( 'aaabbbcccddeeffgg'   ) );
-console.log( removeDuplicates( 'ababcdefdecdefababac') ); 
 
 /*
  * Write a JavaScript function that deletes characters from a string.

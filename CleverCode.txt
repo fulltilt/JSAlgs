@@ -1,0 +1,42 @@
+-return a list of card ranks, sorted with higher first
+def card_ranks(hand):
+  ranks = ['--23456789TJQKA'.index(r) for r,s in hand]
+  ranks.sort(reverse=True)
+  return ranks
+
+-determining if a hand is a straight (hand is represented by an array of length 5 and members are in order):
+def straight(ranks):
+  return (max(ranks) - min(ranks) == 4) and len(set(ranks)) == 5
+
+-determining if a hand is a flush (hand is represented by an array of length 5 composed of tuples where the first index is rank and second is the suit)
+def flush(hand):
+  suits = [r,s in hand]
+
+-In a 2-D matrix, every row is increasingly sorted from left to right, and the last number in each row is not greater than the first number of the next row. A sample matrix follows. Please implement a function to check whether a number is in such a matrix or not. It returns true if it tries to find the number 7 in the sample matrix, but it returns false if it tries to find the number 12.
+1  3  5
+7  9  11 
+13 15 17
+-The naive solution with brute force is to scan all numbers in the input matrix. Obviously, it costs O(mn) time if the size of the matrix is m×n.
+Since each row in the matrix is sorted and the first number of a row is guaranteed to be greater than or equal to the last number of the preceding row, the matrix can be viewed as a 1-D sorted array. If all rows in the sample matrix are concatenated in top down order, it forms a sorted array {1, 3, 5, 7, 9, 11, 13, 15, 17} which we can perform a binary search on
+
+boolean find(int matrix[][], int value) {
+  int rows = matrix.length;
+  int cols = matrix[0].length;
+  int start = 0;
+  int end = rows * cols - 1;
+  
+  while (start <= end) {
+    int mid = start + (end - start) / 2;
+    int row = mid / cols;
+    int col = mid % cols;
+    int v = matrix[row][col];
+    
+    if (v == value)
+        return true;
+    if (v > value)
+        end = mid - 1;
+    else
+        start = mid + 1;
+  }
+  return false;
+}

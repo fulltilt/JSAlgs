@@ -77,3 +77,16 @@ PRIVATE VARIABLES AND METHODS
   -Private Properties: Data is stored in the environment is only accessible to the constructor and functions created inside the constructor.
   -Privileged Methods: Functions created inside the constructor, and are added to the instance.
 -see p.53-9
+
+-memory management: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management
+-high-performance, garbage collector-friendly code: http://buildnewgames.com/garbage-collector-friendly-code/
+-function declarations vs. function expressions (and a refresher on hoisting): http://javascriptweblog.wordpress.com/2010/07/06/function-declarations-vs-function-expressions/
+-
+function foo(x) {
+  var tmp = 3;
+}
+
+foo(2)(10); // will alert "16".
+foo(2)(10); // will alert "16" again.
+
+

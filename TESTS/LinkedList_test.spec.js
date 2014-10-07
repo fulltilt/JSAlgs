@@ -8,28 +8,28 @@ describe("LinkedList", function() {
     ll.insertHead(2);
     ll.insertHead(7);
     ll.insertHead(8);
-    ll.insertHead(9);
     ll.insertHead(6);
+    ll.insertHead(9);
     ll.insertHead(5);
   });
   
   it('tests insertHead and insertAfter', function() {
     expect(ll.size).toEqual(6);
     expect(ll.head.data).toEqual(5);
-    expect(ll.print()).toEqual('5 6 9 8 7 2');
+    expect(ll.print()).toEqual('5 9 6 8 7 2');
     ll.insertAfter(10, 9);
     expect(ll.size).toEqual(7);
-    expect(ll.print()).toEqual('5 6 9 10 8 7 2');
+    expect(ll.print()).toEqual('5 9 10 6 8 7 2');
     //expect(ll.insertAfter(10, -1)).toThrow('Invalid node error.');
   });
 
   it('tests remove() and removeHead()', function() {
     ll.remove(8);
     expect(ll.size).toEqual(5);
-    expect(ll.print()).toEqual('5 6 9 7 2');
+    expect(ll.print()).toEqual('5 9 6 7 2');
     ll.removeHead();
     expect(ll.size).toEqual(4);
-    expect(ll.print()).toEqual('6 9 7 2');
+    expect(ll.print()).toEqual('9 6 7 2');
   });
 
   it('tests find()', function() {
@@ -38,9 +38,9 @@ describe("LinkedList", function() {
   });
 
   it('tests getMiddle()', function() {
-    expect(ll.getMiddle(ll.head).data).toEqual(9);  // even # of items
+    expect(ll.getMiddle(ll.head).data).toEqual(6);  // even # of items
     ll.insertHead(1);
-    expect(ll.getMiddle(ll.head).data).toEqual(9);  // odd # if items
+    expect(ll.getMiddle(ll.head).data).toEqual(6);  // odd # if items
     var ll1 = new LinkedList();
     expect(ll1.getMiddle(ll1.head)).toEqual(null);  // no items
     ll1.insertHead(1);
@@ -60,8 +60,7 @@ describe("LinkedList", function() {
   });
 
   it('tests merge sort', function() {
-    ll.mergeSort();
-    expect(ll.print()).toEqual('2 5 6 7 8 9');
+    expect(ll.mergeSort().printFromNode()).toEqual('2 5 6 7 8 9');
   });
 
   it ('tests mergeSortedLists()', function() {
@@ -76,6 +75,6 @@ describe("LinkedList", function() {
     ll2.insertHead(4);
     ll2.insertHead(2);
 
-    expect(ll.mergeSortedLists(ll1, ll2).print()).toEqual('1 2 3 4 5 6 7 8');
+    expect(ll.mergeSortedLists(ll1.head, ll2.head)).toEqual('1 2 3 4 5 6 7 8');
   }); 
 });

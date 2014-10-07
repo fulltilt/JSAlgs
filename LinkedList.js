@@ -1,6 +1,8 @@
 function Node(data) {
 	this.data = data;
 	this.next = null;
+
+	this.printFromNode = printFromNode;
 }
 
 function LinkedList() {
@@ -174,8 +176,20 @@ function insertionSortWithSwappingNodes() {
 	}
 }
 
+// Used to print from a specific Node. Used for Merge Sort algorithm
+function printFromNode() {
+	var output = '';
+	var current = this;
+	while (current !== null) {
+		output += current.data + ' ';
+		current = current.next;
+	}
+	return output.trim();
+}
+
+// returns the head of the head of the sorted list
 function mergeSort() {
-	this._mergeSort(this.head);
+	return this._mergeSort(this.head);
 }
 
 function _mergeSort(head) {
@@ -186,16 +200,16 @@ function _mergeSort(head) {
 	var middle = this.getMiddle(head);
 	var sHalf = middle.next;
 	middle.next = null;
-	console.log(middle.data);
 
 	return this.merge(this._mergeSort(head), this._mergeSort(sHalf));
 }
 
-// merge 2 lists
+// merge 2 lists (exactly the same as mergeSortedLists() but the return values are different and this version is more concise)
 function merge(a, b) {
 	var dummyHead = new Node();
 	var current = dummyHead;
 
+	// merge both lists together in sorted order
 	while (a !== null && b !== null) {
 		if (a.data <= b.data) {
 			current.next = a;
@@ -204,6 +218,7 @@ function merge(a, b) {
 			current.next = b;
 			b = b.next;
 		}
+current = current.next;
 	}
 	current.next = (a === null) ? b : a;
 	return dummyHead.next;
@@ -223,16 +238,41 @@ function getMiddle(head) {
 	return slow;
 }
 
-function mergeSortedLists(list1, list2) {
-	if (list1 === null && list2 === null) {
+/* Take two sorted arrays and return a merged sorted array. Arguments are the nodes that points to each lists head. This makes this 
+   function reusable in merge sort. This makes this tricky as you don't think of it as a List itself but as a manipulation of a bunch of
+   Nodes. You don't have to worry about the head pointer because of this. It is also helpful to use a dummyNode which will be the entry
+   point for the new 'List'
+*/
+function mergeSortedLists(list1Head, list2Head) {
+	if (list1Head === null && list2Head === null) {
 		return null;
-	} else if (list1 === null) {
-		return list2;
-	} else if (list2 === null) {
-		return list1;
+	} else if (list1Head === null) {
+		return list2Head;
+	} else if (list2Head === null) {
+		return list1Head;
 	}
 
+	var dummyHead = new Node(),
+			newListPtr = dummyHead,
+			list1Ptr = list1Head,
+			list2Ptr = list2Head;
 
+	// iterate through both arrays and arrange nodes in order onto a new list
+	while (list1Ptr !== null && list2Ptr !== null) {
+		if (list1Ptr.data <= list2Ptr.data) {
+			newListPtr.next = list1Ptr;
+			list1Ptr = list1Ptr.next;
+		} else {
+			newListPtr.next = list2Ptr;
+			list2Ptr = list2Ptr.next;
+		}
+		newListPtr = newListPtr.next;
+	}	
+	
+	// deal with leftovers
+	newListPtr.next = (list1Ptr === null) ? list2Ptr : list1Ptr;
+
+	return dummyHead.next.printFromNode(); // form output from the head node and print the rest of the list (have to do this as the algorithm deals with nodes and not lists)
 }
 
 module.exports = LinkedList;

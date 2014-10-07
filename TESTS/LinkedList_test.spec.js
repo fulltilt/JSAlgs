@@ -37,8 +37,18 @@ describe("LinkedList", function() {
     expect(ll.find(-3)).toEqual(null);
   });
 
+  it('tests insertionSort without swapping', function() {
+    ll.insertionSortWithoutSwappingNodes();
+    expect(ll.print()).toEqual('2 5 6 7 8 9');
+  });
+
+  it('tests insertionSort with swapping', function() {
+    ll.insertionSortWithSwappingNodes();
+    expect(ll.print()).toEqual('2 5 6 7 8 9');
+  });
+
   it('tests merge sort', function() {
-    ll.mergeSort();
-    ll.print();
+    //ll.mergeSort();
+    //ll.print();
   });
 });

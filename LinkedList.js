@@ -14,6 +14,8 @@ function LinkedList() {
 	this.clear = clear;
 	this.print = print;
 
+	this.insertionSortWithoutSwappingNodes = insertionSortWithoutSwappingNodes;
+	this.insertionSortWithSwappingNodes = insertionSortWithSwappingNodes;
 	this.mergeSort = mergeSort;
 	this._mergeSort = _mergeSort;
 	this.merge = merge;
@@ -104,6 +106,70 @@ function print() {
 	}
 	console.log(output);
 	return output.trim();
+}
+
+// swapping data elements only. No swapping of nodes
+function insertionSortWithoutSwappingNodes() {
+	var slow,
+			fast,
+			tempLowest;
+
+	for (slow = this.head; slow.next !== null; slow = slow.next) {
+		tempLowest = slow;
+		for (fast = slow.next; fast !== null; fast = fast.next) {
+			if (fast.data < tempLowest.data) {
+				tempLowest = fast;
+			}
+		}
+
+		var temp = tempLowest.data;
+		tempLowest.data = slow.data;
+		slow.data = temp; 
+	}
+}
+
+// swaps actual nodes. This is tough as it requires keeping track of 6 pointers: the slow pointer and it's previous pointer, the fast pointer and it's previous 
+// pointer and the temporaryLowest pointer and its previus pointer
+function insertionSortWithSwappingNodes() {
+	if (this.head === null || this.size === 1) {
+		return;
+	}
+	
+	var slow, fast, tempLowest;
+
+	// keep track of previous pointers which we need if we have to swap values
+	var dummyHead = new Node();
+	dummyHead.next = this.head;
+	var previousSlow = dummyHead,
+			previousTempLowest = dummyHead,
+			previousFast = slow;
+
+	// slow pointer iterates one-by-one
+	for (slow = this.head; slow.next !== null; previousSlow = previousTempLowest = slow, slow = previousFast = slow.next) {
+		tempLowest = slow;
+		
+		// from slow to the end, compare the current node to the slow node and mark it if its data is less than slow's data
+		for (fast = slow.next; fast !== null; previousFast = fast, fast = fast.next) {
+			if (fast.data < tempLowest.data) {
+				previousTempLowest = previousFast;
+				tempLowest = fast;
+			}
+		}
+
+		if (tempLowest !== slow) {
+			if (slow === this.head) {  // only applicable if the head is swapped
+				this.head = tempLowest;
+			}
+
+			// swap nodes
+			previousSlow.next = previousTempLowest.next;
+			previousTempLowest.next = slow;
+			var temp = tempLowest.next;
+			tempLowest.next = slow.next;
+			slow.next = temp;
+			slow = tempLowest;
+		}
+	}
 }
 
 function mergeSort() {

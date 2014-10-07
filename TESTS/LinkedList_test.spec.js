@@ -37,6 +37,18 @@ describe("LinkedList", function() {
     expect(ll.find(-3)).toEqual(null);
   });
 
+  it('tests getMiddle()', function() {
+    expect(ll.getMiddle(ll.head).data).toEqual(9);  // even # of items
+    ll.insertHead(1);
+    expect(ll.getMiddle(ll.head).data).toEqual(9);  // odd # if items
+    var ll1 = new LinkedList();
+    expect(ll1.getMiddle(ll1.head)).toEqual(null);  // no items
+    ll1.insertHead(1);
+    expect(ll1.getMiddle(ll1.head).data).toEqual(1);  // 1 item
+    ll1.insertHead(2);
+    expect(ll1.getMiddle(ll1.head).data).toEqual(2);  // 2 items
+  });
+
   it('tests insertionSort without swapping', function() {
     ll.insertionSortWithoutSwappingNodes();
     expect(ll.print()).toEqual('2 5 6 7 8 9');
@@ -48,7 +60,22 @@ describe("LinkedList", function() {
   });
 
   it('tests merge sort', function() {
-    //ll.mergeSort();
-    //ll.print();
+    ll.mergeSort();
+    expect(ll.print()).toEqual('2 5 6 7 8 9');
   });
+
+  it ('tests mergeSortedLists()', function() {
+    var ll1 = new LinkedList();
+    ll1.insertHead(7);
+    ll1.insertHead(6);
+    ll1.insertHead(3);
+    ll1.insertHead(1);
+    var ll2 = new LinkedList();
+    ll2.insertHead(8);
+    ll2.insertHead(5);
+    ll2.insertHead(4);
+    ll2.insertHead(2);
+
+    expect(ll.mergeSortedLists(ll1, ll2).print()).toEqual('1 2 3 4 5 6 7 8');
+  }); 
 });

@@ -20,6 +20,8 @@ function LinkedList() {
 	this._mergeSort = _mergeSort;
 	this.merge = merge;
 	this.getMiddle = getMiddle;
+
+	this.mergeSortedLists = mergeSortedLists;
 }
 
 function find(item) {
@@ -134,7 +136,7 @@ function insertionSortWithSwappingNodes() {
 	if (this.head === null || this.size === 1) {
 		return;
 	}
-	
+
 	var slow, fast, tempLowest;
 
 	// keep track of previous pointers which we need if we have to swap values
@@ -184,6 +186,7 @@ function _mergeSort(head) {
 	var middle = this.getMiddle(head);
 	var sHalf = middle.next;
 	middle.next = null;
+	console.log(middle.data);
 
 	return this.merge(this._mergeSort(head), this._mergeSort(sHalf));
 }
@@ -207,7 +210,7 @@ function merge(a, b) {
 }
 
 function getMiddle(head) {
-	if (head === null) {
+	if (head === null || head === undefined) {
 		return head;
 	}
 
@@ -218,6 +221,18 @@ function getMiddle(head) {
 	}
 
 	return slow;
+}
+
+function mergeSortedLists(list1, list2) {
+	if (list1 === null && list2 === null) {
+		return null;
+	} else if (list1 === null) {
+		return list2;
+	} else if (list2 === null) {
+		return list1;
+	}
+
+
 }
 
 module.exports = LinkedList;

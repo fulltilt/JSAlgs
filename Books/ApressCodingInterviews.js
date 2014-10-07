@@ -1,6 +1,7 @@
 function Apress() {
   this.searchIncreasinglySorted = searchIncreasinglySorted;
   this.replaceBlanks = replaceBlanks;
+  this.mergeSorted = mergeSorted;
 }
 
 /* Question 8: In a 2-D matrix, every row is increasingly sorted from left to right, and every column is 
@@ -67,5 +68,36 @@ function replaceBlanks(str) {
   return arr.join('');
 }
 
+/* Question 10: Given two sorted arrays, denoted as array1and array2, please merge them into array1 and 
+keep the merged array sorted. Suppose there is sufficient vacant memory at the end of array1to accommodate 
+elements of array2
+*/
+function mergeSorted(arr1, arr2) {
+  // create pointers to the last indices of each array
+  var arr1Ptr = arr1.length - 1,
+      arr2Ptr = arr2.length - 1;
+
+  arr1.length = arr1.length + arr2.length;
+  var arr3Ptr = arr1.length - 1;
+  
+  while (arr1Ptr >= 0 && arr2Ptr >= 0) {
+    console.log(arr1[arr1Ptr] + ' ' + arr2[arr2Ptr] + ' ' + arr1Ptr + ' ' + arr2Ptr);
+    if (arr1[arr1Ptr] > arr2[arr2Ptr]) {
+      arr1[arr3Ptr--] = arr1[arr1Ptr--];
+    } else {
+      arr1[arr3Ptr--] = arr2[arr2Ptr--];
+    }
+  }
+
+  // since arr1 is already sorted, if there's leftovers, it will already be sorted. We only have to worry about the 2nd arrays leftovers
+  while (arr2Ptr >= 0) {
+    arr1[arr3Ptr--] = arr2[arr2Ptr--];
+  }
+
+  return arr1;
+}
+
 
 module.exports = Apress;
+
+// SKIPPED: 12,13

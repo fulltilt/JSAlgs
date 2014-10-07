@@ -1,7 +1,7 @@
 function Apress() {
   this.searchIncreasinglySorted = searchIncreasinglySorted;
   this.replaceBlanks = replaceBlanks;
-  this.mergeSorted = mergeSorted;
+  this.mergeSortedArrays = mergeSortedArrays;
 }
 
 /* Question 8: In a 2-D matrix, every row is increasingly sorted from left to right, and every column is 
@@ -72,7 +72,7 @@ function replaceBlanks(str) {
 keep the merged array sorted. Suppose there is sufficient vacant memory at the end of array1to accommodate 
 elements of array2
 */
-function mergeSorted(arr1, arr2) {
+function mergeSortedArrays(arr1, arr2) {
   // create pointers to the last indices of each array
   var arr1Ptr = arr1.length - 1,
       arr2Ptr = arr2.length - 1;

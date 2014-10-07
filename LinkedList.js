@@ -13,6 +13,11 @@ function LinkedList() {
 	this.removeHead = removeHead;
 	this.clear = clear;
 	this.print = print;
+
+	this.mergeSort = mergeSort;
+	this._mergeSort = _mergeSort;
+	this.merge = merge;
+	this.getMiddle = getMiddle;
 }
 
 function find(item) {
@@ -99,6 +104,54 @@ function print() {
 	}
 	console.log(output);
 	return output.trim();
+}
+
+function mergeSort() {
+	this._mergeSort(this.head);
+}
+
+function _mergeSort(head) {
+	if (head === null || head.next === null) {
+		return head;
+	}
+
+	var middle = this.getMiddle(head);
+	var sHalf = middle.next;
+	middle.next = null;
+
+	return this.merge(this._mergeSort(head), this._mergeSort(sHalf));
+}
+
+// merge 2 lists
+function merge(a, b) {
+	var dummyHead = new Node();
+	var current = dummyHead;
+
+	while (a !== null && b !== null) {
+		if (a.data <= b.data) {
+			current.next = a;
+			a = a.next;
+		} else {
+			current.next = b;
+			b = b.next;
+		}
+	}
+	current.next = (a === null) ? b : a;
+	return dummyHead.next;
+}
+
+function getMiddle(head) {
+	if (head === null) {
+		return head;
+	}
+
+	var slow = fast = head;
+	while (fast.next !== null && fast.next.next !== null) {
+		slow = slow.next;
+		fast = fast.next.next;
+	}
+
+	return slow;
 }
 
 module.exports = LinkedList;

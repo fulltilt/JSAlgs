@@ -36,4 +36,9 @@ describe("LinkedList", function() {
     expect(ll.find(8)).toNotEqual(null);
     expect(ll.find(-3)).toEqual(null);
   });
+
+  it('tests merge sort', function() {
+    ll.mergeSort();
+    ll.print();
+  });
 });

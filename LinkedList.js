@@ -24,6 +24,8 @@ function LinkedList() {
 	this.getMiddle = getMiddle;
 
 	this.mergeSortedLists = mergeSortedLists;
+	this.hasCycle = hasCycle;
+	this.getCycleEntry = getCycleEntry;
 }
 
 function find(item) {
@@ -187,7 +189,12 @@ function printFromNode() {
 	return output.trim();
 }
 
-// returns the head of the head of the sorted list
+/* Sorts a linked list and returns the head of the sorted list (note: the algorithm reorders the list nodes but doesn't update the head or any LinkedList
+   specific fields. Just think of it as a bunch of Nodes linked together and not as a unifying LinkedList)
+
+	You need 3 functions: the _mergeSort() function does error checking any splits the list in half using the auxiliary getMiddle() fxn. From here, we merge the
+	lists using the merge() fxn which orders the nodes
+*/
 function mergeSort() {
 	return this._mergeSort(this.head);
 }
@@ -218,7 +225,7 @@ function merge(a, b) {
 			current.next = b;
 			b = b.next;
 		}
-current = current.next;
+		current = current.next;
 	}
 	current.next = (a === null) ? b : a;
 	return dummyHead.next;
@@ -273,6 +280,70 @@ function mergeSortedLists(list1Head, list2Head) {
 	newListPtr.next = (list1Ptr === null) ? list2Ptr : list1Ptr;
 
 	return dummyHead.next.printFromNode(); // form output from the head node and print the rest of the list (have to do this as the algorithm deals with nodes and not lists)
+}
+
+/* Question 16 How do you check whether there is a loop in a linked list? */
+function hasCycle() {
+	if (this.head === null) {
+		return false;
+	}
+
+	var slow = fast = this.head;
+
+	while (fast.next !== null && fast.next.next !== null) {
+		slow = slow.next;
+		fast = fast.next.next;
+
+		if (slow === fast) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/* Question 17: If there is a loop in a linked list, how do you get the entry node of the loop? The entry node is 
+the first node in the loop from the head of a list. For instance, the entry node of the loop in the list of Figure 3-9 is 
+the node with value 3.
+-algorithm: first confirm that the list has a cycle. From the point you found the cycle, iterate through the loop until you
+ come back to the original point all while iterating a count for the length of the cycle. The next part I still don't know why it 
+ works but you set 2 pointers to the beginning. One of the pointers traverses the length of the cycle. From here, both pointers 
+ move in step and where they finally meet is the entry point of the cycle
+*/
+function getCycleEntry() {
+	if (!this.hasCycle) {
+		return null;
+	}
+
+	// we confirmed there is a cycle so get the cycle length
+	var slow = fast = this.head, cycleLength = 0;
+	while (fast.next !== null && fast.next.next !== null) {
+		slow = slow.next;
+		fast = fast.next.next;
+
+		if (slow === fast) {	// found cycle now determing the length of the cycle
+			fast = slow.next;
+			++cycleLength;
+			while (fast !== slow) {
+				++cycleLength;
+				fast = fast.next;
+			}
+			break;
+		}
+	}
+
+	slow = fast = this.head;
+	for (var i = 0; i < cycleLength; i++) {
+		fast = fast.next;
+	}
+	while (true) {
+		slow = slow.next;
+		fast = fast.next;
+
+		if (slow === fast) {
+			return slow;
+		}
+	}
 }
 
 module.exports = LinkedList;

@@ -20,6 +20,8 @@ function BST() {
   this._find = _find;
   this.size = size;
   this._size = _size;
+  this.clear = clear;
+  this._clear = _clear;
 
   this.min = min;
   this.max = max;
@@ -156,5 +158,23 @@ function _remove(node, data) {
     return node;
   }
 } 
+
+// for clear() in JavaScript, setting node to null doesn't work so added lines to make root, left and right to be null
+function clear() {
+  this._clear(this.root);
+  this.root = null;
+}
+
+function _clear(node) {
+  if (node === null) {
+    return;
+  }
+  this._clear(node.left);
+  this._clear(node.right);
+
+  node.left = null;
+  node.right = null;
+  node = null;
+}
 
 module.exports = BST;

@@ -37,18 +37,6 @@ describe("LinkedList", function() {
     expect(ll.find(-3)).toEqual(null);
   });
 
-  it('tests getMiddle()', function() {
-    expect(ll.getMiddle(ll.head).data).toEqual(6);  // even # of items
-    ll.insertHead(1);
-    expect(ll.getMiddle(ll.head).data).toEqual(6);  // odd # if items
-    var ll1 = new LinkedList();
-    expect(ll1.getMiddle(ll1.head)).toEqual(null);  // no items
-    ll1.insertHead(1);
-    expect(ll1.getMiddle(ll1.head).data).toEqual(1);  // 1 item
-    ll1.insertHead(2);
-    expect(ll1.getMiddle(ll1.head).data).toEqual(2);  // 2 items
-  });
-
   it('tests insertionSort without swapping', function() {
     ll.insertionSortWithoutSwappingNodes();
     expect(ll.print()).toEqual('2 5 6 7 8 9');
@@ -59,11 +47,7 @@ describe("LinkedList", function() {
     expect(ll.print()).toEqual('2 5 6 7 8 9');
   });
 
-  it('tests merge sort', function() {
-    expect(ll.mergeSort().printFromNode()).toEqual('2 5 6 7 8 9');
-  });
-
-  it ('tests mergeSortedLists()', function() {
+  it('tests mergeSortedLists()', function() {
     var ll1 = new LinkedList();
     ll1.insertHead(7);
     ll1.insertHead(6);
@@ -77,4 +61,34 @@ describe("LinkedList", function() {
 
     expect(ll.mergeSortedLists(ll1.head, ll2.head)).toEqual('1 2 3 4 5 6 7 8');
   }); 
+
+  it('tests getMiddle()', function() {
+    expect(ll.getMiddle(ll.head).data).toEqual(6);  // even # of items
+    ll.insertHead(1);
+    expect(ll.getMiddle(ll.head).data).toEqual(6);  // odd # if items
+    var ll1 = new LinkedList();
+    expect(ll1.getMiddle(ll1.head)).toEqual(null);  // no items
+    ll1.insertHead(1);
+    expect(ll1.getMiddle(ll1.head).data).toEqual(1);  // 1 item
+    ll1.insertHead(2);
+    expect(ll1.getMiddle(ll1.head).data).toEqual(2);  // 2 items
+  });
+
+  it('tests merge sort', function() {
+    expect(ll.mergeSort().printFromNode()).toEqual('2 5 6 7 8 9');
+  });
+
+  it('tests hasCycle() and getCycleEntry()', function() {
+    expect(ll.hasCycle()).toEqual(false);
+    var ll1 = new LinkedList();
+    ll1.insertHead(6);
+    ll1.insertHead(5);
+    ll1.insertHead(4);
+    ll1.insertHead(3);
+    ll1.insertHead(2);
+    ll1.insertHead(1);
+    ll1.find(6).next = ll1.find(3);
+    expect(ll1.hasCycle()).toEqual(true);
+    expect(ll1.getCycleEntry().data).toEqual(3);
+  });
 });

@@ -2,8 +2,10 @@ var BST = require('../BinarySearchTree.js');
 
 describe("BST", function() {
   var bst = new BST();
+  var bt = new BST(); // reusing BST to simulate a binary tree
 
   beforeEach(function() {
+    bst.clear();
     bst.insert(23);
     bst.insert(45);
     bst.insert(16);
@@ -12,13 +14,17 @@ describe("BST", function() {
     bst.insert(99);
     bst.insert(22);
     bst.insert(36);
-    bst.insert(10)
+    bst.insert(10);
+  });
+
+  it('tests clear()', function() {
+    bst.clear();
+    expect(bst.size()).toEqual(0);
   });
 
   it("tests inserts and size", function() { 
     expect(bst.size()).toEqual(9);
   });
-
 
   it("tests find", function() {
     expect(bst.find(45).data).toEqual(45);
@@ -46,5 +52,5 @@ describe("BST", function() {
     bst.remove(23);
     expect(bst.size()).toEqual(5);
     //bst.inOrder(bst.root);   
-  });  
+  });
 });

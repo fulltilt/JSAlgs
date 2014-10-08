@@ -100,4 +100,5 @@ function mergeSortedArrays(arr1, arr2) {
 
 module.exports = Apress;
 
-// SKIPPED: 12,13
+/* SKIPPED: 12 (finite state machines), 13, 18 (next node in binary tree with pointers to parents), 
+*/

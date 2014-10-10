@@ -1,8 +1,8 @@
 var BST = require('../BinarySearchTree.js');
 
 describe("BST", function() {
-  var bst = new BST();
-  var bt = new BST(); // reusing BST to simulate a binary tree
+  var bst = new BST.BinarySearchTree();
+  var bt = new BST.BinarySearchTree(); // reusing BST to simulate a binary tree
 
   beforeEach(function() {
     bst.clear();
@@ -15,6 +15,17 @@ describe("BST", function() {
     bst.insert(22);
     bst.insert(36);
     bst.insert(10);
+
+    bt.insert(2);
+    bt.root.left = new BST.Node(7);
+    bt.root.left.left = new BST.Node(2);
+    bt.root.left.right = new BST.Node(6);
+    bt.root.left.right.left = new BST.Node(5);
+    bt.root.left.right.right = new BST.Node(11);
+    bt.root.left.right.right.left = new BST.Node(1);
+    bt.root.right = new BST.Node(5);
+    bt.root.right.right = new BST.Node(9);
+    bt.root.right.right.left = new BST.Node(4);
   });
 
   it('tests clear()', function() {
@@ -52,5 +63,15 @@ describe("BST", function() {
     bst.remove(23);
     expect(bst.size()).toEqual(5);
     //bst.inOrder(bst.root);   
+  });
+
+  it('tests isBST', function() {
+    expect(bst.isBST()).toEqual(true);
+    expect(bt.isBST()).toEqual(false);
+  });
+
+  it('tests getHeight', function() {
+    expect(bst.getHeight()).toEqual(4);
+    expect(bt.getHeight()).toEqual(5);
   });
 });

@@ -1,7 +1,7 @@
 function Node(data, left, right) {
   this.data = data;
-  this.left = left;
-  this.right = right;
+  this.left = left || null;
+  this.right = right || null;
   this.show = show;
 }
 
@@ -26,6 +26,10 @@ function BST() {
   this.min = min;
   this.max = max;
   this.inOrder = inOrder;
+  this.isBST = isBST;
+  this._isBST = _isBST;
+  this.getHeight = getHeight;
+  this._getHeight = _getHeight;
 }
 
 function insert(data) {
@@ -177,4 +181,41 @@ function _clear(node) {
   node = null;
 }
 
-module.exports = BST;
+function isBST() {
+  var dummy = new Node(Infinity, this.root, null);
+  return _isBST(this.root, true, false, dummy.data);
+}
+
+// note: not fully tested
+function _isBST(node, isLeftChild, isRightChild, parentData) {
+  if (node === null) {
+    return true;
+  } else if (isLeftChild && node.data > parentData) {
+    return false;
+  } else if (isRightChild && node.data < parentData) {
+    return false;
+  }
+
+  return _isBST(node.left, true, false, node.data) && _isBST(node.right, false, true, node.data);
+}
+
+function getHeight() {
+  return this._getHeight(this.root);
+}
+
+function _getHeight(node) {
+  if (node === null) {
+    return 0;
+  }
+
+  return 1 + Math.max(this._getHeight(node.left), this._getHeight(node.right));
+}
+
+var BinarySearchTree = function() {
+  return {
+    BinarySearchTree: BST,
+    Node: Node
+  }
+}();
+
+module.exports = BinarySearchTree;

@@ -26,6 +26,7 @@ function LinkedList() {
 	this.mergeSortedLists = mergeSortedLists;
 	this.hasCycle = hasCycle;
 	this.getCycleEntry = getCycleEntry;
+	this.getNthFromEnd = getNthFromEnd;
 }
 
 function find(item) {
@@ -344,6 +345,24 @@ function getCycleEntry() {
 			return slow;
 		}
 	}
+}
+
+function getNthFromEnd(n) {
+	if (n < 0 || n > this.size) {
+		throw new Error('Invalid n');
+	}
+
+	var slow = fast = this.head;
+	for (var i = 0; i < n; i++) {
+		fast = fast.next;
+	}
+
+	while (fast !== null) {
+		slow = slow.next;
+		fast = fast.next;
+	}
+
+	return slow.data;
 }
 
 module.exports = LinkedList;

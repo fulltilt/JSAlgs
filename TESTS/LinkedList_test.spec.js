@@ -91,4 +91,9 @@ describe("LinkedList", function() {
     expect(ll1.hasCycle()).toEqual(true);
     expect(ll1.getCycleEntry().data).toEqual(3);
   });
+
+  it('tests getNthFromEnd', function() {
+    expect(ll.getNthFromEnd(3)).toEqual(8);
+    expect(ll.getNthFromEnd(1)).toEqual(2);
+  });
 });

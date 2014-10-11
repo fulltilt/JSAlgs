@@ -6,9 +6,10 @@ function GeekForGeeks() {
   this.searchSortedRotatedArray = searchSortedRotatedArray;
   this.power = power;
   this.wordBreak = wordBreak;
+  this.findMedian = findMedian
 }
 
-function findEquilibriumIndex(arr) {
+function findEquilibriumIndex(arr) {;
   var length = arr.length;
   if (length === 0) {
     return -1;
@@ -138,6 +139,10 @@ console.log(input.substr(0, i) + ' ' + input.substr(i, length - 1)); // interest
   }
 
   return false;
+}
+
+function findMedian(arr) {
+
 }
 
 module.exports = GeekForGeeks;

@@ -39,4 +39,8 @@ describe("GeekForGeeks", function() {
     //expect(gfg.wordBreak(['i', 'like', 'sam', 'sung', 'samsung', 'mobile', 'ice', 'cream', 'icecream', 'man', 'go', 'mango'], 'creamilikesamicesung')).toEqual(true);
     //expect(gfg.wordBreak(['i', 'like', 'sam', 'sung', 'samsung', 'mobile', 'ice', 'cream', 'icecream', 'man', 'go', 'mango'], 'creamilikesamicecat')).toEqual(false);
   });
+
+  it('tests findMedian', function() {
+
+  });
 });

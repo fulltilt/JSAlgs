@@ -27,6 +27,8 @@ function LinkedList() {
 	this.hasCycle = hasCycle;
 	this.getCycleEntry = getCycleEntry;
 	this.getNthFromEnd = getNthFromEnd;
+	this.reverse = reverse;
+	this._reverse = _reverse;
 }
 
 function find(item) {
@@ -363,6 +365,20 @@ function getNthFromEnd(n) {
 	}
 
 	return slow.data;
+}
+
+function reverse() {
+	this._reverse(null, this.head);
+}
+
+function _reverse(previous, node) {
+	if (node === null) {
+		this.head = previous;
+		return;
+	}
+
+	this._reverse(node, node.next);
+	node.next = previous;
 }
 
 module.exports = LinkedList;

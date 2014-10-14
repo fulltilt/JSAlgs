@@ -18,6 +18,8 @@ function Sorting(numElements) {
   this.insertionSort = insertionSort;
   this.shellSort = shellSort;
   this.mergeSort = mergeSort;
+  this._mergeSort = _mergeSort;
+  this.merge = merge;
   this.quickSort = quickSort; // inplace version of quicksort
   this._quickSort = _quickSort;
   this.partition = partition;
@@ -25,6 +27,7 @@ function Sorting(numElements) {
   this._qSort = _qSort;
 
   this.binarySearch = binarySearch;
+  this.countInversions = countInversions;
 }
 
 function setData() {
@@ -148,7 +151,42 @@ gap: 1
 */
 
 function mergeSort() {
+  this.dataStore = this._mergeSort(this.dataStore);
+  return this.dataStore;
+}
 
+function _mergeSort(arr) {
+  if (arr.length <= 1) {
+    return arr;
+  }
+
+  var start = 0,
+      mid = Math.floor((arr.length) / 2);
+      end = arr.length - 1; 
+  
+  // slice(start, end) // note: end is non-inclusive
+  var leftArr = arr.slice(start, mid);
+  var rightArr = arr.slice(mid, end + 1);
+  return merged = this.merge(this._mergeSort(leftArr), this._mergeSort(rightArr));
+  //var merged = this.merge(this._mergeSort(arr.slice(start, mid)), this._mergeSort(arr.slice(mid, end + 1)));  // don't know why but this line alone won't work
+}
+
+// Note: arr1 and arr2 MUST be sorted in order for this to work
+function merge(arr1, arr2) {
+  var newArr = [],
+      arr1Ptr = arr2Ptr = 0;
+
+  while (arr1Ptr < arr1.length && arr2Ptr < arr2.length) {
+    if (arr1[arr1Ptr] < arr2[arr2Ptr]) {
+      newArr.push(arr1[arr1Ptr++]);
+    } else {
+      newArr.push(arr2[arr2Ptr++]);
+    }
+  }
+
+  newArr = newArr.concat(arr1.slice(arr1Ptr)).concat(arr2.slice(arr2Ptr));  // handle overflow
+
+  return newArr;
 }
 
 function quickSort() {
@@ -235,4 +273,10 @@ function binarySearch(arr, data) {
   return -1; 
 }
 
+function countInversions() {
+
+}
+
 module.exports = Sorting;
+
+// Note: the hardest part about mergeSort and quickSort are there are numerous places that are ripe for fencepost errors

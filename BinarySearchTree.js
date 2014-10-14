@@ -30,6 +30,8 @@ function BST() {
   this._isBST = _isBST;
   this.getHeight = getHeight;
   this._getHeight = _getHeight;
+  this.getLargestBSTSubTreeSize = getLargestBSTSubTreeSize;
+  this.getRandomBSTNode = getRandomBSTNode;
 }
 
 function insert(data) {
@@ -211,6 +213,18 @@ function _getHeight(node) {
   return 1 + Math.max(this._getHeight(node.left), this._getHeight(node.right));
 }
 
+function getLargestBSTSubTreeSize() {
+  this._getLargestBSTSubTreeSize(this.root);
+}
+
+function _getLargestBSTSubTreeSize(node) {
+
+}
+
+function getRandomBSTNode() {
+
+}
+
 var BinarySearchTree = function() {
   return {
     BinarySearchTree: BST,
@@ -219,3 +233,7 @@ var BinarySearchTree = function() {
 }();
 
 module.exports = BinarySearchTree;
+/* MISC
+-Finding the kth smallest element in less than O(n) time: http://stackoverflow.com/questions/2329171/find-kth-smallest-element-in-a-binary-search-tree-in-optimum-way/2329236#2329236
+*/
+

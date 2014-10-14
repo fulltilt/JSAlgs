@@ -64,6 +64,7 @@ function binarySearch(arr, n) {
 
   while (high >= low) {
     var middle = Math.ceil((high + low) / 2);
+    // use middle = low + ((high + low) / 2);  if we're talking an extremely huge high number
 
     if (arr[middle] === n) {
       return true;

@@ -96,4 +96,9 @@ describe("LinkedList", function() {
     expect(ll.getNthFromEnd(3)).toEqual(8);
     expect(ll.getNthFromEnd(1)).toEqual(2);
   });
+
+  it('tests reverse a linked list', function() {
+    ll.reverse();
+    expect(ll.print()).toEqual('2 7 8 6 9 5');
+  });
 });

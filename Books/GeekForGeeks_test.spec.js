@@ -41,6 +41,11 @@ describe("GeekForGeeks", function() {
   });
 
   it('tests findMedian', function() {
+    expect(gfg.findMedian([3,8,2,5,1,4,7,6])).toEqual(5);
+  });
 
+  it('tests partition', function() {
+    var arr = [3,8,2,5,1,4,7,6];
+    expect(gfg.partition(arr, 0 , arr.length - 1, Math.floor(arr.length / 2))).toEqual(2);
   });
 });

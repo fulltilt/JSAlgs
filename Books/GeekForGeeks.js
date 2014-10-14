@@ -6,7 +6,9 @@ function GeekForGeeks() {
   this.searchSortedRotatedArray = searchSortedRotatedArray;
   this.power = power;
   this.wordBreak = wordBreak;
-  this.findMedian = findMedian
+  this.findNthValue = findNthValue;
+  this.findMedian = findMedian;
+  this.partition = partition;
 }
 
 function findEquilibriumIndex(arr) {;
@@ -142,8 +144,56 @@ console.log(input.substr(0, i) + ' ' + input.substr(i, length - 1)); // interest
   return false;
 }
 
+// O(n) version of finding median using randomization. This algorithm can be generalized to find the nth sorted value in an array
 function findMedian(arr) {
+  return this.findNthValue(arr, 0 , arr.length - 1, Math.floor(arr.length / 2));
+}
 
+function findNthValue(arr, lo, hi, n) {
+  var k = partition(arr, lo, hi);
+
+  if (k === n) {
+    return arr[k];
+  } else if (n < k) { // pivot is less than the nth value so search the left subarray
+    return this.findNthValue(arr, 0, k - 1, n);
+  } else {            // pivot is greater than the nth value so search the right subarray
+    return this.findNthValue(arr, k + 1, arr.length - 1, n);
+  }
+}
+
+function partition(arr, lo, hi) {
+  var i = lo,
+      j = hi + 1,
+      pivot = arr[lo];
+
+  while (true) {
+    while (arr[++i] < pivot) {
+      if (i === hi) { // condition to avoid out of bounds exceptions if the list is already sorted
+        break;
+      }
+    }
+
+    while (pivot < arr[--j]) {
+      if (j === lo) { // condition to avoid out of bounds exceptions if the list is already sorted
+        break;
+      }
+    }
+
+    if (i >= j) { // when left and right pointers cross over, break. Else, swap pointer values
+      break;
+    } else {
+      //this.swap(arr, i, j);
+      var temp = arr[j];
+      arr[j] = arr[i];
+      arr[i] = temp;
+    }
+  }
+  //this.swap(arr, lo, j);  // swap pivot into the correct position, swapping with the low value since values less than pivot should be on the left
+  var temp = arr[j];
+  arr[j] = arr[lo];
+  arr[lo] = temp;
+
+  return j;
 }
 
 module.exports = GeekForGeeks;

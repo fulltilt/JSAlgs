@@ -51,6 +51,17 @@ describe("Sorting", function() {
   });
 */
 
+  it('tests partition', function() {
+    console.log('before partition...');
+    arr.dataStore = [3,8,2,5,1,4,7,6];
+    console.log(arr.dataStore);
+
+    arr.partition(arr.dataStore, 0, 7);
+    
+    console.log('after partition...');
+    console.log(arr.dataStore);
+  });
+
   it("tests quickSort", function() { 
     console.log('Before quickSort()...'); 
     arr.print();
@@ -65,5 +76,5 @@ describe("Sorting", function() {
     arr.qSort();
     console.log('After non-inplace quickSort()...'); 
     arr.print();  
-  });  
+  });
 });

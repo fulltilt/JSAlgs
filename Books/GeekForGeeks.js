@@ -5,10 +5,30 @@ function GeekForGeeks() {
   this.recursiveBinarySearch = recursiveBinarySearch;
   this.searchSortedRotatedArray = searchSortedRotatedArray;
   this.power = power;
-  this.wordBreak = wordBreak;
   this.findNthValue = findNthValue;
   this.findMedian = findMedian;
   this.partition = partition;
+
+  // Arrays
+  this.findMajority = findMajority;
+  this.findMissingNumber = findMissingNumber;
+  this.findPivotInRotatedArray = findPivotInRotatedArray;
+  this.findMedianOfTwoSortedArrays = findMedianOfTwoSortedArrays;
+  this.reverseArray = reverseArray;
+  this.rotateArray = rotateArray;
+  this.leadersInAnArray = leadersInAnArray;
+  this.sortElementsByFrequency = sortElementsByFrequency;
+  this.findTwoElementsWhoseSumIsClosestToZero = findTwoElementsWhoseSumIsClosestToZero;
+  this.segregateOnesAndZeroes = segregateOnesAndZeroes;
+  this.dutchNationalFlag = dutchNationalFlag;
+  this.unionAndIntersectionOfTwoSortedArrays = unionAndIntersectionOfTwoSortedArrays;
+  this.floorAndCeilOfSortedArray = floorAndCeilOfSortedArray;
+  this.prodArrayPuzzle = prodArrayPuzzle;
+  this.findMinUnsortedSubArray = findMinUnsortedSubArray;
+  this.findDuplicates = findDuplicates;
+
+  // Matrices
+  this.maxSquareSubMatrix = maxSquareSubMatrix;
 }
 
 function findEquilibriumIndex(arr) {;
@@ -124,26 +144,6 @@ function power(base, exponent) {
     return base * this.power(base, exponent - 1);
 }
 
-// Given an input string and a dictionary of words, find out if the input string can be segmented into a space-separated sequence of dictionary words
-function wordBreak(words, input) {
-  // base case  
-  if (input.length === 0) {
-    return true;
-  }
-  var length = input.length;
-
-  for (var i = 1; i <= length; i++) {
-console.log(input.substr(0, i) + ' ' + input.substr(i, length - 1)); // interesting to see the algorithms progression
-    if ((words.indexOf(input.substr(0, i)) !== -1) &&
-         this.wordBreak(words, input.substr(i, length - i))) {
-//console.log(input.substr(0, i)); // prints out words in reverse order if success
-      return true;
-    }
-  }
-
-  return false;
-}
-
 // O(n) version of finding median using randomization. This algorithm can be generalized to find the nth sorted value in an array
 function findMedian(arr) {
   return this.findNthValue(arr, 0 , arr.length - 1, Math.floor(arr.length / 2));
@@ -174,7 +174,7 @@ function partition(arr, lo, hi) {
     }
 
     while (pivot < arr[--j]) {
-      if (j === lo) { // condition to avoid out of bounds exceptions if the list is already sorted
+      if (j === lo) { // condition to avoid out of bounds exceptions if the list is already sorted*
         break;
       }
     }
@@ -195,5 +195,111 @@ function partition(arr, lo, hi) {
 
   return j;
 }
+
+// http://www.geeksforgeeks.org/majority-element/   http://www.geeksforgeeks.org/check-for-majority-element-in-a-sorted-array/
+function findMajority(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/find-the-missing-number/
+function findMissingNumber(arr) {
+  var subArrLength = arr.length;
+  var length = subArrLength + 1;      // since the array is missing a number, we do arr.length + 1
+  var sum = (length * (length + 1)) / 2;
+  for (var i = 0; i < subArrLength; i++) {
+    sum -= arr[i];
+  }
+
+  return sum;
+}
+
+// http://www.geeksforgeeks.org/search-an-element-in-a-sorted-and-pivoted-array/  
+function findPivotInRotatedArray(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/median-of-two-sorted-arrays/
+function findMedianOfTwoSortedArrays(arr1, arr2) {
+
+}
+
+function reverseArray(arr) {
+  console.log(arr);
+  var start = 0,
+      end = arr.length - 1;
+
+  while (start <= end) {
+    var temp = arr[end];
+    arr[end] = arr[start];
+    arr[start] = temp;
+    ++start;
+    --end;
+  }
+
+  return arr; 
+}
+
+// http://www.geeksforgeeks.org/program-for-array-rotation-continued-reversal-algorithm/
+function rotateArray(arr, n) {
+
+}
+
+// http://www.geeksforgeeks.org/leaders-in-an-array/
+function leadersInAnArray(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/sort-elements-by-frequency/
+function sortElementsByFrequency(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/two-elements-whose-sum-is-closest-to-zero/
+function findTwoElementsWhoseSumIsClosestToZero(arr) {
+
+}
+
+function segregateOnesAndZeroes(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/find-the-two-repeating-elements-in-a-given-array/
+function dutchNationalFlag(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/maximum-size-sub-matrix-with-all-1s-in-a-binary-matrix/
+function maxSquareSubMatrix(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/union-and-intersection-of-two-sorted-arrays-2/
+function unionAndIntersectionOfTwoSortedArrays(arr1, arr2) {
+
+}
+
+// http://www.geeksforgeeks.org/search-floor-and-ceil-in-a-sorted-array/
+function floorAndCeilOfSortedArray(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/a-product-array-puzzle/
+function prodArrayPuzzle(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/minimum-length-unsorted-subarray-sorting-which-makes-the-complete-array-sorted/
+function findMinUnsortedSubArray(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/find-duplicates-in-on-time-and-constant-extra-space/
+function findDuplicates(arr) {
+
+}
+
+
+// *http://www.geeksforgeeks.org/maximum-difference-between-two-elements/
+// http://www.geeksforgeeks.org/turn-an-image-by-90-degree/
 
 module.exports = GeekForGeeks;

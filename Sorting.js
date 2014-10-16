@@ -273,6 +273,7 @@ function binarySearch(arr, data) {
   return -1; 
 }
 
+// http://www.geeksforgeeks.org/counting-inversions/ for naive algorithm
 function countInversions() {
 
 }

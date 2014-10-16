@@ -14,6 +14,9 @@ function Dynamic() {
   this.dynamicKnapsack = dynamicKnapsack;
   this.dynamicCoinChange = dynamicCoinChange;
   this.longestIncreasingSequence = longestIncreasingSequence;
+  this.wordBreak = wordBreak;
+  this.largestContiguousSumSubarray = largestContiguousSumSubarray;
+  this.maxSumOfNonAdjacentElements = maxSumOfNonAdjacentElements;
 }
 
 function lcs(string1, string2) {
@@ -226,6 +229,36 @@ function longestIncreasingSequence(arr) {
 
   // '- 1' because indexOfEnd includes the last index else it will splice an extra index at the end
   return arr.splice(indexOfEnd - (longestSequenceLength - 1), longestSequenceLength);
+}
+
+// Given an input string and a dictionary of words, find out if the input string can be segmented into a space-separated sequence of dictionary words
+function wordBreak(words, input) {
+  // base case  
+  if (input.length === 0) {
+    return true;
+  }
+  var length = input.length;
+
+  for (var i = 1; i <= length; i++) {
+console.log(input.substr(0, i) + ' ' + input.substr(i, length - 1)); // interesting to see the algorithms progression
+    if ((words.indexOf(input.substr(0, i)) !== -1) &&
+         this.wordBreak(words, input.substr(i, length - i))) {
+//console.log(input.substr(0, i)); // prints out words in reverse order if success
+      return true;
+    }
+  }
+
+  return false;
+}
+
+// http://www.geeksforgeeks.org/largest-sum-contiguous-subarray/
+function largestContiguousSumSubarray() {
+
+}
+
+// http://www.geeksforgeeks.org/maximum-sum-such-that-no-two-elements-are-adjacent/
+function maxSumOfNonAdjacentElements(arr) {
+
 }
 
 module.exports = Dynamic;

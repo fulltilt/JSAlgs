@@ -32,4 +32,18 @@ describe("Dynamic", function() {
     values = [4, 5, 6, 2, 4, 9, 10, 4, 5, 6, 7, 10, 30, 4, 5];
     expect(d.longestIncreasingSequence(values)).toEqual([4,5,6,7,10,30]);
   });
+
+  it('tests word break', function() {
+    expect(d.wordBreak(['i', 'like', 'sam', 'sung', 'samsung', 'mobile', 'ice', 'cream', 'icecream', 'man', 'go', 'mango'], 'ilikesamsung')).toEqual(true);
+    expect(d.wordBreak(['i', 'like', 'sam', 'sung', 'samsung', 'mobile', 'ice', 'cream', 'icecream', 'man', 'go', 'mango'], 'creamilikesamicesung')).toEqual(true);
+    expect(d.wordBreak(['i', 'like', 'sam', 'sung', 'samsung', 'mobile', 'ice', 'cream', 'icecream', 'man', 'go', 'mango'], 'creamilikesamicecat')).toEqual(false);
+  });
+
+  it('tests largestContiguousSumSubarray', function() {
+
+  });
+
+  it('tests maxSumOfNonAdjacentElements', function() {
+    expect(d.maxSumOfNonAdjacentElements([5,  5, 10, 40, 50, 35])).toEqual(80);
+  });
 });

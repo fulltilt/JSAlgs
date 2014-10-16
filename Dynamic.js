@@ -6,6 +6,7 @@ Common themes with dynamic programming solutions:
  -updating the table can get crazy but the code tends to be relatively short. However, to get the actual values could bloat the code a lot
   The reason it gets bloated is another pitfall: you have to keep track of the index of longest/greatest/etc and you also have to keep track 
   of the value
+  -update: you should be able to deduce the 'path' from the table making the code bloat unnecessary (https://class.coursera.org/algo2-003/lecture/221)
 */
 function Dynamic() {
   this.lcs = lcs;

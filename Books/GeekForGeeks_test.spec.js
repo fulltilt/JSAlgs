@@ -62,8 +62,8 @@ describe("GeekForGeeks", function() {
     });
 
     it('tests reverseArray', function() {
-      expect(gfg.reverseArray([1, 12, 15, 26, 38, 2, 13, 17, 30, 45])).toEqual([45,30,17,13,2,38,26,15,12,1]);  // even
-      expect(gfg.reverseArray([1, 12, 15, 26, 38, 13, 17, 30, 4])).toEqual([4,30,17,13,38,26,15,12,1]);         // odd
+      expect(gfg.reverseArray([1, 12, 15, 26, 38, 2, 13, 17, 30, 45], 0, 9)).toEqual([45,30,17,13,2,38,26,15,12,1]);  // even
+      expect(gfg.reverseArray([1, 12, 15, 26, 38, 13, 17, 30, 4], 0, 8)).toEqual([4,30,17,13,38,26,15,12,1]);         // odd
     });
 
     it('tests rotateArray', function() {
@@ -92,6 +92,20 @@ describe("GeekForGeeks", function() {
 
     it('tests findDuplicates', function() {
       expect(gfg.findDuplicates([1, 2, 3, 1, 3, 6, 6])).toEqual([1,3,6]); // keep in mind that JavaScript doesn't natively support Sets
+    });
+
+    it('tests areAllElementsConsecutive', function() {
+      expect(gfg.areAllElementsConsecutive([5, 2, 3, 1, 4])).toEqual(true);
+      expect(gfg.areAllElementsConsecutive([83, 78, 80, 81, 79, 82])).toEqual(true);
+      expect(gfg.areAllElementsConsecutive([34, 23, 52, 12, 3])).toEqual(false);
+      expect(gfg.areAllElementsConsecutive([7, 6, 5, 5, 3, 4])).toEqual(false);
+    });
+
+    it('tests findSmallestMissingNumber', function() {
+      expect(gfg.findSmallestMissingNumber([0, 1, 2, 6, 9])).toEqual(3);
+      expect(gfg.findSmallestMissingNumber([4, 5, 10, 11])).toEqual(0);
+      expect(gfg.findSmallestMissingNumber([0, 1, 2, 3])).toEqual(4);
+      expect(gfg.findSmallestMissingNumber([0, 1, 2, 3, 4, 5, 6, 7, 10])).toEqual(8);
     });
   });
 

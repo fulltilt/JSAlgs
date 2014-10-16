@@ -26,6 +26,18 @@ function GeekForGeeks() {
   this.prodArrayPuzzle = prodArrayPuzzle;
   this.findMinUnsortedSubArray = findMinUnsortedSubArray;
   this.findDuplicates = findDuplicates;
+  this.nextGreaterElement = nextGreaterElement;
+  this.areAllElementsConsecutive = areAllElementsConsecutive;
+  this.findSmallestMissingNumber = findSmallestMissingNumber;
+  this.countNumberOfOccurrences = countNumberOfOccurrences;
+  this.maxOfAllSubArrays = maxOfAllSubArrays; 
+  this.minDistanceBetweenTwoNums = minDistanceBetweenTwoNums;
+  this.findRepeatingAndMissing = findRepeatingAndMissing;
+  this.fixedPointInArray = fixedPointInArray;
+  this.maxLengthBitonicSubArray = maxLengthBitonicSubArray;
+  this.findMaxInIncreasingDecreasing = findMaxInIncreasingDecreasing;
+  this.countSmallerElementsOnRight = countSmallerElementsOnRight;
+  this.impelementTwoStacksInAnArray = impelementTwoStacksInAnArray;
 
   // Matrices
   this.maxSquareSubMatrix = maxSquareSubMatrix;
@@ -223,10 +235,8 @@ function findMedianOfTwoSortedArrays(arr1, arr2) {
 
 }
 
-function reverseArray(arr) {
-  console.log(arr);
-  var start = 0,
-      end = arr.length - 1;
+function reverseArray(arr, start, end) {
+  //console.log(arr);
 
   while (start <= end) {
     var temp = arr[end];
@@ -241,7 +251,10 @@ function reverseArray(arr) {
 
 // http://www.geeksforgeeks.org/program-for-array-rotation-continued-reversal-algorithm/
 function rotateArray(arr, n) {
-
+  this.reverseArray(arr, 0, n - 1);
+  this.reverseArray(arr, n, arr.length - 1);
+  this.reverseArray(arr, 0, arr.length - 1);
+  return arr;
 }
 
 // http://www.geeksforgeeks.org/leaders-in-an-array/
@@ -298,8 +311,74 @@ function findDuplicates(arr) {
 
 }
 
+// http://www.geeksforgeeks.org/next-greater-element/
+function nextGreaterElement(arr) {
 
-// *http://www.geeksforgeeks.org/maximum-difference-between-two-elements/
+}
+
+// http://www.geeksforgeeks.org/check-if-array-elements-are-consecutive/
+function areAllElementsConsecutive(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/find-the-first-missing-number/
+function findSmallestMissingNumber(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/count-number-of-occurrences-in-a-sorted-array/
+function countNumberOfOccurrences(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/maximum-of-all-subarrays-of-size-k/
+function maxOfAllSubArrays(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/find-the-minimum-distance-between-two-numbers/
+function minDistanceBetweenTwoNums(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/find-a-repeating-and-a-missing-number/
+function findRepeatingAndMissing(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/find-a-fixed-point-in-a-given-array/
+function fixedPointInArray(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/maximum-length-bitonic-subarray/
+function maxLengthBitonicSubArray(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/find-the-maximum-element-in-an-array-which-is-first-increasing-and-then-decreasing/
+function findMaxInIncreasingDecreasing(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/count-smaller-elements-on-right-side/
+function countSmallerElementsOnRight(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/implement-two-stacks-in-an-array/
+function impelementTwoStacksInAnArray(arr) {
+
+}
+
+// STAR PROBS
+// http://www.geeksforgeeks.org/maximum-difference-between-two-elements/
+// http://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/
+// http://www.geeksforgeeks.org/median-of-stream-of-integers-running-integers/
+
+// MATRIX
 // http://www.geeksforgeeks.org/turn-an-image-by-90-degree/
+// http://www.geeksforgeeks.org/a-boolean-matrix-question/
+// http://www.geeksforgeeks.org/print-a-given-matrix-in-spiral-form/
 
 module.exports = GeekForGeeks;

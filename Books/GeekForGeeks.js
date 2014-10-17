@@ -53,6 +53,27 @@ function GeekForGeeks() {
   this.alternatePositiveAndNegative = alternatePositiveAndNegative;
   this.findSmallestValueNotReppedBySubArraySum = findSmallestValueNotReppedBySubArraySum;
   this.findCommonElementsInThreeArrays = findCommonElementsInThreeArrays;
+  this.printAnagrams = printAnagrams;
+  this.findAllPossibleWordsFromPhoneDigits = findAllPossibleWordsFromPhoneDigits;
+
+  // Strings
+  this.suffixTree = suffixTree;
+  this.trie = trie;
+  this.areStringRotations = areStringRotations;
+  this.printAllPermutations = printAllPermutations;
+  this.printLexicographicPermutations = printLexicographicPermutations;
+  this.printListItemsContainingWord = printListItemsContainingWord;
+  this.reverseWords = reverseWords;
+  this.runLengthEncoding = runLengthEncoding;
+  this.smallestWindowContainingString = smallestWindowContainingString;
+  this.KMP = KMP;
+  this.RabinKarp = RabinKarp;
+  this.finiteAutomata = finiteAutomata;
+  this.printInterleavings = printInterleavings;
+  this.removeFromString = removeFromString;
+  this.removeAdjacentDuplicates = removeAdjacentDuplicates;
+  this.findExcelColumnName = findExcelColumnName;
+  this.isFirstStringSubsequenceOfSecond = isFirstStringSubsequenceOfSecond;
 
   // Mathematical Properties
   this.findExpPairs = findExpPairs;
@@ -469,6 +490,106 @@ function findCommonElementsInThreeArrays(arr1, arr2, arr3) {
 
 }
 
+// http://www.geeksforgeeks.org/pattern-searching-set-8-suffix-tree-introduction/
+function suffixTree() {
+
+}
+
+// http://www.geeksforgeeks.org/pattern-searching-using-trie-suffixes/
+function trie() {
+
+}
+
+// http://www.geeksforgeeks.org/a-program-to-check-if-strings-are-rotations-of-each-other-or-not/
+function areStringRotations(str1, str2) {
+
+}
+
+// http://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/ or http://www.geeksforgeeks.org/print-all-permutations-with-repetition-of-characters/
+function printAllPermutations(str) {
+
+}
+
+// http://www.geeksforgeeks.org/given-two-strings-find-first-string-subsequence-second/
+function isFirstStringSubsequenceOfSecond(str1, str2) {
+
+}
+
+// http://www.geeksforgeeks.org/lexicographic-permutations-of-string/
+function printLexicographicPermutations(str) {
+
+}
+
+// http://www.geeksforgeeks.org/print-list-items-containing-all-characters-of-a-given-word/
+function printListItemsContainingWord(list, word) {
+
+}
+
+// http://www.geeksforgeeks.org/reverse-words-in-a-given-string/
+function reverseWords(list) {
+
+}
+
+// http://www.geeksforgeeks.org/run-length-encoding/
+function runLengthEncoding(str) {
+
+}
+
+// http://www.geeksforgeeks.org/find-the-smallest-window-in-a-string-containing-all-characters-of-another-string/
+function smallestWindowContainingString(str1, str2) {
+
+}
+
+// http://www.geeksforgeeks.org/searching-for-patterns-set-2-kmp-algorithm/
+function KMP(str1, str2) {
+
+}
+
+// http://www.geeksforgeeks.org/searching-for-patterns-set-3-rabin-karp-algorithm/
+function RabinKarp(str1, str2) {
+
+}
+
+// http://www.geeksforgeeks.org/searching-for-patterns-set-5-finite-automata/
+function finiteAutomata(str1, str2) {
+
+}
+
+// http://www.geeksforgeeks.org/print-all-interleavings-of-given-two-strings/
+function printInterleavings(str1, str2) {
+
+}
+
+// http://www.geeksforgeeks.org/searching-for-patterns-set-5-finite-automata/
+function finiteAutomata(str1, str2) {
+
+}
+
+// http://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together/ or http://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together-set-2/
+function printAnagrams(list) {
+
+}
+
+// http://www.geeksforgeeks.org/remove-a-and-bc-from-a-given-string/
+function removeFromString(str) {
+
+}
+
+// http://www.geeksforgeeks.org/recursively-remove-adjacent-duplicates-given-string/
+function removeAdjacentDuplicates(str) {
+
+}
+
+// http://www.geeksforgeeks.org/find-possible-words-phone-digits/
+function findAllPossibleWordsFromPhoneDigits() {
+
+}
+
+// http://www.geeksforgeeks.org/find-excel-column-name-given-number/
+function findExcelColumnName(num) {
+
+}
+
 // STAR PROBS
 // http://www.geeksforgeeks.org/maximum-difference-between-two-elements/
 // http://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/
@@ -477,6 +598,9 @@ function findCommonElementsInThreeArrays(arr1, arr2, arr3) {
 // http://www.geeksforgeeks.org/maximum-contiguous-circular-sum/
 // http://www.geeksforgeeks.org/suffix-array-set-1-introduction/
 // http://www.geeksforgeeks.org/find-next-greater-number-set-digits/
+// http://www.geeksforgeeks.org/an-in-place-algorithm-for-string-transformation/
+// http://www.geeksforgeeks.org/find-first-non-repeating-character-stream-characters/
+// http://www.geeksforgeeks.org/rearrange-a-string-so-that-all-same-characters-become-at-least-d-distance-away/
 
 // MATRIX
 // http://www.geeksforgeeks.org/turn-an-image-by-90-degree/

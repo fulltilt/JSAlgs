@@ -10,7 +10,6 @@ Common themes with dynamic programming solutions:
 */
 function Dynamic() {
   this.lcs = lcs;
-
   this.recursiveKnapsack = recursiveKnapsack;
   this.dynamicKnapsack = dynamicKnapsack;
   this.dynamicCoinChange = dynamicCoinChange;
@@ -22,6 +21,10 @@ function Dynamic() {
   this.countAllPossiblePaths = countAllPossiblePaths;
   this.removeMinElems = removeMinElems;
   this.binaryStringCountWithoutConsecutiveZeroes = binaryStringCountWithoutConsecutiveZeroes;
+  this.longestSubstringWithoutRepeatedChars = longestSubstringWithoutRepeatedChars;
+  this.palindromPartitioning = palindromPartitioning;
+  this.longestPalindromicSubstring = longestPalindromicSubstring;
+  this.possibleDecodings = possibleDecodings;
 }
 
 function lcs(string1, string2) {
@@ -298,6 +301,26 @@ function removeMinElems(arr) {
 
 // http://www.geeksforgeeks.org/count-number-binary-strings-without-consecutive-1s/
 function binaryStringWithoutConsecutiveZeroes(n) {
+
+}
+
+// http://www.geeksforgeeks.org/length-of-the-longest-substring-without-repeating-characters/
+function longestSubstringWithoutRepeatedChars(str1) {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-17-palindrome-partitioning/
+function palindromePartitioning(str1) {
+
+}
+
+// http://www.geeksforgeeks.org/longest-palindrome-substring-set-1/
+function longestPalindromicSubstring(str) {
+
+}
+
+// http://www.geeksforgeeks.org/count-possible-decodings-given-digit-sequence/
+function posssibleDecodings(str) {
 
 }
 

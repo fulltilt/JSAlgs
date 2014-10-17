@@ -32,6 +32,8 @@ function BST() {
   this._getHeight = _getHeight;
   this.getLargestBSTSubTreeSize = getLargestBSTSubTreeSize;
   this.areTreesIdentical = areTreesIdentical;
+  this.mirror = mirror;
+
   this.getRandomBSTNode = getRandomBSTNode;
   this.treeToCircularDoublyLinkedList = treeToCircularDoublyLinkedList;
 }
@@ -224,6 +226,10 @@ function _getLargestBSTSubTreeSize(node) {
 }
 
 function areTreesIdentical(tree1, tree2) {
+
+}
+
+function mirror() {
 
 }
 

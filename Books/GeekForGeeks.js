@@ -38,6 +38,24 @@ function GeekForGeeks() {
   this.findMaxInIncreasingDecreasing = findMaxInIncreasingDecreasing;
   this.countSmallerElementsOnRight = countSmallerElementsOnRight;
   this.impelementTwoStacksInAnArray = impelementTwoStacksInAnArray;
+  this.findSubArrayWithGivenSum = this.findSubArrayWithGivenSum;
+  this.findTripletThatSumsToN = findTripletThatSumsToN;
+  this.findSortedSubSequenceOfThree = findSortedSubSequenceOfThree;
+  this.largestSubArrayOfZeroesAndOnes = largestSubArrayOfZeroesAndOnes;
+  this.maxProductSubArray = maxProductSubArray;
+  this.formBiggestNumber = formBiggestNumber;
+  this.sortElementsByFrequency = sortElementsByFrequency;
+  this.mergeKSortedArrays = mergeKSortedArrays;
+  this.smallestSubArrayWhoseSumIsLessThanN = smallestSubArrayWhoseSumIsLessThanN;
+  this.findKClosestElementsToN = findKClosestElementsToN;
+  this.maxSumPathBetweenTwoArrays = maxSumPathBetweenTwoArrays;
+  this.sortDefinedBySecondArray = sortDefinedBySecondArray;
+  this.alternatePositiveAndNegative = alternatePositiveAndNegative;
+  this.findSmallestValueNotReppedBySubArraySum = findSmallestValueNotReppedBySubArraySum;
+  this.findCommonElementsInThreeArrays = findCommonElementsInThreeArrays;
+
+  // Mathematical Properties
+  this.findExpPairs = findExpPairs;
 
   // Matrices
   this.maxSquareSubMatrix = maxSquareSubMatrix;
@@ -230,7 +248,7 @@ function findPivotInRotatedArray(arr) {
 
 }
 
-// http://www.geeksforgeeks.org/median-of-two-sorted-arrays/
+// http://www.geeksforgeeks.org/median-of-two-sorted-arrays/, does it take into account different sized arrays? (http://www.geeksforgeeks.org/median-of-two-sorted-arrays-of-different-sizes/)
 function findMedianOfTwoSortedArrays(arr1, arr2) {
 
 }
@@ -257,7 +275,7 @@ function rotateArray(arr, n) {
   return arr;
 }
 
-// http://www.geeksforgeeks.org/leaders-in-an-array/
+// http://www.geeksforgeeks.org/leaders-in-an-array/, http://www.geeksforgeeks.org/replace-every-element-with-the-greatest-on-right-side/
 function leadersInAnArray(arr) {
 
 }
@@ -371,14 +389,106 @@ function impelementTwoStacksInAnArray(arr) {
 
 }
 
+// http://www.geeksforgeeks.org/find-subarray-with-given-sum/
+function findSubArrayWithGivenSum(arr, n) {
+
+}
+
+// http://www.geeksforgeeks.org/find-a-triplet-that-sum-to-a-given-value/
+function findTripletThatSumsToN(arr, n) {
+
+}
+
+// http://www.geeksforgeeks.org/find-a-sorted-subsequence-of-size-3-in-linear-time/
+function findSortedSubSequenceOfThree(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/largest-subarray-with-equal-number-of-0s-and-1s/
+function largestSubArrayOfZeroesAndOnes(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/maximum-product-subarray/
+function maxProductSubArray(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/given-an-array-of-numbers-arrange-the-numbers-to-form-the-biggest-number/
+function formBiggestNumber(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/sort-elements-by-frequency-set-2/
+function sortElementsByFrequency(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/merge-k-sorted-arrays/
+function mergeKSortedArrays(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/find-number-pairs-xy-yx/
+function findExpPairs(arr1, arr2) {
+
+}
+
+// http://www.geeksforgeeks.org/minimum-length-subarray-sum-greater-given-value/
+function smallestSubArrayWhoseSumIsLessThanN(arr, n) {
+
+}
+
+// http://www.geeksforgeeks.org/find-k-closest-elements-given-value/
+function findKClosestElementsToN(arr, k, n) {
+
+}
+
+// http://www.geeksforgeeks.org/maximum-sum-path-across-two-arrays/
+function maxSumPathBetweenTwoArrays(arr1, arr2) {
+
+}
+
+// http://www.geeksforgeeks.org/sort-array-according-order-defined-another-array/
+function sortDefinedBySecondArray(arr1, arr2) {
+
+}
+
+// http://www.geeksforgeeks.org/rearrange-array-alternating-positive-negative-items-o1-extra-space/
+function alternatePositiveAndNegative(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/find-smallest-value-represented-sum-subset-given-array/
+function findSmallestValueNotReppedBySubArraySum(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/find-common-elements-three-sorted-arrays/
+function findCommonElementsInThreeArrays(arr1, arr2, arr3) {
+
+}
+
 // STAR PROBS
 // http://www.geeksforgeeks.org/maximum-difference-between-two-elements/
 // http://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/
 // http://www.geeksforgeeks.org/median-of-stream-of-integers-running-integers/
+// http://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
+// http://www.geeksforgeeks.org/maximum-contiguous-circular-sum/
+// http://www.geeksforgeeks.org/suffix-array-set-1-introduction/
+// http://www.geeksforgeeks.org/find-next-greater-number-set-digits/
 
 // MATRIX
 // http://www.geeksforgeeks.org/turn-an-image-by-90-degree/
 // http://www.geeksforgeeks.org/a-boolean-matrix-question/
 // http://www.geeksforgeeks.org/print-a-given-matrix-in-spiral-form/
+// http://www.geeksforgeeks.org/find-the-row-with-maximum-number-1s/
+// http://www.geeksforgeeks.org/print-unique-rows/
+// http://www.geeksforgeeks.org/inplace-m-x-n-size-matrix-transpose/
+// http://www.geeksforgeeks.org/print-matrix-diagonally/
+// http://www.geeksforgeeks.org/strassens-matrix-multiplication/
+// http://www.geeksforgeeks.org/kth-smallest-element-in-a-row-wise-and-column-wise-sorted-2d-array-set-1/
+// http://www.geeksforgeeks.org/divide-conquer-set-6-search-row-wise-column-wise-sorted-2d-array/
+// http://www.geeksforgeeks.org/given-n-x-n-square-matrix-find-sum-sub-squares-size-k-x-k/
 
 module.exports = GeekForGeeks;

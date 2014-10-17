@@ -18,6 +18,10 @@ function Dynamic() {
   this.wordBreak = wordBreak;
   this.largestContiguousSumSubarray = largestContiguousSumSubarray;
   this.maxSumOfNonAdjacentElements = maxSumOfNonAdjacentElements;
+  this.minNumOfJumpsToEnd = minNumOfJumpsToEnd;
+  this.countAllPossiblePaths = countAllPossiblePaths;
+  this.removeMinElems = removeMinElems;
+  this.binaryStringCountWithoutConsecutiveZeroes = binaryStringCountWithoutConsecutiveZeroes;
 }
 
 function lcs(string1, string2) {
@@ -252,13 +256,48 @@ console.log(input.substr(0, i) + ' ' + input.substr(i, length - 1)); // interest
   return false;
 }
 
-// http://www.geeksforgeeks.org/largest-sum-contiguous-subarray/
+// http://www.geeksforgeeks.org/largest-sum-contiguous-subarray/, http://www.geeksforgeeks.org/dynamic-programming-set-14-maximum-sum-increasing-subsequence/
 function largestContiguousSumSubarray() {
 
 }
 
 // http://www.geeksforgeeks.org/maximum-sum-such-that-no-two-elements-are-adjacent/
 function maxSumOfNonAdjacentElements(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/minimum-number-of-jumps-to-reach-end-of-a-given-array/
+function minNumJumpsToReachEnd(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-18-partition-problem/
+function partitionProblem(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-20-maximum-length-chain-of-pairs/
+function maxLengthChainOfPairs(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-27-max-sum-rectangle-in-a-2d-matrix/
+function maxSumRectangle(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/count-possible-paths-top-left-bottom-right-nxm-matrix/
+function countAllPossiblePaths(m, n) {
+
+}
+
+// http://www.geeksforgeeks.org/remove-minimum-elements-either-side-2min-max/
+function removeMinElems(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/count-number-binary-strings-without-consecutive-1s/
+function binaryStringWithoutConsecutiveZeroes(n) {
 
 }
 

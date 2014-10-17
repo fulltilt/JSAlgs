@@ -278,6 +278,10 @@ function countInversions() {
 
 }
 
+// http://www.geeksforgeeks.org/bucket-sort-2/
+// http://www.geeksforgeeks.org/radix-sort/
+// http://www.geeksforgeeks.org/counting-sort/
+
 module.exports = Sorting;
 
 // Note: the hardest part about mergeSort and quickSort are there are numerous places that are ripe for fencepost errors

@@ -29,6 +29,25 @@ function LinkedList() {
 	this.getNthFromEnd = getNthFromEnd;
 	this.reverse = reverse;
 	this._reverse = _reverse;
+	this.reverseDoublyLinkedList = reverseDoublyLinkedList;
+	this.isPalindrome = isPalindrome;
+	this.copyLinkedListWithArbitraryPtr = copyLinkedListWithArbitraryPtr;
+	this.splitCircularListInTwo = splitCircularListInTwo;
+	this.printAlternating = printAlternating;
+	this.swapPairwise = swapPairwise;
+	this.deleteAlternating = deleteAlternating;
+	this.alternateSplit = alternateSplit;
+	this.reverseInKGroups = reverseInKGroups;
+	this.deleteNodesWithGreaterValueOnRight = deleteNodesWithGreaterValueOnRight;
+	this.segregateEvenAndOdd = segregateEvenAndOdd;
+	this.additionWithTwoLists = additionWithTwoLists;
+	this.unionAndIntersection = unionAndIntersection;
+	this.rotateList = rotateList;
+	this.LRUCache = LRUCache;
+	this.flattenList = flattenList;
+	this.sortZeroesOnesTwos = sortZeroesOnesTwos;
+	this.deleteNNodesAfterMNodes = deleteNNodesAfterMNodes;
+	this.reverseAlternateAndAppendAtEnd = reverseAlternateAndAppendAtEnd;
 }
 
 function find(item) {
@@ -380,5 +399,103 @@ function _reverse(previous, node) {
 	this._reverse(node, node.next);
 	node.next = previous;
 }
+
+// http://www.geeksforgeeks.org/reverse-a-doubly-linked-list/
+function reverseDoublyLinkedList(list) {
+
+}
+
+// http://www.geeksforgeeks.org/function-to-check-if-a-singly-linked-list-is-palindrome/
+function isPalindrome(list) {
+
+}
+
+// http://www.geeksforgeeks.org/a-linked-list-with-next-and-arbit-pointer/
+function copyLinkedListWithArbitraryPtr(list) {
+
+}
+
+// http://www.geeksforgeeks.org/split-a-circular-linked-list-into-two-halves/
+function splitCircularListInTwo(list) {
+
+}
+
+// http://www.geeksforgeeks.org/practice-questions-for-linked-list-and-recursion/
+function printAlternating() {
+
+}
+
+// http://www.geeksforgeeks.org/pairwise-swap-elements-of-a-given-linked-list/
+function swapPairwise() {
+
+}
+
+// http://www.geeksforgeeks.org/delete-alternate-nodes-of-a-linked-list/
+function deleteAlternating() {
+
+}
+
+// http://www.geeksforgeeks.org/alternating-split-of-a-given-singly-linked-list/
+function alternateSplit() {
+
+}
+
+// http://www.geeksforgeeks.org/reverse-a-list-in-groups-of-given-size/
+function reverseInKGroups() {
+
+}
+
+// http://www.geeksforgeeks.org/delete-nodes-which-have-a-greater-value-on-right-side/
+function deleteNodesWithGreaterValueOnRight() {
+
+}
+
+// http://www.geeksforgeeks.org/segregate-even-and-odd-elements-in-a-linked-list/
+function segregateEvenAndOdd() {
+
+}
+
+// http://www.geeksforgeeks.org/add-two-numbers-represented-by-linked-lists/
+function additionWithTwoLists(list1, list2) {
+
+}
+
+// http://www.geeksforgeeks.org/union-and-intersection-of-two-linked-lists/
+function unionAndIntersection(list1, list2) {
+
+}
+
+// http://www.geeksforgeeks.org/rotate-a-linked-list/
+function rotateList(list, k) {
+
+}
+
+// http://www.geeksforgeeks.org/flattening-a-linked-list/ or http://www.geeksforgeeks.org/flatten-a-linked-list-with-next-and-child-pointers/
+function flattenList(list) {
+
+}
+
+// http://www.geeksforgeeks.org/sort-a-linked-list-of-0s-1s-or-2s/
+function sortZeroesOnesTwos(list) {
+
+}
+
+// http://www.geeksforgeeks.org/delete-n-nodes-after-m-nodes-of-a-linked-list/
+function deleteNNodesAfterMNodes(list) {
+
+}
+
+// http://www.geeksforgeeks.org/given-linked-list-reverse-alternate-nodes-append-end/
+function reverseAlternateAndAppendAtEnd(list) {
+
+}
+
+// http://www.geeksforgeeks.org/implement-lru-cache/
+function LRUCache() {
+
+}
+
+// STAR PROBLEMS
+// http://www.geeksforgeeks.org/sorted-linked-list-to-balanced-bst/
 
 module.exports = LinkedList;

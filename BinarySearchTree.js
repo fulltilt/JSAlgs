@@ -33,6 +33,7 @@ function BST() {
   this.getLargestBSTSubTreeSize = getLargestBSTSubTreeSize;
   this.areTreesIdentical = areTreesIdentical;
   this.getRandomBSTNode = getRandomBSTNode;
+  this.treeToCircularDoublyLinkedList = treeToCircularDoublyLinkedList;
 }
 
 function insert(data) {
@@ -227,6 +228,11 @@ function areTreesIdentical(tree1, tree2) {
 }
 
 function getRandomBSTNode() {
+
+}
+
+// http://www.geeksforgeeks.org/the-great-tree-list-recursion-problem/
+function treeToCircularDoublyLinkedList(tree) {
 
 }
 

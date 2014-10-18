@@ -33,7 +33,8 @@ function BST() {
   this.getLargestBSTSubTreeSize = getLargestBSTSubTreeSize;
   this.areTreesIdentical = areTreesIdentical;
   this.mirror = mirror;
-
+  this.recreateTreeGivenTwoTraversals = recreateTreeGivenTwoTraversals;
+  
   this.getRandomBSTNode = getRandomBSTNode;
   this.treeToCircularDoublyLinkedList = treeToCircularDoublyLinkedList;
 }
@@ -239,6 +240,11 @@ function getRandomBSTNode() {
 
 // http://www.geeksforgeeks.org/the-great-tree-list-recursion-problem/
 function treeToCircularDoublyLinkedList(tree) {
+
+}
+
+// http://www.geeksforgeeks.org/if-you-are-given-two-traversal-sequences-can-you-construct-the-binary-tree/
+function recreateTreeGivenTwoTraversals(t1, t2) {
 
 }
 

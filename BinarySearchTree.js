@@ -33,6 +33,14 @@ function BST() {
   this.getLargestBSTSubTreeSize = getLargestBSTSubTreeSize;
   this.areTreesIdentical = areTreesIdentical;
   this.mirror = mirror;
+  this.printAllPaths = printAllPaths;
+  this.printByLevel = printByLevel;
+  this.printSpiral = printSpiral;
+  this.countLeafNodes = countLeafNodes;
+  this.doChildrenSumUpToNodeValue = doChildrenSumUpToNodeValue;
+  this.getTreeDiameter = getTreeDiameter;
+  this.isTreeBalanced = isTreeBalanced;
+  this.existsPathSum = existsPathSum;
 
   this.getRandomBSTNode = getRandomBSTNode;
   this.treeToCircularDoublyLinkedList = treeToCircularDoublyLinkedList;
@@ -237,8 +245,53 @@ function getRandomBSTNode() {
 
 }
 
-// http://www.geeksforgeeks.org/the-great-tree-list-recursion-problem/
+// http://www.geeksforgeeks.org/the-great-tree-list-recursion-problem/ or http://www.geeksforgeeks.org/the-great-tree-list-recursion-problem/
 function treeToCircularDoublyLinkedList(tree) {
+
+}
+
+// http://www.geeksforgeeks.org/given-a-binary-tree-print-out-all-of-its-root-to-leaf-paths-one-per-line/
+function printAllPaths() {
+
+}
+
+// http://www.geeksforgeeks.org/lowest-common-ancestor-in-a-binary-search-tree/
+function lowestCommonAncestor(tree1, tree2) {
+
+}
+
+// http://www.geeksforgeeks.org/level-order-tree-traversal/
+function printByLevel() {
+
+}
+
+// http://www.geeksforgeeks.org/level-order-traversal-in-spiral-form/
+function printSpiral() {
+
+}
+
+// http://www.geeksforgeeks.org/write-a-c-program-to-get-count-of-leaf-nodes-in-a-binary-tree/
+function countLeafNodes() {
+
+}
+
+// http://www.geeksforgeeks.org/check-for-children-sum-property-in-a-binary-tree/
+function doChildrenSumUpToNodeValue() {
+
+}
+
+// http://www.geeksforgeeks.org/diameter-of-a-binary-tree/
+function getTreeDiameter() {
+
+}
+
+// http://www.geeksforgeeks.org/how-to-determine-if-a-binary-tree-is-balanced/
+function isTreeBalanced() {
+
+}
+
+// http://www.geeksforgeeks.org/root-to-leaf-path-sum-equal-to-a-given-number/
+function existsPathSum() {
 
 }
 

@@ -33,6 +33,7 @@ function BST() {
   this.getLargestBSTSubTreeSize = getLargestBSTSubTreeSize;
   this.areTreesIdentical = areTreesIdentical;
   this.mirror = mirror;
+
   this.printAllPaths = printAllPaths;
   this.printByLevel = printByLevel;
   this.printSpiral = printSpiral;
@@ -41,7 +42,8 @@ function BST() {
   this.getTreeDiameter = getTreeDiameter;
   this.isTreeBalanced = isTreeBalanced;
   this.existsPathSum = existsPathSum;
-
+  this.recreateTreeGivenTwoTraversals = recreateTreeGivenTwoTraversals;
+  
   this.getRandomBSTNode = getRandomBSTNode;
   this.treeToCircularDoublyLinkedList = treeToCircularDoublyLinkedList;
 }
@@ -250,6 +252,7 @@ function treeToCircularDoublyLinkedList(tree) {
 
 }
 
+<<<<<<< HEAD
 // http://www.geeksforgeeks.org/given-a-binary-tree-print-out-all-of-its-root-to-leaf-paths-one-per-line/
 function printAllPaths() {
 
@@ -292,6 +295,11 @@ function isTreeBalanced() {
 
 // http://www.geeksforgeeks.org/root-to-leaf-path-sum-equal-to-a-given-number/
 function existsPathSum() {
+
+}
+
+// http://www.geeksforgeeks.org/if-you-are-given-two-traversal-sequences-can-you-construct-the-binary-tree/
+function recreateTreeGivenTwoTraversals(t1, t2) {
 
 }
 

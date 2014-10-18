@@ -1,4 +1,5 @@
 function GeekForGeeks() {
+  this.getMedianValue = getMedianValue;
   this.findEquilibriumIndex = findEquilibriumIndex;
   this.findAngleBetweenClockHands = findAngleBetweenClockHands;
   this.binarySearch = binarySearch;
@@ -81,6 +82,11 @@ function GeekForGeeks() {
 
   // Matrices
   this.maxSquareSubMatrix = maxSquareSubMatrix;
+}
+
+function getMedianValue(arr) {
+  return Math.floor((arr.length - 1) / 2); // we add '- 1' since if we do something like binary search, the index never becomes zero if we don't have that
+                                           // NOTE: found a new problem: the index never becomes the last index
 }
 
 function findEquilibriumIndex(arr) {;
@@ -196,7 +202,8 @@ function power(base, exponent) {
     return base * this.power(base, exponent - 1);
 }
 
-// O(n) version of finding median using randomization. This algorithm can be generalized to find the nth sorted value in an array
+// O(n) version of finding median using randomization. Usually it would take O(nlogn) as we would have to sort the data first. 
+// This algorithm can be generalized to find the nth sorted value in an array
 function findMedian(arr) {
   return this.findNthValue(arr, 0 , arr.length - 1, Math.floor(arr.length / 2));
 }
@@ -248,16 +255,41 @@ function partition(arr, lo, hi) {
   return j;
 }
 
-// http://www.geeksforgeeks.org/majority-element/   http://www.geeksforgeeks.org/check-for-majority-element-in-a-sorted-array/
+// http://www.geeksforgeeks.org/majority-element/ (unsorted) or http://www.geeksforgeeks.org/check-for-majority-element-in-a-sorted-array/
 function findMajority(arr) {
+  if (arr.length === 0) {
+    return null;
+  }
 
+  var length = arr.length,
+      biggestCount = 0;
+  var table = {}
+  for (var i = 0; i < length; i++) {
+    if (table[arr[i]]) {
+      ++table[arr[i]];
+    } else {
+      table[arr[i]] = 1;
+    }
+
+    if (biggestCount === 0) {
+      biggestCount = i;
+    } else if (table[arr[i]] > biggestCount) {
+      biggestCount = arr[i];
+    }
+  }
+
+  if (table[biggestCount] > Math.floor(length / 2)) {
+    return biggestCount;
+  } else {
+    return null;
+  }
 }
 
 // http://www.geeksforgeeks.org/find-the-missing-number/
 function findMissingNumber(arr) {
   var subArrLength = arr.length;
-  var length = subArrLength + 1;      // since the array is missing a number, we do arr.length + 1
-  var sum = (length * (length + 1)) / 2;
+  var length = subArrLength + 1;          // since the array is missing a number, we do arr.length + 1
+  var sum = (length * (length + 1)) / 2;  // use formula to calculate sum of first n numbers where n is length
   for (var i = 0; i < subArrLength; i++) {
     sum -= arr[i];
   }
@@ -266,8 +298,23 @@ function findMissingNumber(arr) {
 }
 
 // http://www.geeksforgeeks.org/search-an-element-in-a-sorted-and-pivoted-array/  
-function findPivotInRotatedArray(arr) {
+// NOTE: doesn't work all the time if there are duplicates in the array: i.e. 2,2,3,0,2,2,2,2,2,2,2 and assumes the array is rotated (fails for non-rotated arrays)
+function findPivotInRotatedArray(arr, start, end) {
+  if (start === end) {
+    return start;
+  }
 
+  var medianIndex = Math.floor((start + end) / 2); // don't have to worry about doing '- 1' as 'end' is zero-indexed
+
+  if (arr[medianIndex + 1] < arr[medianIndex]) { // if the index to the right is less than the median, we found the rotation point
+    return medianIndex;
+  }
+
+  if (arr[start] >= arr[medianIndex]) {
+    return this.findPivotInRotatedArray(arr, start, medianIndex - 1);
+  } else {
+    return this.findPivotInRotatedArray(arr, medianIndex + 1, end);
+  }
 }
 
 // http://www.geeksforgeeks.org/median-of-two-sorted-arrays/, does it take into account different sized arrays? (http://www.geeksforgeeks.org/median-of-two-sorted-arrays-of-different-sizes/)

@@ -3,6 +3,11 @@ var GeekForGeeks = require('./GeekForGeeks.js');
 describe("GeekForGeeks", function() {
   var gfg = new GeekForGeeks();
 
+  it('it tests getting the median number', function() {
+    expect(gfg.getMedianValue([0,5,13,19,22,41,55,68,72,81,98])).toEqual(5);  // odd (picks the exact middle element)
+    expect(gfg.getMedianValue([0,5,13,19,22,41,55,68,72,81])).toEqual(4);     // even (picks the lower of the two median elements)
+  });
+
   it("tests find equilibrium index", function() {
     expect(gfg.findEquilibriumIndex([-7,1,5,2,-4,3,0])).toEqual(3);
   });
@@ -54,54 +59,55 @@ describe("GeekForGeeks", function() {
     });
 
     it('tests findPivotInRotatedArray', function() {
-      expect(gfg.findPivotInRotatedArray([3,4,5,1,2])).toEqual(2);
+      expect(gfg.findPivotInRotatedArray([3,4,5,1,2], 0, 4)).toEqual(2);
+      expect(gfg.findPivotInRotatedArray([5, 6, 7, 8, 9, 10, 1, 2, 3], 0, 8)).toEqual(5);
     });
 
     it('tests findMedianInTwoSortedArrays', function() {
       expect(gfg.findMedianOfTwoSortedArrays([1, 12, 15, 26, 38], [2, 13, 17, 30, 45])).toEqual(16);
     });
 
-    it('tests reverseArray', function() {
+    xit('tests reverseArray', function() {
       expect(gfg.reverseArray([1, 12, 15, 26, 38, 2, 13, 17, 30, 45], 0, 9)).toEqual([45,30,17,13,2,38,26,15,12,1]);  // even
       expect(gfg.reverseArray([1, 12, 15, 26, 38, 13, 17, 30, 4], 0, 8)).toEqual([4,30,17,13,38,26,15,12,1]);         // odd
     });
 
-    it('tests rotateArray', function() {
+    xit('tests rotateArray', function() {
       expect(gfg.rotateArray([1,2,3,4,5,6,7], 2)).toEqual([3,4,5,6,7,1,2]);
     });
 
-    it('tests leadersInAnArray', function() {
+    xit('tests leadersInAnArray', function() {
       expect(gfg.leadersInAnArray([16, 17, 4, 3, 5, 2])).toEqual([2,5,17]);
     });
 
-    it('tests sortElementsByFrequency', function() {
+    xit('tests sortElementsByFrequency', function() {
       expect(gfg.sortElementsByFrequency([2, 5, 2, 8, 5, 6, 8, 8])).toEqual([8, 8, 8, 2, 2, 5, 5, 6]);
     });
 
-    it('tests findTwoElementsWhoseSumIsClosestToZero', function() {
+    xit('tests findTwoElementsWhoseSumIsClosestToZero', function() {
       expect(gfg.findTwoElementsWhoseSumIsClosestToZero([1, 60, -10, 70, -80, 85])).toEqual([-80, 85]); // keep in mind that JavaScript doesn't natively support Sets
     });
 
-    it('tests segregateOnesAndZeroes', function() {
+    xit('tests segregateOnesAndZeroes', function() {
       expect(gfg.segregateOnesAndZeroes([0, 1, 0, 1, 0, 0, 1, 1, 1, 0])).toEqual([0, 0, 0, 0, 0, 1, 1, 1, 1, 1]);
     });
 
-    it('tests findMinUnsortedSubArray', function() {
+    xit('tests findMinUnsortedSubArray', function() {
       expect(gfg.findMinUnsortedSubArray([10, 12, 20, 30, 25, 40, 32, 31, 35, 50, 60])).toEqual([30,25,40,32,31,35]);
     });
 
-    it('tests findDuplicates', function() {
+    xit('tests findDuplicates', function() {
       expect(gfg.findDuplicates([1, 2, 3, 1, 3, 6, 6])).toEqual([1,3,6]); // keep in mind that JavaScript doesn't natively support Sets
     });
 
-    it('tests areAllElementsConsecutive', function() {
+    xit('tests areAllElementsConsecutive', function() {
       expect(gfg.areAllElementsConsecutive([5, 2, 3, 1, 4])).toEqual(true);
       expect(gfg.areAllElementsConsecutive([83, 78, 80, 81, 79, 82])).toEqual(true);
       expect(gfg.areAllElementsConsecutive([34, 23, 52, 12, 3])).toEqual(false);
       expect(gfg.areAllElementsConsecutive([7, 6, 5, 5, 3, 4])).toEqual(false);
     });
 
-    it('tests findSmallestMissingNumber', function() {
+    xit('tests findSmallestMissingNumber', function() {
       expect(gfg.findSmallestMissingNumber([0, 1, 2, 6, 9])).toEqual(3);
       expect(gfg.findSmallestMissingNumber([4, 5, 10, 11])).toEqual(0);
       expect(gfg.findSmallestMissingNumber([0, 1, 2, 3])).toEqual(4);
@@ -110,7 +116,7 @@ describe("GeekForGeeks", function() {
   });
 
   describe('Matrix', function() {
-    it('tests maxSquareSubMatrix', function() {
+    xit('tests maxSquareSubMatrix', function() {
 
     });
   });

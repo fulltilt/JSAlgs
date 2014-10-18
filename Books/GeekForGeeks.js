@@ -59,6 +59,7 @@ function GeekForGeeks() {
   // Strings
   this.suffixTree = suffixTree;
   this.trie = trie;
+  this.ternarySearchTree = ternarySearchTree;
   this.areStringRotations = areStringRotations;
   this.printAllPermutations = printAllPermutations;
   this.printLexicographicPermutations = printLexicographicPermutations;
@@ -496,7 +497,15 @@ function suffixTree() {
 }
 
 // http://www.geeksforgeeks.org/pattern-searching-using-trie-suffixes/
+// http://www.geeksforgeeks.org/trie-insert-and-search/
+// http://www.geeksforgeeks.org/trie-delete/
+// http://www.geeksforgeeks.org/longest-prefix-matching-a-trie-based-solution-in-java/
 function trie() {
+
+}
+
+// http://www.geeksforgeeks.org/ternary-search-tree/
+function ternarySearchTree() {
 
 }
 

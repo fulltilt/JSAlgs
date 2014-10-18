@@ -43,6 +43,11 @@ function BST() {
   this.isTreeBalanced = isTreeBalanced;
   this.existsPathSum = existsPathSum;
   this.recreateTreeGivenTwoTraversals = recreateTreeGivenTwoTraversals;
+  this.doubleTree = doubleTree;
+  this.canFold = canFold;
+  this.kDistanceFromRoot = kDistanceFromRoot;
+  this.printArrayRepresentationOfBST = printArrayRepresentationOfBST;
+  this.getSuccessor = getSuccessor;
   
   this.getRandomBSTNode = getRandomBSTNode;
   this.treeToCircularDoublyLinkedList = treeToCircularDoublyLinkedList;
@@ -283,7 +288,7 @@ function doChildrenSumUpToNodeValue() {
 
 }
 
-// http://www.geeksforgeeks.org/diameter-of-a-binary-tree/
+// http://www.geeksforgeeks.org/diameter-of-a-binary-tree/ or http://www.geeksforgeeks.org/maximum-width-of-a-binary-tree/
 function getTreeDiameter() {
 
 }
@@ -298,8 +303,34 @@ function existsPathSum() {
 
 }
 
-// http://www.geeksforgeeks.org/if-you-are-given-two-traversal-sequences-can-you-construct-the-binary-tree/
+// http://www.geeksforgeeks.org/if-you-are-given-two-traversal-sequences-can-you-construct-the-binary-tree/,
+// http://www.geeksforgeeks.org/construct-tree-from-given-inorder-and-preorder-traversal/
 function recreateTreeGivenTwoTraversals(t1, t2) {
+
+}
+
+// http://www.geeksforgeeks.org/double-tree/
+function doubleTree() {
+
+}
+
+// http://www.geeksforgeeks.org/foldable-binary-trees/
+function canFold() {
+
+}
+
+// http://www.geeksforgeeks.org/print-nodes-at-k-distance-from-root/
+function kDistanceFromRoot() {
+
+}
+
+// http://www.geeksforgeeks.org/sorted-order-printing-of-an-array-that-represents-a-bst/
+function printArrayRepresentationOfBST() {
+
+}
+
+// http://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/
+function getSuccessor(node) {
 
 }
 

@@ -12,6 +12,7 @@ function DoublyLinkedList() {
   this.find = find;
   this.insertHead = insertHead;
   this.insertAfter = insertAfter;
+  this.remove = remove;
   this.clear = clear;
   this.print = print;
   this.reversePrint = reversePrint;
@@ -55,8 +56,36 @@ function insertAfter(data, dataOfNodeToInsertAfter) {
   if (newNode.next !== null) {
     newNode.next.previous = newNode;
   }
+
+  if (currentNode === this.tail) {  // special condition if the Node we're inserting after is the tail node
+    this.tail = newNode;
+  }
+
   currentNode.next = newNode;
   this.size++;
+}
+
+function remove(data) {
+  var nodeToRemove = this.find(data);
+  if (nodeToRemove === null) {
+    return false;
+  }
+
+  if (nodeToRemove === this.head) {
+    if (this.head.next !== null) {
+      this.head.next.previous = null;
+      this.head = this.head.next;
+    }
+  } else if (nodeToRemove === this.tail) {
+    nodeToRemove.previous.next = null;
+    this.tail = nodeToRemove.previous;
+  } else {
+    nodeToRemove.previous.next = nodeToRemove.next;
+    nodeToRemove.next.previous = nodeToRemove.previous;
+  }
+
+  nodeToRemove = null;
+  this.size -= 1;
 }
 
 // setting the current Node to null isn't quite working. Will have to look into how to do this correctly

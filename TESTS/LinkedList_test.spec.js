@@ -41,6 +41,10 @@ describe("LinkedList", function() {
     expect(dll.size).toEqual(7);
     expect(dll.print()).toEqual('5 9 10 6 8 7 2');
     expect(dll.reversePrint()).toEqual('2 7 8 6 10 9 5');
+    dll.insertAfter(1, 2);  // insert at tail
+    expect(dll.size).toEqual(8);
+    expect(dll.print()).toEqual('5 9 10 6 8 7 2 1');
+    expect(dll.reversePrint()).toEqual('1 2 7 8 6 10 9 5');
   });
 
   it('tests remove() and removeHead()', function() {
@@ -53,9 +57,18 @@ describe("LinkedList", function() {
   });
 
   it('tests remove and removeHead for DoublyLinkedList', function() {
-
+    dll.remove(8);
+    expect(dll.size).toEqual(5);
+    expect(dll.print()).toEqual('5 9 6 7 2');
+    dll.remove(5);  // remove head
+    expect(dll.size).toEqual(4);
+    expect(dll.print()).toEqual('9 6 7 2');
+    expect(dll.reversePrint()).toEqual('2 7 6 9');
+    dll.remove(2);  // remove tail
+    expect(dll.print()).toEqual('9 6 7');
+    expect(dll.reversePrint()).toEqual('7 6 9');
   });
-  
+
   it('tests find()', function() {
     expect(ll.find(8)).toNotEqual(null);
     expect(ll.find(-3)).toEqual(null);
@@ -129,5 +142,11 @@ describe("LinkedList", function() {
   it('tests reverse a linked list', function() {
     ll.reverse();
     expect(ll.print()).toEqual('2 7 8 6 9 5');
+  });
+
+  it('tests reverse a doubly linked list', function() {
+    dll.reverseDoublyLinkedList();
+    //expect(dll.print()).toEqual('2 7 8 6 9 5');
+    //expect(dll.reversePrint()).toEqual('5 9 6 8 7 2');
   });
 });

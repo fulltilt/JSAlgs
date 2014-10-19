@@ -29,7 +29,6 @@ function LinkedList() {
 	this.getNthFromEnd = getNthFromEnd;
 	this.reverse = reverse;
 	this._reverse = _reverse;
-	this.reverseDoublyLinkedList = reverseDoublyLinkedList;
 	this.isPalindrome = isPalindrome;
 	this.copyLinkedListWithArbitraryPtr = copyLinkedListWithArbitraryPtr;
 	this.splitCircularListInTwo = splitCircularListInTwo;
@@ -119,6 +118,7 @@ function remove(item) {
 	return false;
 }
 
+// setting the current Node to null isn't quite working. Will have to look into how to do this correctly
 function clear() {
 	while (this.head !== null) {
 		this.removeHead();
@@ -398,11 +398,6 @@ function _reverse(previous, node) {
 
 	this._reverse(node, node.next);
 	node.next = previous;
-}
-
-// http://www.geeksforgeeks.org/reverse-a-doubly-linked-list/
-function reverseDoublyLinkedList(list) {
-
 }
 
 // http://www.geeksforgeeks.org/function-to-check-if-a-singly-linked-list-is-palindrome/

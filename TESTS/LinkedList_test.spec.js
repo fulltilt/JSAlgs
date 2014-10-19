@@ -1,7 +1,9 @@
 var LinkedList = require('../LinkedList.js');
+var DoublyLinkedList = require('../DoublyLinkedList.js');
 
 describe("LinkedList", function() {
   var ll = new LinkedList();
+  var dll = new DoublyLinkedList();
 
   beforeEach(function() {
     ll.clear();
@@ -11,8 +13,16 @@ describe("LinkedList", function() {
     ll.insertHead(6);
     ll.insertHead(9);
     ll.insertHead(5);
+
+    dll.clear();
+    dll.insertHead(2);
+    dll.insertHead(7);
+    dll.insertHead(8);
+    dll.insertHead(6);
+    dll.insertHead(9);
+    dll.insertHead(5);
   });
-  
+
   it('tests insertHead and insertAfter', function() {
     expect(ll.size).toEqual(6);
     expect(ll.head.data).toEqual(5);
@@ -21,6 +31,16 @@ describe("LinkedList", function() {
     expect(ll.size).toEqual(7);
     expect(ll.print()).toEqual('5 9 10 6 8 7 2');
     //expect(ll.insertAfter(10, -1)).toThrow('Invalid node error.');
+  });
+
+  it('tests insertHead and insertAfter for DoublyLinkedLists', function() {
+    expect(dll.size).toEqual(6);
+    expect(dll.head.data).toEqual(5);
+    expect(dll.print()).toEqual('5 9 6 8 7 2');
+    dll.insertAfter(10, 9);
+    expect(dll.size).toEqual(7);
+    expect(dll.print()).toEqual('5 9 10 6 8 7 2');
+    expect(dll.reversePrint()).toEqual('2 7 8 6 10 9 5');
   });
 
   it('tests remove() and removeHead()', function() {
@@ -32,7 +52,16 @@ describe("LinkedList", function() {
     expect(ll.print()).toEqual('9 6 7 2');
   });
 
+  it('tests remove and removeHead for DoublyLinkedList', function() {
+
+  });
+  
   it('tests find()', function() {
+    expect(ll.find(8)).toNotEqual(null);
+    expect(ll.find(-3)).toEqual(null);
+  });
+
+  it('tests find for DoublyLinkedList', function() {
     expect(ll.find(8)).toNotEqual(null);
     expect(ll.find(-3)).toEqual(null);
   });

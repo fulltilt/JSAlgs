@@ -79,6 +79,12 @@ describe("LinkedList", function() {
     expect(ll.find(-3)).toEqual(null);
   });
 
+  it('tests reverseDoublyLinkedList', function() {
+    dll.reverseDoublyLinkedList();
+    expect(dll.print()).toEqual('2 7 8 6 9 5');
+    expect(dll.reversePrint()).toEqual('5 9 6 8 7 2');
+  });
+
   it('tests insertionSort without swapping', function() {
     ll.insertionSortWithoutSwappingNodes();
     expect(ll.print()).toEqual('2 5 6 7 8 9');

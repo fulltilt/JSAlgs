@@ -113,7 +113,7 @@ function print() {
     output += currentNode.data + ' ';
     currentNode = currentNode.next;
   }
-console.log(output.trim());
+//console.log(output.trim());
   return output.trim();
 }
 
@@ -125,13 +125,26 @@ function reversePrint() {
     output += currentNode.data + ' ';
     currentNode = currentNode.previous;
   }
-console.log(output.trim());
+//console.log(output.trim());
   return output.trim();
 }
 
 // http://www.geeksforgeeks.org/reverse-a-doubly-linked-list/
 function reverseDoublyLinkedList(list) {
+  var currentNode = this.head,
+      currentHead = this.head,
+      currentTail = this.tail;
 
+  while (currentNode !== null) {
+    var currentNext = currentNode.next;
+    currentNode.next = currentNode.previous;
+    currentNode.previous = currentNext;
+    currentNode = currentNext;
+  }
+
+  var temp = currentHead;
+  this.head = currentTail;
+  this.tail = currentHead; 
 }
 
 module.exports = DoublyLinkedList;

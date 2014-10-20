@@ -22,8 +22,8 @@ function LinkedList() {
 	this._mergeSort = _mergeSort;
 	this.merge = merge;
 	this.getMiddle = getMiddle;
-
 	this.mergeSortedLists = mergeSortedLists;
+	
 	this.hasCycle = hasCycle;
 	this.getCycleEntry = getCycleEntry;
 	this.getNthFromEnd = getNthFromEnd;
@@ -132,7 +132,7 @@ function print() {
 		output += current.data + ' ';
 		current = current.next;
 	}
-	console.log(output);
+//console.log(output);
 	return output.trim();
 }
 

@@ -323,8 +323,6 @@ function findMedianOfTwoSortedArrays(arr1, arr2) {
 }
 
 function reverseArray(arr, start, end) {
-  //console.log(arr);
-
   while (start <= end) {
     var temp = arr[end];
     arr[end] = arr[start];

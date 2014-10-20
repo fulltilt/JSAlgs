@@ -65,22 +65,28 @@ describe("GeekForGeeks", function() {
 
     it('tests findMedianInTwoSortedArrays', function() {
       expect(gfg.findMedianOfTwoSortedArrays([1, 12, 15, 26, 38], [2, 13, 17, 30, 45])).toEqual(16);
+      expect(gfg.findMedianOfTwoSortedArrays([1, 12, 15, 26, 38], [2, 13, 17, 30])).toEqual(15);
+      expect(gfg.findMedianOfTwoSortedArrays([900], [5, 8, 10, 20])).toEqual(10);
     });
 
-    xit('tests reverseArray', function() {
+    it('tests reverseArray', function() {
       expect(gfg.reverseArray([1, 12, 15, 26, 38, 2, 13, 17, 30, 45], 0, 9)).toEqual([45,30,17,13,2,38,26,15,12,1]);  // even
       expect(gfg.reverseArray([1, 12, 15, 26, 38, 13, 17, 30, 4], 0, 8)).toEqual([4,30,17,13,38,26,15,12,1]);         // odd
     });
 
-    xit('tests rotateArray', function() {
+    it('tests rotateArray', function() {
       expect(gfg.rotateArray([1,2,3,4,5,6,7], 2)).toEqual([3,4,5,6,7,1,2]);
     });
 
-    xit('tests leadersInAnArray', function() {
+    it('tests leadersInAnArray', function() {
       expect(gfg.leadersInAnArray([16, 17, 4, 3, 5, 2])).toEqual([2,5,17]);
     });
 
-    xit('tests sortElementsByFrequency', function() {
+    it('tests replace with next greatest', function() {
+      expect(gfg.replaceWithNextGreatest([16, 17, 4, 3, 5, 2])).toEqual([17, 5, 5, 5, 2, -1]);
+    });
+
+    it('tests sortElementsByFrequency', function() {
       expect(gfg.sortElementsByFrequency([2, 5, 2, 8, 5, 6, 8, 8])).toEqual([8, 8, 8, 2, 2, 5, 5, 6]);
     });
 

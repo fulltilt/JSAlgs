@@ -18,6 +18,7 @@ function GeekForGeeks() {
   this.reverseArray = reverseArray;
   this.rotateArray = rotateArray;
   this.leadersInAnArray = leadersInAnArray;
+  this.replaceWithNextGreatest = replaceWithNextGreatest;
   this.sortElementsByFrequency = sortElementsByFrequency;
   this.findTwoElementsWhoseSumIsClosestToZero = findTwoElementsWhoseSumIsClosestToZero;
   this.segregateOnesAndZeroes = segregateOnesAndZeroes;
@@ -318,8 +319,37 @@ function findPivotInRotatedArray(arr, start, end) {
 }
 
 // http://www.geeksforgeeks.org/median-of-two-sorted-arrays/, does it take into account different sized arrays? (http://www.geeksforgeeks.org/median-of-two-sorted-arrays-of-different-sizes/)
+// naive solution: get the total length of both arrays. Then do a merge sort and once you find the (n / 2)nd element, return it (may have to tweak what to return for even lengthed arrays)
+// TODO: O(log n) solution
 function findMedianOfTwoSortedArrays(arr1, arr2) {
+  var arr1Length = arr1.length,
+      arr2Length = arr2.length,
+      totalLength = arr1Length + arr2Length,
+      medianIndex = Math.floor((totalLength - 1) / 2),
+      arr1Ptr = 0,
+      arr2Ptr = 0,
+      newArray = [];
 
+  while ((arr1Ptr < arr1Length) && (arr2Ptr < arr2Length)) {
+    if (arr1[arr1Ptr] < arr2[arr2Ptr]) {
+      newArray.push(arr1[arr1Ptr++]);
+    } else {
+      newArray.push(arr2[arr2Ptr++])
+    }
+
+    // if we want to be more efficient and end the loop once we reach the median. Problematic as we actually have to go 2 indexes beyond this point for when array length is even
+    //if (newArray.length === (medianIndex + 2)) {
+    //  break;
+    //}
+  }
+
+  newArray.concat(arr1.slice(arr1Ptr)).concat(arr1.slice(arr2Ptr));
+
+  if (totalLength % 2 === 0) {
+    return ((newArray[medianIndex] + newArray[medianIndex + 1]) / 2);
+  } else {
+    return newArray[medianIndex];
+  }
 }
 
 function reverseArray(arr, start, end) {
@@ -342,9 +372,38 @@ function rotateArray(arr, n) {
   return arr;
 }
 
-// http://www.geeksforgeeks.org/leaders-in-an-array/, http://www.geeksforgeeks.org/replace-every-element-with-the-greatest-on-right-side/
+// http://www.geeksforgeeks.org/leaders-in-an-array/
 function leadersInAnArray(arr) {
+  var results = [],
+      length = arr.length;
+  
+  results.push(arr[length - 1]); // the last element is always a leader
+  for (var i = length - 2; i > 0; --i) {
+    if (arr[i] > arr[i - 1]) {
+      results.push(arr[i]);
+    }
+  }
 
+  return results;
+}
+
+//http://www.geeksforgeeks.org/replace-every-element-with-the-greatest-on-right-side/
+function replaceWithNextGreatest(arr) {
+  var length = arr.length,
+      max = arr[length - 1];
+  arr[length - 1] = -1; // set to -1 since there is nothing to the right of the last element
+
+  for (var i = length - 2; i >= 0; --i) {
+    if (max > arr[i]) {
+      arr[i] = max;
+    } else {
+      var oldMax = max;
+      max = arr[i];
+      arr[i] = oldMax;
+    }
+  }
+
+  return arr;
 }
 
 // http://www.geeksforgeeks.org/sort-elements-by-frequency/

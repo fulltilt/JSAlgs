@@ -95,6 +95,55 @@ function getMedianValue(arr) {
                                            // NOTE: found a new problem: the index never becomes the last index
 }
 
+/* modified binary search that returns the index where the n is or returns the negative index of where n would be if it were in the list
+  ex. [1, 2, 8, 10, 10, 12, 19]
+  if n = 0: return 0; low = 0, high = -1, arr[low] = 1, arr[high] = undefined
+  if n = 1: return true
+  if n = 5: return 2; low = 2, high = 1, arr[low] = 8, arr[high] = 2
+  if n = 20: return 7; low = 7, high = 6, arr[low] = undefined, arr[high] = 19
+  Note: since negative zero doesn't exist, return -Infinity
+*/
+function binarySearch(arr, n) {
+  var low = 0,
+      high = arr.length - 1;
+
+  while (high >= low) { // breaks if not >=
+    var middle = Math.ceil((high + low) / 2);
+    // use middle = (low + (high - low)) / 2);  if we're talking an extremely huge high number
+
+    if (arr[middle] === n) {
+      return middle;
+    } else if (n < arr[middle]) {
+      high = middle - 1;
+    } else {
+      low = middle + 1;
+    }
+  }
+
+  //return false;
+  if (low === 0) {
+    return -Infinity;
+  } else {
+    return -low;
+  }
+}
+
+function recursiveBinarySearch(arr, n, low, high) {
+  if (low > high) {
+    return false;
+  } 
+
+  var middle = Math.ceil((low + high) / 2);
+
+  if (arr[middle] === n) {
+    return true;
+  } else if (n < arr[middle]) {
+     return this.recursiveBinarySearch(arr, n, low, middle - 1);
+  } else {
+     return this.recursiveBinarySearch(arr, n, middle + 1, high);
+  }
+}
+
 function findEquilibriumIndex(arr) {;
   var length = arr.length;
   if (length === 0) {
@@ -142,41 +191,6 @@ function findAngleBetweenClockHands(hours, minutes) {
       minuteAngle = minutes * (360 / 60);
 
   return Math.abs(hourAngle - minuteAngle);
-}
-
-function binarySearch(arr, n) {
-  var low = 0,
-      high = arr.length - 1;
-
-  while (high >= low) {
-    var middle = Math.ceil((high + low) / 2);
-    // use middle = low + ((high + low) / 2);  if we're talking an extremely huge high number
-
-    if (arr[middle] === n) {
-      return true;
-    } else if (n < arr[middle]) {
-      high = middle - 1;
-    } else {
-      low = middle + 1;
-    }
-  }
-  return false;
-}
-
-function recursiveBinarySearch(arr, n, low, high) {
-  if (low > high) {
-    return false;
-  } 
-
-  var middle = Math.ceil((low + high) / 2);
-
-  if (arr[middle] === n) {
-    return true;
-  } else if (n < arr[middle]) {
-     return this.recursiveBinarySearch(arr, n, low, middle - 1);
-  } else {
-     return this.recursiveBinarySearch(arr, n, middle + 1, high);
-  }
 }
 
 function searchSortedRotatedArray(arr, n) {
@@ -627,8 +641,23 @@ function intersectionOfTwoArrays(arr1, arr2) {
 }
 
 // http://www.geeksforgeeks.org/search-floor-and-ceil-in-a-sorted-array/
-function floorAndCeilOfSortedArray(arr) {
+// The code is concise but there are so many corner cases and special exceptions. It's also heavily reliant on the modified binary search to return correct indices
+function floorAndCeilOfSortedArray(arr, n) {
+  var index = this.binarySearch(arr, n);
 
+  if (index >= 0) { // the only time binary search will return a positive # is when the element is in the array
+    return [arr[index], arr[index]];
+  } else {          // if the value is negative, that means the element was not found. Get the absolute value of the returned value to use as an index
+    index = Math.abs(index);
+  }
+
+  if (index === Infinity) {             // n is lower than the lowest item
+    return [null, arr[0]];
+  } else if (index === arr.length) {    // n is bigger than the biggest item
+    return [arr[arr.length - 1], null];
+  } else {                              // n would be in the middle of the array
+    return [arr[index - 1], arr[index]];
+  }
 }
 
 // http://www.geeksforgeeks.org/a-product-array-puzzle/

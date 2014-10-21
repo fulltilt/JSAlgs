@@ -19,9 +19,10 @@ describe("GeekForGeeks", function() {
   });
 
   it('tests binary search', function() {
-    expect(gfg.binarySearch([0,5,13,19,22,41,55,68,72,81,98], 72)).toEqual(true);
-    expect(gfg.binarySearch([0,5,13,19,22,41,55,68,72,81,98], 0)).toEqual(true);
-    expect(gfg.binarySearch([0,5,13,19,22,41,55,68,72,81,98], -1)).toEqual(false);
+    expect(gfg.binarySearch([0,5,13,19,22,41,55,68,72,81,98], 72)).toEqual(8);
+    expect(gfg.binarySearch([0,5,13,19,22,41,55,68,72,81,98], 0)).toEqual(0);
+    expect(gfg.binarySearch([0,5,13,19,22,41,55,68,72,81,98], 49)).toEqual(-6);
+    expect(gfg.binarySearch([0,5,13,19,22,41,55,68,72,81,98], -1)).toEqual(-Infinity);
     expect(gfg.recursiveBinarySearch([0,5,13,19,22,41,55,68,72,81,98], 72, 0, 10)).toEqual(true);
     expect(gfg.recursiveBinarySearch([0,5,13,19,22,41,55,68,72,81,98], 0, 0, 10)).toEqual(true);
     expect(gfg.recursiveBinarySearch([0,5,13,19,22,41,55,68,72,81,98], -1, 0, 10)).toEqual(false);
@@ -118,7 +119,7 @@ describe("GeekForGeeks", function() {
       for (var i = 0; i < arr.length; i++) {
         bst.insert(arr[i]);
       }
-//bst.inOrder(bst.root);
+
       expect(gfg.binarySearchTreeToArray(bst.root)).toEqual([1, 2, 12, 13, 15, 17, 26, 30, 38, 45]);
     });
 
@@ -128,6 +129,13 @@ describe("GeekForGeeks", function() {
 
     it('tests intersection of 2 arrays', function() {
       expect(gfg.intersectionOfTwoArrays([1, 3, 4, 5, 7], [2, 3, 5, 6])).toEqual([3,5]);
+    });
+
+    it('floorAndCeilOfSortedArray' , function() {
+      expect(gfg.floorAndCeilOfSortedArray([1, 2, 8, 10, 10, 12, 19], 0)).toEqual([null, 1]);
+      expect(gfg.floorAndCeilOfSortedArray([1, 2, 8, 10, 10, 12, 19], 1)).toEqual([1, 1]);
+      expect(gfg.floorAndCeilOfSortedArray([1, 2, 8, 10, 10, 12, 19], 5)).toEqual([2, 8]);
+      expect(gfg.floorAndCeilOfSortedArray([1, 2, 8, 10, 10, 12, 19], 20)).toEqual([19, null]);
     });
 
     xit('tests findMinUnsortedSubArray', function() {

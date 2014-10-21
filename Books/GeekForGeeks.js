@@ -22,6 +22,7 @@ function GeekForGeeks() {
   this.sortElementsByFrequency = sortElementsByFrequency;
   this.findTwoElementsWhoseSumIsClosestToZero = findTwoElementsWhoseSumIsClosestToZero;
   this.segregateOnesAndZeroes = segregateOnesAndZeroes;
+  this.findTwoRepeatingElements = findTwoRepeatingElements;
   this.dutchNationalFlag = dutchNationalFlag;
   this.unionAndIntersectionOfTwoSortedArrays = unionAndIntersectionOfTwoSortedArrays;
   this.floorAndCeilOfSortedArray = floorAndCeilOfSortedArray;
@@ -46,7 +47,6 @@ function GeekForGeeks() {
   this.largestSubArrayOfZeroesAndOnes = largestSubArrayOfZeroesAndOnes;
   this.maxProductSubArray = maxProductSubArray;
   this.formBiggestNumber = formBiggestNumber;
-  this.sortElementsByFrequency = sortElementsByFrequency;
   this.mergeKSortedArrays = mergeKSortedArrays;
   this.smallestSubArrayWhoseSumIsLessThanN = smallestSubArrayWhoseSumIsLessThanN;
   this.findKClosestElementsToN = findKClosestElementsToN;
@@ -406,28 +406,168 @@ function replaceWithNextGreatest(arr) {
   return arr;
 }
 
-// http://www.geeksforgeeks.org/sort-elements-by-frequency/
+// http://www.geeksforgeeks.org/sort-elements-by-frequency/ or http://www.geeksforgeeks.org/sort-elements-by-frequency-set-2/
+// (there weren't any super clever solutions that didn't involve creating extra data structures and auxiliary arrays)
 function sortElementsByFrequency(arr) {
+  if (arr === null) {
+    return;
+  } else if (arr.length === 1) {
+    return arr;
+  }
 
+  var countTable = {};
+  var length = arr.length;
+  for (var i = 0; i < length; i++) {
+    if (!countTable[arr[i]]) {
+      countTable[arr[i]] = 1;
+    } else {
+      ++countTable[arr[i]];
+    }
+  }
+  
+  var sortable = [];
+  for (var num in countTable) {
+    sortable.push([num, countTable[num]]);
+  }
+  sortable.sort(function(a, b) { 
+    return b[1] - a[1]; // orders from greatest to smallest
+  });
+
+  var result = [];
+  for (i = 0; i < sortable.length; i++) {
+    for (var j = 0; j < sortable[i][1]; j++) {
+      result.push(parseInt(sortable[i][0]));
+    }
+  }
+
+  return result;
 }
 
 // http://www.geeksforgeeks.org/two-elements-whose-sum-is-closest-to-zero/
+// algorithm to get exactly zero assuming it exists: sort the array and have a pointers at the beginning and end. If their sums equal zero, return nums. Else if the sum is greater than zero, decrease the right pointer. Else increase left pointer
 function findTwoElementsWhoseSumIsClosestToZero(arr) {
+  if (arr === null || arr.length === 1) {
+    return;
+  }
 
+  var lo = 0,
+      hi = arr.length - 1,
+      min_lo = lo,
+      min_hi = hi,
+      minDistance = Infinity;
+
+  arr = arr.sort(function(a, b) { return a - b; });  // if I use the default sort, -10 is greater than -80
+  while (lo < hi) {
+    var sum = arr[lo] + arr[hi];
+
+    if (Math.abs(sum) < Math.abs(minDistance)) {
+      minDistance = sum;
+      min_lo = lo;
+      min_hi = hi;
+    }
+
+    // here is the trick: if the sum is less than zero, increase the sum by adding a greater number from the left. If it's greater than zero, decrease sum by adding a lesser number from the right
+    if (sum < 0) {
+      ++lo;
+    } else {
+      --hi;
+    }
+  }
+
+  return [arr[min_lo], arr[min_hi]];
 }
 
+// Separate 0's to the left and 1's to the right
+// algorithm: use quicksort partition logic
 function segregateOnesAndZeroes(arr) {
+  if (arr === null) {
+    return;
+  } else if (arr.length === 1) {
+    return arr;
+  }
 
+  var length = arr.length,
+      lo = 0,
+      hi = length - 1;
+
+  while (lo < hi) {
+    while (arr[lo] === 0 && lo !== hi) {
+      ++lo;
+    }
+
+    while (arr[hi] === 1 && hi !== lo) {
+      --hi;
+    }
+
+    var temp = arr[hi];
+    arr[hi] = arr[lo];
+    arr[lo] = temp;
+  }
+
+  return arr;
 }
 
 // http://www.geeksforgeeks.org/find-the-two-repeating-elements-in-a-given-array/
-function dutchNationalFlag(arr) {
+// algorithm: have an auxiliary array that keeps an a count of each element. Once you hit an element twice that had a count, print it out. Do this twice.
+// See method 3 for mathematical approach
+function findTwoRepeatingElements(arr) {
+  if (arr === null) {
+    return;
+  } else if (arr.length < 4) {
+    throw new Error('Invalid input. Array has to be at least length 4.');
+  }
 
+  var length = arr.length,
+      count = [],
+      results = [],
+      found = 0;
+
+  for (var i = 0; i < length; i++) {
+    if (!count[arr[i]]) {
+      count[arr[i]] = true;
+    } else {
+      results.push(arr[i]);
+      ++found;
+      if (found === 2) {
+        return results;
+      }
+    }
+  }
+
+  return false;
 }
 
-// http://www.geeksforgeeks.org/maximum-size-sub-matrix-with-all-1s-in-a-binary-matrix/
-function maxSquareSubMatrix(arr) {
+// http://www.geeksforgeeks.org/sort-an-array-of-0s-1s-and-2s/ (look here for a more concise solution)
+function dutchNationalFlag(arr) {
+  var length = arr.length;
+      lo = 0,
+      mid = 0,
+      hi = length - 1;
 
+  while (mid < hi) {
+    while (arr[lo] === 0 && lo !== hi) {
+      ++lo;
+    }
+
+    while (mid < lo || arr[mid] === 1) {
+      ++mid;
+    }
+
+    while (arr[hi] === 2 && hi !== lo) {
+      --hi;
+    }
+
+    if (arr[mid] === 0) {
+      var temp = arr[mid];
+      arr[mid] = arr[lo];
+      arr[lo] = temp;
+    } else {
+      var temp = arr[mid];
+      arr[mid] = arr[hi];
+      arr[hi] = temp;
+    }
+  }
+  return arr;
 }
 
 // http://www.geeksforgeeks.org/union-and-intersection-of-two-sorted-arrays-2/
@@ -542,11 +682,6 @@ function maxProductSubArray(arr) {
 
 // http://www.geeksforgeeks.org/given-an-array-of-numbers-arrange-the-numbers-to-form-the-biggest-number/
 function formBiggestNumber(arr) {
-
-}
-
-// http://www.geeksforgeeks.org/sort-elements-by-frequency-set-2/
-function sortElementsByFrequency(arr) {
 
 }
 
@@ -700,6 +835,11 @@ function findAllPossibleWordsFromPhoneDigits() {
 
 // http://www.geeksforgeeks.org/find-excel-column-name-given-number/
 function findExcelColumnName(num) {
+
+}
+
+// http://www.geeksforgeeks.org/maximum-size-sub-matrix-with-all-1s-in-a-binary-matrix/
+function maxSquareSubMatrix(arr) {
 
 }
 

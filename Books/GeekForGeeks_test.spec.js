@@ -90,12 +90,25 @@ describe("GeekForGeeks", function() {
       expect(gfg.sortElementsByFrequency([2, 5, 2, 8, 5, 6, 8, 8])).toEqual([8, 8, 8, 2, 2, 5, 5, 6]);
     });
 
-    xit('tests findTwoElementsWhoseSumIsClosestToZero', function() {
+    it('tests findTwoElementsWhoseSumIsClosestToZero', function() {
       expect(gfg.findTwoElementsWhoseSumIsClosestToZero([1, 60, -10, 70, -80, 85])).toEqual([-80, 85]); // keep in mind that JavaScript doesn't natively support Sets
+      expect(gfg.findTwoElementsWhoseSumIsClosestToZero([-100, -30, 1, 2, 7])).toEqual([1, 2]);
     });
 
-    xit('tests segregateOnesAndZeroes', function() {
+    it('tests segregateOnesAndZeroes', function() {
       expect(gfg.segregateOnesAndZeroes([0, 1, 0, 1, 0, 0, 1, 1, 1, 0])).toEqual([0, 0, 0, 0, 0, 1, 1, 1, 1, 1]);
+      expect(gfg.segregateOnesAndZeroes([0,0,0,0])).toEqual([0,0,0,0]);
+      expect(gfg.segregateOnesAndZeroes([1,1,1,1])).toEqual([1,1,1,1]);
+    });
+
+    it('tests findTwoRepeatingElements', function() {
+      expect(gfg.findTwoRepeatingElements([4, 2, 4, 5, 2, 3, 1])).toEqual([4, 2]);
+      expect(gfg.findTwoRepeatingElements([1,2,3,4])).toEqual(false);
+    });
+
+    it('tests dutchNationalFlag', function() {
+      expect(gfg.dutchNationalFlag([0, 1, 1, 0, 1, 2, 1, 2, 0, 0, 0, 1])).toEqual([0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2]);
+      expect(gfg.dutchNationalFlag([2, 0, 2, 2, 2, 0, 1, 0, 2, 1])).toEqual([0, 0, 0, 1, 1, 2, 2, 2, 2, 2]);
     });
 
     xit('tests findMinUnsortedSubArray', function() {

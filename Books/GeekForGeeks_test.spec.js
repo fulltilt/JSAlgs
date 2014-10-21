@@ -1,4 +1,5 @@
 var GeekForGeeks = require('./GeekForGeeks.js');
+var BST = require('../BinarySearchTree.js');
 
 describe("GeekForGeeks", function() {
   var gfg = new GeekForGeeks();
@@ -109,6 +110,24 @@ describe("GeekForGeeks", function() {
     it('tests dutchNationalFlag', function() {
       expect(gfg.dutchNationalFlag([0, 1, 1, 0, 1, 2, 1, 2, 0, 0, 0, 1])).toEqual([0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2]);
       expect(gfg.dutchNationalFlag([2, 0, 2, 2, 2, 0, 1, 0, 2, 1])).toEqual([0, 0, 0, 1, 1, 2, 2, 2, 2, 2]);
+    });
+
+    it('tests binarySearchTreeToArray', function() {
+      var arr = [1, 12, 15, 26, 38, 2, 13, 17, 30, 45];
+      var bst = new BST.BinarySearchTree();
+      for (var i = 0; i < arr.length; i++) {
+        bst.insert(arr[i]);
+      }
+//bst.inOrder(bst.root);
+      expect(gfg.binarySearchTreeToArray(bst.root)).toEqual([1, 2, 12, 13, 15, 17, 26, 30, 38, 45]);
+    });
+
+    it('tests union of 2 arrays', function() {
+      expect(gfg.unionOfTwoArrays([1, 3, 4, 5, 7], [2, 3, 5, 6])).toEqual([1,2,3,4,5,6,7]);
+    });
+
+    it('tests intersection of 2 arrays', function() {
+      expect(gfg.intersectionOfTwoArrays([1, 3, 4, 5, 7], [2, 3, 5, 6])).toEqual([3,5]);
     });
 
     xit('tests findMinUnsortedSubArray', function() {

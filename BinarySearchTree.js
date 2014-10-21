@@ -30,7 +30,7 @@ function BST() {
   this._isBST = _isBST;
   this.getHeight = getHeight;
   this._getHeight = _getHeight;
-  this.isSubtree = issubtree;
+  this.isSubtree = isSubtree;
   this.getLargestBSTSubTreeSize = getLargestBSTSubTreeSize;
   this.areTreesIdentical = areTreesIdentical;
   this.mirror = mirror;
@@ -146,9 +146,9 @@ function max(node) {
 
 function inOrder(node) {
   if(node !== null) {
-    inOrder(node.left);
+    this.inOrder(node.left);
     console.log(node.show());
-    inOrder(node.right);
+    this.inOrder(node.right);
   }
 }
 
@@ -158,7 +158,7 @@ function find(data) {
 
 function _find(node, data) {
   if (node === null) {
-    return null;
+    return false;
   }
 
   if (data === node.data) {

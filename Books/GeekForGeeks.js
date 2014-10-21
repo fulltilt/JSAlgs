@@ -1,3 +1,5 @@
+var BST = require('../BinarySearchTree.js');
+
 function GeekForGeeks() {
   this.getMedianValue = getMedianValue;
   this.findEquilibriumIndex = findEquilibriumIndex;
@@ -24,7 +26,10 @@ function GeekForGeeks() {
   this.segregateOnesAndZeroes = segregateOnesAndZeroes;
   this.findTwoRepeatingElements = findTwoRepeatingElements;
   this.dutchNationalFlag = dutchNationalFlag;
-  this.unionAndIntersectionOfTwoSortedArrays = unionAndIntersectionOfTwoSortedArrays;
+  this.binarySearchTreeToArray = binarySearchTreeToArray;
+  this._binarySearchTreeToArray = _binarySearchTreeToArray;
+  this.unionOfTwoArrays = unionOfTwoArrays;
+  this.intersectionOfTwoArrays = intersectionOfTwoArrays;
   this.floorAndCeilOfSortedArray = floorAndCeilOfSortedArray;
   this.prodArrayPuzzle = prodArrayPuzzle;
   this.findMinUnsortedSubArray = findMinUnsortedSubArray;
@@ -570,9 +575,55 @@ function dutchNationalFlag(arr) {
   return arr;
 }
 
-// http://www.geeksforgeeks.org/union-and-intersection-of-two-sorted-arrays-2/
-function unionAndIntersectionOfTwoSortedArrays(arr1, arr2) {
+function binarySearchTreeToArray(root) {
+  var arr = [];
+  this._binarySearchTreeToArray(root, arr);
+  return arr;
+}
 
+function _binarySearchTreeToArray(node, arr) {
+  if (node === null) {
+    return null;
+  }
+
+  this._binarySearchTreeToArray(node.left, arr);
+  arr.push(node.data);
+  this._binarySearchTreeToArray(node.right, arr);
+}
+
+// http://www.geeksforgeeks.org/union-and-intersection-of-two-sorted-arrays-2/
+// if it's sorted, we can use the merge algorithm. However, it doesn't work if the arrays have duplicates
+function unionOfTwoArrays(arr1, arr2) {
+  var bst = new BST.BinarySearchTree();
+  for (var i = 0; i < arr2.length; i++) {
+    bst.insert(arr2[i]);
+  }
+  
+  for (i = 0; i < arr1.length; i++) {
+    if (!bst.find(arr1[i])) {
+      bst.insert(arr1[i]);
+    }
+  }
+
+  return this.binarySearchTreeToArray(bst.root);
+}
+
+// http://www.geeksforgeeks.org/union-and-intersection-of-two-sorted-arrays-2/
+// if it's sorted, we can use the merge algorithm. However, it doesn't work if the arrays have duplicates
+function intersectionOfTwoArrays(arr1, arr2) {
+  var bst = new BST.BinarySearchTree();
+  for (var i = 0; i < arr2.length; i++) {
+    bst.insert(arr2[i]);
+  }
+  
+  var results = []
+  for (i = 0; i < arr1.length; i++) {
+    if (bst.find(arr1[i])) {
+      results.push(arr1[i]);
+    }
+  }
+
+  return results;
 }
 
 // http://www.geeksforgeeks.org/search-floor-and-ceil-in-a-sorted-array/

@@ -136,9 +136,15 @@ describe("GeekForGeeks", function() {
       expect(gfg.floorAndCeilOfSortedArray([1, 2, 8, 10, 10, 12, 19], 1)).toEqual([1, 1]);
       expect(gfg.floorAndCeilOfSortedArray([1, 2, 8, 10, 10, 12, 19], 5)).toEqual([2, 8]);
       expect(gfg.floorAndCeilOfSortedArray([1, 2, 8, 10, 10, 12, 19], 20)).toEqual([19, null]);
+      expect(gfg.floorAndCeilOfSortedArray([1], 20)).toEqual([1, null]);
+      expect(gfg.floorAndCeilOfSortedArray([20], 1)).toEqual([null, 20]);
     });
 
-    xit('tests findMinUnsortedSubArray', function() {
+    it('tests prodArrayPuzzle', function() {
+      expect(gfg.prodArrayPuzzle([10, 3, 5, 6, 2])).toEqual([180, 600, 360, 300, 900]);
+    });
+
+    it('tests findMinUnsortedSubArray', function() {
       expect(gfg.findMinUnsortedSubArray([10, 12, 20, 30, 25, 40, 32, 31, 35, 50, 60])).toEqual([30,25,40,32,31,35]);
     });
 

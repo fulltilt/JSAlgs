@@ -643,6 +643,10 @@ function intersectionOfTwoArrays(arr1, arr2) {
 // http://www.geeksforgeeks.org/search-floor-and-ceil-in-a-sorted-array/
 // The code is concise but there are so many corner cases and special exceptions. It's also heavily reliant on the modified binary search to return correct indices
 function floorAndCeilOfSortedArray(arr, n) {
+  if (arr === null) {
+    return null;
+  }
+
   var index = this.binarySearch(arr, n);
 
   if (index >= 0) { // the only time binary search will return a positive # is when the element is in the array
@@ -660,13 +664,77 @@ function floorAndCeilOfSortedArray(arr, n) {
   }
 }
 
-// http://www.geeksforgeeks.org/a-product-array-puzzle/
+// http://www.geeksforgeeks.org/a-product-array-puzzle/ (clever solution)
 function prodArrayPuzzle(arr) {
+  if (arr === null) {
+    return;
+  } else if (arr.length === 1) {
+    return arr;
+  }
 
+  var LtoRProducts = [],
+      RtoLProducts = [],
+      length = arr.length;
+
+  LtoRProducts[0] = arr[0];
+  for (var i = 1; i < length; i++) {
+    LtoRProducts[i] = LtoRProducts[i - 1] * arr[i];
+  }
+
+  RtoLProducts[length - 1] = arr[length - 1];
+  for (i = length - 2; i >= 0; i--) {
+    RtoLProducts[i] = arr[i] * RtoLProducts[i + 1];
+  }
+  
+  var result = [arr.length];
+  result[0] = RtoLProducts[1];
+  result[length - 1] = LtoRProducts[length - 2];
+  for (i = 1; i < length - 1; i++) {
+    result[i] = LtoRProducts[i - 1] * RtoLProducts[i + 1];
+  }
+
+  return result;
 }
 
 // http://www.geeksforgeeks.org/minimum-length-unsorted-subarray-sorting-which-makes-the-complete-array-sorted/
 function findMinUnsortedSubArray(arr) {
+  if (arr === null) {
+    return;
+  } else if (arr.length === 1) {
+    return arr;
+  }
+
+  var lo = 0,
+      hi = arr.length - 1,
+      length = arr.length;
+
+  // find first index from left to right where the next index is less than the current index
+  for (var i = 0; i < length - 1; i++) {
+    if (arr[i] > arr[i + 1]) {
+      lo = i + 1;
+      break;
+    }
+  }
+
+  // find the first index from right to left where the next index is greater than the current index
+  for (i = length - 1; i >= 0; i--) {
+    if (arr[i] < arr[i - 1]) {
+      hi = i - 1;
+      break;
+    }
+  }
+
+  // now that we have the subarray range, find the smallest and largest value in the subarray to compare to the neighbors
+
+
+  console.log(lo + ' ' + hi);
+}
+
+function getMin(arr, lo, hi) {
+
+}
+
+function getMax(arr, lo, hi) {
 
 }
 

@@ -146,10 +146,22 @@ describe("GeekForGeeks", function() {
 
     it('tests findMinUnsortedSubArray', function() {
       expect(gfg.findMinUnsortedSubArray([10, 12, 20, 30, 25, 40, 32, 31, 35, 50, 60])).toEqual([30,25,40,32,31,35]);
+      expect(gfg.findMinUnsortedSubArray([10, 12, 20, 30, 25, 40, 32, 31, 35])).toEqual([30,25,40,32,31,35]); // corner case: unsorted on right edge
+      expect(gfg.findMinUnsortedSubArray([30, 25, 40, 32, 31, 35, 50, 60])).toEqual([30,25,40,32,31,35]);     // corner case: unsorted on left edge
+      expect(gfg.findMinUnsortedSubArray([3, 2, 1])).toEqual([3, 2, 1]);
+      expect(gfg.findMinUnsortedSubArray([3, 1, 2])).toEqual([3, 1, 2]);
+      expect(gfg.findMinUnsortedSubArray([1, 3, 2])).toEqual([3, 2]);
+      expect(gfg.findMinUnsortedSubArray([2, 1])).toEqual([2, 1]);
+      expect(gfg.findMinUnsortedSubArray([1, 4, 2, 3])).toEqual([4, 2, 3]);
     });
 
-    xit('tests findDuplicates', function() {
+    it('tests findDuplicates', function() {
       expect(gfg.findDuplicates([1, 2, 3, 1, 3, 6, 6])).toEqual([1,3,6]); // keep in mind that JavaScript doesn't natively support Sets
+    });
+
+    it('tests nextGreaterElement', function() {
+      expect(gfg.nextGreaterElement([4,5,2,25])).toEqual([5,25,25,-1]);
+      expect(gfg.nextGreaterElement([13,7,6,12])).toEqual([-1,12,12,-1]);
     });
 
     xit('tests areAllElementsConsecutive', function() {

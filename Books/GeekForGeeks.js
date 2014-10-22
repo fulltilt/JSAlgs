@@ -724,26 +724,88 @@ function findMinUnsortedSubArray(arr) {
     }
   }
 
-  // now that we have the subarray range, find the smallest and largest value in the subarray to compare to the neighbors
+  // corner case when lo is greater than hi. In this case, just swap the elements
+  if (lo > hi) {
+    var temp = lo;
+    lo = hi;
+    hi = lo;
+  }
 
+  // now that we have the subarray range, find the smallest and largest value in the subarray to compare to the neighbors:
+  // keep extending left of the range until you reach an element that is smaller than minValue and then keep extending right of the range until you
+  // reach an element that is bigger than maxValue
+  var minValue = arr[getMin(arr, lo, hi)],
+      maxValue = arr[getMax(arr, lo, hi)];
 
-  console.log(lo + ' ' + hi);
+  nextLo = lo - 1;
+  while (arr[nextLo] > minValue && nextLo !== -1) {
+    lo = nextLo;
+    nextLo -= 1;
+  }
+
+  nextHi = hi + 1;
+  while (arr[nextHi] < maxValue && nextHi !== length) {
+    hi = nextHi;
+    nextHi += 1;
+  }
+
+  return arr.slice(lo, hi + 1);
 }
 
+// helper fxn that gets smallest element within a subarray
 function getMin(arr, lo, hi) {
+  var lowest = Infinity,
+      lowestIndex;
 
+  for (var i = lo; i <= hi; i++) {
+    if (arr[i] < lowest) {
+      lowest = arr[i];
+      lowestIndex = i;
+    }
+  }
+  return lowestIndex;
 }
 
+// helper fxn that gets largest element within a subarray
 function getMax(arr, lo, hi) {
+  var highest = -Infinity,
+      highestIndex;
 
+  for (var i = lo; i <= hi; i++) {
+    if (arr[i] > highest) {
+      highest = arr[i];
+      highestIndex = i;
+    }
+  }
+  return highestIndex;
 }
 
 // http://www.geeksforgeeks.org/find-duplicates-in-on-time-and-constant-extra-space/
+// note: this modifies the array and the assumes that the element values are less than the length of the array
+//       Also doesn't work if there are zeroes. *** 
 function findDuplicates(arr) {
+  if (arr === null) {
+    return;
+  } else if (arr.length === 1) {
+    return [];
+  }
 
+  var length = arr.length,
+      results = [];
+  for (var i = 0; i < length; i++) {
+    var absVal = Math.abs(arr[i]);
+    if (arr[absVal] < 0) {
+      results.push(absVal);
+    } else {
+      arr[absVal] = -arr[absVal];
+    }
+  }
+  return results;
 }
 
 // http://www.geeksforgeeks.org/next-greater-element/
+// naive solution using an inner for-loop is O(n^2) if array is in decreasing order. Something to consider as the 
+// O(n) solution below is kind of tricky
 function nextGreaterElement(arr) {
 
 }
@@ -1016,4 +1078,5 @@ function maxSquareSubMatrix(arr) {
 // http://www.geeksforgeeks.org/divide-conquer-set-6-search-row-wise-column-wise-sorted-2d-array/
 // http://www.geeksforgeeks.org/given-n-x-n-square-matrix-find-sum-sub-squares-size-k-x-k/
 
+// PRACTICE - search '***'
 module.exports = GeekForGeeks;

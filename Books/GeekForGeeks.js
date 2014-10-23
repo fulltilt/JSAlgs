@@ -1,4 +1,5 @@
 var BST = require('../BinarySearchTree.js');
+var Queue = require('../Queue.js'); // used for maxOfAllSubArrays()
 
 function GeekForGeeks() {
   this.getMedianValue = getMedianValue;
@@ -724,7 +725,7 @@ function findMinUnsortedSubArray(arr) {
     }
   }
 
-  // corner case when lo is greater than hi. In this case, just swap the elements
+  // corner case when lo is greater than hi. In this case, just swap the indices
   if (lo > hi) {
     var temp = lo;
     lo = hi;
@@ -933,8 +934,31 @@ function countNumberOfOccurrences(arr, n, lo, hi) {
 }
 
 // http://www.geeksforgeeks.org/maximum-of-all-subarrays-of-size-k/
-function maxOfAllSubArrays(arr) {
+function maxOfAllSubArrays(arr, k) {
+  if (arr === null) {
+    throw new Error('null array');
+  } else if (k > arr.length) {
+    throw new Error('k cannot be bigger than the size of the array');
+  }
 
+  var queue = new Queue(),
+      length = arr.length,
+      results = [];
+
+  // initialize the queue with the first k elements in the array
+  for (var i = 0; i < k; i++) {
+    queue.maxEnqueue(arr[i]);
+  }
+  results.push(queue.getMax());
+
+  // continue with the rest of the array, windows of k size at a time
+  for (; i < length; i++) {
+    queue.maxDequeue();
+    queue.maxEnqueue(arr[i]);
+    results.push(queue.getMax());
+  }
+
+  return results;
 }
 
 // http://www.geeksforgeeks.org/find-the-minimum-distance-between-two-numbers/

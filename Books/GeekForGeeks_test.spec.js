@@ -186,6 +186,12 @@ describe("GeekForGeeks", function() {
       expect(gfg.countNumberOfOccurrences([1, 1, 2, 2, 2, 2, 3], 1, 0, 6)).toEqual(2);
       expect(gfg.countNumberOfOccurrences([1, 1, 2, 2, 2, 2, 3], 4, 0, 6)).toEqual(0);
     });
+
+    it('tests maxOfAllSubArrays()', function() {
+      expect(gfg.maxOfAllSubArrays([1, 2, 3, 1, 4, 5, 2, 3, 6], 3)).toEqual([3, 3, 4, 5, 5, 5, 6]);
+      expect(gfg.maxOfAllSubArrays([10, 5, 3, 7, 9, 4, 15, 12, 90, 13], 4)).toEqual([10, 9, 9, 15, 15, 90, 90]);
+      expect(gfg.maxOfAllSubArrays([12, 78, 1, 90, 57, 89, 56], 3)).toEqual([78, 90, 90, 90, 89]);
+    });
   });
 
   describe('Matrix', function() {

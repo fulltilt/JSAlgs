@@ -160,22 +160,31 @@ describe("GeekForGeeks", function() {
     });
 
     it('tests nextGreaterElement', function() {
-      expect(gfg.nextGreaterElement([4,5,2,25])).toEqual([5,25,25,-1]);
-      expect(gfg.nextGreaterElement([13,7,6,12])).toEqual([-1,12,12,-1]);
+      /*** NOTE: order doesn't matter for object literal equality ***/
+      expect(gfg.nextGreaterElement([4,5,2,25])).toEqual({ '2': 25, '4': 5, '5': 25, '25': -1 });
+      expect(gfg.nextGreaterElement([13,7,6,12])).toEqual({ '6': 12, '12': -1, '7': 12, '13': -1 });
     });
 
-    xit('tests areAllElementsConsecutive', function() {
+    it('tests areAllElementsConsecutive', function() {
       expect(gfg.areAllElementsConsecutive([5, 2, 3, 1, 4])).toEqual(true);
       expect(gfg.areAllElementsConsecutive([83, 78, 80, 81, 79, 82])).toEqual(true);
       expect(gfg.areAllElementsConsecutive([34, 23, 52, 12, 3])).toEqual(false);
       expect(gfg.areAllElementsConsecutive([7, 6, 5, 5, 3, 4])).toEqual(false);
+      expect(gfg.areAllElementsConsecutive([7, 6, 5, 5, 3])).toEqual(false);
     });
 
-    xit('tests findSmallestMissingNumber', function() {
-      expect(gfg.findSmallestMissingNumber([0, 1, 2, 6, 9])).toEqual(3);
-      expect(gfg.findSmallestMissingNumber([4, 5, 10, 11])).toEqual(0);
-      expect(gfg.findSmallestMissingNumber([0, 1, 2, 3])).toEqual(4);
-      expect(gfg.findSmallestMissingNumber([0, 1, 2, 3, 4, 5, 6, 7, 10])).toEqual(8);
+    it('tests findSmallestMissingNumber', function() {
+      expect(gfg.findSmallestMissingNumber([0, 1, 2, 6, 9], 0, 4)).toEqual(3);
+      expect(gfg.findSmallestMissingNumber([4, 5, 10, 11], 0, 3)).toEqual(0);
+      expect(gfg.findSmallestMissingNumber([0, 1, 2, 3], 0, 3)).toEqual(4);
+      expect(gfg.findSmallestMissingNumber([0, 1, 2, 3, 4, 5, 6, 7, 10], 0, 8)).toEqual(8);
+    });
+
+    it('tests countNumberOfOccurrences()', function() {
+      expect(gfg.countNumberOfOccurrences([1, 1, 2, 2, 2, 2, 3], 2, 0, 6)).toEqual(4);
+      expect(gfg.countNumberOfOccurrences([1, 1, 2, 2, 2, 2, 3], 3, 0, 6)).toEqual(1);
+      expect(gfg.countNumberOfOccurrences([1, 1, 2, 2, 2, 2, 3], 1, 0, 6)).toEqual(2);
+      expect(gfg.countNumberOfOccurrences([1, 1, 2, 2, 2, 2, 3], 4, 0, 6)).toEqual(0);
     });
   });
 

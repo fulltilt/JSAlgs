@@ -807,22 +807,129 @@ function findDuplicates(arr) {
 // naive solution using an inner for-loop is O(n^2) if array is in decreasing order. Something to consider as the 
 // O(n) solution below is kind of tricky
 function nextGreaterElement(arr) {
+  var stack = [],   // JavaScript array can mimic a stack
+      results = {}; // use object literal as the algorithm doesn't set the values in order  
+  
+  // initially push the first element onto the stack
+  stack.push(arr[0]);
 
+  for (var i = 1; i < arr.length; i++) {
+    next = arr[i];
+
+    if (stack.length !== 0) {
+      current = stack.pop();    // if stack is not empty, then pop an element from stack
+
+      /* If the popped element is smaller than next, then
+        a) print the pair
+        b) keep popping while elements are smaller and stack is not empty */
+      while (next > current) {
+        results[current] = next;
+        if (stack.length === 0) {
+          break;
+        }
+        current = stack.pop();
+      }
+
+      // If current is greater than next, then push the current element back
+      if (current > next) {
+        stack.push(current);
+      }
+    }
+
+    // push next to stack so that we can find next greater for it
+    stack.push(next);
+  }
+
+  // any elements that are left in the stack don't have a next greatest so set their values to -1
+  for (i = 0; i < stack.length; i++) {
+    results[stack[i]] = -1;
+  }
+
+  return results;
 }
 
 // http://www.geeksforgeeks.org/check-if-array-elements-are-consecutive/
+// algorithm: find min and max value and their difference should equal the length of the array + 1. Then make sure that there are no duplicates
 function areAllElementsConsecutive(arr) {
+  if (arr === null) {
+    throw new Error('null input!');
+  } else if (arr.length === 1) {
+    return true;
+  }
 
+  var length = arr.length,
+      min = getMin(arr, 0, length - 1),
+      max = getMax(arr, 0, length - 1);
+  if ((arr[max] - arr[min] + 1) === length) {
+    // find if there are duplicates
+    var table = {};
+    for (var i = 0; i < length; i++) {
+      if (!table[arr[i]]) {
+        table[arr[i]] = 1;
+      } else {
+        return false;
+      }
+    }
+  } else {
+    return false;
+  }
+
+  return true;
 }
 
 // http://www.geeksforgeeks.org/find-the-first-missing-number/
-function findSmallestMissingNumber(arr) {
+// assumption: array is sorted
+// algorithm O(log n): use binary search: if the current mid-value is greater than the index, check the left subarray. Else check the right subarray.
+// -naive is O(n) where we start from the first element and check that the element matches the index
+// -the tricky part is that it checks the first element in each subarray
+function findSmallestMissingNumber(arr, start, end) {
+  /* this was in the original code. Not sure what it's needed for
+  if(start  > end)
+      return end + 1;
+  */
+  if (start != arr[start]) {
+    return start;
+  }
 
+  var mid = Math.floor((start + end) / 2);
+
+  if (arr[mid] > mid) {
+    return this.findSmallestMissingNumber(arr, start, mid);
+  } else {
+    return this.findSmallestMissingNumber(arr, mid + 1, end);
+  }
 }
 
 // http://www.geeksforgeeks.org/count-number-of-occurrences-in-a-sorted-array/
-function countNumberOfOccurrences(arr) {
+// algorithm: use binary search to find the first and last index that has n as its value. Return (last - first + 1)
+function countNumberOfOccurrences(arr, n, lo, hi) {
+  if (hi < lo) {
+    return 0;
+  }
 
+  // case when whole subarray is filled with element n
+  if (arr[lo] === n && arr[hi] === n) {
+    return hi - lo + 1;
+  }
+
+  var mid = Math.floor((lo + hi) / 2),
+      count = 0;
+
+  if (arr[mid] === n) {
+    ++count;
+  }    
+
+  // search the left side
+  if (arr[mid] >= n) {
+    count += this.countNumberOfOccurrences(arr, n, lo, mid - 1);
+  }
+
+  // search the right side
+  if (arr[mid] <= n) {
+    count += this.countNumberOfOccurrences(arr, n, mid + 1, hi);
+  }
+
+  return count;
 }
 
 // http://www.geeksforgeeks.org/maximum-of-all-subarrays-of-size-k/
@@ -1079,4 +1186,6 @@ function maxSquareSubMatrix(arr) {
 // http://www.geeksforgeeks.org/given-n-x-n-square-matrix-find-sum-sub-squares-size-k-x-k/
 
 // PRACTICE - search '***'
+
+// DIDN'T COMPLETELY UNDERSTAND: nextGreaterElement, findSmallestMissingNumber, countNumberOfOccurrences, ConstantDequeue
 module.exports = GeekForGeeks;

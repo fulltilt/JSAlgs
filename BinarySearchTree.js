@@ -25,7 +25,8 @@ function BST() {
 
   this.min = min;
   this.max = max;
-  this.inOrder = inOrder;
+  this.getInOrder = getInOrder;
+  this.getPreOrder = getPreOrder;
   this.isBST = isBST;
   this._isBST = _isBST;
   this.getHeight = getHeight;
@@ -89,7 +90,6 @@ function BST() {
   this.findMaxPathSumBetweenTwoLeaves = findMaxPathSumBetweenTwoLeaves;
   this.areNodesCousins = areNodesCousins;
 
-  this.AVLTree = AVLTree;
   this.segmentTree = segmentTree;
   this.bTree = bTree;
   this.splayTree = this.splayTree;
@@ -144,11 +144,19 @@ function max(node) {
   return current;
 }
 
-function inOrder(node) {
-  if(node !== null) {
-    this.inOrder(node.left);
-    console.log(node.show());
-    this.inOrder(node.right);
+function getInOrder(node, arr) {
+  if (node !== null) {
+    this.getInOrder(node.left, arr);
+    arr.push(node.data);
+    this.getInOrder(node.right, arr);
+  }
+}
+
+function getPreOrder(node, arr) {
+  if (node !== null) {
+    arr.push(node.data);
+    this.getPreOrder(node.left, arr);
+    this.getPreOrder(node.right, arr);
   }
 }
 
@@ -248,6 +256,156 @@ function _clear(node) {
   node = null;
 }
 
+/*******************************************************/
+
+// AVL Tree
+function AVLNode(data) {
+  this.data = data;
+  this.left = null;
+  this.right = null;
+  this.height = 1;  // new Nodes are always inserted at a leaf so it's default height is always 1
+}
+
+function AVLTree() {
+  this.root = null;
+  this.leftRotate = leftRotate;
+  this.rightRotate = rightRotate;
+  this.AVLInsert = AVLInsert;
+  this._AVLInsert = _AVLInsert;
+//this.delete = AVLDelete;
+//this._delete = _AVLDelete;
+  this.AVLGetHeight = AVLGetHeight;
+  this.getBalance = getBalance;
+  this.AVLPreOrder = AVLPreOrder;
+}
+
+function AVLPreOrder(node, arr) {
+  if (node !== null) {
+    arr.push(node.data);
+    this.AVLPreOrder(node.left, arr);
+    this.AVLPreOrder(node.right, arr);
+  }
+}
+
+function leftRotate(node) {
+  var rightChild = node.right;
+
+  // perform rotation
+  node.right = rightChild.left;
+  rightChild.left = node;
+
+  // update root if applicable
+  if (node === this.root) {
+    this.root = rightChild;
+  }
+
+  // update heights
+  node.height = Math.max(this.AVLGetHeight(node.left), this.AVLGetHeight(node.right)) + 1;
+  rightChild.height = Math.max(this.AVLGetHeight(rightChild.left), this.AVLGetHeight(rightChild.right)) + 1;
+
+  // return new root
+  return rightChild;
+}
+
+function rightRotate(node) {
+  var leftChild = node.left;
+
+  // perform rotation
+  node.left = leftChild.right;
+  leftChild.right = node;
+
+  // update root if applicable
+  if (node === this.root) {
+    this.root = leftChild;
+  }
+
+  // update heights
+  node.height = Math.max(this.AVLGetHeight(node.left), this.AVLGetHeight(node.right)) + 1;
+  leftChild.height = Math.max(this.AVLGetHeight(leftChild.left), this.AVLGetHeight(leftChild.right)) + 1;
+
+  // return new root
+  return leftChild;
+}
+
+// http://www.geeksforgeeks.org/avl-tree-set-1-insertion/
+function AVLInsert(data) {
+  if (this.root === null) {
+    this.root = new AVLNode(data, null, null);
+    return;
+  }
+
+  this._AVLInsert(this.root, data);
+}
+
+function _AVLInsert(node, data) {
+  /* 1. Normal BST insertion */
+  if (node === null) {
+    return new AVLNode(data, null, null);
+  }
+
+  if (data < node.data) {
+    node.left = this._AVLInsert(node.left, data);
+  } else {
+    node.right = this._AVLInsert(node.right, data);
+  }
+
+  /* 2. Update height of this ancestor node */
+  node.height = Math.max(this.AVLGetHeight(node.left), this.AVLGetHeight(node.right)) + 1;
+
+  /* 3. Check balance factor of this Node to check whether this Node became unbalanced with the insertion */
+  var balance = this.getBalance(node);
+
+  // 4. If this Node becomes unbalanced, then there are 4 cases (note: a negative balance means that the tree longer on the right):
+
+  // Left Left Case
+  if (balance > 1 && data < node.left.data) {
+    return this.rightRotate(node);
+  }
+
+  // Right Right Case
+  if (balance < -1 && data > node.right.data) {
+    return this.leftRotate(node);
+  }
+
+  // Left Right Case
+  if (balance > 1 && data > node.left.data) {
+    node.left = this.leftRotate(node.left);
+    return this.rightRotate(node);
+  }
+
+  // Right Left Case
+  if (balance < -1 && data < node.right.data) {
+    node.right = this.rightRotate(node.right);
+    return this.leftRotate(node);
+  }
+
+  // return the (unchanged) node pointer
+  return node;
+}
+
+// AVL Tree helper fxn. Gets height relative to Node 
+function AVLGetHeight(node) {
+  if (node === null) {
+    return 0;
+  }
+  return node.height;
+}
+
+// AVLTree helper fxn. Gets balance factor of Node N
+function getBalance(node) {
+  if (node === null) {
+    return 0;
+  }
+  return this.AVLGetHeight(node.left) - this.AVLGetHeight(node.right);
+}
+
+// http://www.geeksforgeeks.org/avl-tree-set-2-deletion/
+function AVLDelete(data) {
+  
+}
+
+/*******************************************************/
+
 function isBST() {
   var dummy = new Node(Infinity, this.root, null);
   return _isBST(this.root, true, false, dummy.data);
@@ -276,11 +434,6 @@ function _getHeight(node) {
   }
 
   return 1 + Math.max(this._getHeight(node.left), this._getHeight(node.right));
-}
-
-// http://www.geeksforgeeks.org/check-binary-tree-subtree-another-binary-tree-set-2/
-function isSubtree(tree1, tree2) {
-
 }
 
 function getLargestBSTSubTreeSize() {
@@ -445,12 +598,6 @@ function sortedArrayToBalancedBST(arr) {
 
 // http://www.geeksforgeeks.org/convert-a-given-tree-to-sum-tree/
 function convertToSumTree() {
-
-}
-
-// http://www.geeksforgeeks.org/avl-tree-set-1-insertion/
-// http://www.geeksforgeeks.org/avl-tree-set-2-deletion/
-function AVLTree() {
 
 }
 
@@ -627,10 +774,37 @@ function areNodesCousins(node1, node2) {
 
 }
 
+// http://www.geeksforgeeks.org/check-binary-tree-subtree-another-binary-tree-set-2/
+function isSubtree(tree1, tree2) {
+  var inOrder1 = [],
+      preOrder1 = [],
+      inOrder2 = [],
+      preOrder2 = [];
+
+  this.getInOrder(tree1, inOrder1);
+  this.getPreOrder(tree1, preOrder1);
+  this.getInOrder(tree2, inOrder2);
+  this.getPreOrder(tree2, preOrder2);
+
+  /*
+TODO: research pattern matching algorithms  
+  console.log(inOrder1);
+  console.log(preOrder1);
+  console.log(inOrder2);
+  console.log(preOrder2);
+    c,a,x,b
+    x,a,c,b
+
+    c,a,x,b,d
+    x,a,c,b,d
+  */
+}
+
 var BinarySearchTree = function() {
   return {
     BinarySearchTree: BST,
-    Node: Node
+    Node: Node,
+    AVLTree: AVLTree
   }
 }();
 

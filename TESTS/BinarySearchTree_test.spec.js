@@ -3,6 +3,8 @@ var BST = require('../BinarySearchTree.js');
 describe("BST", function() {
   var bst = new BST.BinarySearchTree();
   var bt = new BST.BinarySearchTree(); // reusing BST to simulate a binary tree
+  var bt2 = new BST.BinarySearchTree();
+  var bt3 = new BST.BinarySearchTree();
 
   beforeEach(function() {
     bst.clear();
@@ -16,6 +18,7 @@ describe("BST", function() {
     bst.insert(36);
     bst.insert(10);
 
+    bt.clear();
     bt.insert(2);
     bt.root.left = new BST.Node(7);
     bt.root.left.left = new BST.Node(2);
@@ -26,6 +29,21 @@ describe("BST", function() {
     bt.root.right = new BST.Node(5);
     bt.root.right.right = new BST.Node(9);
     bt.root.right.right.left = new BST.Node(4);
+
+    bt2.clear();
+    bt2.insert('x');
+    bt2.root.left = new BST.Node('a');
+    bt2.root.left.right = new BST.Node('c');
+    bt2.root.right = new BST.Node('b');
+
+    bt3.clear();
+    bt3.insert('z');
+    bt3.root.left = new BST.Node('x');
+    bt3.root.left.left = new BST.Node('a');
+    bt3.root.left.left.right = new BST.Node('c');
+    bt3.root.left.right = new BST.Node('b');
+    bt3.root.right = new BST.Node('e');
+    bt3.root.right.right = new BST.Node('k');
   });
 
   it('tests clear()', function() {
@@ -39,7 +57,7 @@ describe("BST", function() {
 
   it("tests find", function() {
     expect(bst.find(45).data).toEqual(45);
-    expect(bst.find(15)).toEqual(null);
+    expect(bst.find(15)).toEqual(false);
   });
 
   it("tests min and max", function() {
@@ -77,5 +95,22 @@ describe("BST", function() {
 
   it('tests getLargestBSTSubTreeSize()', function() {
 
+  });
+
+  it('tests AVL Tree insert', function() {
+    var avl = new BST.AVLTree();
+    avl.AVLInsert(10);
+    avl.AVLInsert(20);
+    avl.AVLInsert(30);
+    avl.AVLInsert(40);
+    avl.AVLInsert(50);
+    avl.AVLInsert(25);
+    var output = [];
+    avl.AVLPreOrder(avl.root, output);
+    expect(output).toEqual([30,20,10,25,40,50]);
+  });
+
+  xit('tests isSubtree', function() {
+    bt.isSubtree(bt2.root, bt3.root);
   });
 });

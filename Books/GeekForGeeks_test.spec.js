@@ -51,6 +51,12 @@ describe("GeekForGeeks", function() {
   });
 
   describe('Arrays', function() {
+    it('tests isSubArray', function() {
+      expect(gfg.isSubArray([11, 1, 13, 21, 3, 7], {11, 3, 7, 1])).toEqual(true);
+      expect(gfg.isSubArray([1, 2, 3, 4, 5, 6], [1, 2, 4])).toEqual(true);
+      expect(gfg.isSubArray([10, 5, 2, 23, 19], [19, 5, 3])).toEqual(false);
+    });
+
     it('tests findMajority', function() {
       expect(gfg.findMajority([3, 3, 4, 2, 4, 4, 2, 4, 4])).toEqual(4);
       expect(gfg.findMajority([3, 3, 4, 2, 4, 4, 2, 4])).toEqual(null);

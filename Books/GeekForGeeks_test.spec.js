@@ -192,6 +192,32 @@ describe("GeekForGeeks", function() {
       expect(gfg.maxOfAllSubArrays([10, 5, 3, 7, 9, 4, 15, 12, 90, 13], 4)).toEqual([10, 9, 9, 15, 15, 90, 90]);
       expect(gfg.maxOfAllSubArrays([12, 78, 1, 90, 57, 89, 56], 3)).toEqual([78, 90, 90, 90, 89]);
     });
+
+    it('tests minDistanceBetweenTwoNums', function() {
+      expect(gfg.minDistanceBetweenTwoNums([1,2], 1, 2)).toEqual(1);
+      expect(gfg.minDistanceBetweenTwoNums([3,4,5], 3, 5)).toEqual(2);
+      expect(gfg.minDistanceBetweenTwoNums([3, 5, 4, 2, 6, 5, 6, 6, 5, 4, 8, 3], 3, 6)).toEqual(4);
+      expect(gfg.minDistanceBetweenTwoNums([2, 5, 3, 5, 4, 4, 2, 3], 3, 2)).toEqual(1);
+    });
+
+    it('tests findRepeatingAndMissing', function() {
+      expect(gfg.findRepeatingAndMissing([3,1,3])).toEqual([3,2]);
+      expect(gfg.findRepeatingAndMissing([4,3,6,2,1,1])).toEqual([1,5]);
+    });
+
+    it('tests fixedPointInArray', function() {
+      expect(gfg.fixedPointInArray([-10, -5, 0, 3, 7])).toEqual(3);
+      expect(gfg.fixedPointInArray([0, 2, 5, 8, 17])).toEqual(0);
+      expect(gfg.fixedPointInArray([-10, -5, 3, 4, 7, 9])).toEqual(-1);
+    });
+
+    it('tests maxLengthBitonicSubArray', function() {
+      expect(gfg.maxLengthBitonicSubArray([12, 4, 78, 90, 45, 23])).toEqual(5);
+      expect(gfg.maxLengthBitonicSubArray([20, 4, 1, 2, 3, 4, 2, 10])).toEqual(5);
+      expect(gfg.maxLengthBitonicSubArray([10])).toEqual(1);
+      expect(gfg.maxLengthBitonicSubArray([10, 20, 30, 40])).toEqual(4);
+      expect(gfg.maxLengthBitonicSubArray([40, 30, 20, 10])).toEqual(4);
+    });
   });
 
   describe('Matrix', function() {

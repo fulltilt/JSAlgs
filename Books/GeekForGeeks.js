@@ -109,7 +109,7 @@ function binarySearch(arr, n) {
       high = arr.length - 1;
 
   while (high >= low) { // breaks if not >=
-    var middle = Math.ceil((high + low) / 2);
+    var middle = Math.ceil((high + low) / 2);  // what happens if we use floor?
     // use middle = (low + (high - low)) / 2);  if we're talking an extremely huge high number
 
     if (arr[middle] === n) {
@@ -962,23 +962,151 @@ function maxOfAllSubArrays(arr, k) {
 }
 
 // http://www.geeksforgeeks.org/find-the-minimum-distance-between-two-numbers/
-function minDistanceBetweenTwoNums(arr) {
+// assumption: x and y are guaranteed to be in the input
+function minDistanceBetweenTwoNums(arr, x, y) {
+  if (arr === null) {
+    throw new Error('null array');
+  } else if (arr.length === 1) {
+    throw new Error('array length must be greater than 1')
+  }
 
+  var current = Infinity,
+      lastIndex = -1,
+      distance = Infinity,
+      length = arr.length;
+
+  for (var i = 0; i < length; i++) {
+    if (arr[i] === x && current !== y) {
+      current = x;
+      lastIndex = i;
+    } else if (arr[i] === x && current === y) {
+      var tempDistance = i - lastIndex;
+      if (tempDistance < distance) {
+        distance = tempDistance;
+      }
+    }
+
+    if (arr[i] === y && current !== x) {
+      current = y;
+      lastIndex = i;
+    } else if (arr[i] === y && current === x) {
+      var tempDistance = i - lastIndex;
+      if (tempDistance < distance) {
+        distance = tempDistance;
+      }
+    }
+
+    /* didn't test this out all the way but the following worked while taking out the else if statements above:
+    if ((arr[i] === x && current === y) || (arr[i] === y && current === x)) {
+      var tempDistance = i - lastIndex;
+      if (tempDistance < distance) {
+        distance = tempDistance;
+      }
+    }*/
+  }
+
+  return distance;
 }
 
 // http://www.geeksforgeeks.org/find-a-repeating-and-a-missing-number/
+// NOTE: the valid numbers are from 1 through n. Zero is not allowed
+// algorithm: Traverse the array. While traversing, use absolute value of every element as index and make 
+//   the value at this index as negative to mark it visited. If something is already marked negative then 
+//   this is the repeating element. To find missing, traverse the array again and look for a positive value
+// *** tough because of the of the '- 1' consideration and the indexes and it's values refer to other parts of the array
 function findRepeatingAndMissing(arr) {
+  if (arr === null) {
+    throw new Error('null array');
+  } else if (arr.length <= 2) {
+    throw new Error('array must be greater than 2');
+  }
 
+  var length = arr.length,
+      results = [];
+
+  // find the repeating
+  for (var i = 0; i < length; i++) {
+    var absIndex = Math.abs(arr[i]) - 1;  // need the minus 1 as the input is not zero-indexed but the array is
+
+    if (arr[absIndex] < 0) {  // found duplicate
+      results.push(Math.abs(arr[i]));
+      break;
+    } else {
+      arr[absIndex] = -arr[absIndex];
+    }
+  }
+
+  // find missing element
+  for (i = 0; i < length; i++) {
+    if (arr[i] > 0) {
+      results.push(i + 1);
+      break;
+    }
+  }
+
+  return results;
 }
 
 // http://www.geeksforgeeks.org/find-a-fixed-point-in-a-given-array/
 function fixedPointInArray(arr) {
+  var length = arr.length,
+      lo = 0,
+      hi = length - 1;
 
+  while (hi > lo) {
+    var mid = Math.floor((lo + hi) / 2);
+    if (arr[mid] === mid) {
+      return mid;
+    } else if (arr[mid] < mid) {  // check right subarray
+      lo = mid + 1;
+    } else {                      // check left subarray
+      hi = mid - 1;
+    }
+  }
+
+  return -1;
 }
 
 // http://www.geeksforgeeks.org/maximum-length-bitonic-subarray/
+// reread algorithm. It's easy to implement but not 100% on why it works
 function maxLengthBitonicSubArray(arr) {
+  if (arr === null) {
+    throw new Error('null array');
+  }
 
+  var length = arr.length - 1,
+      inc = [length], // keeps track of increasing indices from left to right
+      dec = [length]; // keeps track of increasing indices from right to left
+
+  // fill in inc
+  inc[0] = 1; // first element doesn't have a previous element to compare to so set it to 1
+  for (var i = 1; i < arr.length; i++) {
+    if (arr[i] > arr[i - 1]) {
+      inc[i] = inc[i - 1] + 1;
+    } else {
+      inc[i] = 1;
+    }
+  }
+
+  // fill in dec
+  dec[arr.length - 1] = 1; // last element doesn't have a previous element to compare to so set it to 1
+  for (i = arr.length - 2; i >= 0; i--) {
+    if (arr[i] > arr[i + 1]) {
+      dec[i] = dec[i + 1] + 1;
+    } else {
+      dec[i] = 1;
+    }
+  }
+  
+  var maxValue = inc[0] + dec[0] - 1;
+  for (i = 1; i < arr.length; i++) {
+    var temp = inc[i] + dec[i] - 1;
+    if (temp > maxValue) {
+      maxValue = temp;
+    }
+  }
+
+  return maxValue;
 }
 
 // http://www.geeksforgeeks.org/find-the-maximum-element-in-an-array-which-is-first-increasing-and-then-decreasing/
@@ -1211,5 +1339,8 @@ function maxSquareSubMatrix(arr) {
 
 // PRACTICE - search '***'
 
-// DIDN'T COMPLETELY UNDERSTAND: nextGreaterElement, findSmallestMissingNumber, countNumberOfOccurrences, ConstantDequeue
+// DIDN'T COMPLETELY UNDERSTAND: nextGreaterElement, findSmallestMissingNumber, countNumberOfOccurrences,
+// maxLengthBitonicSubArray 
+
+// MATHY: findRepeatingAndMissing
 module.exports = GeekForGeeks;

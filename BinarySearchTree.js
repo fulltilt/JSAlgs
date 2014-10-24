@@ -277,6 +277,10 @@ function AVLTree() {
   this.AVLGetHeight = AVLGetHeight;
   this.getBalance = getBalance;
   this.AVLPreOrder = AVLPreOrder;
+  this.find = find;
+  this._find = find;
+  this.size = size;
+  this._size = _size;
 }
 
 function AVLPreOrder(node, arr) {

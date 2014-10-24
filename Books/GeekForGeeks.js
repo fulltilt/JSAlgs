@@ -1,5 +1,5 @@
-var BST = require('../BinarySearchTree.js');
 var Queue = require('../Queue.js'); // used for maxOfAllSubArrays()
+var BST = require('../BinarySearchTree.js');  // for binarySearchTreeToArray, countSmallerElementsOnRight
 
 function GeekForGeeks() {
   this.getMedianValue = getMedianValue;
@@ -14,6 +14,7 @@ function GeekForGeeks() {
   this.partition = partition;
 
   // Arrays
+  this.isSubArray = isSubArray;
   this.findMajority = findMajority;
   this.findMissingNumber = findMissingNumber;
   this.findPivotInRotatedArray = findPivotInRotatedArray;
@@ -275,6 +276,12 @@ function partition(arr, lo, hi) {
   arr[lo] = temp;
 
   return j;
+}
+
+// http://www.geeksforgeeks.org/find-whether-an-array-is-subset-of-another-array-set-1/
+// determine whether arr2 is a subarray of arr1
+function isSubArray(arr1, arr2) {
+
 }
 
 // http://www.geeksforgeeks.org/majority-element/ (unsorted) or http://www.geeksforgeeks.org/check-for-majority-element-in-a-sorted-array/
@@ -1193,11 +1200,6 @@ function findMaxInIncreasingDecreasing(arr) {
   }
 }
 
-// http://www.geeksforgeeks.org/count-smaller-elements-on-right-side/
-function countSmallerElementsOnRight(arr) {
-
-}
-
 // http://www.geeksforgeeks.org/implement-two-stacks-in-an-array/
 function impelementTwoStacksInAnArray(arr) {
 
@@ -1389,6 +1391,28 @@ function findExcelColumnName(num) {
 // http://www.geeksforgeeks.org/maximum-size-sub-matrix-with-all-1s-in-a-binary-matrix/
 function maxSquareSubMatrix(arr) {
 
+}
+
+// http://www.geeksforgeeks.org/count-smaller-elements-on-right-side/
+// TODO: not finished as the O(nlog n) solution requires a modified AVL Tree which is at this point a lot of work for a solution I don't understand
+function countSmallerElementsOnRight(arr) {
+  var avl = new BST.AVLTree(),
+      length = arr.length,
+      results = [];
+
+  for (var i = length - 1; i >= 0; i--) {
+    avl.AVLInsert(arr[i]);
+  }
+
+  for (i = 0; i < length; i++) {
+    var currentNode = avl.find(arr[i]);
+    if (currentNode.left !== null) {
+      results[i] = avl._size(currentNode.left);
+    } else {
+      results[i] = 0;
+    }
+  }
+  return results;
 }
 
 // STAR PROBS

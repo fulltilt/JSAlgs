@@ -1,5 +1,5 @@
 var GeekForGeeks = require('./GeekForGeeks.js');
-var BST = require('../BinarySearchTree.js');
+var BST = require('../BinarySearchTree.js');  // for binarySearchTreeToArray
 
 describe("GeekForGeeks", function() {
   var gfg = new GeekForGeeks();
@@ -51,12 +51,6 @@ describe("GeekForGeeks", function() {
   });
 
   describe('Arrays', function() {
-    it('tests isSubArray', function() {
-      expect(gfg.isSubArray([11, 1, 13, 21, 3, 7], {11, 3, 7, 1])).toEqual(true);
-      expect(gfg.isSubArray([1, 2, 3, 4, 5, 6], [1, 2, 4])).toEqual(true);
-      expect(gfg.isSubArray([10, 5, 2, 23, 19], [19, 5, 3])).toEqual(false);
-    });
-
     it('tests findMajority', function() {
       expect(gfg.findMajority([3, 3, 4, 2, 4, 4, 2, 4, 4])).toEqual(4);
       expect(gfg.findMajority([3, 3, 4, 2, 4, 4, 2, 4])).toEqual(null);
@@ -241,10 +235,16 @@ describe("GeekForGeeks", function() {
       //expect(gfg.findMaxInIncreasingDecreasing([40, 30, 20, 10])).toEqual(40);
     });
 
-    it('tests countSmallerElementsOnRight', function() {
+    xit('tests countSmallerElementsOnRight', function() {
       expect(gfg.countSmallerElementsOnRight([12, 1, 2, 3, 0, 11, 4])).toEqual([6,1,1,1,0,1,0]);
       expect(gfg.countSmallerElementsOnRight([5,4,3,2,1])).toEqual([4,3,2,1,0]);
       expect(gfg.countSmallerElementsOnRight([1,2,3,4,5])).toEqual([0,0,0,0,0]);
+    });
+
+    xit('tests isSubArray', function() {
+      expect(gfg.isSubArray([11, 1, 13, 21, 3, 7], [11, 3, 7, 1])).toEqual(true);
+      expect(gfg.isSubArray([1, 2, 3, 4, 5, 6], [1, 2, 4])).toEqual(true);
+      expect(gfg.isSubArray([10, 5, 2, 23, 19], [19, 5, 3])).toEqual(false);
     });
   });
 

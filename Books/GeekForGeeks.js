@@ -44,6 +44,7 @@ function GeekForGeeks() {
   this.findRepeatingAndMissing = findRepeatingAndMissing;
   this.fixedPointInArray = fixedPointInArray;
   this.maxLengthBitonicSubArray = maxLengthBitonicSubArray;
+  this.getMaxLengthBitonicSubArray = getMaxLengthBitonicSubArray;
   this.findMaxInIncreasingDecreasing = findMaxInIncreasingDecreasing;
   this.countSmallerElementsOnRight = countSmallerElementsOnRight;
   this.impelementTwoStacksInAnArray = impelementTwoStacksInAnArray;
@@ -1109,9 +1110,87 @@ function maxLengthBitonicSubArray(arr) {
   return maxValue;
 }
 
+function getMaxLengthBitonicSubArray(arr) {
+if (arr === null) {
+    throw new Error('null array');
+  }
+
+  var length = arr.length - 1,
+      inc = [length], // keeps track of increasing indices from left to right
+      dec = [length]; // keeps track of increasing indices from right to left
+
+  // fill in inc
+  inc[0] = 1; // first element doesn't have a previous element to compare to so set it to 1
+  for (var i = 1; i < arr.length; i++) {
+    if (arr[i] > arr[i - 1]) {
+      inc[i] = inc[i - 1] + 1;
+    } else {
+      inc[i] = 1;
+    }
+  }
+
+  // fill in dec
+  dec[arr.length - 1] = 1; // last element doesn't have a previous element to compare to so set it to 1
+  for (i = arr.length - 2; i >= 0; i--) {
+    if (arr[i] > arr[i + 1]) {
+      dec[i] = dec[i + 1] + 1;
+    } else {
+      dec[i] = 1;
+    }
+  }
+  
+  var maxValue = inc[0] + dec[0] - 1,
+      maxIndex = 0;
+  for (i = 1; i < arr.length; i++) {
+    var temp = inc[i] + dec[i] - 1;
+    if (temp > maxValue) {
+      maxValue = temp;
+      maxIndex = i;
+    }
+  }
+
+  // get point where inc starts increasing into maxIndex
+  var incIndex = maxIndex,
+      decIndex = maxIndex;
+  while (inc[incIndex] !== 1) {
+    incIndex -= 1;
+  }
+  
+  while (dec[decIndex] !== 1) {
+    decIndex += 1;
+  }
+
+  return arr.slice(incIndex, decIndex + 1);
+}
+
 // http://www.geeksforgeeks.org/find-the-maximum-element-in-an-array-which-is-first-increasing-and-then-decreasing/
 function findMaxInIncreasingDecreasing(arr) {
+  if (arr === null) {
+    throw new Error('null array');
+  } else if (arr.length < 3) {
+    throw new Error('array must be at least 3 items long');
+  }
 
+  var length = arr.length - 1,
+      lo = 0,
+      hi = length - 1;
+
+  while (hi > lo) {
+    // corner case of when there's 2 elements left
+    if ((hi - lo) === 1) {
+      return Math.max(arr[lo], arr[hi]);
+    }
+
+    var mid = Math.floor((lo + hi) / 2);
+
+    if ((arr[mid - 1] < arr[mid]) && arr[mid + 1] < arr[mid]) { // if both neighbors are less than index, we found max
+      return arr[mid];
+    } else if ((arr[mid - 1] < arr[mid]) && arr[mid + 1] > arr[mid]) { // if neighbors and index are in increasing order, check right subarray
+      lo = mid + 1;
+    } else {  // neighbors and index are in decreasing order. Check left subarray
+      hi = mid - 1;
+    }
+  }
 }
 
 // http://www.geeksforgeeks.org/count-smaller-elements-on-right-side/

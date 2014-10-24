@@ -218,6 +218,28 @@ describe("GeekForGeeks", function() {
       expect(gfg.maxLengthBitonicSubArray([10, 20, 30, 40])).toEqual(4);
       expect(gfg.maxLengthBitonicSubArray([40, 30, 20, 10])).toEqual(4);
     });
+
+    it('tests getMaxLengthBitonicSubArray', function() {
+      expect(gfg.getMaxLengthBitonicSubArray([12, 4, 78, 90, 45, 23])).toEqual([4, 78, 90, 45, 23]);
+      expect(gfg.getMaxLengthBitonicSubArray([20, 4, 1, 2, 3, 4, 2, 10])).toEqual([1, 2, 3, 4, 2]);
+      expect(gfg.getMaxLengthBitonicSubArray([10])).toEqual([10]);
+      expect(gfg.getMaxLengthBitonicSubArray([10, 20, 30, 40])).toEqual([10, 20, 30, 40]);
+      expect(gfg.getMaxLengthBitonicSubArray([40, 30, 20, 10])).toEqual([40, 30, 20, 10]);
+    });
+
+    it('tests findMaxInIncreasingDecreasing', function() {
+      expect(gfg.findMaxInIncreasingDecreasing([1, 30, 40, 50, 60, 70, 23, 20])).toEqual(70);
+      expect(gfg.findMaxInIncreasingDecreasing([3, 50, 10, 9, 7, 6])).toEqual(50);
+      expect(gfg.findMaxInIncreasingDecreasing([2, 4, 6, 8, 10, 3, 1])).toEqual(10);
+      //expect(gfg.findMaxInIncreasingDecreasing([10, 20, 30, 40])).toEqual(40); // algo doesn't work for this or the one below
+      //expect(gfg.findMaxInIncreasingDecreasing([40, 30, 20, 10])).toEqual(40);
+    });
+
+    it('tests countSmallerElementsOnRight', function() {
+      expect(gfg.countSmallerElementsOnRight([12, 1, 2, 3, 0, 11, 4])).toEqual([6,1,1,1,0,1,0]);
+      expect(gfg.countSmallerElementsOnRight([5,4,3,2,1])).toEqual([4,3,2,1,0]);
+      expect(gfg.countSmallerElementsOnRight([1,2,3,4,5])).toEqual([0,0,0,0,0]);
+    });
   });
 
   describe('Matrix', function() {

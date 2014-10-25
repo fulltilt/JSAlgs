@@ -238,7 +238,17 @@ describe("GeekForGeeks", function() {
     it('tests findSubArrayWithGivenSum', function() {
       expect(gfg.findSubArrayWithGivenSum([1,4,20,3,10,5], 33)).toEqual([2,4]);
       expect(gfg.findSubArrayWithGivenSum([1,4,0,0,3,10,5], 7)).toEqual([1,4]);
-      expect(gfg.findSubArrayWithGivenSum([1,4], 0)).toEqual([-1]);
+      expect(gfg.findSubArrayWithGivenSum([1,4], 0)).toEqual(false);
+    });
+
+    it('tests findTwoNumsThatSumToN', function() {
+      expect(gfg.findTwoNumsThatSumToN([-8, 1, 4, 6, 10, 45], 16)).toEqual([6,10]);
+      expect(gfg.findTwoNumsThatSumToN([-8, 1, 4, 6, 10, 45], 0)).toEqual(-1);
+    });
+
+    it('tests findTripletThatSumsToN', function() {
+      expect(gfg.findTripletThatSumsToN([1, 4, 45, 6, 10, 8], 22)).toEqual([8,10,4]);
+      expect(gfg.findTripletThatSumsToN([1, 4, 45, 6, 10, 8], 5)).toEqual(-1);
     });
 
     xit('tests countSmallerElementsOnRight', function() {

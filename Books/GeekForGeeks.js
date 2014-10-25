@@ -48,7 +48,8 @@ function GeekForGeeks() {
   this.getMaxLengthBitonicSubArray = getMaxLengthBitonicSubArray;
   this.findMaxInIncreasingDecreasing = findMaxInIncreasingDecreasing;
   this.countSmallerElementsOnRight = countSmallerElementsOnRight;
-  this.findSubArrayWithGivenSum = this.findSubArrayWithGivenSum;
+  this.findSubArrayWithGivenSum = findSubArrayWithGivenSum;
+  this.findTwoNumsThatSumToN = findTwoNumsThatSumToN;
   this.findTripletThatSumsToN = findTripletThatSumsToN;
   this.findSortedSubSequenceOfThree = findSortedSubSequenceOfThree;
   this.largestSubArrayOfZeroesAndOnes = largestSubArrayOfZeroesAndOnes;
@@ -1201,7 +1202,7 @@ function findMaxInIncreasingDecreasing(arr) {
 
 // http://www.geeksforgeeks.org/find-subarray-with-given-sum/
 // note: array is unordered
-function findSubArrayWithGivenSum(arr, n) {
+function findSubArrayWithGivenSum(arr, sum) {
   if (arr === null) {
     throw new Error('null array');
   } else if (arr.length === 0) {
@@ -1213,13 +1214,63 @@ function findSubArrayWithGivenSum(arr, n) {
       currentSum = arr[0];
 
   for (var i = 1; i < length; i++) {
+    // keep removing trailing indices while currentSum is greater than sum
+    while (currentSum > sum && start < i - 1) {
+      currentSum -= arr[start];
+      start += 1;
+    }
 
+    if (currentSum === sum) {
+      return [start, i - 1];
+    }
+
+    if (i < length) {
+      currentSum += arr[i];
+    }
   }
+
+  return false;
+}
+
+// http://www.geeksforgeeks.org/write-a-c-program-that-given-a-set-a-of-n-numbers-and-another-number-x-determines-whether-or-not-there-exist-two-elements-in-s-whose-sum-is-exactly-x/
+// assumption: array must be sorted
+function findTwoNumsThatSumToN(arr, n) {
+  var lo = 0,
+      hi = arr.length - 1,
+      currentSum;
+
+  while (hi > lo) {
+    currentSum = arr[lo] + arr[hi];
+
+    if (currentSum === n) {
+      return [arr[lo], arr[hi]];
+    } else if (currentSum > n) {
+      hi -= 1;
+    } else {
+      lo += 1;
+    }
+  }
+
+  return -1;
 }
 
 // http://www.geeksforgeeks.org/find-a-triplet-that-sum-to-a-given-value/
 function findTripletThatSumsToN(arr, n) {
+  var length = arr.length,
 
+  arr = arr.sort(function(a, b) { return a - b; }); // algorithm relies that the numbers are sorted
+
+  for (var i = 0; i < length; i++) {
+    var tempSum = n - arr[i],
+        tempResult = this.findTwoNumsThatSumToN(arr, tempSum);
+
+    if (tempResult !== -1) {
+      tempResult.push(arr[i]);
+      return tempResult;
+    }
+  }
+
+  return -1;
 }
 
 // http://www.geeksforgeeks.org/find-a-sorted-subsequence-of-size-3-in-linear-time/
@@ -1287,24 +1338,6 @@ function findCommonElementsInThreeArrays(arr1, arr2, arr3) {
 
 }
 
-// http://www.geeksforgeeks.org/pattern-searching-set-8-suffix-tree-introduction/
-function suffixTree() {
-
-}
-
-// http://www.geeksforgeeks.org/pattern-searching-using-trie-suffixes/
-// http://www.geeksforgeeks.org/trie-insert-and-search/
-// http://www.geeksforgeeks.org/trie-delete/
-// http://www.geeksforgeeks.org/longest-prefix-matching-a-trie-based-solution-in-java/
-function trie() {
-
-}
-
-// http://www.geeksforgeeks.org/ternary-search-tree/
-function ternarySearchTree() {
-
-}
-
 // http://www.geeksforgeeks.org/a-program-to-check-if-strings-are-rotations-of-each-other-or-not/
 function areStringRotations(str1, str2) {
 
@@ -1345,28 +1378,8 @@ function smallestWindowContainingString(str1, str2) {
 
 }
 
-// http://www.geeksforgeeks.org/searching-for-patterns-set-2-kmp-algorithm/
-function KMP(str1, str2) {
-
-}
-
-// http://www.geeksforgeeks.org/searching-for-patterns-set-3-rabin-karp-algorithm/
-function RabinKarp(str1, str2) {
-
-}
-
-// http://www.geeksforgeeks.org/searching-for-patterns-set-5-finite-automata/
-function finiteAutomata(str1, str2) {
-
-}
-
 // http://www.geeksforgeeks.org/print-all-interleavings-of-given-two-strings/
 function printInterleavings(str1, str2) {
-
-}
-
-// http://www.geeksforgeeks.org/searching-for-patterns-set-5-finite-automata/
-function finiteAutomata(str1, str2) {
 
 }
 
@@ -1392,6 +1405,39 @@ function findAllPossibleWordsFromPhoneDigits() {
 
 // http://www.geeksforgeeks.org/find-excel-column-name-given-number/
 function findExcelColumnName(num) {
+
+}
+
+// http://www.geeksforgeeks.org/searching-for-patterns-set-2-kmp-algorithm/
+function KMP(str1, str2) {
+
+}
+
+// http://www.geeksforgeeks.org/searching-for-patterns-set-3-rabin-karp-algorithm/
+function RabinKarp(str1, str2) {
+
+}
+
+// http://www.geeksforgeeks.org/searching-for-patterns-set-5-finite-automata/
+function finiteAutomata(str1, str2) {
+
+}
+
+// http://www.geeksforgeeks.org/pattern-searching-set-8-suffix-tree-introduction/
+function suffixTree() {
+
+}
+
+// http://www.geeksforgeeks.org/pattern-searching-using-trie-suffixes/
+// http://www.geeksforgeeks.org/trie-insert-and-search/
+// http://www.geeksforgeeks.org/trie-delete/
+// http://www.geeksforgeeks.org/longest-prefix-matching-a-trie-based-solution-in-java/
+function trie() {
+
+}
+
+// http://www.geeksforgeeks.org/ternary-search-tree/
+function ternarySearchTree() {
 
 }
 
@@ -1450,7 +1496,7 @@ function countSmallerElementsOnRight(arr) {
 // PRACTICE - search '***'
 
 // DIDN'T COMPLETELY UNDERSTAND: nextGreaterElement, findSmallestMissingNumber, countNumberOfOccurrences,
-// maxLengthBitonicSubArray 
+// maxLengthBitonicSubArray, compare findSubArrayWithGivenSum with findTwoNumsThatSumToN
 
 // MATHY: findRepeatingAndMissing
 module.exports = GeekForGeeks;

@@ -95,7 +95,55 @@ console.log(isParenthesesBalanced('()()'));
 console.log(isParenthesesBalanced('(()'));
 console.log(isParenthesesBalanced(')'));
 console.log(isParenthesesBalanced('((()))'));
+console.log(isParenthesesBalanced('2.3 + 23 / 12 + (3.14159* .24)'));
 console.log(isParenthesesBalanced('2.3 + 23 / 12 + (3.14159* .24'));
 
-
 // Infix to postfix	
+// .....
+
+// http://www.geeksforgeeks.org/implement-two-stacks-in-an-array/
+// Implementing two stacks using a single array. Starting indices for each stack are at opposite ends of the array and the stacks grow in opposite directions
+function TwoStacks(n) {
+	this.arr = [];
+	this.size = n;
+	this.top1 = -1;
+	this.top2 = this.size;
+	this.push1 = push1;
+	this.push2 = push2;
+	this.pop1 = pop1;
+	this.pop2 = pop2;
+}
+
+function push1(data) {
+	if ((this.top1 + 1) !== this.top2) {
+		this.arr[++this.top1] = data;
+	} else {
+		throw new Error('reached capacity');
+	}
+}
+
+function push2(data) {
+	if ((this.top2 - 1) !== this.top1) {
+		this.arr[--this.top2] = data;
+	}	else {
+		throw new Error('reached capacity');
+	}
+}
+
+function pop1() {
+	if (this.top1 !== -1) {
+		return this.arr[this.top1--];
+	} else {
+		throw new Error('stack is empty');
+	}
+}
+
+function pop2() {
+if (this.top2 !== this.size) {
+		return this.arr[this.top2++];
+	} else {
+		throw new Error('stack is empty');
+	}	
+}
+
+module.exports = TwoStacks;

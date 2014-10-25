@@ -48,7 +48,6 @@ function GeekForGeeks() {
   this.getMaxLengthBitonicSubArray = getMaxLengthBitonicSubArray;
   this.findMaxInIncreasingDecreasing = findMaxInIncreasingDecreasing;
   this.countSmallerElementsOnRight = countSmallerElementsOnRight;
-  this.impelementTwoStacksInAnArray = impelementTwoStacksInAnArray;
   this.findSubArrayWithGivenSum = this.findSubArrayWithGivenSum;
   this.findTripletThatSumsToN = findTripletThatSumsToN;
   this.findSortedSubSequenceOfThree = findSortedSubSequenceOfThree;
@@ -1198,11 +1197,6 @@ function findMaxInIncreasingDecreasing(arr) {
       hi = mid - 1;
     }
   }
-}
-
-// http://www.geeksforgeeks.org/implement-two-stacks-in-an-array/
-function impelementTwoStacksInAnArray(arr) {
-
 }
 
 // http://www.geeksforgeeks.org/find-subarray-with-given-sum/

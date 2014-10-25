@@ -1,5 +1,6 @@
 var Queue = require('../Queue.js'); // used for maxOfAllSubArrays()
 var BST = require('../BinarySearchTree.js');  // for binarySearchTreeToArray, countSmallerElementsOnRight
+var Heap = require('../Heap.js'); // used for mergeKSortedArrays
 
 function GeekForGeeks() {
   this.getMedianValue = getMedianValue;
@@ -55,6 +56,7 @@ function GeekForGeeks() {
   this.largestSubArrayOfZeroesAndOnes = largestSubArrayOfZeroesAndOnes;
   this.maxProductSubArray = maxProductSubArray;
   this.formBiggestNumber = formBiggestNumber;
+  this.biggestNumCompare = biggestNumCompare;
   this.mergeKSortedArrays = mergeKSortedArrays;
   this.smallestSubArrayWhoseSumIsLessThanN = smallestSubArrayWhoseSumIsLessThanN;
   this.findKClosestElementsToN = findKClosestElementsToN;
@@ -1274,28 +1276,94 @@ function findTripletThatSumsToN(arr, n) {
 }
 
 // http://www.geeksforgeeks.org/find-a-sorted-subsequence-of-size-3-in-linear-time/
+// Note: a subsequence is in order from left to right but isn't necessarily contiguous
+// ex.  input = [12, 11, 10, 5, 6, 2, 30]
+//      smaller = [ -1, -1, -1, -1, 3, -1, 5 ]
+//      bigger = [ 6, 6, 6, 6, 6, 6, -1 ]
 function findSortedSubSequenceOfThree(arr) {
+  var length = arr.length,
+      min = 0,
+      max = length - 1,
+      smaller = [length],
+      bigger = [length];
 
-}
+  // Create an array that will store index of a smaller element on left side. If there is no smaller element on left side, then smaller[i] will be -1
+  smaller[0] = -1; // first entry is always -1
+  for (i = 1; i < length; i++) {
+    if (arr[i] <= arr[min]) {
+      min = i;
+      smaller[i] = -1;
+    } else {
+      smaller[i] = min;
+    }
+  }
 
-// http://www.geeksforgeeks.org/largest-subarray-with-equal-number-of-0s-and-1s/
-function largestSubArrayOfZeroesAndOnes(arr) {
+  // Create an array that will store index of a bigger element on right side. If there is no bigger element on right side, then bigger[i] will be -1
+  bigger[length - 1] = -1; // last entry is always -1
+  for (i = length - 2; i >= 0; i--) {
+    if (arr[i] >= arr[max]) {
+      max = i;
+      bigger[i] = -1;
+    } else {
+      bigger[i] = max;
+    }
+  }
 
-}
+  // Now find a # which has both a greater # on right side and smaller # on left side
+  for (i = 0; i < length; i++) {
+    if (smaller[i] !== -1 && bigger[i] !== -1) {  // note: noticed that there isn't any checking if smaller[i] < bigger[i] in original source
+      return [arr[smaller[i]], arr[i], arr[bigger[i]]];
+    }
+  }
 
-// http://www.geeksforgeeks.org/maximum-product-subarray/
-function maxProductSubArray(arr) {
-
+  return -1;
 }
 
 // http://www.geeksforgeeks.org/given-an-array-of-numbers-arrange-the-numbers-to-form-the-biggest-number/
 function formBiggestNumber(arr) {
+  var length = arr.length,
+      output = '';
 
+  arr = arr.sort(this.biggestNumCompare);
+
+  for (var i = 0; i < length; i++) {
+    output += arr[i];
+  }
+
+  return output;
+}
+
+// helper fxn for formBiggestNumber()
+function biggestNumCompare(x, y) {
+  x = (x).toString();
+  y = (y).toString();
+
+  var XY = x.concat(y),
+      YX = y.concat(x);
+
+  return parseInt(YX) - parseInt(XY);   
 }
 
 // http://www.geeksforgeeks.org/merge-k-sorted-arrays/
 function mergeKSortedArrays(arr) {
+  var heap = new Heap(function(x) { return x; }),
+      rows = arr.length,
+      columns = arr[0].length,
+      result = [];
 
+  // add all elements into heap
+  for (var i = 0; i < rows; i++) {
+    for (var j = 0; j < columns; j++) {
+      heap.push(arr[i][j]);
+    }
+  }
+
+  // pop all elements from heap and into results array
+  while (heap.size() > 0) {
+    result.push(heap.pop());
+  }
+
+  return result;
 }
 
 // http://www.geeksforgeeks.org/find-number-pairs-xy-yx/
@@ -1446,6 +1514,35 @@ function maxSquareSubMatrix(arr) {
 
 }
 
+// http://www.geeksforgeeks.org/maximum-product-subarray/
+// assumption: input array always has a positive output
+function maxProductSubArray(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/largest-subarray-with-equal-number-of-0s-and-1s/
+// algorithm: consider all zero values as -1. The problem now reduces to find the max length subarray with sum = 0
+// see: http://stackoverflow.com/questions/5534063/zero-sum-subarray ;we can do a similar approach combining above and instead
+//  of looking for an index with the same value, look for an index with the same value plus 1 (apparently we have to do this since
+//    we treat zeroes as '-1'. I'm not sure why this is so.) and do a binary search to the right of the index for these values making
+//    algorithm O(n logn). The problem is when we have multiple sets where the index is the same and comparing their lengths
+function largestSubArrayOfZeroesAndOnes(arr) {
+  var length = arr.length,
+      lo = 0,
+      hi = length -1,
+      sum = 0;
+
+  // get sum of array treating zeroes as '-1'
+  for (var i = 0; i < length; i++) {
+    if (arr[i] === 0) {
+      sum += -1;
+    } else {
+      sum += 1;
+    }
+  }
+
+}
+
 // http://www.geeksforgeeks.org/count-smaller-elements-on-right-side/
 // TODO: not finished as the O(nlog n) solution requires a modified AVL Tree which is at this point a lot of work for a solution I don't understand
 function countSmallerElementsOnRight(arr) {
@@ -1496,7 +1593,8 @@ function countSmallerElementsOnRight(arr) {
 // PRACTICE - search '***'
 
 // DIDN'T COMPLETELY UNDERSTAND: nextGreaterElement, findSmallestMissingNumber, countNumberOfOccurrences,
-// maxLengthBitonicSubArray, compare findSubArrayWithGivenSum with findTwoNumsThatSumToN
+// maxLengthBitonicSubArray, compare findSubArrayWithGivenSum with findTwoNumsThatSumToN, findSortedSubSequenceOfThree,
+// biggestNumCompare
 
 // MATHY: findRepeatingAndMissing
 module.exports = GeekForGeeks;

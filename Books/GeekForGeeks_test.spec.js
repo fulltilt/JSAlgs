@@ -251,6 +251,58 @@ describe("GeekForGeeks", function() {
       expect(gfg.findTripletThatSumsToN([1, 4, 45, 6, 10, 8], 5)).toEqual(-1);
     });
 
+    it('tests findSortedSubSequenceOfThree', function() {
+      expect(gfg.findSortedSubSequenceOfThree([12, 11, 10, 5, 6, 2, 30])).toEqual([5,6,30]);
+      expect(gfg.findSortedSubSequenceOfThree([12, 11, 10, 6, 5, 2, 30])).toEqual(-1);
+    });
+
+    it('tests formBiggestNumber', function() {
+      var arr = [];
+      arr.push('54');
+      arr.push('546');
+      arr.push('548');
+      arr.push('60');
+      expect(gfg.formBiggestNumber(arr)).toEqual('6054854654');
+
+      arr = [];
+      arr.push('7');
+      arr.push('776');
+      arr.push('7');
+      arr.push('7');
+      expect(gfg.formBiggestNumber(arr)).toEqual('777776');
+
+      arr = [];
+      arr.push('1');
+      arr.push('34');
+      arr.push('3');
+      arr.push('98');
+      arr.push('9');
+      arr.push('76');
+      arr.push('45');
+      arr.push('4');
+      expect(gfg.formBiggestNumber(arr)).toEqual('998764543431');
+    });
+
+    it('testst mergeKSortedArrays', function() {
+      var arr = [[1, 3, 5, 7],
+                 [2, 4, 6, 8],
+                 [0, 9, 10, 11]];
+      expect(gfg.mergeKSortedArrays(arr)).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+    });
+
+    xit('tests maxProductSubArray', function() {
+      expect(gfg.maxProductSubArray([6, -3, -10, 0, 2])).toEqual(180);
+      expect(gfg.maxProductSubArray([-1, -3, -10, 0, 60])).toEqual(60);
+      expect(gfg.maxProductSubArray([-2, -3, 0, -2, -40])).toEqual(80);
+    });
+
+    xit('tests largestSubArrayOfZeroesAndOnes', function() {
+      expect(gfg.largestSubArrayOfZeroesAndOnes([1, 0, 1, 1, 1, 0, 0])).toEqual([1,6]);
+      expect(gfg.largestSubArrayOfZeroesAndOnes([1, 1, 1, 1])).toEqual(-1);
+      expect(gfg.largestSubArrayOfZeroesAndOnes([0, 0, 1, 1, 0])).toEqual([1,4]);
+      //expect(gfg.largestSubArrayOfZeroesAndOnes([0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1])).toEqual([1,4]);
+    });
+
     xit('tests countSmallerElementsOnRight', function() {
       expect(gfg.countSmallerElementsOnRight([12, 1, 2, 3, 0, 11, 4])).toEqual([6,1,1,1,0,1,0]);
       expect(gfg.countSmallerElementsOnRight([5,4,3,2,1])).toEqual([4,3,2,1,0]);

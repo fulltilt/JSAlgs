@@ -1200,8 +1200,21 @@ function findMaxInIncreasingDecreasing(arr) {
 }
 
 // http://www.geeksforgeeks.org/find-subarray-with-given-sum/
+// note: array is unordered
 function findSubArrayWithGivenSum(arr, n) {
+  if (arr === null) {
+    throw new Error('null array');
+  } else if (arr.length === 0) {
+    throw new Error('empty array');
+  }
 
+  var length = arr.length,
+      start = 0,
+      currentSum = arr[0];
+
+  for (var i = 1; i < length; i++) {
+
+  }
 }
 
 // http://www.geeksforgeeks.org/find-a-triplet-that-sum-to-a-given-value/

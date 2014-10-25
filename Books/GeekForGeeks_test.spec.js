@@ -235,6 +235,12 @@ describe("GeekForGeeks", function() {
       //expect(gfg.findMaxInIncreasingDecreasing([40, 30, 20, 10])).toEqual(40);
     });
 
+    it('tests findSubArrayWithGivenSum', function() {
+      expect(gfg.findSubArrayWithGivenSum([1,4,20,3,10,5], 33)).toEqual([2,4]);
+      expect(gfg.findSubArrayWithGivenSum([1,4,0,0,3,10,5], 7)).toEqual([1,4]);
+      expect(gfg.findSubArrayWithGivenSum([1,4], 0)).toEqual([-1]);
+    });
+
     xit('tests countSmallerElementsOnRight', function() {
       expect(gfg.countSmallerElementsOnRight([12, 1, 2, 3, 0, 11, 4])).toEqual([6,1,1,1,0,1,0]);
       expect(gfg.countSmallerElementsOnRight([5,4,3,2,1])).toEqual([4,3,2,1,0]);

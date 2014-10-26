@@ -283,11 +283,34 @@ describe("GeekForGeeks", function() {
       expect(gfg.formBiggestNumber(arr)).toEqual('998764543431');
     });
 
-    it('testst mergeKSortedArrays', function() {
+    it('tests mergeKSortedArrays', function() {
       var arr = [[1, 3, 5, 7],
                  [2, 4, 6, 8],
                  [0, 9, 10, 11]];
       expect(gfg.mergeKSortedArrays(arr)).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+    });
+
+    it('tests smallestSubArrayWhoseSumIsGreaterThanN', function() {
+      expect(gfg.smallestSubArrayWhoseSumIsGreaterThanN([1, 4, 45, 6, 10, 19], 51)).toEqual([4,45,6]);
+      expect(gfg.smallestSubArrayWhoseSumIsGreaterThanN([1, 10, 5, 2, 7], 9)).toEqual([10]);
+      expect(gfg.smallestSubArrayWhoseSumIsGreaterThanN([1, 11, 100, 1, 0, 200, 3, 2, 1, 250], 280)).toEqual([100,1,0,200]);
+      expect(gfg.smallestSubArrayWhoseSumIsGreaterThanN([1, 10, 5, 2, 7], 900)).toEqual(-1);
+    });
+
+    it('tests findKClosestElementsToN', function() {
+      expect(gfg.findKClosestElementsToN([12, 16, 22, 30, 35, 39, 42, 45, 48, 50, 53, 55, 56], 4, 35)).toEqual([39,30,42,45]);
+      expect(gfg.findKClosestElementsToN([12, 16, 22, 30, 35, 39, 42, 45, 48, 50, 53, 55, 56], 4, 0)).toEqual([12,16,22,30]);
+      expect(gfg.findKClosestElementsToN([12, 16, 22, 30, 35, 39, 42, 45, 48, 50, 53, 55, 56], 4, 350)).toEqual([56,55,53,50]);
+    });
+
+    it('tests maxSumPathBetweenTwoArrays', function() {
+      expect(gfg.maxSumPathBetweenTwoArrays([2, 3, 7, 10, 12],[1,5,7,8])).toEqual(35);
+      expect(gfg.maxSumPathBetweenTwoArrays([10,12],[5,7,9])).toEqual(22);
+      expect(gfg.maxSumPathBetweenTwoArrays([2, 3, 7, 10, 12, 15, 30, 34],[1, 5, 7, 8, 10, 15, 16, 19])).toEqual(122);
+    });
+
+    it('tests sortDefinedBySecondArray', function() {
+      expect(gfg.sortDefinedBySecondArray([2, 1, 2, 5, 7, 1, 9, 3, 6, 8, 8], [2,1,8,3])).toEqual([2, 2, 1, 1, 8, 8, 3, 5, 6, 7, 9]);
     });
 
     xit('tests maxProductSubArray', function() {

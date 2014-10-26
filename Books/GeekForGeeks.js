@@ -58,7 +58,7 @@ function GeekForGeeks() {
   this.formBiggestNumber = formBiggestNumber;
   this.biggestNumCompare = biggestNumCompare;
   this.mergeKSortedArrays = mergeKSortedArrays;
-  this.smallestSubArrayWhoseSumIsLessThanN = smallestSubArrayWhoseSumIsLessThanN;
+  this.smallestSubArrayWhoseSumIsGreaterThanN = smallestSubArrayWhoseSumIsGreaterThanN;
   this.findKClosestElementsToN = findKClosestElementsToN;
   this.maxSumPathBetweenTwoArrays = maxSumPathBetweenTwoArrays;
   this.sortDefinedBySecondArray = sortDefinedBySecondArray;
@@ -1366,24 +1366,166 @@ function mergeKSortedArrays(arr) {
   return result;
 }
 
-// http://www.geeksforgeeks.org/find-number-pairs-xy-yx/
-function findExpPairs(arr1, arr2) {
-
-}
-
 // http://www.geeksforgeeks.org/minimum-length-subarray-sum-greater-given-value/
-function smallestSubArrayWhoseSumIsLessThanN(arr, n) {
+function smallestSubArrayWhoseSumIsGreaterThanN(arr, n) {
+  var length = arr.length,
+      sum = 0,
+      minLength = Infinity,
+      start = 0, minStart = 0,
+      end = 0, minEnd = 0;
 
+  while (end < length) {
+    while (sum < n && end < length) {
+      sum += arr[end];
+      end += 1;
+    }
+
+    while (sum > n && start < end) {
+      var tempLength = end - start;
+      if (tempLength < minLength) {
+        minLength = tempLength;
+        minStart = start;
+        minEnd = end;
+      }
+
+      sum -= arr[start];
+      start += 1;
+    }
+
+    if (minLength === Infinity) {
+      return -1;
+    } else {
+      return arr.slice(minStart, minEnd);
+    }
+  }
 }
 
 // http://www.geeksforgeeks.org/find-k-closest-elements-given-value/
+// assumption: array is sorted
 function findKClosestElementsToN(arr, k, n) {
+  if (arr === null) {
+    throw new Error('null input');
+  } else if (arr.length < k) {
+    throw new Error('k must be less than the length of the array')
+  } else if (arr.length === k) {
+    return arr;
+  }
 
+  var length = arr.length,
+      lo = 0,
+      hi = length - 1,
+      crossoverPoint = -1;  // crossover point is index where elements are less than or equal to n and elements to the right are greater than n
+
+  if (n <= arr[0]) {  // corner case when n is smaller than the smallest value in array
+    crossoverPoint = 0
+  } else if (n > arr[length - 1]) { // corner case when n is bigger than the largest value
+    crossoverPoint = length - 1;
+  } else {    // use binary search to find crossover point
+    while (hi > lo) {
+      var mid = Math.floor((lo + hi) / 2);  // (lo + (hi - lo)) / 2
+
+      if (arr[mid] <= n && arr[mid + 1] > n) {
+        crossoverPoint = mid;
+        break;
+      }
+
+      if (arr[mid] > n) { // search left subarray
+        hi = mid - 1;
+      } else {            // search right subarray
+        lo = mid + 1;
+      }
+    }
+  }
+
+  var elementCount = 0,
+      lo = crossoverPoint,
+      hi = crossoverPoint + 1,
+      distanceFromLo,
+      distanceFromHi,
+      results = [];
+
+  // corner case when n is in the array
+  if (arr[crossoverPoint] === n) {
+    lo = crossoverPoint - 1;
+  }
+
+  while (elementCount < k) {
+    if (lo < 0) {
+      distanceFromLo = Infinity;
+    } else {
+      distanceFromLo = Math.abs(arr[lo] - n);
+    }
+
+    if (hi >= length) {
+      distanceFromHi = Infinity;
+    } else {
+      distanceFromHi = Math.abs(arr[hi] - n);
+    }
+
+    if (lo >= 0 && (distanceFromLo < distanceFromHi)) {
+      results.push(arr[lo]);
+      lo -= 1;
+    } else if (hi < length && (distanceFromHi < distanceFromLo)) {
+      results.push(arr[hi]);
+      hi += 1;
+    }
+
+    elementCount += 1;
+  }
+
+  return results;
 }
 
 // http://www.geeksforgeeks.org/maximum-sum-path-across-two-arrays/
+// -the trick is to advance each array one at a time depending on who is the lowest value eventually you'll reach similar values assuming they exist
+// -this algorithm also works if there are no similar elements in both arrays
 function maxSumPathBetweenTwoArrays(arr1, arr2) {
+  if (arr1 === null && arr2 === null) {
+    throw new Error('both arrays are invalid');
+  } else if (arr1 === null) {
+    return; // TODO: return sum of arr2
+  } else if (arr2 === null) {
+    return; // TODO: return sum of arr1
+  }
 
+  var length1 = arr1.length,
+      length2 = arr2.length,
+      ptr1 = 0,
+      ptr2 = 0,
+      temp1Sum = 0,
+      temp2Sum = 0,
+      maxSum = 0;
+
+  while (ptr1 !== length1 && ptr2 !== length2) {
+    if (arr1[ptr1] === arr2[ptr2]) {
+      maxSum = maxSum + Math.max(temp1Sum, temp2Sum) + arr1[ptr1];
+      temp1Sum = temp2Sum = 0;
+      ptr1 += 1;
+      ptr2 += 1;
+    } else if (arr1[ptr1] < arr2[ptr2]) {
+      temp1Sum += arr1[ptr1];
+      ptr1 += 1;
+    } else {
+      temp2Sum += arr2[ptr2];
+      ptr2 += 1;
+    }
+  }
+
+  // deal with leftovers
+  if (ptr1 === length1) { // sum the rest of the 2nd array
+    while (ptr2 !== length2) {
+      temp2Sum += arr2[ptr2];
+      ptr2 += 1;
+    }
+  } else if (ptr2 === length2) {
+    while (ptr1 !== length1) {
+      temp1Sum += arr1[ptr1];
+      ptr1 += 1;
+    }
+  }
+  maxSum += Math.max(temp1Sum, temp2Sum);
+
+  return maxSum;
 }
 
 // http://www.geeksforgeeks.org/sort-array-according-order-defined-another-array/
@@ -1511,6 +1653,11 @@ function ternarySearchTree() {
 
 // http://www.geeksforgeeks.org/maximum-size-sub-matrix-with-all-1s-in-a-binary-matrix/
 function maxSquareSubMatrix(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/find-number-pairs-xy-yx/
+function findExpPairs(arr1, arr2) {
 
 }
 

@@ -362,6 +362,16 @@ describe("GeekForGeeks", function() {
       expect(gfg.areStringRotations('ABCD', 'CDAB')).toEqual(true);
       expect(gfg.areStringRotations('ABCD', 'ACBD')).toEqual(false);
     });
+
+    it('tests isFirstStringSubsequenceOfSecond', function() {
+      expect(gfg.isFirstStringSubsequenceOfSecond('AXY', 'ADXCPY')).toEqual(true);
+      expect(gfg.isFirstStringSubsequenceOfSecond('AXY', 'YADXCP')).toEqual(false);
+      expect(gfg.isFirstStringSubsequenceOfSecond('gksrek', 'geeksforgeeks')).toEqual(true);
+    });
+
+    it('tests runLengthEncoding', function() {
+      expect(gfg.runLengthEncoding('wwwwaaadexxxxxx')).toEqual('w4a3d1e1x6');
+    });
   });
 
   describe('Matrix', function() {

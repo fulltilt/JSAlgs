@@ -68,19 +68,19 @@ function GeekForGeeks() {
 
   // Strings
   this.areStringRotations = areStringRotations;
-  this.printAnagrams = printAnagrams;
+  this.isFirstStringSubsequenceOfSecond = isFirstStringSubsequenceOfSecond;
+  this.runLengthEncoding = runLengthEncoding;
   this.findAllPossibleWordsFromPhoneDigits = findAllPossibleWordsFromPhoneDigits;
-  this.printAllPermutations = printAllPermutations;
-  this.printLexicographicPermutations = printLexicographicPermutations;
   this.printListItemsContainingWord = printListItemsContainingWord;
   this.reverseWords = reverseWords;
-  this.runLengthEncoding = runLengthEncoding;
   this.smallestWindowContainingString = smallestWindowContainingString;
   this.printInterleavings = printInterleavings;
   this.removeFromString = removeFromString;
   this.removeAdjacentDuplicates = removeAdjacentDuplicates;
   this.findExcelColumnName = findExcelColumnName;
-  this.isFirstStringSubsequenceOfSecond = isFirstStringSubsequenceOfSecond;
+  this.printAllPermutations = printAllPermutations;
+  this.printLexicographicPermutations = printLexicographicPermutations;
+  this.printAnagrams = printAnagrams;
   this.suffixTree = suffixTree;
   this.trie = trie;
   this.ternarySearchTree = ternarySearchTree;
@@ -1660,22 +1660,51 @@ function findCommonElementsInThreeSortedArrays(arr1, arr2, arr3) {
 
 // http://www.geeksforgeeks.org/a-program-to-check-if-strings-are-rotations-of-each-other-or-not/
 function areStringRotations(str1, str2) {
-
-}
-
-// http://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/ or http://www.geeksforgeeks.org/print-all-permutations-with-repetition-of-characters/
-function printAllPermutations(str) {
-
+  var tempString = str1 + str1;
+  return (tempString.indexOf(str2) === -1) ? false : true;
 }
 
 // http://www.geeksforgeeks.org/given-two-strings-find-first-string-subsequence-second/
 function isFirstStringSubsequenceOfSecond(str1, str2) {
+  var str1Length = str1.length,
+      str2Length = str2.length,
+      ptr1 = 0,
+      ptr2 = 0;
 
+  while (true) {
+    if (str1[ptr1] === str2[ptr2]) {
+      ptr1 += 1;
+      ptr2 += 1;
+    } else {
+      ptr2 += 1;
+    }
+
+    if (ptr1 === str1Length) { // if we got to the end of str1, 1st string is a subsequence of 2nd string
+      return true;
+    } else if (ptr2 === str2Length) { // if we got to the end of str2 before the end of str1, str1 is not a subsequence of str2
+      return false;
+    }
+  }
 }
 
-// http://www.geeksforgeeks.org/lexicographic-permutations-of-string/
-function printLexicographicPermutations(str) {
+// http://www.geeksforgeeks.org/run-length-encoding/
+function runLengthEncoding(str) {
+  var length = str.length,
+      result = '',
+      current = str[0],
+      count = 1;
 
+  for (var i = 1; i < length; i++) {
+    if (str[i] === current) {
+      count += 1;
+    } else {
+      result += current + '' + count;
+      current = str[i];
+      count = 1;
+    }
+  }
+  result += current + '' + count;
+  return result;
 }
 
 // http://www.geeksforgeeks.org/print-list-items-containing-all-characters-of-a-given-word/
@@ -1688,11 +1717,6 @@ function reverseWords(list) {
 
 }
 
-// http://www.geeksforgeeks.org/run-length-encoding/
-function runLengthEncoding(str) {
-
-}
-
 // http://www.geeksforgeeks.org/find-the-smallest-window-in-a-string-containing-all-characters-of-another-string/
 function smallestWindowContainingString(str1, str2) {
 
@@ -1700,6 +1724,27 @@ function smallestWindowContainingString(str1, str2) {
 
 // http://www.geeksforgeeks.org/print-all-interleavings-of-given-two-strings/
 function printInterleavings(str1, str2) {
+
+}
+
+// http://www.geeksforgeeks.org/find-possible-words-phone-digits/
+function findAllPossibleWordsFromPhoneDigits() {
+
+}
+
+// http://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/ or http://www.geeksforgeeks.org/print-all-permutations-with-repetition-of-characters/
+function printAllPermutations(str, results, lo, hi) {
+  if (lo === hi) {
+    results.push(str);
+  } else {
+    for (var j = lo; j < hi; j++) {
+      swap(str)
+    }
+  }
+}
+
+// http://www.geeksforgeeks.org/lexicographic-permutations-of-string/
+function printLexicographicPermutations(str) {
 
 }
 
@@ -1715,11 +1760,6 @@ function removeFromString(str) {
 
 // http://www.geeksforgeeks.org/recursively-remove-adjacent-duplicates-given-string/
 function removeAdjacentDuplicates(str) {
-
-}
-
-// http://www.geeksforgeeks.org/find-possible-words-phone-digits/
-function findAllPossibleWordsFromPhoneDigits() {
 
 }
 

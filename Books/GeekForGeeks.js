@@ -72,6 +72,7 @@ function GeekForGeeks() {
   this.runLengthEncoding = runLengthEncoding;
   this.findAllPossibleWordsFromPhoneDigits = findAllPossibleWordsFromPhoneDigits;
   this.printListItemsContainingWord = printListItemsContainingWord;
+  this.reverseWord = reverseWord;
   this.reverseWords = reverseWords;
   this.smallestWindowContainingString = smallestWindowContainingString;
   this.printInterleavings = printInterleavings;
@@ -1707,13 +1708,98 @@ function runLengthEncoding(str) {
   return result;
 }
 
-// http://www.geeksforgeeks.org/print-list-items-containing-all-characters-of-a-given-word/
-function printListItemsContainingWord(list, word) {
-
+// http://stackoverflow.com/questions/9960908/permutations-in-javascript or http://www.geeksforgeeks.org/print-all-permutations-with-repetition-of-characters/
+function printAllPermutations(arr, permArr, usedChars) {
+  var i, ch;
+  for (i = 0; i < arr.length; i++) {
+    ch = arr.splice(i, 1)[0];
+    usedChars.push(ch);
+    if (arr.length === 0) {
+      permArr.push(usedChars.slice());
+    }
+    this.printAllPermutations(arr, permArr, usedChars);
+    arr.splice(i, 0, ch);
+    usedChars.pop();
+  }
+  return permArr;
 }
 
-// http://www.geeksforgeeks.org/reverse-words-in-a-given-string/
-function reverseWords(list) {
+// http://www.geeksforgeeks.org/print-list-items-containing-all-characters-of-a-given-word/
+// this solution is kind of crazy as it handles repetitions in the base word
+function printListItemsContainingWord(list, word) {
+  var listLength = list.length,
+      wordLength = word.length,
+      wordTable = {},
+      results = [];
+
+  for (var i = 0; i < listLength; i++) {
+    // initialize wordTable
+    wordTable = {};
+    for (var j = 0; j < wordLength; j++) {
+      if (!wordTable[word[j]]) {
+        wordTable[word[j]] = 1;
+      } else {
+        wordTable[word[j]] += 1;
+      }
+    }
+
+    var currentWord = list[i],
+        currentWordLength = currentWord.length,
+        sum = 0;
+    for (var k = 0; k < currentWordLength; k++) {
+      if (wordTable[currentWord[k]]) {
+        wordTable[currentWord[k]] -= 1;
+        sum += 1;
+
+        if (sum === wordLength) {
+          results.push(currentWord);
+          break;
+        }
+
+        if (wordTable[currentWord[k]] === 0) {
+          delete wordTable[currentWord[k]];
+        }
+      }
+    }
+  }
+  return results;
+}
+
+function reverseWord(str, lo, hi) {
+  while (hi > lo) {
+    var temp = str[lo];
+    str[lo] = str[hi];
+    str[hi] = temp;
+    lo += 1;
+    hi -= 1;
+  }
+  return str.join('');
+}
+
+// http://www.geeksforgeeks.org/reverse-words-in-a-given-string/ ***
+function reverseWords(str) {
+  var lo = 0,
+      hi = 0,
+      length = str.length,
+      strArray;
+
+  str = str.trim();
+  strArray = str.split(''); // convert string to array
+
+  // reverse each word
+  while (true) {
+    hi += 1;
+    if (strArray[hi] === ' ' || hi === length) {
+      this.reverseWord(strArray, lo, hi - 1);
+
+      if (hi === length) {
+        break;
+      }
+      lo = hi + 1;
+      hi = lo;
+    }
+  }
+  return this.reverseWord(strArray, 0, length - 1);
 
 }
 
@@ -1730,17 +1816,6 @@ function printInterleavings(str1, str2) {
 // http://www.geeksforgeeks.org/find-possible-words-phone-digits/
 function findAllPossibleWordsFromPhoneDigits() {
 
-}
-
-// http://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/ or http://www.geeksforgeeks.org/print-all-permutations-with-repetition-of-characters/
-function printAllPermutations(str, results, lo, hi) {
-  if (lo === hi) {
-    results.push(str);
-  } else {
-    for (var j = lo; j < hi; j++) {
-      swap(str)
-    }
-  }
 }
 
 // http://www.geeksforgeeks.org/lexicographic-permutations-of-string/
@@ -1891,7 +1966,7 @@ function countSmallerElementsOnRight(arr) {
 
 // DIDN'T COMPLETELY UNDERSTAND: nextGreaterElement, findSmallestMissingNumber, countNumberOfOccurrences,
 // maxLengthBitonicSubArray, compare findSubArrayWithGivenSum with findTwoNumsThatSumToN, findSortedSubSequenceOfThree,
-// biggestNumCompare, findSmallestValueNotReppedBySubArraySum
+// biggestNumCompare, findSmallestValueNotReppedBySubArraySum, printAllPermutations
 
 // MATHY: findRepeatingAndMissing
 module.exports = GeekForGeeks;

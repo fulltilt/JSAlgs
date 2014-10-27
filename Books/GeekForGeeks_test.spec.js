@@ -372,6 +372,32 @@ describe("GeekForGeeks", function() {
     it('tests runLengthEncoding', function() {
       expect(gfg.runLengthEncoding('wwwwaaadexxxxxx')).toEqual('w4a3d1e1x6');
     });
+
+    it('tests printAllPermutations', function() {
+      var permArr = [],
+          usedChars = [];
+      gfg.printAllPermutations('ABC'.split(''), permArr, usedChars);  // have to convert string to array for algorithm to work
+
+      // join the results back into a string
+      for (var i = 0; i < permArr.length; i++) {
+        permArr[i] = permArr[i].join('');
+      }
+
+      expect(permArr).toEqual([ 'ABC', 'ACB', 'BAC', 'BCA', 'CAB', 'CBA' ]);
+    });
+
+    it('tests printListItemsContainingWord', function() {
+      expect(gfg.printListItemsContainingWord(['sunday','geeksforgeeks','utensils','just','sss'], 'sun')).toEqual(['sunday','utensils']);
+    });
+
+    it('tests reverseWord', function() {
+      expect(gfg.reverseWord('hello'.split(''), 0, 4)).toEqual('olleh');
+      expect(gfg.reverseWord('hair'.split(''), 0, 3)).toEqual('riah');
+    });
+
+    it('tests reverseWords', function() {
+      expect(gfg.reverseWords('i like this program very much')).toEqual('much very program this like i');
+    });
   });
 
   describe('Matrix', function() {

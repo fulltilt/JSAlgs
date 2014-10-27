@@ -398,6 +398,16 @@ describe("GeekForGeeks", function() {
     it('tests reverseWords', function() {
       expect(gfg.reverseWords('i like this program very much')).toEqual('much very program this like i');
     });
+
+    it('tests smallestWindowContainingString', function() {
+      expect(gfg.smallestWindowContainingString('this is a test string', 'tist')).toEqual('t stri');
+      expect(gfg.smallestWindowContainingString('adobecodebanc', 'abc')).toEqual('banc');
+    });
+
+    it('tests printInterleavings', function() {
+      expect(gfg.printInterleavings('AB', 'CD')).toEqual(['ABCD','ACBD','ACDB','CABD','CADB','CDAB']);
+      expect(gfg.printInterleavings('AB', 'C')).toEqual(['ABC','ACB','CAB']);
+    });
   });
 
   describe('Matrix', function() {

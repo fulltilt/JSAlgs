@@ -76,6 +76,7 @@ function GeekForGeeks() {
   this.reverseWords = reverseWords;
   this.smallestWindowContainingString = smallestWindowContainingString;
   this.printInterleavings = printInterleavings;
+  this.printInterleavingsRecur = printInterleavingsRecur;
   this.removeFromString = removeFromString;
   this.removeAdjacentDuplicates = removeAdjacentDuplicates;
   this.findExcelColumnName = findExcelColumnName;
@@ -1800,17 +1801,104 @@ function reverseWords(str) {
     }
   }
   return this.reverseWord(strArray, 0, length - 1);
-
 }
 
 // http://www.geeksforgeeks.org/find-the-smallest-window-in-a-string-containing-all-characters-of-another-string/
+// trick: observation that the first and last elements of the substring must be in str2
+// assumes that there exists a substring that contains all the chars in str2
 function smallestWindowContainingString(str1, str2) {
+  var str1Length = str1.length,
+      str2Length = str2.length,
+      minLength = Infinity,
+      countTable,
+      lo = 0,
+      minLo,
+      hi = 1,
+      minHi;
 
+  while (true) {
+    // create count table for str2
+    countTable = {};
+    for (var i = 0; i < str2Length; i++) {
+      if (!countTable[str2[i]]) {
+        countTable[str2[i]] = 1;
+      } else {
+        countTable[str2[i]] += 1;
+      }
+    }
+
+    // find the next starting index
+    while (!countTable[str1[lo]]) {
+      lo += 1;
+    }
+    countTable[str1[lo]] -= 1;
+    if (countTable[str1[lo]] === 0) {
+      delete countTable[str1[lo]];
+    }
+    hi = lo;
+
+    // starting from lo keep increasing hi until we find a substring that contains all the chars in str2
+    // Once substring is found increment lo and repeat the process until hi hits the end
+    while (Object.keys(countTable).length !== 0) {
+      hi += 1;
+      if (hi === str1.length) {
+        break;
+      }
+
+      if (countTable[str1[hi]]) {
+        countTable[str1[hi]] -= 1;
+        if (countTable[str1[hi]] === 0) {
+          delete countTable[str1[hi]];
+        }  
+      }
+    }
+    if (hi === str1.length) {
+      break;
+    }
+
+    // calculate the substring length and update minLength if nceessary
+    var tempLength = hi - lo;
+    if (tempLength - minLength) {
+      minLength = tempLength;
+      minLo = lo;
+      minHi = hi;
+    }
+    lo += 1;
+  }
+  return str1.substring(minLo, minHi + 1);
 }
 
 // http://www.geeksforgeeks.org/print-all-interleavings-of-given-two-strings/
 function printInterleavings(str1, str2) {
+  var iStr = [],
+      results = [];
+  this.printInterleavingsRecur(str1, str2, iStr, results, 0);
+  return results;
+}
 
+// Main helper fxn for printInterleavings that recursively generates all interleavings
+// iStr: used to store all interleavings (or output strings) one by one
+// index: used to pass next available place in iStr
+function printInterleavingsRecur(str1, str2, iStr, results, index) {
+  var str1Length = str1.length,
+      str2Length = str2.length;
+
+  // base case: if all characters of str1 and str2 have been included in output string, then push output string
+  if (str1Length === 0 && str2Length === 0) {
+    results.push(iStr.join(''));
+  }
+
+  // If some characters of str1 are left to be included then include the first character from the remaining chars and recur for the rest
+  if (str1Length !== 0) {
+    iStr[index] = str1[0];
+    this.printInterleavingsRecur(str1.substring(1), str2, iStr, results, index + 1);
+  }
+
+  // If some characters of str2 are left to be included then include the first character from the remaining chars and recur for the rest
+  if (str2Length !== 0) {
+    iStr[index] = str2[0];
+    this.printInterleavingsRecur(str1, str2.substring(1), iStr, results, index + 1);
+  }
 }
 
 // http://www.geeksforgeeks.org/find-possible-words-phone-digits/
@@ -1967,6 +2055,7 @@ function countSmallerElementsOnRight(arr) {
 // DIDN'T COMPLETELY UNDERSTAND: nextGreaterElement, findSmallestMissingNumber, countNumberOfOccurrences,
 // maxLengthBitonicSubArray, compare findSubArrayWithGivenSum with findTwoNumsThatSumToN, findSortedSubSequenceOfThree,
 // biggestNumCompare, findSmallestValueNotReppedBySubArraySum, printAllPermutations
+// printInterleavingsRecur, printAllPermutations
 
 // MATHY: findRepeatingAndMissing
 module.exports = GeekForGeeks;

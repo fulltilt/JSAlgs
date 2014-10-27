@@ -64,29 +64,29 @@ function GeekForGeeks() {
   this.sortDefinedBySecondArray = sortDefinedBySecondArray;
   this.alternatePositiveAndNegative = alternatePositiveAndNegative;
   this.findSmallestValueNotReppedBySubArraySum = findSmallestValueNotReppedBySubArraySum;
-  this.findCommonElementsInThreeArrays = findCommonElementsInThreeArrays;
-  this.printAnagrams = printAnagrams;
-  this.findAllPossibleWordsFromPhoneDigits = findAllPossibleWordsFromPhoneDigits;
+  this.findCommonElementsInThreeSortedArrays = findCommonElementsInThreeSortedArrays;
 
   // Strings
-  this.suffixTree = suffixTree;
-  this.trie = trie;
-  this.ternarySearchTree = ternarySearchTree;
   this.areStringRotations = areStringRotations;
+  this.printAnagrams = printAnagrams;
+  this.findAllPossibleWordsFromPhoneDigits = findAllPossibleWordsFromPhoneDigits;
   this.printAllPermutations = printAllPermutations;
   this.printLexicographicPermutations = printLexicographicPermutations;
   this.printListItemsContainingWord = printListItemsContainingWord;
   this.reverseWords = reverseWords;
   this.runLengthEncoding = runLengthEncoding;
   this.smallestWindowContainingString = smallestWindowContainingString;
-  this.KMP = KMP;
-  this.RabinKarp = RabinKarp;
-  this.finiteAutomata = finiteAutomata;
   this.printInterleavings = printInterleavings;
   this.removeFromString = removeFromString;
   this.removeAdjacentDuplicates = removeAdjacentDuplicates;
   this.findExcelColumnName = findExcelColumnName;
   this.isFirstStringSubsequenceOfSecond = isFirstStringSubsequenceOfSecond;
+  this.suffixTree = suffixTree;
+  this.trie = trie;
+  this.ternarySearchTree = ternarySearchTree;
+  this.KMP = KMP;
+  this.RabinKarp = RabinKarp;
+  this.finiteAutomata = finiteAutomata;
 
   // Mathematical Properties
   this.findExpPairs = findExpPairs;
@@ -1530,22 +1530,132 @@ function maxSumPathBetweenTwoArrays(arr1, arr2) {
 
 // http://www.geeksforgeeks.org/sort-array-according-order-defined-another-array/
 function sortDefinedBySecondArray(arr1, arr2) {
+  var length1 = arr1.length,
+      length2 = arr2.length,
+      arr1Table = {},
+      arr2Leftovers = [];
 
+  // enter all elements of arr1 into a hash table and keep count of # of occurrences
+  for (var i = 0; i < length1; i++) {
+    if (!arr1Table[arr1[i]]) {
+      arr1Table[arr1[i]] = 1;
+    } else {
+      arr1Table[arr1[i]] += 1;
+    }
+  }
+
+  // iterate through arr2 in order, search the hash table and add element x #'s of times according to the value
+  arr1 = [];  // empty out arr1 and add in sorted order
+  for (i = 0; i < length2; i++) {
+    var key = arr2[i];
+    if (arr1Table[key]) {
+      var occurrences = arr1Table[key];
+      for (var j = 0; j < occurrences; j++) {
+        arr1.push(key);
+      }
+      delete arr1Table[key];  // remove key from table
+    }
+  }
+  
+  // get the remaining keys in arr1Table and add them to arr1 in normal sorted sorder
+  var remainingKeys = Object.keys(arr1Table).sort(function(a, b) { return a - b; }),
+      length = remainingKeys.length;
+  for (i = 0; i < length; i++) {
+    occurrences = arr1Table[remainingKeys[i]];
+    for (j = 0; j < occurrences; j++) {
+      arr1.push(parseInt(remainingKeys[i]));
+    }
+  }
+
+  return arr1;
 }
 
 // http://www.geeksforgeeks.org/rearrange-array-alternating-positive-negative-items-o1-extra-space/
+// algorithm: even indices should be negative and odd indices should be positive. Use 2 pointers to facilitate the swapping to make thisso
+// note: this algorithm doesn't maintain the sorted order
 function alternatePositiveAndNegative(arr) {
+  var i,
+      leading,
+      length = arr.length,
+      swap;
 
+  for (i = 0; i < length; i++) {
+    leading = i + 1;
+    swap = false;
+    if (i % 2 === 0 && arr[i] >= 0) { // we have a positive # in an even cell. Search for the next negative # and then swap
+      while (arr[leading] >= 0 && leading !== length) {
+        leading += 1;
+      }
+      swap = true;
+    } else if (i % 2 === 1 && arr[i] < 0) { // we have a negative # in an odd cell. Search for the next positive # and then swap
+      while (arr[leading] < 0 && leading !== length) {
+        leading += 1;
+      }
+      swap = true;
+    }
+
+    if (swap) {
+      if (leading === length) {
+        break;
+      } else {
+        var temp = arr[leading];
+        arr[leading] = arr[i];
+        arr[i] = temp; 
+      }
+    }
+  }
+
+  return arr;
 }
 
 // http://www.geeksforgeeks.org/find-smallest-value-represented-sum-subset-given-array/
 function findSmallestValueNotReppedBySubArraySum(arr) {
+  var result = 1,
+      length = arr.length;;
 
+  // Traverse the array and increment 'result' if arr[i] is smaller than or equal to 'result'
+  for (var i = 0; i < length && arr[i] <= result; i++) {
+    result = result + arr[i];
+  }
+
+  return result;
 }
 
 // http://www.geeksforgeeks.org/find-common-elements-three-sorted-arrays/
-function findCommonElementsInThreeArrays(arr1, arr2, arr3) {
+function findCommonElementsInThreeSortedArrays(arr1, arr2, arr3) {
+  var length1 = arr1.length,
+      length2 = arr2.length,
+      length3 = arr3.length,
+      ptr1 = 0,
+      ptr2 = 0,
+      ptr3 = 0,
+      results = [];
 
+  while (ptr1 < length1 && ptr2 < length2 && ptr3 < length3) {  // once we reach the end of an array, we're done
+    if (arr1[ptr1] === arr2[ptr2] && arr2[ptr2] === arr3[ptr3]) { // all three indices are the same
+      results.push(arr1[ptr1]);
+      ptr1 += 1;
+      ptr2 += 1;
+      ptr3 += 1;
+    }
+
+    // advance ptr1 until what it's pointing at is greater than or equal to what ptr2 is pointing at
+    while (ptr1 !== length1 && arr1[ptr1] < arr2[ptr2]) {
+      ptr1 += 1;
+    }
+
+    // advance ptr2 until what it's pointing at is greater than or equal to what ptr3 is pointing at
+    while (ptr2 !== length2 && arr2[ptr2] < arr3[ptr3]) {
+      ptr2 += 1;
+    }
+
+    // advance ptr3 until what it's pointing at is greater than or equal to what ptr1 is pointing at
+    while (ptr3 !== length3 && arr3[ptr3] < arr1[ptr1]) {
+      ptr3 += 1;
+    } 
+  }
+
+  return results;
 }
 
 // http://www.geeksforgeeks.org/a-program-to-check-if-strings-are-rotations-of-each-other-or-not/
@@ -1741,7 +1851,7 @@ function countSmallerElementsOnRight(arr) {
 
 // DIDN'T COMPLETELY UNDERSTAND: nextGreaterElement, findSmallestMissingNumber, countNumberOfOccurrences,
 // maxLengthBitonicSubArray, compare findSubArrayWithGivenSum with findTwoNumsThatSumToN, findSortedSubSequenceOfThree,
-// biggestNumCompare
+// biggestNumCompare, findSmallestValueNotReppedBySubArraySum
 
 // MATHY: findRepeatingAndMissing
 module.exports = GeekForGeeks;

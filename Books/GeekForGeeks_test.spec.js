@@ -313,6 +313,24 @@ describe("GeekForGeeks", function() {
       expect(gfg.sortDefinedBySecondArray([2, 1, 2, 5, 7, 1, 9, 3, 6, 8, 8], [2,1,8,3])).toEqual([2, 2, 1, 1, 8, 8, 3, 5, 6, 7, 9]);
     });
 
+    xit('tests alternatePositiveAndNegative', function() {
+      expect(gfg.alternatePositiveAndNegative([1, 2, 3, -4, -1, 4])).toEqual([-4, 1, -1, 2, 3, 4]);
+      expect(gfg.alternatePositiveAndNegative([-5, -2, 5, 2, 4, 7, 1, 8, 0, -8])).toEqual([-5, 5, -2, 2, -8, 4, 7, 1, 8, 0]);
+    });
+
+    it('tests findSmallestValueNotReppedBySubArraySum', function() {
+      expect(gfg.findSmallestValueNotReppedBySubArraySum([1, 3, 6, 10, 11, 15])).toEqual(2);
+      expect(gfg.findSmallestValueNotReppedBySubArraySum([1,1,1,1])).toEqual(5);
+      expect(gfg.findSmallestValueNotReppedBySubArraySum([1,1,3,4])).toEqual(10);
+      expect(gfg.findSmallestValueNotReppedBySubArraySum([1,2,5,10,20,40])).toEqual(4);
+      expect(gfg.findSmallestValueNotReppedBySubArraySum([1,2,3,4,5,6])).toEqual(22);
+    });
+
+    it('tests findCommonElementsInThreeSortedArrays', function() {
+      expect(gfg.findCommonElementsInThreeSortedArrays([1, 5, 10, 20, 40, 80],[6, 7, 20, 80, 100],[3, 4, 15, 20, 30, 70, 80, 120])).toEqual([20,80]);
+      expect(gfg.findCommonElementsInThreeSortedArrays([1,5,5],[3,4,5,5],[5,5,10,20])).toEqual([5,5]);
+    });
+
     xit('tests maxProductSubArray', function() {
       expect(gfg.maxProductSubArray([6, -3, -10, 0, 2])).toEqual(180);
       expect(gfg.maxProductSubArray([-1, -3, -10, 0, 60])).toEqual(60);
@@ -336,6 +354,13 @@ describe("GeekForGeeks", function() {
       expect(gfg.isSubArray([11, 1, 13, 21, 3, 7], [11, 3, 7, 1])).toEqual(true);
       expect(gfg.isSubArray([1, 2, 3, 4, 5, 6], [1, 2, 4])).toEqual(true);
       expect(gfg.isSubArray([10, 5, 2, 23, 19], [19, 5, 3])).toEqual(false);
+    });
+  });
+
+  describe('String', function() {
+    it('tests areStringRotations', function() {
+      expect(gfg.areStringRotations('ABCD', 'CDAB')).toEqual(true);
+      expect(gfg.areStringRotations('ABCD', 'ACBD')).toEqual(false);
     });
   });
 

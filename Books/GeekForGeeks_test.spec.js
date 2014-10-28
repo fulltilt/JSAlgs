@@ -374,8 +374,8 @@ describe("GeekForGeeks", function() {
     });
 
     it('tests printAllPermutations', function() {
-      var permArr = [],
-          usedChars = [];
+      var permArr = [],   // used only to hold the results
+          usedChars = []; // used to hold the temporary permutations
       gfg.printAllPermutations('ABC'.split(''), permArr, usedChars);  // have to convert string to array for algorithm to work
 
       // join the results back into a string
@@ -407,6 +407,21 @@ describe("GeekForGeeks", function() {
     it('tests printInterleavings', function() {
       expect(gfg.printInterleavings('AB', 'CD')).toEqual(['ABCD','ACBD','ACDB','CABD','CADB','CDAB']);
       expect(gfg.printInterleavings('AB', 'C')).toEqual(['ABC','ACB','CAB']);
+    });
+
+    it('tests removeFromString', function() {
+      expect(gfg.removeFromString('acbac')).toEqual('');
+      expect(gfg.removeFromString('aaac')).toEqual('aa');
+      expect(gfg.removeFromString('ababac')).toEqual('aa');
+      expect(gfg.removeFromString('bbbbd')).toEqual('d');
+      expect(gfg.removeFromString('aacacc')).toEqual('ac');
+    });
+
+    it('tests removeAdjacentDuplicates', function() {
+      expect(gfg.removeAdjacentDuplicates('azxxzy'.split(''), 0, null)).toEqual('ay');
+      //expect(gfg.removeAdjacentDuplicates('geeksforgeeg'.split(''), 0, null)).toEqual('gksfor');
+      //expect(gfg.removeAdjacentDuplicates('caaabbbaacdddd'.split(''), 0, null)).toEqual('');
+      //expect(gfg.removeAdjacentDuplicates('acaaabbbacdddd'.split(''), 0, null)).toEqual('acac');
     });
   });
 

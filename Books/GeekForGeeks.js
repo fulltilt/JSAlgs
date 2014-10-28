@@ -81,7 +81,6 @@ function GeekForGeeks() {
   this.removeAdjacentDuplicates = removeAdjacentDuplicates;
   this.findExcelColumnName = findExcelColumnName;
   this.printAllPermutations = printAllPermutations;
-  this.printLexicographicPermutations = printLexicographicPermutations;
   this.printAnagrams = printAnagrams;
   this.suffixTree = suffixTree;
   this.trie = trie;
@@ -1710,19 +1709,26 @@ function runLengthEncoding(str) {
 }
 
 // http://stackoverflow.com/questions/9960908/permutations-in-javascript or http://www.geeksforgeeks.org/print-all-permutations-with-repetition-of-characters/
+// assumptions: input is in array form
+// NOTE: to print lexicographically (http://www.geeksforgeeks.org/lexicographic-permutations-of-string/) I think all we need to do is to sort the string in order before running the algorithm
 function printAllPermutations(arr, permArr, usedChars) {
   var i, ch;
   for (i = 0; i < arr.length; i++) {
-    ch = arr.splice(i, 1)[0];
+    ch = arr.splice(i, 1)[0]; // cut out the each index from the array one at a time (splice alters the original array; it also returns an Array hence the '[0]')
     usedChars.push(ch);
+
+    // if after the splice arr is empty, usedChars should be the length of the original arr so push it to the results
     if (arr.length === 0) {
       permArr.push(usedChars.slice());
     }
+
+    // recurse using a different starting point
     this.printAllPermutations(arr, permArr, usedChars);
+    
+    // put array back to its original state and remove the char from usedChars. This is so every index becomes the starting index before the first recursion
     arr.splice(i, 0, ch);
     usedChars.pop();
   }
-  return permArr;
 }
 
 // http://www.geeksforgeeks.org/print-list-items-containing-all-characters-of-a-given-word/
@@ -1879,6 +1885,7 @@ function printInterleavings(str1, str2) {
 // Main helper fxn for printInterleavings that recursively generates all interleavings
 // iStr: used to store all interleavings (or output strings) one by one
 // index: used to pass next available place in iStr
+// The two if statements ensures the interleaving and order. If you look at the first test, notice that the interleavings only start with either 'A' or 'C'
 function printInterleavingsRecur(str1, str2, iStr, results, index) {
   var str1Length = str1.length,
       str2Length = str2.length;
@@ -1901,33 +1908,69 @@ function printInterleavingsRecur(str1, str2, iStr, results, index) {
   }
 }
 
+// http://www.geeksforgeeks.org/remove-a-and-bc-from-a-given-string/
+// Note: the substrings to remove is fixed: remove 'b' and 'ac'
+function removeFromString(str) {
+  var length = str.length,
+      result = [],
+      lo = 0,
+      hi = lo;
+
+  str = str.split('');
+
+  while (lo < length) {
+    if (str[hi] === 'b') {
+      str.splice(lo, 1);
+    } else if (str[hi] === 'a') {
+      if (hi + 1 === length) {  // we reached the end of the string so no need to iterate further
+        break;
+      }
+      if (str[hi + 1] === 'c') {  // if we hit a 'c' after an 'a', splice the 2 indices. If not, advance the indices
+        str.splice(lo, 2);
+      } else {
+        lo += 1;
+        hi = lo;
+      }
+    } else {
+      lo += 1;
+      hi = lo;
+      length = str.length;
+    }
+  }
+  return str.join('');
+}
+
+// http://www.geeksforgeeks.org/recursively-remove-adjacent-duplicates-given-string/
+function removeAdjacentDuplicates(str, index, previous) {
+  if (index === str.length) {
+    return;
+  }
+
+  var ch = str[index];
+  if (str[index] === previous) {
+  console.log(index);
+    str.splice(index - 1, 2);
+  console.log(str[index - 1]);
+    this.removeAdjacentDuplicates(str, index - 2, str[index]);
+  } else {
+    this.removeAdjacentDuplicates(str, index + 1, ch);
+  }
+
+  return str.join('');
+}
+
+// http://www.geeksforgeeks.org/find-excel-column-name-given-number/
+function findExcelColumnName(num) {
+
+}
+
 // http://www.geeksforgeeks.org/find-possible-words-phone-digits/
 function findAllPossibleWordsFromPhoneDigits() {
 
 }
 
-// http://www.geeksforgeeks.org/lexicographic-permutations-of-string/
-function printLexicographicPermutations(str) {
-
-}
-
 // http://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together/ or http://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together-set-2/
 function printAnagrams(list) {
-
-}
-
-// http://www.geeksforgeeks.org/remove-a-and-bc-from-a-given-string/
-function removeFromString(str) {
-
-}
-
-// http://www.geeksforgeeks.org/recursively-remove-adjacent-duplicates-given-string/
-function removeAdjacentDuplicates(str) {
-
-}
-
-// http://www.geeksforgeeks.org/find-excel-column-name-given-number/
-function findExcelColumnName(num) {
 
 }
 

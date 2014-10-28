@@ -29,6 +29,7 @@ function LinkedList() {
 	this.getNthFromEnd = getNthFromEnd;
 	this.reverse = reverse;
 	this._reverse = _reverse;
+	this.reverseFromNode = reverseFromNode;
 	this.isPalindrome = isPalindrome;
 	this.copyLinkedListWithArbitraryPtr = copyLinkedListWithArbitraryPtr;
 	this.splitCircularListInTwo = splitCircularListInTwo;
@@ -400,9 +401,69 @@ function _reverse(previous, node) {
 	node.next = previous;
 }
 
-// http://www.geeksforgeeks.org/function-to-check-if-a-singly-linked-list-is-palindrome/
-function isPalindrome(list) {
+function reverseFromNode(node) {
+	var previous = null,
+			current = node,
+			next;
 
+	while (current !== null) {
+		next = current.next;
+		current.next = previous;
+		previous = current;
+		current = next;
+	}
+	return previous;	// return the head of the reversed list
+}
+
+// http://www.geeksforgeeks.org/function-to-check-if-a-singly-linked-list-is-palindrome/
+function isPalindrome(head) {
+	var length = 0,
+			current = head,
+			midIndex,
+			midStart;
+
+	// get length
+	while (current !== null) {
+		length += 1;
+		current = current.next;
+	}
+
+	// get middle node
+	if (length % 2 === 0) {
+		midIndex = Math.floor(length / 2) - 1;
+		midStart = midIndex + 1;
+	} else {
+		midIndex = Math.floor(length / 2) - 1;
+		midStart = midIndex + 2;	// exclude the middle element for odd length arrays
+	}
+
+	// get the median nodes. The first one will be reversed and compared to the second median node list
+	var m1 = head,
+			m2 = head,
+			count = 0;
+	while (count < midIndex) {
+		m1 = m1.next;
+		count += 1;
+	}
+
+	count = 0;
+	while (count < midStart) {
+		m2 = m2.next;
+		count += 1;
+	}
+	m1.next = null;
+	
+	var list1Head = this.reverseFromNode(m2);	// reverse from the m2 Node (reverse returns the end of the list which is the head of the reversed list)
+
+	while (m1 !== null && m2 !== null) {
+		if (m1.data !== m2.data) {
+			return false;
+		}
+		m1 = m1.next;
+		m2 = m2.next;
+	}
+
+	return (m1 === null && m2 === null) ? true : false;
 }
 
 // http://www.geeksforgeeks.org/a-linked-list-with-next-and-arbit-pointer/

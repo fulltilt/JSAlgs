@@ -419,9 +419,32 @@ describe("GeekForGeeks", function() {
 
     it('tests removeAdjacentDuplicates', function() {
       expect(gfg.removeAdjacentDuplicates('azxxzy'.split(''), 0, null)).toEqual('ay');
-      //expect(gfg.removeAdjacentDuplicates('geeksforgeeg'.split(''), 0, null)).toEqual('gksfor');
-      //expect(gfg.removeAdjacentDuplicates('caaabbbaacdddd'.split(''), 0, null)).toEqual('');
-      //expect(gfg.removeAdjacentDuplicates('acaaabbbacdddd'.split(''), 0, null)).toEqual('acac');
+      expect(gfg.removeAdjacentDuplicates('geeksforgeeg'.split(''), 0, null)).toEqual('gksfor');
+      expect(gfg.removeAdjacentDuplicates('caaabbbaacdddd'.split(''), 0, null)).toEqual('');
+      expect(gfg.removeAdjacentDuplicates('acaaabbbacdddd'.split(''), 0, null)).toEqual('acac');
+      expect(gfg.removeAdjacentDuplicates('caaabbbaac'.split(''), 0, null)).toEqual('');
+      expect(gfg.removeAdjacentDuplicates('aaaaaaaaaa'.split(''), 0, null)).toEqual('');
+      expect(gfg.removeAdjacentDuplicates('acbbcddc'.split(''), 0, null)).toEqual('ac');
+      
+      //expect(gfg.removeAdjacentDuplicates('gghhg'.split(''), 0, null)).toEqual('g');
+      //expect(gfg.removeAdjacentDuplicates('aaaacddddcappp'.split(''), 0, null)).toEqual('a');
+      //expect(gfg.removeAdjacentDuplicates('qpaaaaadaaaaadprq'.split(''), 0, null)).toEqual('qrq');
+    });
+
+    it('tests findExcelColumnName', function() {
+      expect(gfg.findExcelColumnName(26)).toEqual('Z');
+      expect(gfg.findExcelColumnName(51)).toEqual('AY');
+      expect(gfg.findExcelColumnName(52)).toEqual('AZ');
+      expect(gfg.findExcelColumnName(80)).toEqual('CB');
+      expect(gfg.findExcelColumnName(676)).toEqual('YZ');
+      expect(gfg.findExcelColumnName(702)).toEqual('ZZ');
+      expect(gfg.findExcelColumnName(705)).toEqual('AAC');
+    });
+
+    xit('findAllPossibleWordsFromPhoneDigits', function() {
+      var results = [],
+          tempArr = [];
+      gfg.findAllPossibleWordsFromPhoneDigits([2,3,4], results, tempArr);
     });
   });
 

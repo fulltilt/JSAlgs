@@ -108,6 +108,8 @@ describe("LinkedList", function() {
     ll2.insertHead(2);
 
     expect(ll.mergeSortedLists(ll1.head, ll2.head)).toEqual('1 2 3 4 5 6 7 8');
+    ll1.clear();
+    ll2.clear();
   }); 
 
   it('tests getMiddle()', function() {
@@ -138,6 +140,7 @@ describe("LinkedList", function() {
     ll1.find(6).next = ll1.find(3);
     expect(ll1.hasCycle()).toEqual(true);
     expect(ll1.getCycleEntry().data).toEqual(3);
+    ll1.clear;
   });
 
   it('tests getNthFromEnd', function() {
@@ -150,9 +153,42 @@ describe("LinkedList", function() {
     expect(ll.print()).toEqual('2 7 8 6 9 5');
   });
 
+  it('tests reverse from a Node', function() {
+    var node1 = ll.find(8)
+        node2 = ll.find(2);
+    ll.reverseFromNode(node1);
+    expect(node2.printFromNode()).toEqual('2 7 8');
+  });
+
   it('tests reverse a doubly linked list', function() {
     dll.reverseDoublyLinkedList();
-    //expect(dll.print()).toEqual('2 7 8 6 9 5');
-    //expect(dll.reversePrint()).toEqual('5 9 6 8 7 2');
+    expect(dll.print()).toEqual('2 7 8 6 9 5');
+    expect(dll.reversePrint()).toEqual('5 9 6 8 7 2');
+  });
+
+  it('tests isPalindrome', function() {
+    expect(ll.isPalindrome(ll.head)).toEqual(false);
+    var ll1 = new LinkedList();
+    ll1.insertHead(6);
+    ll1.insertHead(5);
+    ll1.insertHead(4);
+    ll1.insertHead(4);
+    ll1.insertHead(5);
+    ll1.insertHead(6);
+    expect(ll.isPalindrome(ll1.head)).toEqual(true);
+    ll1.clear();
+    ll1.insertHead(6);
+    ll1.insertHead(5);
+    ll1.insertHead(3);
+    ll1.insertHead(5);
+    ll1.insertHead(6);
+    expect(ll.isPalindrome(ll1.head)).toEqual(true);
+    ll1.clear();
+    ll1.insertHead(6);
+    ll1.insertHead(2);
+    ll1.insertHead(3);
+    ll1.insertHead(5);
+    ll1.insertHead(6);
+    expect(ll.isPalindrome(ll1.head)).toEqual(false);
   });
 });

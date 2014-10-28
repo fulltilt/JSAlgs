@@ -1941,17 +1941,28 @@ function removeFromString(str) {
 }
 
 // http://www.geeksforgeeks.org/recursively-remove-adjacent-duplicates-given-string/
+// NOTE: fails some test cases
 function removeAdjacentDuplicates(str, index, previous) {
-  if (index === str.length) {
-    return;
+  if (index === str.length || str.length === 0) {
+    return str;
   }
 
   var ch = str[index];
-  if (str[index] === previous) {
-  console.log(index);
-    str.splice(index - 1, 2);
-  console.log(str[index - 1]);
-    this.removeAdjacentDuplicates(str, index - 2, str[index]);
+//console.log(index + ' ' + ch + ' ' + previous);
+  if (str[index] === previous) {  // we know we're going to have to splice from one index before this one
+    var start = index - 1,
+        end = 0,  // end index of last consecutive occurrence of previous char
+        previousAndCurrent = 2; // represents the last index and the current index which are consecutive duplicates
+
+    // find any other consecutive duplicates that match previous
+    while ((index + end + 1) !== str.length && str[index + end + 1] === previous) {
+      end += 1;
+    }
+
+    end += previousAndCurrent;
+    str.splice(start, end);
+//console.log(str);
+    this.removeAdjacentDuplicates(str, index - end, str[index]);  // since we spliced out 'end' number of values, make index go back that many indices
   } else {
     this.removeAdjacentDuplicates(str, index + 1, ch);
   }
@@ -1960,18 +1971,45 @@ function removeAdjacentDuplicates(str, index, previous) {
 }
 
 // http://www.geeksforgeeks.org/find-excel-column-name-given-number/
+// the tricky part is that if the remainder is zero, num equals Math.floor(num / 26) - 1. All other cases you don't have to do the '- 1'
 function findExcelColumnName(num) {
+  var column = 'ZABCDEFGHIJKLMNOPQRSTUVWXYZ',
+      result = '';
 
+  while (num > 0) {
+    var remainder = num % 26;
+
+    if (remainder === 0) {  // If reminder is zero, then append a 'Z'
+      result = column[remainder] + result;
+      num = Math.floor(num / 26) - 1;
+    } else {                // if remainder is non-zero
+      result = column[remainder] + result;
+      num = Math.floor(num / 26);
+    }
+  }
+  return result;
 }
 
 // http://www.geeksforgeeks.org/find-possible-words-phone-digits/
-function findAllPossibleWordsFromPhoneDigits() {
+function findAllPossibleWordsFromPhoneDigits(num, results, tempArr) {
+  var table = ['', '', 'abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxyz'];
 
-}
+  for (var i = 0; i < num.length; i++) {
+    var letters = table[i].split('');
+    for (var k = 0; k < letters.length; k++) {
+      var ch = letters.splice(k, 1)[0];
+      tempArr.push(ch);
 
-// http://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together/ or http://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together-set-2/
-function printAnagrams(list) {
+      if (letters.length === 0) {
+        results.push(tempArr.slice());
+      }
 
+      this.findAllPossibleWordsFromPhoneDigits(num, results, tempArr);
+
+      letters.splice(k, 0, ch);
+      tempArr.pop();
+    }
+  }
 }
 
 // http://www.geeksforgeeks.org/searching-for-patterns-set-2-kmp-algorithm/
@@ -2004,6 +2042,11 @@ function trie() {
 
 // http://www.geeksforgeeks.org/ternary-search-tree/
 function ternarySearchTree() {
+
+}
+
+// http://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together/ or http://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together-set-2/
+function printAnagrams(list) {
 
 }
 
@@ -2072,12 +2115,12 @@ function countSmallerElementsOnRight(arr) {
 // http://www.geeksforgeeks.org/maximum-difference-between-two-elements/
 // http://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/
 // http://www.geeksforgeeks.org/median-of-stream-of-integers-running-integers/
+// http://www.geeksforgeeks.org/find-first-non-repeating-character-stream-characters/
 // http://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
 // http://www.geeksforgeeks.org/maximum-contiguous-circular-sum/
 // http://www.geeksforgeeks.org/suffix-array-set-1-introduction/
 // http://www.geeksforgeeks.org/find-next-greater-number-set-digits/
 // http://www.geeksforgeeks.org/an-in-place-algorithm-for-string-transformation/
-// http://www.geeksforgeeks.org/find-first-non-repeating-character-stream-characters/
 // http://www.geeksforgeeks.org/rearrange-a-string-so-that-all-same-characters-become-at-least-d-distance-away/
 
 // MATRIX
@@ -2098,7 +2141,7 @@ function countSmallerElementsOnRight(arr) {
 // DIDN'T COMPLETELY UNDERSTAND: nextGreaterElement, findSmallestMissingNumber, countNumberOfOccurrences,
 // maxLengthBitonicSubArray, compare findSubArrayWithGivenSum with findTwoNumsThatSumToN, findSortedSubSequenceOfThree,
 // biggestNumCompare, findSmallestValueNotReppedBySubArraySum, printAllPermutations
-// printInterleavingsRecur, printAllPermutations
+// Recursion practice: printInterleavingsRecur, printAllPermutations, removeAdjacentDuplicates
 
 // MATHY: findRepeatingAndMissing
 module.exports = GeekForGeeks;

@@ -83,7 +83,6 @@ function GeekForGeeks() {
   this.printAllPermutations = printAllPermutations;
   this.printAnagrams = printAnagrams;
   this.suffixTree = suffixTree;
-  this.trie = trie;
   this.ternarySearchTree = ternarySearchTree;
   this.KMP = KMP;
   this.RabinKarp = RabinKarp;
@@ -2029,14 +2028,6 @@ function finiteAutomata(str1, str2) {
 
 // http://www.geeksforgeeks.org/pattern-searching-set-8-suffix-tree-introduction/
 function suffixTree() {
-
-}
-
-// http://www.geeksforgeeks.org/pattern-searching-using-trie-suffixes/
-// http://www.geeksforgeeks.org/trie-insert-and-search/
-// http://www.geeksforgeeks.org/trie-delete/
-// http://www.geeksforgeeks.org/longest-prefix-matching-a-trie-based-solution-in-java/
-function trie() {
 
 }
 

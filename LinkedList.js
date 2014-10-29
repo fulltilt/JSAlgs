@@ -33,7 +33,6 @@ function LinkedList() {
 	this.isPalindrome = isPalindrome;
 	this.copyLinkedListWithArbitraryPtr = copyLinkedListWithArbitraryPtr;
 	this.splitCircularListInTwo = splitCircularListInTwo;
-	this.printAlternating = printAlternating;
 	this.swapPairwise = swapPairwise;
 	this.deleteAlternating = deleteAlternating;
 	this.alternateSplit = alternateSplit;
@@ -467,18 +466,105 @@ function isPalindrome(head) {
 }
 
 // http://www.geeksforgeeks.org/a-linked-list-with-next-and-arbit-pointer/
-function copyLinkedListWithArbitraryPtr(list) {
+function copyLinkedListWithArbitraryPtr(head) {
+	var current = head;
 
+	// create new Nodes after each of the original Nodes all while setting the next pointers
+	while (current !== null) {
+		var newNode = new Node(current.data),
+				nextNode = current.next;
+		
+		current.next = newNode;
+		newNode.next =nextNode;
+		current = nextNode; 
+	}
+
+	// set the arbitrary pointer (reuses the 'previous' variable for double linked lists)
+	current = head;
+	while (current !== null) {
+		current.next.previous = current.previous.next;
+		current = current.next.next;
+	}
+
+	// separate both lists
+	current = head;
+	var copyHead = head.next;
+	while (current !== null) {
+		var nextCopy = current.next;
+		current.next = current.next.next;
+		if (nextCopy.next !== null) {	// tricky part
+			nextCopy.next = nextCopy.next.next;
+		}
+		current = current.next;
+	}
+
+	/* test that the order is the same
+	current = head;
+	count = 0;
+	while (count < 5) {
+		console.log(current.data);
+		current = current.previous;count++;
+	}
+
+	count = 0;
+	while (count < 5) {
+		console.log(copyHead.data);
+		copyHead = copyHead.previous;count++;
+	}
+	*/
 }
 
 // http://www.geeksforgeeks.org/split-a-circular-linked-list-into-two-halves/
-function splitCircularListInTwo(list) {
+function splitCircularListInTwo(head) {
+	// get length of the circular list
+	var length = 1,
+			current = head.next;
+	while (current !== head) {
+		length += 1;
+		current = current.next;
+	}
 
-}
+	var mid = Math.floor(length / 2),
+			count = 0,
+			previous = null;
+	current = head;
+	while (count < mid) {
+		previous = current;
+		current = current.next;
+		count += 1;
+	}
 
-// http://www.geeksforgeeks.org/practice-questions-for-linked-list-and-recursion/
-function printAlternating() {
+	// split lists
+	previous.next = head;	// create the first circular list
 
+	// create the second circular list (note: current is currently pointing to the middle element)
+	var midHead = current;
+	while (true) {
+		if (current.next !== head) {
+			current = current.next;
+		} else {
+			break;
+		}
+	}
+	current.next = midHead;
+
+	/* test both lists
+	count = 0;
+	current = head;
+	while (count < 5) {
+		console.log(current.data);
+		current = current.next;
+		count += 1;
+	}
+
+	count = 0;
+	current = midHead;
+	while (count < 5) {
+		console.log(current.data);
+		current = current.next
+		count += 1;
+	}
+	*/
 }
 
 // http://www.geeksforgeeks.org/pairwise-swap-elements-of-a-given-linked-list/

@@ -190,5 +190,38 @@ describe("LinkedList", function() {
     ll1.insertHead(5);
     ll1.insertHead(6);
     expect(ll.isPalindrome(ll1.head)).toEqual(false);
+    ll1.clear();
+  });
+
+  it('tests copyLinkedListWithArbitraryPtr',function() {
+    // use Doubly Linked List structure to create a list with arbitrary pointers
+    var dll = new DoublyLinkedList();
+    dll.insertHead(5);
+    dll.insertHead(4);
+    dll.insertHead(3);
+    dll.insertHead(2);
+    dll.insertHead(1);
+    var node1 = dll.find(1),
+        node2 = dll.find(2),
+        node3 = dll.find(3),
+        node4 = dll.find(4),
+        node5 = dll.find(5);
+    node1.previous = node3;
+    node2.previous = node1;
+    node3.previous = node5;
+    node4.previous = node3;
+    node5.previous = node2;
+    ll.copyLinkedListWithArbitraryPtr(dll.head);
+    dll.clear();
+  });
+
+  it('tests splitCircularListInTwo', function() {
+    var cl = new LinkedList();
+    cl.insertHead(11);
+    cl.insertHead(2);
+    cl.insertHead(56);
+    cl.insertHead(12);
+    cl.find(11).next = cl.find(12);
+    ll.splitCircularListInTwo(cl.head);
   });
 });

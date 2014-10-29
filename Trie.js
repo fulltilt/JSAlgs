@@ -2,45 +2,50 @@ var fs = require("fs");
 
 function Trie() {
   this.wordTree = {};
+  this.words = 0;
 }
 
 Trie.prototype = {
+  addWord: function(word) {
+    var root, letters, root, c;
+    root = this.wordTree;
+    letters = word.trim().toUpperCase();
+
+    var length = letters.length;
+    for (var i = 0; i < length; i++) {
+      c = letters[i];
+
+      if (!root[c]) {
+        root[c] = {};
+      }
+      root = root[c];
+
+      if (i === length - 1) {
+        this.words += 1;
+        root.$ = 1;
+      }
+    }
+  },
+
   createWordTree: function(wordList) {
     var lines = wordList.split("\n");
-    var words = 0, line, match, letters, root, c;
+    var line, letters, root, c;
     
     while (lines.length > 0) {
       line = lines.pop();
       if (line) {
-        root = this.wordTree;
-        letters = line.trim().toUpperCase();
-        
-        var length = letters.length;
-        for (var i = 0; i < length; i++) {
-          c = letters[i];
-          
-          if (!root[c]) {
-            root[c] = {};
-          }
-          root = root[c];
-          
-          if (i === length - 1) {
-            words += 1;
-            root.$ = 1;
-            // store description in tree
-            //root.$d = match[2];
-          }
-        }
+        this.addWord(line);
       }
     }
   },
   
-  isWord: function(wordTree, letters) {
-    var root = wordTree,
+  isWord: function(letters) {
+    var root = this.wordTree,
         length = letters.length;
 
     for (var i = 0; i < length; i++) {
-      var character = letters[i];
+      var character = letters[i].toUpperCase();
+
       if (!root[character]) {
         return false;
       }
@@ -51,22 +56,25 @@ Trie.prototype = {
       return false;
     }
     
-    return root;
+    return true;
   },
 
   print: function() {
-    console.log(this.wordTree);
+    var json = JSON.stringify(this.wordTree, null, 2);
+    console.log(json);
   }
 };
 
-fs.readFile('example.txt', function(err, data) {
+/*
+fs.readFile('text/example.txt', function(err, data) {
   if (err) throw err;
   var trie = new Trie();
   trie.createWordTree(data.toString());
-  //trie.print();
+  trie.print();
   console.log(trie.isWord(trie.wordTree, 'NEUROANATOMICAL'));
-  console.log(trie.isWord(trie.wordTree, 'penis'));
+  console.log(trie.isWord(trie.wordTree, 'HAMBURGER'));
 });
+*/
 
 module.exports = Trie;
 

@@ -224,4 +224,90 @@ describe("LinkedList", function() {
     cl.find(11).next = cl.find(12);
     ll.splitCircularListInTwo(cl.head);
   });
+
+  it('tests swapPairwise', function() {
+    var swp = new LinkedList();
+    swp.insertHead(5);
+    swp.insertHead(4);
+    swp.insertHead(3);
+    swp.insertHead(2);
+    swp.insertHead(1);
+    //expect(ll.swapPairwise(swp)).toEqual();
+    swp.swapPairwise();
+    swp.clear();
+  });
+
+  it('tests deleteAlternating', function() {
+    var swp = new LinkedList();
+    // test odd length list
+    swp.insertHead(5);
+    swp.insertHead(4);
+    swp.insertHead(3);
+    swp.insertHead(2);
+    swp.insertHead(1);
+    swp.deleteAlternating();
+    expect(swp.print()).toEqual('1 3 5');
+    swp.clear();
+
+    // test even length list
+    swp.insertHead(4);
+    swp.insertHead(3);
+    swp.insertHead(2);
+    swp.insertHead(1);
+    swp.deleteAlternating();
+    expect(swp.print()).toEqual('1 3');
+    swp.clear();
+  });
+
+  it('', function() {
+
+  });
+
+  it('', function() {
+
+  });
+
+  it('', function() {
+
+  });
+
+  it('', function() {
+
+  });
+
+  it('', function() {
+
+  });
+
+  it('', function() {
+
+  });
+
+  it('', function() {
+
+  });
+
+  it('', function() {
+
+  });
+
+  it('', function() {
+
+  });
+
+  it('', function() {
+
+  });
+
+  it('', function() {
+
+  });
+
+  it('', function() {
+
+  });
+
+  it('', function() {
+
+  });
 });

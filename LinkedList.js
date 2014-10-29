@@ -569,12 +569,27 @@ function splitCircularListInTwo(head) {
 
 // http://www.geeksforgeeks.org/pairwise-swap-elements-of-a-given-linked-list/
 function swapPairwise() {
+	if (this.head === null || this.head.next === null) {
+		return;
+	}
 
+	
 }
 
 // http://www.geeksforgeeks.org/delete-alternate-nodes-of-a-linked-list/
 function deleteAlternating() {
+	var current = this.head;
+	while (current.next !== null) {
+		nextNode = current.next;
+		current.next = nextNode.next;
+		delete nextNode;
 
+		if (current.next === null) {	// for even length lists
+			break;
+		} else {
+			current = current.next;
+		}
+	}
 }
 
 // http://www.geeksforgeeks.org/alternating-split-of-a-given-singly-linked-list/

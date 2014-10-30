@@ -1,9 +1,20 @@
 function Node(data) {
 	this.data = data;
 	this.next = null;
-
-	this.printFromNode = printFromNode;
 }
+
+Node.prototype = {
+	// Used to print from a specific Node. Used for Merge Sort algorithm
+	printFromNode: function() {
+		var output = '';
+		var current = this;
+		while (current !== null) {
+			output += current.data + ' ';
+			current = current.next;
+		}
+		return output.trim();
+	}
+};
 
 function LinkedList() {
 	this.head = null;
@@ -198,17 +209,6 @@ function insertionSortWithSwappingNodes() {
 			slow = tempLowest;
 		}
 	}
-}
-
-// Used to print from a specific Node. Used for Merge Sort algorithm
-function printFromNode() {
-	var output = '';
-	var current = this;
-	while (current !== null) {
-		output += current.data + ' ';
-		current = current.next;
-	}
-	return output.trim();
 }
 
 /* Sorts a linked list and returns the head of the sorted list (note: the algorithm reorders the list nodes but doesn't update the head or any LinkedList
@@ -568,12 +568,44 @@ function splitCircularListInTwo(head) {
 }
 
 // http://www.geeksforgeeks.org/pairwise-swap-elements-of-a-given-linked-list/
+// swaps nodes
 function swapPairwise() {
 	if (this.head === null || this.head.next === null) {
 		return;
 	}
 
-	
+	var dummyHead = new Node(-1),
+			previous = dummyHead,
+			current = this.head,
+			nextNode;
+
+	dummyHead.next = this.head;
+	while (current !== null) {
+		nextNode = current.next;
+		current.next = nextNode.next;
+		nextNode.next = current;
+		previous.next = nextNode;
+
+		// do this step so the proceeding steps don't look so confusing
+		var temp = nextNode;
+		nextNode = current;
+		current = temp;
+		
+		if (nextNode === this.head) {	// case for the initial swap
+			this.head = current;
+		}
+
+		if (nextNode.next === null) {	// check to see if the next node and the node after that is null
+			break;
+		} else if (nextNode.next.next === null) {
+			break;
+		} else {	// make sure that we advance each pointer two spots up
+			previous = current.next;
+			current = nextNode.next;
+			nextNode = nextNode.next.next;
+		}
+	}
+	delete dummyNode;
 }
 
 // http://www.geeksforgeeks.org/delete-alternate-nodes-of-a-linked-list/
@@ -594,12 +626,56 @@ function deleteAlternating() {
 
 // http://www.geeksforgeeks.org/alternating-split-of-a-given-singly-linked-list/
 function alternateSplit() {
+	if (this.head === null || this.head.next === null) {
+		return;
+	}
 
+	var current = this.head,
+			nextNode = current.next;
+			secondHead = nextNode;
+
+	while (nextNode !== null) {
+		current.next = nextNode.next;
+		if (current.next !== null) {
+			nextNode.next = current.next.next;
+		} else {
+			break;
+		}
+
+		current = current.next;
+		nextNode = nextNode.next;
+	}
+	//console.log(secondHead.printFromNode());	// test that the second list works
 }
 
 // http://www.geeksforgeeks.org/reverse-a-list-in-groups-of-given-size/
-function reverseInKGroups() {
+function reverseInKGroups(head, k) {
+	var current = head,
+			next = null,
+			previous = null,
+			count = 0;
 
+	// reverse first k nodes of the list
+	while (current !== null && count < k) {
+		next = current.next;
+		current.next = previous;
+		previous = current;
+		current = next;
+		count += 1;
+	}
+
+	// next is now a pointer to the (k + 1)th Node. Recursively call for the list starting from current
+	// and make rest of the list as next of first node
+	if (next !== null) {
+		head.next = this.reverseInKGroups(next, k);
+	}
+
+	// condition to change the head pointer for printing purposes
+	if (head === this.head) {
+		this.head = previous;
+	}
+	// previous is new head of the input list
+	return previous;
 }
 
 // http://www.geeksforgeeks.org/delete-nodes-which-have-a-greater-value-on-right-side/
@@ -656,3 +732,17 @@ function LRUCache() {
 // http://www.geeksforgeeks.org/sorted-linked-list-to-balanced-bst/
 
 module.exports = LinkedList;
+
+/* NOTES
+-a recurring problem is exiting out of the algorithm depending on whether the list is of even or odd length
+-when swapping Nodes, a lot of the times it's easier to just swap the data. Swapping links is more efficient if there are a lot
+ of fields to swap
+-tip that i need to verify: for lists of varying lengths, it might be best to make the while loop conditional true and the logic to 
+ determine when to break inside the loop 
+-reverse is tricky as a typical reverse option starts at a node and every index after that is reversed all the way to the end.
+ A trickier reverse operation is to reverse a sub-list inside the list
+ --a lot of added complexity is keeping track of the head node so I can print for testing purposes. During interviews, you are probably
+ able to avoid that
+*/
+
+// PRACTICE: reverseInKGroups

@@ -227,14 +227,27 @@ describe("LinkedList", function() {
 
   it('tests swapPairwise', function() {
     var swp = new LinkedList();
+    // test odd length list
+    swp.insertHead(7);
+    swp.insertHead(6);
     swp.insertHead(5);
     swp.insertHead(4);
     swp.insertHead(3);
     swp.insertHead(2);
     swp.insertHead(1);
-    //expect(ll.swapPairwise(swp)).toEqual();
     swp.swapPairwise();
+    expect(swp.print()).toEqual('2 1 4 3 6 5 7');
     swp.clear();
+
+    // test even length list
+    swp.insertHead(6);
+    swp.insertHead(5);
+    swp.insertHead(4);
+    swp.insertHead(3);
+    swp.insertHead(2);
+    swp.insertHead(1);
+    swp.swapPairwise();
+    expect(swp.print()).toEqual('2 1 4 3 6 5');
   });
 
   it('tests deleteAlternating', function() {
@@ -259,12 +272,55 @@ describe("LinkedList", function() {
     swp.clear();
   });
 
-  it('', function() {
+  it('tests alternateSplit', function() {
+    var as = new LinkedList();
+    // test even length;
+    as.insertHead(1);
+    as.insertHead(0);
+    as.insertHead(1);
+    as.insertHead(0);
+    as.insertHead(1);
+    as.insertHead(0);
+    as.alternateSplit();
+    //console.log(as.print());
 
+    // test odd length
+    as.clear();
+    as.insertHead(0);
+    as.insertHead(1);
+    as.insertHead(0);
+    as.insertHead(1);
+    as.insertHead(0);
+    as.alternateSplit()
+    //console.log(as.print());
+    as.clear();
   });
 
-  it('', function() {
+  it('tests reverseInKGroups', function() {
+    var rikg = new LinkedList();
+    // test even length;
+    rikg.insertHead(8);
+    rikg.insertHead(7);
+    rikg.insertHead(6);
+    rikg.insertHead(5);
+    rikg.insertHead(4);
+    rikg.insertHead(3);
+    rikg.insertHead(2);
+    rikg.insertHead(1);
+    //expect(rikg.reverseInKGroups(rikg.head, 3)).toEqual('3 2 1 6 5 4 8 7');
+    rikg.reverseInKGroups(rikg.head, 3);
+    console.log(rikg.print());
 
+    rikg.clear();
+    rikg.insertHead(8);
+    rikg.insertHead(7);
+    rikg.insertHead(6);
+    rikg.insertHead(5);
+    rikg.insertHead(4);
+    rikg.insertHead(3);
+    rikg.insertHead(2);
+    rikg.insertHead(1);
+    //expect(rikg.reverseInKGroups(rikg.head, 5)).toEqual('5 4 3 2 1 8 7 6');
   });
 
   it('', function() {

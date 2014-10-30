@@ -307,9 +307,8 @@ describe("LinkedList", function() {
     rikg.insertHead(3);
     rikg.insertHead(2);
     rikg.insertHead(1);
-    //expect(rikg.reverseInKGroups(rikg.head, 3)).toEqual('3 2 1 6 5 4 8 7');
     rikg.reverseInKGroups(rikg.head, 3);
-    console.log(rikg.print());
+    expect(rikg.print()).toEqual('3 2 1 6 5 4 8 7');
 
     rikg.clear();
     rikg.insertHead(8);
@@ -320,50 +319,112 @@ describe("LinkedList", function() {
     rikg.insertHead(3);
     rikg.insertHead(2);
     rikg.insertHead(1);
-    //expect(rikg.reverseInKGroups(rikg.head, 5)).toEqual('5 4 3 2 1 8 7 6');
+    rikg.reverseInKGroups(rikg.head, 5);
+    expect(rikg.print()).toEqual('5 4 3 2 1 8 7 6');
+    rikg.clear();
   });
 
-  it('', function() {
+  it('tests deleteNodesWithGreaterValueOnRight', function() {
+    var dvr = new LinkedList();
+    dvr.insertHead(3);
+    dvr.insertHead(2);
+    dvr.insertHead(6);
+    dvr.insertHead(5);
+    dvr.insertHead(11);
+    dvr.insertHead(10);
+    dvr.insertHead(9);
+    dvr.insertHead(15);
+    dvr.insertHead(12);
+    dvr.deleteNodesWithGreaterValueOnRight();
+    expect(dvr.print()).toEqual('15 11 6 3');
+    dvr.clear();
+  });
+
+  it('tests segregateEvenAndOdd', function() {
+    var seo = new LinkedList();
+    seo.insertHead(6);
+    seo.insertHead(7);
+    seo.insertHead(1);
+    seo.insertHead(4);
+    seo.insertHead(5);
+    seo.insertHead(10);
+    seo.insertHead(12);
+    seo.insertHead(8);
+    seo.insertHead(15);
+    seo.insertHead(17);
+    seo.segregateEvenAndOdd();
+    expect(seo.print()).toEqual('8 12 10 4 6 17 15 5 1 7');
+
+    seo.clear();
+    seo.insertHead(6);
+    seo.insertHead(1);
+    seo.insertHead(4);
+    seo.insertHead(5);
+    seo.insertHead(10);
+    seo.insertHead(12);
+    seo.insertHead(8);
+    seo.segregateEvenAndOdd();
+    expect(seo.print()).toEqual('8 12 10 4 6 5 1');
+
+    seo.clear();
+    seo.insertHead(7);
+    seo.insertHead(5);
+    seo.insertHead(3);
+    seo.insertHead(1);
+    seo.segregateEvenAndOdd();
+    expect(seo.print()).toEqual('1 3 5 7');
+
+    seo.clear();
+    seo.insertHead(10);
+    seo.insertHead(12);
+    seo.insertHead(8);
+    seo.segregateEvenAndOdd();
+    expect(seo.print()).toEqual('8 12 10');
+  });
+
+  it('tests additionWithTwoLists', function() {
+    var atl1 = new LinkedList();
+    atl1.insertHead(7);
+    atl1.insertHead(5);
+    atl1.insertHead(9);
+    atl1.insertHead(4);
+    atl1.insertHead(6);
+
+    var atl2 = new LinkedList();
+    atl2.insertHead(8);
+    atl2.insertHead(4);
+    expect(atl1.additionWithTwoLists(atl1, atl2).printFromNode()).toEqual('6 5 0 0 5');
+  });
+
+  it('tests ', function() {
 
   });
 
-  it('', function() {
+  it('tests ', function() {
 
   });
 
-  it('', function() {
+  it('tests ', function() {
 
   });
 
-  it('', function() {
+  it('tests ', function() {
 
   });
 
-  it('', function() {
+  it('tests ', function() {
 
   });
 
-  it('', function() {
+  it('tests ', function() {
 
   });
 
-  it('', function() {
+  it('tests ', function() {
 
   });
 
-  it('', function() {
-
-  });
-
-  it('', function() {
-
-  });
-
-  it('', function() {
-
-  });
-
-  it('', function() {
+  it('tests ', function() {
 
   });
 });

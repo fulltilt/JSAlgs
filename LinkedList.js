@@ -649,6 +649,7 @@ function alternateSplit() {
 }
 
 // http://www.geeksforgeeks.org/reverse-a-list-in-groups-of-given-size/
+// NOTE: I tried to do this iteratively but was way complicated. The recursive solution is so much easier since you don't have to worry about all those pointers
 function reverseInKGroups(head, k) {
 	var current = head,
 			next = null,
@@ -680,17 +681,99 @@ function reverseInKGroups(head, k) {
 
 // http://www.geeksforgeeks.org/delete-nodes-which-have-a-greater-value-on-right-side/
 function deleteNodesWithGreaterValueOnRight() {
+	var current = this.head,
+			previous = null;
 
+	while (current.next !== null) {
+		if (current.next.data > current.data) {
+			if (current === this.head) {
+				this.head = current.next;
+			} else {
+				previous.next = current.next;
+			}
+		} else {	// tricky part: only update previous pointer if we don't remove a value
+			previous = current;
+		}
+
+		current = current.next;
+	}
 }
 
 // http://www.geeksforgeeks.org/segregate-even-and-odd-elements-in-a-linked-list/
+// we could use 2 pointers and swap the data accordingly but this problem states that the numbers should stay in the same relative order
 function segregateEvenAndOdd() {
+	var oddHead = new Node(-1),
+			evenHead = new Node(-1),
+			currentOdd = oddHead,
+			currentEven = evenHead,
+			current = this.head;
 
+	while (current !== null) {
+		var next = current.next;
+		if (current.data % 2 === 0) {
+			currentEven.next = current;
+			currentEven = currentEven.next;
+		} else {
+			currentOdd.next = current;
+			currentOdd = currentOdd.next;
+		}
+		current.next = null;
+		current = next;
+	}
+	currentEven.next = oddHead.next;	// join both lists
+	this.head = evenHead.next;
 }
 
 // http://www.geeksforgeeks.org/add-two-numbers-represented-by-linked-lists/
 function additionWithTwoLists(list1, list2) {
+	list1.reverse();
+	list2.reverse();
 
+	var result = null,
+			temp,
+			previous = null,
+			carry = 0,
+			sum,
+			num1Ptr = list1.head,
+			num2Ptr = list2.head;
+
+	while (num1Ptr !== null || num2Ptr !== null) {
+		sum = (num1Ptr ? num1Ptr.data : 0) + (num2Ptr ? num2Ptr.data : 0) + carry;
+		carry = (sum >= 10) ? 1 : 0;
+		sum = sum % 10;
+
+		var newNode = new Node(sum);
+		if (result === null) {
+			result = newNode;
+		} else {
+			previous.next = newNode;
+		}
+
+		previous = newNode;
+
+		if (num1Ptr) {
+			num1Ptr = num1Ptr.next;
+		}
+		if (num2Ptr) {
+			num2Ptr = num2Ptr.next;
+		}
+	}
+
+	if (carry > 0) {
+		newNode.next = new Node(carry);
+	}
+
+	// reverse the result
+	var previous = null,
+			current = result,
+			next;
+	while (current !== null) {
+		next = current.next;
+		current.next = previous;
+		previous = current;
+		current = next;
+	}
+	return previous;
 }
 
 // http://www.geeksforgeeks.org/union-and-intersection-of-two-linked-lists/

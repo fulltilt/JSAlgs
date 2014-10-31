@@ -1,9 +1,9 @@
 var LinkedList = require('../LinkedList.js');
-var DoublyLinkedList = require('../DoublyLinkedList.js');
+var DLL = require('../DoublyLinkedList.js');
 
 describe("LinkedList", function() {
   var ll = new LinkedList();
-  var dll = new DoublyLinkedList();
+  var dll = new DLL.DoublyLinkedList();
 
   beforeEach(function() {
     ll.clear();
@@ -195,7 +195,7 @@ describe("LinkedList", function() {
 
   it('tests copyLinkedListWithArbitraryPtr',function() {
     // use Doubly Linked List structure to create a list with arbitrary pointers
-    var dll = new DoublyLinkedList();
+    var dll = new DLL.DoublyLinkedList();
     dll.insertHead(5);
     dll.insertHead(4);
     dll.insertHead(3);
@@ -394,22 +394,126 @@ describe("LinkedList", function() {
     atl2.insertHead(8);
     atl2.insertHead(4);
     expect(atl1.additionWithTwoLists(atl1, atl2).printFromNode()).toEqual('6 5 0 0 5');
+    atl1 = null;
+    atl2 = null;
   });
 
-  it('tests ', function() {
+  it('tests unionAndIntersection', function() {
+    var uai1 = new LinkedList();
+    uai1.insertHead(20);
+    uai1.insertHead(4);
+    uai1.insertHead(15);
+    uai1.insertHead(10);
 
+    var uai2 = new LinkedList();
+    uai2.insertHead(10);
+    uai2.insertHead(2);
+    uai2.insertHead(4);
+    uai2.insertHead(8);
+    uai1.unionAndIntersection(uai1, uai2);
+    uai1 = null;
+    uai2 = null;
   });
 
-  it('tests ', function() {
-
+  it('tests rotateList', function() {
+    var rl = new LinkedList();
+    rl.insertHead(60); 
+    rl.insertHead(50);
+    rl.insertHead(40);
+    rl.insertHead(30);
+    rl.insertHead(20);
+    rl.insertHead(10);
+    expect(rl.rotateList(rl, 4).printFromNode()).toEqual('50 60 10 20 30 40');
   });
 
-  it('tests ', function() {
+  it('tests flattenList', function() {
+    var fl = new DLL.DoublyLinkedList();
+    fl.insertHead(28);
+    fl.insertHead(19);
+    fl.insertHead(10);
+    fl.insertHead(5);
+    fl.head.previous = new DLL.Node(7);
+    fl.head.previous.previous = new DLL.Node(8);
+    fl.head.previous.previous.previous = new DLL.Node(30);
 
+    var tempNode = fl.find(10);
+    tempNode.previous = new DLL.Node(20);
+
+    tempNode = fl.find(19);
+    tempNode.previous = new DLL.Node(22);
+    tempNode.previous.previous = new DLL.Node(50);
+
+    tempNode = fl.find(28);
+    tempNode.previous = new DLL.Node(35);
+    tempNode.previous.previous = new DLL.Node(40);
+    tempNode.previous.previous.previous = new DLL.Node(45);
+    expect(fl.flattenList()).toEqual('5 7 8 10 19 20 22 28 30 35 40 45 50');
+    fl = null;
+    
+    /* test out that list is formed correctly
+    var current = fl.head;
+    while (current !== null) {
+      var down = current.previous;
+      console.log('*' + current.data)
+      while (down !== null) {
+        console.log(down.data);
+        down = down.previous;
+      }
+      current = current.next;
+    }
+    */
   });
 
-  it('tests ', function() {
+  it('tests flattenMultLevelList', function() {
+    // manually create a multi level linked list
+    var head = new DLL.Node(10);
+    head.previous = new DLL.Node(4);
+    head.previous.next = new DLL.Node(20);
+    head.previous.next.previous = new DLL.Node(2);
+    head.previous.next.next = new DLL.Node(13);
+    head.previous.next.next.previous = new DLL.Node(16);
+    head.previous.next.next.previous.previous = new DLL.Node(3);
 
+    head.next = new DLL.Node(5);
+    head.next.next = new DLL.Node(12);
+    head.next.next.next = new DLL.Node(7);
+
+    head.next.next.next.previous = new DLL.Node(17);
+    head.next.next.next.previous.next = new DLL.Node(6);
+    head.next.next.next.previous.previous = new DLL.Node(9);
+    head.next.next.next.previous.previous.next = new DLL.Node(8);
+    head.next.next.next.previous.previous.previous = new DLL.Node(19);
+    head.next.next.next.previous.previous.previous.next = new DLL.Node(15);
+
+    head.next.next.next.next = new DLL.Node(11);
+
+    dll.flattenMultLevelList(head);
+    /* print list by level
+    var level = [],
+        children = [];
+    var current = head;
+    while (current !== null) {
+      level.push(current);
+      current = current.next;
+    }
+
+    while (level.length !== 0) {
+      for (var i = 0; i < level.length; i++) {
+        console.log(level[i].data);
+        if (level[i].previous !== null) {
+          children.push(level[i].previous);
+
+          var innerCurrent = level[i].previous.next;
+          while (innerCurrent !== null) {
+            children.push(innerCurrent);
+            innerCurrent = innerCurrent.next;
+          }
+        }
+      }
+      level = children.slice(0);
+      children = [];
+    }
+    */
   });
 
   it('tests ', function() {

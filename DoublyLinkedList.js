@@ -16,7 +16,9 @@ function DoublyLinkedList() {
   this.clear = clear;
   this.print = print;
   this.reversePrint = reversePrint;
-  this.reverseDoublyLinkedList = reverseDoublyLinkedList; 
+  this.reverseDoublyLinkedList = reverseDoublyLinkedList;
+  this.flattenList = flattenList;
+  this.flattenMultLevelList = flattenMultLevelList;
 }
 
 function find(data) {
@@ -146,5 +148,86 @@ function reverseDoublyLinkedList(list) {
   this.head = currentTail;
   this.tail = currentHead; 
 }
+
+// modified helper merge function for flattenList that uses previous links instead of next links
+function merge(a, b) {
+  var dummyHead = new Node();
+  var current = dummyHead;
+
+  // merge both lists together in sorted order
+  while (a !== null && b !== null) {
+    if (a.data <= b.data) {
+      current.previous = a;
+      a = a.previous;
+    } else {
+      current.previous = b;
+      b = b.previous;
+    }
+    current = current.previous;
+  }
+  current.previous = (a === null) ? b : a;
+  return dummyHead.previous;
+}
+
+// http://www.geeksforgeeks.org/flattening-a-linked-list/
+function flattenList() {
+  var current = this.head,
+      result = null
+      newHead = null;
+  
+  while (current !== null) {
+    if (result === null) {
+      result = merge(current, result);
+      newHead = result;
+    } else {
+      result = merge(current, result);
+    }
+    current = current.next;
+  }
+
+  // print list using previous links instead of next
+  var output = '';
+  current = newHead;
+  while (current !== null) {
+    output += current.data + ' ';
+    current = current.previous;
+  }
+  return output.trim();
+}
+
+// http://www.geeksforgeeks.org/flatten-a-linked-list-with-next-and-child-pointers/
+function flattenMultLevelList(head) {
+  var level = [],
+      children = [];
+  var current = head;
+  while (current !== null) {
+    level.push(current);
+    current = current.next;
+  }
+
+  while (level.length !== 0) {
+    for (var i = 0; i < level.length; i++) {
+      console.log(level[i].data);
+      if (level[i].previous !== null) {
+        children.push(level[i].previous);
+
+        var innerCurrent = level[i].previous.next;
+        while (innerCurrent !== null) {
+          children.push(innerCurrent);
+          innerCurrent = innerCurrent.next;
+        }
+      }
+    }
+    level = children.slice(0);
+    children = [];
+  }
+}
+
+var DoublyLinkedList = function() {
+  return {
+    DoublyLinkedList: DoublyLinkedList,
+    Node: Node
+  }
+}();
 
 module.exports = DoublyLinkedList;

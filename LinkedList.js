@@ -54,7 +54,6 @@ function LinkedList() {
 	this.unionAndIntersection = unionAndIntersection;
 	this.rotateList = rotateList;
 	this.LRUCache = LRUCache;
-	this.flattenList = flattenList;
 	this.sortZeroesOnesTwos = sortZeroesOnesTwos;
 	this.deleteNNodesAfterMNodes = deleteNNodesAfterMNodes;
 	this.reverseAlternateAndAppendAtEnd = reverseAlternateAndAppendAtEnd;
@@ -777,18 +776,98 @@ function additionWithTwoLists(list1, list2) {
 }
 
 // http://www.geeksforgeeks.org/union-and-intersection-of-two-linked-lists/
+// assumes each individual list has no duplicates
 function unionAndIntersection(list1, list2) {
+	var union = null,
+			intersection = null,
+			previousUnion,
+			previousIntersection,
+			current1 = list1.head,
+			current2 = list2.head,
+			table = {},
+			data;
 
+	// create union list
+	while (current1 !== null) {
+		data = current1.data;
+		table[data] = 1;
+
+		var newNode = new Node(current1.data);
+		if (union === null) {
+			union = newNode;
+		} else {
+			previousUnion.next = newNode;
+		}
+		previousUnion = newNode;
+		current1 = current1.next;
+	}
+
+	while (current2 !== null) {
+		data = current2.data;
+		if (!table[data]) {
+			var newNode = new Node(current2.data);
+			if (union === null) {
+				union = newNode;
+			} else {
+				previousUnion.next = newNode;
+			}
+			previousUnion = newNode;
+		}
+		current2 = current2.next;
+	}
+
+	// create intersection
+	current1 = list1.head;
+	current2 = list2.head;
+	table = {};
+	while (current1 !== null) {
+		data = current1.data;
+		table[data] = 1;
+
+		current1 = current1.next;
+	}
+
+	while (current2 !== null) {
+		data = current2.data;
+		if (table[data]) {
+			var newNode = new Node(current2.data);
+			if (intersection === null) {
+				intersection = newNode;
+			} else {
+				previousIntersection.next = newNode;
+			}
+			previousIntersection = newNode;	
+		}
+		current2 = current2.next;
+	}
+
+	// test output for union and intersection
+	//console.log(union.printFromNode());
+	//console.log(intersection.printFromNode());
 }
 
 // http://www.geeksforgeeks.org/rotate-a-linked-list/
 function rotateList(list, k) {
+	var current = list.head,
+			count = 1;
 
-}
+	// to the kth element
+	while (count < k) {
+		current = current.next;
+		count += 1;
+	}
 
-// http://www.geeksforgeeks.org/flattening-a-linked-list/ or http://www.geeksforgeeks.org/flatten-a-linked-list-with-next-and-child-pointers/
-function flattenList(list) {
+	var next = current.next,
+			newHead = next;
+	current.next = null;
+	current = next;
+	
+	while (current.next !== null) {
+		current = current.next;
+	}
 
+	current.next = list.head;
+	return newHead;
 }
 
 // http://www.geeksforgeeks.org/sort-a-linked-list-of-0s-1s-or-2s/
@@ -824,8 +903,14 @@ module.exports = LinkedList;
  determine when to break inside the loop 
 -reverse is tricky as a typical reverse option starts at a node and every index after that is reversed all the way to the end.
  A trickier reverse operation is to reverse a sub-list inside the list
- --a lot of added complexity is keeping track of the head node so I can print for testing purposes. During interviews, you are probably
+-a lot of added complexity is keeping track of the head node so I can print for testing purposes. During interviews, you are probably
  able to avoid that
+-before setting 'current.next = null' in the middle of a list, make sure you get a reference to the next node and after setting current.next
+ to null, set 'current = next':
+ 	var next = current.next,
+			newHead = next;
+	current.next = null;
+	current = next;
 */
 
 // PRACTICE: reverseInKGroups

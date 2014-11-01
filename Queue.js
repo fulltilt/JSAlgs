@@ -178,3 +178,8 @@ function toString() {
 }
 
 module.exports = ConstantQueue;
+
+/*
+NOTES:
+-a standard JS array can act as a queue by using push to enqueue and shift to dequeue
+*/

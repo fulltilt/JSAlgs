@@ -95,6 +95,7 @@ function BST() {
   this.redBlackTree = redBlackTree;
   this.getRandomBSTNode = getRandomBSTNode;
   this.treeToCircularDoublyLinkedList = treeToCircularDoublyLinkedList;
+  this.treeToCircularDoublyLinkedListUtil = treeToCircularDoublyLinkedListUtil;
   this.linkedListToBinaryTree = linkedListToBinaryTree;
 }
 
@@ -517,18 +518,103 @@ function isSubTree(node1, node2) {
 // http://www.geeksforgeeks.org/the-great-tree-list-recursion-problem/
 // http://www.geeksforgeeks.org/in-place-convert-a-given-binary-tree-to-doubly-linked-list/
 // http://www.geeksforgeeks.org/convert-a-given-binary-tree-to-doubly-linked-list-set-2/
-function treeToCircularDoublyLinkedList(tree) {
+function treeToCircularDoublyLinkedList(root) {
+  // base case
+  if (root === null) {
+    return root;
+  }
+  
+  // convert to DLL using treeToCircularDoublyLinkedListUtil()
+  this.treeToCircularDoublyLinkedListUtil(root);
 
+  // treeToCircularDoublyLinkedListUtil returns root node of the converted DLL. Go to the leftmost node to get the head of the newly created list
+  while (root.left !== null) {
+    root = root.left;
+  }
+
+  return root;
+}
+
+function treeToCircularDoublyLinkedListUtil(node) {
+  // base case
+  if (node === null) {
+    return null;
+  }
+
+  // convert left subtree and link to root
+  if (node.left !== null) {
+    // convert left subtree
+    var left = this.treeToCircularDoublyLinkedListUtil(node.left);
+
+    // get the inorder predecessor for the current node
+    while (left.right !== null) {
+      left = left.right;
+    }
+
+    left.right = node;  // make current node the next of the predecessor
+    node.left = left;   // make predecessor the previous of the current node
+  }
+
+  // convert right subtree and link to root
+  if (node.right !== null) {
+    // convert right subtree
+    var right = this.treeToCircularDoublyLinkedListUtil(node.right);
+
+    // get the inorder successor of the current node
+    while (right.left !== null) {
+      right = right.left;
+    }
+
+    right.left = node;  // set 'right's predecessor to be current node
+    node.right = right; // set current nodes successor to be 'right'
+  }
+
+  return node;
 }
 
 // http://www.geeksforgeeks.org/given-linked-list-representation-of-complete-tree-convert-it-to-linked-representation/
-function linkedListToBinaryTree(list) {
+function linkedListToBinaryTree(node) {
+  var queue = [],
+      root = new Node(node.data);
+  queue.push(root);
+  node = node.next;
 
+  while (node !== null) {
+    var parent = queue.shift(),
+        leftChild = null,   // finally an example of why it's important to declare your variables up top. If I don't do this step, if rightChild is set once, it will never be null
+        rightChild = null;
+
+    // traverse up to 2 spots in the list to get the current Node's children
+    leftChild = new Node(node.data);
+    queue.push(leftChild);
+    node = node.next;
+    if (node !== null) {
+      rightChild = new Node(node.data);
+      queue.push(rightChild);
+      node = node.next;
+    }
+
+    parent.left = leftChild;
+    parent.right = rightChild;
+  }
+
+  return root;
 }
 
 // http://www.geeksforgeeks.org/given-a-binary-tree-print-out-all-of-its-root-to-leaf-paths-one-per-line/
-function printAllPaths() {
+function printAllPaths(node, path) {
+  if (node === null) {
+    return null;
+  }
 
+  path.push(node.data);
+  var left = this.printAllPaths(node.left, path),
+      right = this.printAllPaths(node.right, path);
+
+  if (left === null && right === null) {
+    console.log(path);
+  }
+  path.pop(); // this part ensures that parts of other paths don't get added
 }
 
 // http://www.geeksforgeeks.org/lowest-common-ancestor-in-a-binary-search-tree/
@@ -634,7 +720,7 @@ function kthSmallestElement(k) {
 }
 
 // http://www.geeksforgeeks.org/print-ancestors-of-a-given-node-in-binary-tree/
-http://www.geeksforgeeks.org/print-ancestors-of-a-given-binary-tree-node-without-recursion/
+// http://www.geeksforgeeks.org/print-ancestors-of-a-given-binary-tree-node-without-recursion/
 function printAncestors(node) {
 
 }
@@ -876,3 +962,15 @@ module.exports = BinarySearchTree;
 // http://www.geeksforgeeks.org/tournament-tree-and-binary-heap/
 // http://www.geeksforgeeks.org/find-all-possible-interpretations/
 // http://www.geeksforgeeks.org/clone-binary-tree-random-pointers/
+
+/* NOTES:
+-getting the inorder predecessor:
+var left = node.left;
+while (left.right !== null) {
+  left = left.right;
+}
+-getting the inorder successor:
+var right = node.right;
+while (right.left !== null) {
+  right = right.left;
+}*/

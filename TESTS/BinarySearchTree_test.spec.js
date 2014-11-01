@@ -1,4 +1,5 @@
 var BST = require('../BinarySearchTree.js');
+var LinkedList = require('../LinkedList.js');
 
 describe("BST", function() {
   var bst = new BST.BinarySearchTree();
@@ -164,5 +165,39 @@ describe("BST", function() {
 
   it('tests isSubTree', function() {
     bst.isSubTree(bt2.root, bt3.root);
+  });
+
+  it('tests treeToCircularDoublyLinkedList', function() {
+    var tcdl = new BST.BinarySearchTree();
+    tcdl.insert(4);
+    tcdl.insert(2);
+    tcdl.insert(5);
+    tcdl.insert(1);
+    tcdl.insert(3);
+    var head = bst.treeToCircularDoublyLinkedList(tcdl.root);
+    expect(head.data).toEqual(1);
+    expect(head.right.data).toEqual(2);
+    expect(head.right.right.data).toEqual(3);
+    expect(head.right.right.right.data).toEqual(4);
+    expect(head.right.right.right.right.data).toEqual(5);
+  });
+
+  it('tests linkedListToBinaryTree', function() {
+    var ll = new LinkedList();
+    ll.insertHead(36);
+    ll.insertHead(30);
+    ll.insertHead(25);
+    ll.insertHead(15);
+    ll.insertHead(12);
+    ll.insertHead(10);
+    var result = [],
+        root = bst.linkedListToBinaryTree(ll.head);
+    bst.getInOrder(root, result);
+    expect(result).toEqual([25, 12, 30, 10, 36, 15]);
+  });
+
+  it('tests printAllPaths', function() {
+    var paths = [];
+    bst.printAllPaths(bst.root, paths);
   });
 });

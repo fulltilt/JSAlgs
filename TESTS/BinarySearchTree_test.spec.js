@@ -20,7 +20,7 @@ describe("BST", function() {
     bst.insert(10);
 
     bt.clear();
-    bt.insert(2);
+    bt.insert(3);
     bt.root.left = new BST.Node(7);
     bt.root.left.left = new BST.Node(2);
     bt.root.left.right = new BST.Node(6);
@@ -108,7 +108,7 @@ describe("BST", function() {
   });
 
   it('tests areTreesIdentical', function() {
-    var root = new BST.Node(2);
+    var root = new BST.Node(3);
     root.left = new BST.Node(7);
     root.left.left = new BST.Node(2);
     root.left.right = new BST.Node(6);
@@ -196,8 +196,75 @@ describe("BST", function() {
     expect(result).toEqual([25, 12, 30, 10, 36, 15]);
   });
 
+  it('tests BTFind', function() {
+    var n1 = bt.root.right.right.left,
+        n2 = bt.root.left.left,
+        n3 = bt.root.left.right.left,
+        n4 = bt.root.left.right.right.left;
+    expect(bt.BTFind(bt.root, n1.data).data).toEqual(4);
+    expect(bt.BTFind(bt.root, n2.data).data).toEqual(2);
+    expect(bt.BTFind(bt.root, n3.data).data).toEqual(5);
+    expect(bt.BTFind(bt.root, n4.data).data).toEqual(1);
+  });
+
+  it('tests lowestCommonAncestorBST', function() {
+    var n1 = bst.find(10),
+        n2 = bst.find(36),
+        n3 = bst.find(99),
+        n4 = bst.find(22);
+    expect(bst.lowestCommonAncestorBST(n1,n2).data).toEqual(23);
+    expect(bst.lowestCommonAncestorBST(n2,n3).data).toEqual(45);
+    expect(bst.lowestCommonAncestorBST(n3,n4).data).toEqual(23);
+    expect(bst.lowestCommonAncestorBST(n2,n4).data).toEqual(23);
+    expect(bst.lowestCommonAncestorBST(n1,n4).data).toEqual(16);
+  });
+
+  it('tests lowestCommonAncestorBT', function() {
+    var n1 = bt.root.right.right.left,
+        n2 = bt.root.left.left,
+        n3 = bt.root.left.right.left,
+        n4 = bt.root.left.right.right.left;
+    expect(bt.lowestCommonAncestorBT(n1,n4).data).toEqual(3);
+    expect(bt.lowestCommonAncestorBT(n2,n3).data).toEqual(7);
+    expect(bt.lowestCommonAncestorBT(n2,n4).data).toEqual(7);
+    expect(bt.lowestCommonAncestorBT(n3,n4).data).toEqual(6);
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
   it('tests printAllPaths', function() {
     var paths = [];
     bst.printAllPaths(bst.root, paths);
+  });
+  
+  it('tests printByLevel', function() {
+    bst.printByLevel();
+    bt.printByLevel();
   });
 });

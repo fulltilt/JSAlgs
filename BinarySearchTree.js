@@ -18,6 +18,7 @@ function BST() {
   this._remove = _remove;
   this.find = find;
   this._find = _find;
+  this.BTFind = BTFind;
   this.size = size;
   this.clear = clear;
   this._clear = _clear;
@@ -36,6 +37,8 @@ function BST() {
   this.mirror = mirror;
 
   this.printAllPaths = printAllPaths;
+  this.lowestCommonAncestorBST = lowestCommonAncestorBST;
+  this.lowestCommonAncestorBT = lowestCommonAncestorBT;
   this.printByLevel = printByLevel;
   this.differenceBetweenOddAndEvenLevelSums = differenceBetweenOddAndEvenLevelSums;
   this.printSpiral = printSpiral;
@@ -619,13 +622,83 @@ function printAllPaths(node, path) {
 
 // http://www.geeksforgeeks.org/lowest-common-ancestor-in-a-binary-search-tree/
 // http://www.geeksforgeeks.org/lowest-common-ancestor-binary-tree-set-1/
-function lowestCommonAncestor(tree1, tree2) {
+function lowestCommonAncestorBST(node1, node2) {
+  var current = this.root,
+      data1 = node1.data,
+      data2 = node2.data;
+  
+  while (current !== null) {
+    if (current.data < data1 && current.data < data2) {
+      current = current.right;
+    } else if (current.data > data1 && current.data > data2) {
+      current = current.left;
+    } else {
+      return current;
+    }
+  }
 
+  return null;
+}
+
+// algorithm different from lca for Binary Search Trees. We also have to use a different find fxn specific for binary trees
+function lowestCommonAncestorBT(node1, node2) {
+  if (node1 === null || node2 === null) {
+    return null;
+  }
+
+  var current = this.root;
+  while (current !== null) {
+    if (this.BTFind(current.left, node1.data) && this.BTFind(current.left, node2.data)) {
+      current = current.left;
+    } else if (this.BTFind(current.right, node1.data) && this.BTFind(current.right, node2.data)) {
+      current = current.right;
+    } else {
+      return current;
+    }
+  }
+
+  return null;
+}
+
+// find function specific for binary trees
+function BTFind(node, data) {
+  if (node === null) {
+    return null;
+  }
+
+  if (node.data === data) {
+    return node;
+  }
+  return this.BTFind(node.left, data) || this.BTFind(node.right, data); // apparently doing null || Object will return the Object
 }
 
 // http://www.geeksforgeeks.org/level-order-tree-traversal/
 function printByLevel() {
+  var currentLevel = [],
+      children = [];
 
+  currentLevel.push(this.root);
+  console.log(currentLevel[0].data);
+
+  while (currentLevel.length > 0) {
+    for (var i = 0; i < currentLevel.length; i++) {
+      var currentNode = currentLevel[i];
+      if (currentNode.left) {
+        children.push(currentNode.left);
+      }
+      if (currentNode.right) {
+        children.push(currentNode.right);
+      }
+    }
+
+    var output = '';
+    for (i = 0; i < children.length; i++) {
+      output += children[i].data + ' ';
+    }
+    console.log(output.trim());
+    currentLevel = children.slice(0);
+    children = [];
+  }
 }
 
 // http://www.geeksforgeeks.org/difference-between-sums-of-odd-and-even-levels/
@@ -973,4 +1046,7 @@ while (left.right !== null) {
 var right = node.right;
 while (right.left !== null) {
   right = right.left;
-}*/
+}
+
+- return this.BTFind(node.left, data) || this.BTFind(node.right, data); // apparently doing null || Object will return the Object
+*/

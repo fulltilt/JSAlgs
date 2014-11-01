@@ -19,7 +19,6 @@ function BST() {
   this.find = find;
   this._find = _find;
   this.size = size;
-  this._size = _size;
   this.clear = clear;
   this._clear = _clear;
 
@@ -31,7 +30,7 @@ function BST() {
   this._isBST = _isBST;
   this.getHeight = getHeight;
   this._getHeight = _getHeight;
-  this.isSubtree = isSubtree;
+  this.isSubTree = isSubTree;
   this.getLargestBSTSubTreeSize = getLargestBSTSubTreeSize;
   this.areTreesIdentical = areTreesIdentical;
   this.mirror = mirror;
@@ -178,16 +177,12 @@ function _find(node, data) {
   }
 }
 
-function size() {
-  return _size(this.root);
-}
-
-function _size(node) {
+function size(node) {
   if (node === null) {
     return 0;
   }
 
-  return 1 + _size(node.left) + _size(node.right);
+  return 1 + this.size(node.left) + this.size(node.right);
 }
 
 /* Removing a Node
@@ -280,7 +275,6 @@ function AVLTree() {
   this.find = find;
   this._find = find;
   this.size = size;
-  this._size = _size;
 }
 
 function AVLPreOrder(node, arr) {
@@ -410,12 +404,12 @@ function AVLDelete(data) {
 
 /*******************************************************/
 
+/* note: not fully tested
 function isBST() {
   var dummy = new Node(Infinity, this.root, null);
   return _isBST(this.root, true, false, dummy.data);
 }
 
-// note: not fully tested
 function _isBST(node, isLeftChild, isRightChild, parentData) {
   if (node === null) {
     return true;
@@ -426,6 +420,24 @@ function _isBST(node, isLeftChild, isRightChild, parentData) {
   }
 
   return _isBST(node.left, true, false, node.data) && _isBST(node.right, false, true, node.data);
+}
+*/
+
+function isBST(node) {
+  return this._isBST(node, -Infinity, Infinity);
+}
+
+function _isBST(node, min, max) {
+  if (node === null) {
+    return true;
+  }
+
+  // false if node violates min/max constraint
+  if (node.data < min || node.data > max) {
+    return false;
+  }
+
+  return this._isBST(node.left, min, node.data - 1) && this._isBST(node.right, node.data + 1, max);
 }
 
 function getHeight() {
@@ -441,15 +453,16 @@ function _getHeight(node) {
 }
 
 // http://www.geeksforgeeks.org/find-the-largest-subtree-in-a-tree-that-is-also-a-bst/
-function getLargestBSTSubTreeSize() {
-  this._getLargestBSTSubTreeSize(this.root);
-}
-
-function _getLargestBSTSubTreeSize(node) {
-
+function getLargestBSTSubTreeSize(node) {
+  if (this.isBST(node)) {
+    return this.size(node);
+  } else {
+    return Math.max(this.getLargestBSTSubTreeSize(node.left), this.getLargestBSTSubTreeSize(node.right));
+  }
 }
 
 // http://www.geeksforgeeks.org/write-c-code-to-determine-if-two-trees-are-identical/
+// NOTE: this is O(n^2)
 function areTreesIdentical(node1, node2) {
   if (node1 === null && node2 === null) {
     return true;
@@ -481,11 +494,27 @@ function mirror(node1, node2) {
   return false;
 }
 
-function getRandomBSTNode() {
+// http://www.geeksforgeeks.org/check-if-a-binary-tree-is-subtree-of-another-binary-tree/
+// check if tree2 is a subtree of tree1
+function isSubTree(node1, node2) {
+  // base cases
+  if (node2 === null) {
+    return true;
+  }
+  if (node1 === null) {
+    return false;
+  }
 
+  // check the tree with root as current node
+  if (this.areTreesIdentical(node1, node2)) {
+    return true;
+  }
+
+  // if the tree with root as current node doesn't match then try left and right subtrees one by one
+  return this.isSubTree(node1.left, node2) || this.isSubTree(node1.right, node2);
 }
 
-// http://www.geeksforgeeks.org/the-great-tree-list-recursion-problem/ or http://www.geeksforgeeks.org/the-great-tree-list-recursion-problem/
+// http://www.geeksforgeeks.org/the-great-tree-list-recursion-problem/
 // http://www.geeksforgeeks.org/in-place-convert-a-given-binary-tree-to-doubly-linked-list/
 // http://www.geeksforgeeks.org/convert-a-given-binary-tree-to-doubly-linked-list-set-2/
 function treeToCircularDoublyLinkedList(tree) {
@@ -622,37 +651,6 @@ function connectNodesAtSameLevel() {
 
 // http://www.geeksforgeeks.org/sorted-array-to-balanced-bst/
 function sortedArrayToBalancedBST(arr) {
-
-}
-
-// http://www.geeksforgeeks.org/convert-a-given-tree-to-sum-tree/
-function convertToSumTree() {
-
-}
-
-// http://www.geeksforgeeks.org/segment-tree-set-1-sum-of-given-range/
-// http://www.geeksforgeeks.org/segment-tree-set-1-range-minimum-query/
-function segmentTree() {
-
-}
-
-// http://www.geeksforgeeks.org/b-tree-set-1-introduction-2/
-// http://www.geeksforgeeks.org/b-tree-set-1-insert-2/
-// http://www.geeksforgeeks.org/b-tree-set-3delete/
-function bTree() {
-
-}
-
-// http://www.geeksforgeeks.org/splay-tree-set-1-insert/
-// http://www.geeksforgeeks.org/splay-tree-set-2-insert-delete/
-function splayTree() {
-
-}
-
-// http://www.geeksforgeeks.org/red-black-tree-set-1-introduction-2/
-// http://www.geeksforgeeks.org/red-black-tree-set-2-insert/
-// http://www.geeksforgeeks.org/red-black-tree-set-3-delete-2/
-function redBlackTree() {
 
 }
 
@@ -803,9 +801,43 @@ function areNodesCousins(node1, node2) {
 
 }
 
-// http://www.geeksforgeeks.org/check-binary-tree-subtree-another-binary-tree-set-2/
-// http://www.geeksforgeeks.org/check-if-a-binary-tree-is-subtree-of-another-binary-tree/
-function isSubtree(tree1, tree2) {
+function getRandomBSTNode() {
+
+}
+
+// http://www.geeksforgeeks.org/convert-a-given-tree-to-sum-tree/
+function convertToSumTree() {
+
+}
+
+// http://www.geeksforgeeks.org/segment-tree-set-1-sum-of-given-range/
+// http://www.geeksforgeeks.org/segment-tree-set-1-range-minimum-query/
+function segmentTree() {
+
+}
+
+// http://www.geeksforgeeks.org/b-tree-set-1-introduction-2/
+// http://www.geeksforgeeks.org/b-tree-set-1-insert-2/
+// http://www.geeksforgeeks.org/b-tree-set-3delete/
+function bTree() {
+
+}
+
+// http://www.geeksforgeeks.org/splay-tree-set-1-insert/
+// http://www.geeksforgeeks.org/splay-tree-set-2-insert-delete/
+function splayTree() {
+
+}
+
+// http://www.geeksforgeeks.org/red-black-tree-set-1-introduction-2/
+// http://www.geeksforgeeks.org/red-black-tree-set-2-insert/
+// http://www.geeksforgeeks.org/red-black-tree-set-3-delete-2/
+function redBlackTree() {
+
+}
+
+// http://www.geeksforgeeks.org/check-binary-tree-subtree-another-binary-tree-set-2/ O(n) solution for isSubTree
+function isSubTree2(tree1, tree2) {
   var inOrder1 = [],
       preOrder1 = [],
       inOrder2 = [],

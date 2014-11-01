@@ -48,11 +48,11 @@ describe("BST", function() {
 
   it('tests clear()', function() {
     bst.clear();
-    expect(bst.size()).toEqual(0);
+    expect(bst.size(bst.root)).toEqual(0);
   });
 
   it("tests inserts and size", function() { 
-    expect(bst.size()).toEqual(9);
+    expect(bst.size(bst.root)).toEqual(9);
   });
 
   it("tests find", function() {
@@ -67,25 +67,25 @@ describe("BST", function() {
 
   it("tests remove", function() {
     bst.remove(99); // remove node with no children
-    expect(bst.size()).toEqual(8);
+    expect(bst.size(bst.root)).toEqual(8);
 
     bst.remove(3);  // remove node with only a left child
-    expect(bst.size()).toEqual(7);
+    expect(bst.size(bst.root)).toEqual(7);
 
     bst.remove(37);  // remove node with only a right child
-    expect(bst.size()).toEqual(6);
+    expect(bst.size(bst.root)).toEqual(6);
 
     bst.remove(100);  // attempt to remove a node not in the tree
-    expect(bst.size()).toEqual(6);
+    expect(bst.size(bst.root)).toEqual(6);
  
     bst.remove(23);
-    expect(bst.size()).toEqual(5);
+    expect(bst.size(bst.root)).toEqual(5);
     //bst.inOrder(bst.root);   
   });
 
   it('tests isBST', function() {
-    expect(bst.isBST()).toEqual(true);
-    expect(bt.isBST()).toEqual(false);
+    expect(bst.isBST(bst.root)).toEqual(true);
+    expect(bt.isBST(bt.root)).toEqual(false);
   });
 
   it('tests getHeight', function() {
@@ -94,7 +94,16 @@ describe("BST", function() {
   });
 
   it('tests getLargestBSTSubTreeSize()', function() {
-
+    var root = new BST.Node(50);
+    root.left = new BST.Node(30);
+    root.left.left = new BST.Node(5);
+    root.left.right = new BST.Node(20);
+    root.right = new BST.Node(60);
+    root.right.left = new BST.Node(45);
+    root.right.right = new BST.Node(70);
+    root.right.right.left = new BST.Node(65);
+    root.right.right.right = new BST.Node(80);
+    expect(bst.getLargestBSTSubTreeSize(root)).toEqual(5);
   });
 
   it('tests areTreesIdentical', function() {
@@ -153,7 +162,7 @@ describe("BST", function() {
     expect(output).toEqual([30,20,10,25,40,50]);
   });
 
-  xit('tests isSubtree', function() {
-    bt.isSubtree(bt2.root, bt3.root);
+  it('tests isSubTree', function() {
+    bst.isSubTree(bt2.root, bt3.root);
   });
 });

@@ -487,7 +487,14 @@ describe("LinkedList", function() {
 
     head.next.next.next.next = new DLL.Node(11);
 
-    dll.flattenMultLevelList(head);
+    var newList = dll.flattenMultLevelList(head),
+        current = newList,
+        output = '';
+    while (current !== null) {
+      output += current.data + ' ';
+      current = current.next;
+    }
+    expect(output.trim()).toEqual('10 5 12 7 11 4 20 13 17 6 2 16 9 8 3 19 15');
     /* print list by level
     var level = [],
         children = [];
@@ -516,19 +523,83 @@ describe("LinkedList", function() {
     */
   });
 
-  it('tests ', function() {
-
+  it('tests sortZeroesOnesTwos', function() {
+    var szot = new LinkedList();
+    szot.insertHead(0);
+    szot.insertHead(1);
+    szot.insertHead(0);
+    szot.insertHead(2);
+    szot.insertHead(1);
+    szot.insertHead(1);
+    szot.insertHead(2);
+    szot.insertHead(1);
+    szot.insertHead(2);
+    expect(szot.sortZeroesOnesTwos(szot).printFromNode()).toEqual('0 0 1 1 1 1 2 2 2');
+    szot = null;
   });
 
-  it('tests ', function() {
+  it('tests deleteNNodesAfterMNodes', function() {
+    var dnam = new LinkedList();
+    dnam.insertHead(8);
+    dnam.insertHead(7);
+    dnam.insertHead(6);
+    dnam.insertHead(5);
+    dnam.insertHead(4);
+    dnam.insertHead(3);
+    dnam.insertHead(2);
+    dnam.insertHead(1);
+    expect(dnam.deleteNNodesAfterMNodes(dnam, 2, 2)).toEqual('1 2 5 6');
 
+    dnam.clear();
+    dnam.insertHead(10);
+    dnam.insertHead(9);
+    dnam.insertHead(8);
+    dnam.insertHead(7);
+    dnam.insertHead(6);
+    dnam.insertHead(5);
+    dnam.insertHead(4);
+    dnam.insertHead(3);
+    dnam.insertHead(2);
+    dnam.insertHead(1);
+    expect(dnam.deleteNNodesAfterMNodes(dnam, 3, 2)).toEqual('1 2 3 6 7 8');
+
+    dnam.clear();
+    dnam.insertHead(10);
+    dnam.insertHead(9);
+    dnam.insertHead(8);
+    dnam.insertHead(7);
+    dnam.insertHead(6);
+    dnam.insertHead(5);
+    dnam.insertHead(4);
+    dnam.insertHead(3);
+    dnam.insertHead(2);
+    dnam.insertHead(1);
+    expect(dnam.deleteNNodesAfterMNodes(dnam, 1, 1)).toEqual('1 3 5 7 9');
+    dnam = null;
   });
 
-  it('tests ', function() {
+  it('tests reverseAlternateAndAppendAtEnd', function() {
+    var raa = new LinkedList();
+    raa.insertHead(6);
+    raa.insertHead(5);
+    raa.insertHead(4);
+    raa.insertHead(3);
+    raa.insertHead(2);
+    raa.insertHead(1);
+    expect(raa.reverseAlternateAndAppendAtEnd()).toEqual('1 3 5 6 4 2');
 
+    raa.clear();
+    raa.insertHead(20);
+    raa.insertHead(18);
+    raa.insertHead(16);
+    raa.insertHead(14);
+    raa.insertHead(12);
+    expect(raa.reverseAlternateAndAppendAtEnd()).toEqual('12 16 20 18 14');
+
+    raa = null;
   });
 
-  it('tests ', function() {
+  it('tests LRUCache', function() {
 
   });
 });

@@ -198,7 +198,9 @@ function flattenList() {
 // http://www.geeksforgeeks.org/flatten-a-linked-list-with-next-and-child-pointers/
 function flattenMultLevelList(head) {
   var level = [],
-      children = [];
+      children = [],
+      dummyHead = new Node(),
+      mainCurrent = dummyHead;
   var current = head;
   while (current !== null) {
     level.push(current);
@@ -207,7 +209,9 @@ function flattenMultLevelList(head) {
 
   while (level.length !== 0) {
     for (var i = 0; i < level.length; i++) {
-      console.log(level[i].data);
+      mainCurrent.next = level[i];
+      mainCurrent = mainCurrent.next;
+
       if (level[i].previous !== null) {
         children.push(level[i].previous);
 
@@ -221,6 +225,8 @@ function flattenMultLevelList(head) {
     level = children.slice(0);
     children = [];
   }
+
+  return dummyHead.next;
 }
 
 var DoublyLinkedList = function() {

@@ -440,6 +440,7 @@ function _getHeight(node) {
   return 1 + Math.max(this._getHeight(node.left), this._getHeight(node.right));
 }
 
+// http://www.geeksforgeeks.org/find-the-largest-subtree-in-a-tree-that-is-also-a-bst/
 function getLargestBSTSubTreeSize() {
   this._getLargestBSTSubTreeSize(this.root);
 }
@@ -448,12 +449,36 @@ function _getLargestBSTSubTreeSize(node) {
 
 }
 
-function areTreesIdentical(tree1, tree2) {
+// http://www.geeksforgeeks.org/write-c-code-to-determine-if-two-trees-are-identical/
+function areTreesIdentical(node1, node2) {
+  if (node1 === null && node2 === null) {
+    return true;
+  }
 
+  if ((node1 === null && node2 !== null) ||
+      (node1 !== null && node2 === null) ||
+      (node1.data !== node2.data)) {
+    return false;
+  } else {
+    return this.areTreesIdentical(node1.left, node2.left) && this.areTreesIdentical(node1.right, node2.right);
+  }
 }
 
-function mirror() {
+function mirror(node1, node2) {
+  // 1. both empty
+  if (node1 === null && node2 === null) {
+    return true;
+  }
 
+  // 2. both non-empty
+  if (node1 !== null || node2 !== null) {
+    return node1.data === node2.data &&
+           this.mirror(node1.left, node2.right) &&
+           this.mirror(node1.right, node2.left);
+  }
+
+  // 3. one empty but other one isn't
+  return false;
 }
 
 function getRandomBSTNode() {
@@ -779,6 +804,7 @@ function areNodesCousins(node1, node2) {
 }
 
 // http://www.geeksforgeeks.org/check-binary-tree-subtree-another-binary-tree-set-2/
+// http://www.geeksforgeeks.org/check-if-a-binary-tree-is-subtree-of-another-binary-tree/
 function isSubtree(tree1, tree2) {
   var inOrder1 = [],
       preOrder1 = [],

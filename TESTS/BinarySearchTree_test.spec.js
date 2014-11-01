@@ -97,6 +97,49 @@ describe("BST", function() {
 
   });
 
+  it('tests areTreesIdentical', function() {
+    var root = new BST.Node(2);
+    root.left = new BST.Node(7);
+    root.left.left = new BST.Node(2);
+    root.left.right = new BST.Node(6);
+    root.left.right.left = new BST.Node(5);
+    root.left.right.right = new BST.Node(11);
+    root.left.right.right.left = new BST.Node(1);
+    root.right = new BST.Node(5);
+    root.right.right = new BST.Node(9);
+    root.right.right.left = new BST.Node(4);
+
+    expect(bst.areTreesIdentical(bt.root, root)).toEqual(true);
+    expect(bst.areTreesIdentical(bt.root, bst.root)).toEqual(false);
+  });
+
+  it('tests mirror', function() {
+    var root = new BST.Node(2);
+    root.left = new BST.Node(7);
+    root.left.left = new BST.Node(2);
+    root.left.right = new BST.Node(6);
+    root.left.right.left = new BST.Node(5);
+    root.left.right.right = new BST.Node(11);
+    root.left.right.right.left = new BST.Node(1);
+    root.right = new BST.Node(5);
+    root.right.right = new BST.Node(9);
+    root.right.right.left = new BST.Node(4);
+
+    var root2 = new BST.Node(2);
+    root2.right = new BST.Node(7);
+    root2.right.right = new BST.Node(2);
+    root2.right.left = new BST.Node(6);
+    root2.right.left.right = new BST.Node(5);
+    root2.right.left.left = new BST.Node(11);
+    root2.right.left.left.right = new BST.Node(1);
+    root2.left = new BST.Node(5);
+    root2.left.left = new BST.Node(9);
+    root2.left.left.right = new BST.Node(4);
+
+    expect(bst.mirror(root, root2)).toEqual(true);
+    expect(bst.mirror(root, bst.root)).toEqual(false);
+  });
+
   it('tests AVL Tree insert', function() {
     var avl = new BST.AVLTree();
     avl.AVLInsert(10);

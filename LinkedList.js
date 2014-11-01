@@ -871,18 +871,116 @@ function rotateList(list, k) {
 }
 
 // http://www.geeksforgeeks.org/sort-a-linked-list-of-0s-1s-or-2s/
+// see link above for solution that involves traversing the list, counting the # of elements and recreating a sorted list (uses extra space and modifying original list)
 function sortZeroesOnesTwos(list) {
+	var current = list.head,
+			listZero = new Node(),
+			listOne = new Node(),
+			listTwo = new Node(),
+			listZeroHead = listZero,
+			listOneHead = listOne,
+			listTwoHead = listTwo;
 
+	while (current !== null) {
+		var next = current.next;
+		if (current.data === 0) {
+			listZero.next = current;
+			current.next = null;
+			listZero = listZero.next;
+		} else if (current.data === 1) {
+			listOne.next = current;
+			current.next = null;
+			listOne = listOne.next;
+		} else if (current.data === 2) {
+			listTwo.next = current;
+			current.next = null;
+			listTwo = listTwo.next;
+		}
+		current = next;
+	}
+
+	// reassemble lists in sorted order
+	listZero.next = listOneHead.next;
+	listOne.next = listTwoHead.next;
+
+	return listZeroHead.next;
 }
 
 // http://www.geeksforgeeks.org/delete-n-nodes-after-m-nodes-of-a-linked-list/
-function deleteNNodesAfterMNodes(list) {
+function deleteNNodesAfterMNodes(list, m, n) {
+	var current = list.head,
+			previous = null,
+			count;
 
+	while (true) {
+		count = 0;
+		while (count < m && current !== null) {
+			previous = current;
+			current = current.next;
+			count += 1;
+		}
+
+		if (current === null)	break;
+
+		count = 0;
+		while (count < n && current !== null) {
+			current = current.next;
+			count += 1;
+		}
+
+		if (current === null) {
+			previous.next = null;	// if you reach the end before the count or at the count, set previous.next to null (easy to look over this detail)
+			break;
+		}
+
+		previous.next = current;
+	}
+
+	return list.print();
 }
 
 // http://www.geeksforgeeks.org/given-linked-list-reverse-alternate-nodes-append-end/
-function reverseAlternateAndAppendAtEnd(list) {
+function reverseAlternateAndAppendAtEnd() {
+	var current = this.head,
+			firstList = new Node(),
+			firstListHead = firstList,
+			secondList = new Node(),
+			secondListHead = secondList,
+			next;
 
+	// create two lists, one of the odds and the other of evens
+	while (true) {
+		firstList.next = current;
+		secondList.next = current.next;
+
+		next = current.next.next;
+		current.next.next = null;	// must do this first before the next line else you'll get a null pointer exception
+		current.next = null;
+		firstList = firstList.next;
+		secondList = secondList.next;
+		current = next;
+
+		if (current === null) {
+			break;
+		} else if (current.next === null) {
+			firstList.next = current;
+			firstList = firstList.next;
+			break;
+		}
+	}
+	
+	// reverse the second list
+	var current = secondListHead.next,
+			previous = null;
+	while (current !== null) {
+		next = current.next;
+		current.next = previous;
+		previous = current;
+		current = next;
+	}
+
+	firstList.next = previous;
+	return firstListHead.next.printFromNode();
 }
 
 // http://www.geeksforgeeks.org/implement-lru-cache/
@@ -913,4 +1011,4 @@ module.exports = LinkedList;
 	current = next;
 */
 
-// PRACTICE: reverseInKGroups
+// PRACTICE: reverseInKGroups, reverseAlternateAndAppendAtEnd, reverse, 

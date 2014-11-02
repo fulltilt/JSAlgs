@@ -230,16 +230,30 @@ describe("BST", function() {
     expect(bt.lowestCommonAncestorBT(n3,n4).data).toEqual(6);
   });
 
-  it('tests ', function() {
-
+  it('tests differenceBetweenOddAndEvenLevelSums', function() {
+    var dboe = new BST.BinarySearchTree();
+    dboe.insert(5);
+    dboe.insert(2);
+    dboe.insert(6);
+    dboe.insert(1);
+    dboe.insert(4);
+    dboe.insert(3);
+    dboe.insert(8);
+    dboe.insert(7);
+    dboe.insert(9);
+    expect(dboe.differenceBetweenOddAndEvenLevelSums(dboe.root)).toEqual(-9);
+    expect(dboe.differenceBetweenOddAndEvenLevelSums2(dboe.root)).toEqual(-9);
   });
 
-  it('tests ', function() {
-
+  it('tests getLevelOfNode', function() {
+    expect(bst.getLevelOfNode(bst.root, 23, 0)).toEqual(1);
+    expect(bst.getLevelOfNode(bst.root, 22, 0)).toEqual(3);
+    expect(bst.getLevelOfNode(bst.root, 36, 0)).toEqual(4);
+    expect(bst.getLevelOfNode(bst.root, 100, 0)).toEqual(-1);
   });
 
-  it('tests ', function() {
-
+  it('tests printSpiral', function() {
+    expect(bst.printSpiral()).toEqual('23 16 45 99 37 22 3 10 36');
   });
 
   it('tests ', function() {

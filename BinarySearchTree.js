@@ -41,6 +41,7 @@ function BST() {
   this.lowestCommonAncestorBT = lowestCommonAncestorBT;
   this.printByLevel = printByLevel;
   this.differenceBetweenOddAndEvenLevelSums = differenceBetweenOddAndEvenLevelSums;
+  this.differenceBetweenOddAndEvenLevelSums2 = differenceBetweenOddAndEvenLevelSums2;
   this.printSpiral = printSpiral;
   this.countLeafNodes = countLeafNodes;
   this.doChildrenSumUpToNodeValue = doChildrenSumUpToNodeValue;
@@ -702,18 +703,106 @@ function printByLevel() {
 }
 
 // http://www.geeksforgeeks.org/difference-between-sums-of-odd-and-even-levels/
-function differenceBetweenOddAndEvenLevelSums() {
+function differenceBetweenOddAndEvenLevelSums(node) {
+  var oddSum = 0,
+      evenSum = 0,
+      currentLevel = [],
+      children = [],
+      isOdd = false;
 
+  currentLevel.push(node);
+  oddSum += node.data;
+
+  while (currentLevel.length > 0) {
+    for (var i = 0; i < currentLevel.length; i++) {
+      var currentNode = currentLevel[i];
+      if (currentNode.left) {
+        children.push(currentNode.left);
+      }
+      if (currentNode.right) {
+        children.push(currentNode.right);
+      }
+    }
+
+    var childrenSum = 0;
+    for (i = 0; i < children.length; i++) {
+      childrenSum += children[i].data;
+    }
+
+    if (isOdd) {
+      oddSum += childrenSum;
+    } else {
+      evenSum += childrenSum;
+    }
+
+    currentLevel = children.slice(0);
+    children = [];
+    isOdd = !isOdd;
+  }
+  return oddSum - evenSum;
+}
+
+// super elegant and short version of fxn above
+function differenceBetweenOddAndEvenLevelSums2(node) {
+  if (node === null) {
+    return 0;
+  }
+    
+  return node.data - this.differenceBetweenOddAndEvenLevelSums2(node.left) - this.differenceBetweenOddAndEvenLevelSums2(node.right);
 }
 
 // http://www.geeksforgeeks.org/get-level-of-a-node-in-a-binary-tree/
-function getLevelOfNode(node) {
+function getLevelOfNode(node, data, level) {
+  if (node === null) {
+    return -1;
+  }
 
+  if (node.data === data) {
+    return level + 1;
+  } else if (data < node.data) {
+    return getLevelOfNode(node.left, data, level + 1);
+  } else {
+    return getLevelOfNode(node.right, data, level + 1);
+  }
 }
 
 // http://www.geeksforgeeks.org/level-order-traversal-in-spiral-form/
 function printSpiral() {
+  var currentLevel = [],
+      children = [],
+      isOdd = false,
+      output = '';
 
+  currentLevel.push(this.root);
+  output += currentLevel[0].data + ' ';
+
+  while (currentLevel.length > 0) {
+    for (var i = 0; i < currentLevel.length; i++) {
+      var currentNode = currentLevel[i];
+      if (currentNode.left) {
+        children.push(currentNode.left);
+      }
+      if (currentNode.right) {
+        children.push(currentNode.right);
+      }
+    }
+
+    if (isOdd) {
+      for (i = children.length - 1; i >= 0; i--) {
+        output += children[i].data + ' ';
+      }
+    } else {
+      for (i = 0; i < children.length; i++) {
+        output += children[i].data + ' ';
+      }
+    }
+
+    currentLevel = children.slice(0);
+    children = [];
+    isOdd = !isOdd;
+  }
+
+  return output.trim();
 }
 
 // http://www.geeksforgeeks.org/write-a-c-program-to-get-count-of-leaf-nodes-in-a-binary-tree/

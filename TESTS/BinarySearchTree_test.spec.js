@@ -256,28 +256,226 @@ describe("BST", function() {
     expect(bst.printSpiral()).toEqual('23 16 45 99 37 22 3 10 36');
   });
 
-  it('tests ', function() {
+  it('tests countLeafNodes', function() {
+    expect(bst.countLeafNodes(bst.root)).toEqual(4);
+    expect(bt.countLeafNodes(bt.root)).toEqual(4);
+  });
+
+  it('tests doChildrenSumUpToNodeValue', function() {
+    var root = new BST.Node(10);
+    root.left = new BST.Node(8);
+    root.left.left = new BST.Node(3);
+    root.left.right = new BST.Node(5);
+    root.right = new BST.Node(2);
+    root.right.left = new BST.Node(2);
+    expect(bst.doChildrenSumUpToNodeValue(root)).toEqual(true);
+    expect(bst.doChildrenSumUpToNodeValue(bst.root)).toEqual(false);
+  });
+
+  it('tests getTreeDiameter', function() {
+    expect(bst.getTreeDiameter(bst.root)).toEqual(7);
+    expect(bt.getTreeDiameter(bt.root)).toEqual(8);
+  });
+
+  it('tests getMaxWidth', function() {
+    expect(bst.getMaxWidth(bst.root)).toEqual(4);
+-    expect(bt.getMaxWidth(bt.root)).toEqual(3);
+  });
+
+  it('tests isTreeBalanced', function() {
+    expect(bst.isTreeBalanced(bst.root)).toEqual(true);
+    expect(bt.isTreeBalanced(bt.root)).toEqual(false);
+  });
+
+  it('tests existsPathSum', function() {
+    expect(bt.existsPathSum(bt.root, 0, 28)).toEqual(true);
+    expect(bt.existsPathSum(bt.root, 0, 21)).toEqual(true);
+    expect(bt.existsPathSum(bt.root, 0, 100)).toEqual(false);
+    expect(bt.existsPathSum(bt.root, 0, 12)).toEqual(true);
+  });
+
+  it('tests doubleTree', function() {
+    var root = new BST.Node(1);
+    root.left = new BST.Node(2);
+    root.right = new BST.Node(3);
+    root.left.left = new BST.Node(4);
+    root.left.right = new BST.Node(5);
+    bst.doubleTree(root);
+    var result = [];
+    bst.getInOrder(root, result);
+    expect(result).toEqual([4, 4, 2, 2, 5, 5, 1, 1, 3, 3]);
+  });
+
+  it('tests canFold', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests kDistanceFromRoot', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests printArrayRepresentationOfBST', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests checkIdenticalArrayBST', function() {
 
   });
 
-  it('tests printAllPaths', function() {
+  it('tests getSuccessor', function() {
+
+  });
+
+  it('tests getPredecessorAndSuccessor', function() {
+
+  });
+
+  it('tests kthSmallestElement', function() {
+
+  });
+
+  it('tests printAncestors', function() {
+
+  });
+
+  it('tests printInGivenRange', function() {
+
+  });
+
+  it('tests connectNodesAtSameLevel', function() {
+
+  });
+
+  it('tests sortedArrayToBalancedBST', function() {
+
+  });
+
+  it('tests getVerticalSums', function() {
+
+  });
+
+  it('tests findMaxSumPath', function() {
+
+  });
+
+  it('tests mergeTwoTrees', function() {
+
+  });
+
+  it('tests constructSpecialBT', function() {
+
+  });
+
+  it('tests doesEachNodeHaveOnlyOneChild', function() {
+
+  });
+
+  it('tests isTreeComplete', function() {
+
+  });
+
+  it('tests boundaryTraversal', function() {
+
+  });
+
+  it('tests fixBSTAfterSwap', function() {
+
+  });
+
+  it('tests floorAndCeil', function() {
+
+  });
+
+  it('tests morrisTraversal', function() {
+
+  });
+
+  it('tests iterativePostOrder', function() {
+
+  });
+
+  it('tests existsTripletThatSumsToZero', function() {
+
+  });
+
+  it('tests removeNodesOutsideRange', function() {
+
+  });
+
+  it('tests areTreesIsomorphic', function() {
+
+  });
+
+  it('tests maxDepthOfOddLevelLeaf', function() {
+
+  });
+
+  it('tests areAllLeafsSameLevel', function() {
+
+  });
+
+  it('tests printLeftView', function() {
+
+  });
+
+  it('tests printRightView', function() {
+
+  });
+
+  it('tests addGreaterValuesToEachNode', function() {
+
+  });
+
+  it('tests removeNodesWhosePathLessThanK', function() {
+
+  });
+
+  it('tests extractLeavesToDoublyLinkedList', function() {
+
+  });
+
+  it('tests findDeepestLeftNode', function() {
+
+  });
+
+  it('tests getNextRightNode', function() {
+
+  });
+
+  it('tests sumOfAllNumsFormedFromRootToLeafPaths', function() {
+
+  });
+
+  it('tests printNodesWithoutSibling', function() {
+
+  });
+
+  it('tests printAlternateLevels', function() {
+
+  });
+
+  it('tests printVerticalTree', function() {
+
+  });
+
+  it('tests findMaxPathSumBetweenTwoLeaves', function() {
+
+  });
+
+  it('tests areNodesCousins', function() {
+
+  });
+
+  it('tests recreateTreeGivenTwoTraversals', function() {
+
+  });
+
+  xit('tests printAllPaths', function() {
     var paths = [];
     bst.printAllPaths(bst.root, paths);
   });
   
-  it('tests printByLevel', function() {
+  xit('tests printByLevel', function() {
     bst.printByLevel();
     bt.printByLevel();
   });

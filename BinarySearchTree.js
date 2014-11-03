@@ -46,6 +46,8 @@ function BST() {
   this.countLeafNodes = countLeafNodes;
   this.doChildrenSumUpToNodeValue = doChildrenSumUpToNodeValue;
   this.getTreeDiameter = getTreeDiameter;
+  this.getMaxWidth = getMaxWidth;
+  this._getMaxWidth = _getMaxWidth;
   this.isTreeBalanced = isTreeBalanced;
   this.existsPathSum = existsPathSum;
   this.recreateTreeGivenTwoTraversals = recreateTreeGivenTwoTraversals;
@@ -806,44 +808,142 @@ function printSpiral() {
 }
 
 // http://www.geeksforgeeks.org/write-a-c-program-to-get-count-of-leaf-nodes-in-a-binary-tree/
-function countLeafNodes() {
+function countLeafNodes(node) {
+  if (node === null) {
+    return 0;
+  }
 
+  if (node.left === null && node.right === null) {
+    return 1;
+  } else {
+    return this.countLeafNodes(node.left) + this.countLeafNodes(node.right);
+  }
 }
 
 // http://www.geeksforgeeks.org/check-for-children-sum-property-in-a-binary-tree/
-function doChildrenSumUpToNodeValue() {
+function doChildrenSumUpToNodeValue(node) {
+  // node is null or it's a leaf
+  if (node === null || (node.left === null && node.right === null)) {
+    return true;
+  } else {
+    var leftData = 0,
+        rightData = 0;
 
-}
+    // if left child is not present then 0 is used as data of left child. Do same for right child
+    if (node.left !== null) {
+      leftData = node.left.data;
+    }
+    if (node.right !== null) {
+      rightData = node.right.data;
+    }
 
-// http://www.geeksforgeeks.org/diameter-of-a-binary-tree/ or http://www.geeksforgeeks.org/maximum-width-of-a-binary-tree/
-function getTreeDiameter() {
-
+    if ((node.data === leftData + rightData) &&
+        this.doChildrenSumUpToNodeValue(node.left) &&
+        this.doChildrenSumUpToNodeValue(node.right)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
 
 // http://www.geeksforgeeks.org/how-to-determine-if-a-binary-tree-is-balanced/
-function isTreeBalanced() {
+function isTreeBalanced(node) {
+  if (node === null) {
+    return true;
+  }
 
+  var leftHeight = this._getHeight(node.left),
+      rightHeight = this._getHeight(node.right);
+
+  if (Math.abs(leftHeight - rightHeight) <= 1 &&
+      this.isTreeBalanced(node.left) && 
+      this.isTreeBalanced(node.right)) {
+    return true;
+  }
+
+  return false;
+}
+
+/* http://www.geeksforgeeks.org/diameter-of-a-binary-tree/
+-diameter doesn't refer to the width per se but the # of nodes on the longest path between 2 leaves on a tree 
+The diameter of a tree T is the largest of the following quantities:
+* the diameter of T’s left subtree
+* the diameter of T’s right subtree
+* the longest path between leaves that goes through the root of T (this can be computed from the heights of the subtrees of T) 
+-note: the max diameter does not have to go through root
+*/
+function getTreeDiameter(node) {
+  if (node === null) {
+    return 0;
+  }
+
+  // get height of left and right subtrees
+  var leftHeight = this._getHeight(node.left),
+      rightHeight = this._getHeight(node.right);
+
+  // get the diameter of the left and right subtrees
+  var leftDiameter = this.getTreeDiameter(node.left),
+      rightDiameter = this.getTreeDiameter(node.right);
+
+  // return max of the left diameter, right diameter and height of left and right subtree + 1
+  return Math.max(leftHeight + rightHeight + 1, Math.max(leftDiameter, rightDiameter));
+}
+
+// http://www.geeksforgeeks.org/maximum-width-of-a-binary-tree/
+function getMaxWidth(root) {
+  var width,
+      height = this._getHeight(root),
+      count = [],
+      level = 0;
+
+  // initialize count array to zeroes
+  for (var i = 0; i < height; i++) {
+    count[i] = 0;
+  }
+
+  // fill the count array using preorder traversal
+  this._getMaxWidth(root, count, level);
+
+  count = count.sort(function(a, b) { return a - b; });
+
+  return count[count.length - 1];
+}
+
+function _getMaxWidth(node, count, level) {
+  if (node) {
+    count[level] += 1;
+    this._getMaxWidth(node.left, count, level + 1);
+    this._getMaxWidth(node.right, count, level + 1);
+  }
 }
 
 // http://www.geeksforgeeks.org/root-to-leaf-path-sum-equal-to-a-given-number/
-function existsPathSum() {
+function existsPathSum(node, sum, n) {
+  if (node === null) {
+    return false;
+  }
 
-}
-
-// http://www.geeksforgeeks.org/if-you-are-given-two-traversal-sequences-can-you-construct-the-binary-tree/,
-// http://www.geeksforgeeks.org/construct-tree-from-given-inorder-and-preorder-traversal/
-// http://www.geeksforgeeks.org/full-and-complete-binary-tree-from-given-preorder-and-postorder-traversals/
-// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversa/
-// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversal-set-2/
-// http://www.geeksforgeeks.org/print-postorder-from-given-inorder-and-preorder-traversals/
-// http://www.geeksforgeeks.org/construct-tree-inorder-level-order-traversals/
-function recreateTreeGivenTwoTraversals(t1, t2) {
-
+  if (node.left === null && node.right === null) {
+    return node.data + sum === n;
+  } else {
+    return this.existsPathSum(node.left, node.data + sum, n) || this.existsPathSum(node.right, node.data + sum, n);
+  }
 }
 
 // http://www.geeksforgeeks.org/double-tree/
-function doubleTree() {
+function doubleTree(node) {
+  if (node === null) {
+    return;
+  }
 
+  this.doubleTree(node.left);
+
+  var leftChild = node.left;
+  node.left = new Node(node.data);
+  node.left.left = leftChild;
+  
+  this.doubleTree(node.right);
 }
 
 // http://www.geeksforgeeks.org/foldable-binary-trees/
@@ -1053,6 +1153,17 @@ function getRandomBSTNode() {
 
 }
 
+// http://www.geeksforgeeks.org/if-you-are-given-two-traversal-sequences-can-you-construct-the-binary-tree/
+// http://www.geeksforgeeks.org/construct-tree-from-given-inorder-and-preorder-traversal/
+// http://www.geeksforgeeks.org/full-and-complete-binary-tree-from-given-preorder-and-postorder-traversals/
+// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversa/
+// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversal-set-2/
+// http://www.geeksforgeeks.org/print-postorder-from-given-inorder-and-preorder-traversals/
+// http://www.geeksforgeeks.org/construct-tree-inorder-level-order-traversals/
+function recreateTreeGivenTwoTraversals(t1, t2) {
+
+}
+
 // http://www.geeksforgeeks.org/convert-a-given-tree-to-sum-tree/
 function convertToSumTree() {
 
@@ -1138,4 +1249,7 @@ while (right.left !== null) {
 }
 
 - return this.BTFind(node.left, data) || this.BTFind(node.right, data); // apparently doing null || Object will return the Object
+-when returning values, don't mix integers (return 0) with true/false return values
+
+REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth
 */

@@ -358,7 +358,7 @@ describe("BST", function() {
     root.right.left = new BST.Node(6);
     root.right.right = new BST.Node(7);
     root.right.left.right = new BST.Node(8);
-    var visited = [],
+    var visited = [], //Stores true if a node is printed as output. A node may be k distance away from many leaves, we want to print it once
         path = [],
         results = [];
     bst.kDistanceFromLeaf(root, path, visited, 0, 2, results);
@@ -366,27 +366,69 @@ describe("BST", function() {
   });
 
   it('tests kDistanceFromNode', function() {
-
-  });
-
-  it('tests printArrayRepresentationOfBST', function() {
-
-  });
-
-  it('tests checkIdenticalArrayBST', function() {
-
+    var root = new BST.Node(20);
+    root.left = new BST.Node(8);
+    root.right = new BST.Node(22);
+    root.left.left = new BST.Node(4);
+    root.left.right = new BST.Node(12);
+    root.left.right.left = new BST.Node(10);
+    root.left.right.right = new BST.Node(14);
+    var target = root.left,
+        result = [];
+    bst.kDistanceFromNode(root, target, 2, result);
+    expect(result).toEqual([10,14,22]);
   });
 
   it('tests getSuccessor', function() {
-
+    var root = new BST.Node(20);
+    root.left = new BST.Node(8);
+    root.left.left = new BST.Node(4);
+    root.left.right = new BST.Node(12);
+    root.left.right.left = new BST.Node(10);
+    root.left.right.right = new BST.Node(14);
+    root.right = new BST.Node(22);
+    expect(bst.getSuccessor(root, root.left)).toEqual(root.left.right.left);
+    expect(bst.getSuccessor(root, root.left.right.left)).toEqual(root.left.right);
+    expect(bst.getSuccessor(root, root.left.right.right)).toEqual(root);
   });
 
   it('tests getPredecessorAndSuccessor', function() {
+    var gps = new BST.BinarySearchTree();
+    gps.insert(50);
+    gps.insert(30);
+    gps.insert(20);
+    gps.insert(40);
+    gps.insert(70);
+    gps.insert(60);
+    gps.insert(80);
 
+    // these Objects will be passed by reference and will point to predecessor and successor
+    var predecessor = new BST.Node(),
+        successor = new BST.Node();
+    bst.getPredecessorAndSuccessor(gps.root, predecessor, successor, 50);
+    expect(predecessor.data).toEqual(40);
+    expect(successor.data).toEqual(60);
+    bst.getPredecessorAndSuccessor(gps.root, predecessor, successor, 60);
+    expect(predecessor.data).toEqual(50);
+    expect(successor.data).toEqual(70);
+    bst.getPredecessorAndSuccessor(gps.root, predecessor, successor, 65);
+    expect(predecessor.data).toEqual(60);
+    expect(successor.data).toEqual(70);
   });
 
   it('tests kthSmallestElement', function() {
-
+    var root = new BST.Node(20);
+    root.left = new BST.Node(8);
+    root.right = new BST.Node(22);
+    root.left.left = new BST.Node(4);
+    root.left.right = new BST.Node(12);
+    root.left.right.left = new BST.Node(10);
+    root.left.right.right = new BST.Node(14);
+    var stack = [];
+    bst.kthSmallestElement(root, stack, 3);
+    expect(stack[2]).toEqual(10);
+    bst.kthSmallestElement(root, stack, 5);
+    expect(stack[4]).toEqual(14);
   });
 
   it('tests printAncestors', function() {
@@ -523,6 +565,10 @@ describe("BST", function() {
 
   it('tests recreateTreeGivenTwoTraversals', function() {
 
+  });
+
+  it('tests checkIdenticalArrayBST', function() {
+    
   });
 
   xit('tests printAllPaths', function() {

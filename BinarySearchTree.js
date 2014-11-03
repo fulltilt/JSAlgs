@@ -56,11 +56,10 @@ function BST() {
   this.kDistanceFromRoot = kDistanceFromRoot;
   this.kDistanceFromLeaf = kDistanceFromLeaf;
   this.kDistanceFromNode = kDistanceFromNode;
-  this.printArrayRepresentationOfBST = printArrayRepresentationOfBST;
   this.checkIdenticalArrayBST = checkIdenticalArrayBST;
   this.getSuccessor = getSuccessor;
   this.getPredecessorAndSuccessor = getPredecessorAndSuccessor;
-  this.kthSmallestElement - kthSmallestElement;
+  this.kthSmallestElement = kthSmallestElement;
   this.getLevelOfNode = getLevelOfNode;
   this.printAncestors = printAncestors;
   this.printInGivenRange = printInGivenRange;
@@ -965,7 +964,7 @@ function canFold(node1, node2) {
 
 // http://www.geeksforgeeks.org/print-nodes-at-k-distance-from-root/
 function kDistanceFromRoot(node, k, result) {
-  if (node === null) {
+  if (node === null || k < 0) {
     return;
   }
 
@@ -1004,33 +1003,132 @@ function kDistanceFromLeaf(node, path, visited, pathLength, k, results) {
 }
 
 // http://www.geeksforgeeks.org/print-nodes-distance-k-given-node-binary-tree/
-function kDistanceFromNode() {
+// to get nodes k distance below node we just use this.kDistanceFromRoot(). For the ancestors, we have to go through
+// all the ancestors and find nodes at k - d distance from ancestor
+function kDistanceFromNode(root, target, k, result) {
+  if (root === null || k < 0) {
+    return 0;
+  }
 
-}
+  // if target is same as root. Use this.kDistanceFromRoot() to get all nodes at distance k in subtree rooted with target or root
+  if (root === target) {
+    this.kDistanceFromRoot(root, k, result);
+    return 0;
+  }
 
-// http://www.geeksforgeeks.org/sorted-order-printing-of-an-array-that-represents-a-bst/
-function printArrayRepresentationOfBST() {
+  // recur for left subtree
+  var dl = this.kDistanceFromNode(root.left, target, k, result);
 
-}
+  // Check if target node was found in left subtree
+  if (dl !== -1) {
+    // if root is at distance k from target, node to result (note: dl is distance of root's left child from target)
+    if (dl + 1 === k) {
+      result.push(root.data);
+    } else {  // go to right subtree and print all k - dl - 2 distant nodes (note: right child is 2 edges away from left child). This covers case when target is in left subtree and looking for nodes in right subtree
+      this.kDistanceFromRoot(root.right, k - dl - 2, result);
+    }
 
-// http://www.geeksforgeeks.org/check-for-identical-bsts-without-building-the-trees/
-function checkIdenticalArrayBST(arr1, arr2) {
+    // add 1 to the distance and return value for parent calls
+    return 1 + dl;
+  }
 
+  // recur for right subtree. Basically mirror of above. Note that we reach here only when target wasn't found in left subtree
+  var dr = this.kDistanceFromNode(root.right, target, k, result);
+  if (dr !== -1) {
+    if (dr + 1 === k) {
+      result.push(root.data);
+    } else {
+      this.kDistanceFromRoot(root.left, k - dr - 2, result);
+    }
+
+    return 1 + dr;
+  }
+
+  // If target was neither present in left nor right subtree
+  return -1;
 }
 
 // http://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/
-function getSuccessor(node) {
+// this algorithm doesn't need a parent pointer
+// 2 cases we need to handle: if the right child is not null or is null
+function getSuccessor(root, node) {
+  // 1st case
+  if (node.right !== null) {
+    var current = node.right;
+    while (current.left !== null) {
+      current = current.left;
+    }
+    return current;
+  }
 
+  // 2nd case
+  var successor = null;
+  while (root !== null) {
+    if (node.data < root.data) {
+      successor = root;
+      root = root.left;
+    } else if (node.data > root.data) {
+      root = root.right;
+    } else {
+      break;
+    }
+  }
+
+  return successor;
 }
 
 // http://www.geeksforgeeks.org/inorder-predecessor-successor-given-key-bst/
-function getPredecessorAndSuccessor(node) {
+function getPredecessorAndSuccessor(node, pred, succ, data) {
+  if (node === null) {
+    return;
+  }
 
+  // if current node's data is equal to data
+  if (node.data === data) {
+    // EASY CASES WHEN THE APPROPRIATE CHILDREN AREN'T NULL
+    // if node.left does not equal null, predecessor is max of left subtree
+    if (node.left !== null) {
+      var current = node.left;
+      while (current.right !== null) {
+        current = current.right;
+      }
+      pred.data = current.data; // note: I can't do 'pred = current'. In JS I can change the contents but I can't change the reference
+    }
+
+    // if node.right does not equal null, successor is min of right subtree
+    if (node.right !== null) {
+      var current = node.right;
+      while (current.left !== null) {
+        current = current.left;
+      }
+      succ.data = current.data;
+    }
+
+    return;
+  }
+
+  // HARDER CASES WHEN THE APPROPRIATE CHILDREN ARE NULL
+  if (node.data < data) {
+    pred.data = node.data;
+    this.getPredecessorAndSuccessor(node.right, pred, succ, data);
+  } else {
+    succ.data = node.data;
+    this.getPredecessorAndSuccessor(node.left, pred, succ, data);
+  }
 }
 
 // http://www.geeksforgeeks.org/find-k-th-smallest-element-in-bst-order-statistics-in-bst/ or http://stackoverflow.com/questions/2329171/find-kth-smallest-element-in-a-binary-search-tree-in-optimum-way/2329236#2329236
-function kthSmallestElement(k) {
+// -an augmented tree that keeps count of # of children on the left and # of children on the right leads to an O(log n) solution
+// -this current solution isn't the most efficient as it requires a stack and it requires iterating through the whole tree. Haven't figured
+// out how to cut the iteration early
+function kthSmallestElement(node, stack) {
+  if (node === null) {
+    return;
+  }
 
+  this.kthSmallestElement(node.left, stack);
+  stack.push(node.data);
+  right = this.kthSmallestElement(node.right, stack);
 }
 
 // http://www.geeksforgeeks.org/print-ancestors-of-a-given-node-in-binary-tree/
@@ -1216,6 +1314,11 @@ function recreateTreeGivenTwoTraversals(t1, t2) {
 
 }
 
+// http://www.geeksforgeeks.org/check-for-identical-bsts-without-building-the-trees/
+function checkIdenticalArrayBST(arr1, arr2) {
+
+}
+
 // http://www.geeksforgeeks.org/convert-a-given-tree-to-sum-tree/
 function convertToSumTree() {
 
@@ -1289,19 +1392,9 @@ module.exports = BinarySearchTree;
 // http://www.geeksforgeeks.org/clone-binary-tree-random-pointers/
 
 /* NOTES:
--getting the inorder predecessor:
-var left = node.left;
-while (left.right !== null) {
-  left = left.right;
-}
--getting the inorder successor:
-var right = node.right;
-while (right.left !== null) {
-  right = right.left;
-}
-
 - return this.BTFind(node.left, data) || this.BTFind(node.right, data); // apparently doing null || Object will return the Object
 -when returning values, don't mix integers (return 0) with true/false return values
 
-REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth. kDistanceFromLeaf
+REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth. kDistanceFromLeaf, *kDistanceFromNode,
+        getPredecessorAndSuccessor
 */

@@ -432,19 +432,39 @@ describe("BST", function() {
   });
 
   it('tests printAncestors', function() {
-
+    var root = new BST.Node(20);
+    root.left = new BST.Node(8);
+    root.right = new BST.Node(22);
+    root.left.left = new BST.Node(4);
+    root.left.right = new BST.Node(12);
+    root.left.right.left = new BST.Node(10);
+    root.left.right.right = new BST.Node(14);
+    var result = [];
+    bst.printAncestors(root, root.left.right.right, result);
+    expect(result).toEqual([12,8,20]);
+    result = [];
+    bst.printAncestors(root, root.left.right.left, result);
+    expect(result).toEqual([12,8,20]);
   });
 
   it('tests printInGivenRange', function() {
-
-  });
-
-  it('tests connectNodesAtSameLevel', function() {
-
+    var root = new BST.Node(20);
+    root.left = new BST.Node(8);
+    root.right = new BST.Node(22);
+    root.left.left = new BST.Node(4);
+    root.left.right = new BST.Node(12);
+    root.left.right.left = new BST.Node(10);
+    root.left.right.right = new BST.Node(14);
+    var result = [];
+    bst.printInGivenRange(root, 12, 21, result);
+    expect(result).toEqual([12,14,20]);
   });
 
   it('tests sortedArrayToBalancedBST', function() {
-
+    var root = bst.sortedArrayToBalancedBST([1,2,4,7,8,9,20], 0, 6);
+    var result = [];
+    bst.getInOrder(root, result);
+    expect(result).toEqual([1,2,4,7,8,9,20]);
   });
 
   it('tests getVerticalSums', function() {
@@ -456,10 +476,6 @@ describe("BST", function() {
   });
 
   it('tests mergeTwoTrees', function() {
-
-  });
-
-  it('tests constructSpecialBT', function() {
 
   });
 
@@ -564,6 +580,10 @@ describe("BST", function() {
   });
 
   it('tests recreateTreeGivenTwoTraversals', function() {
+
+  });
+
+  it('tests constructSpecialBT', function() {
 
   });
 

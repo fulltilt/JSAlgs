@@ -63,7 +63,6 @@ function BST() {
   this.getLevelOfNode = getLevelOfNode;
   this.printAncestors = printAncestors;
   this.printInGivenRange = printInGivenRange;
-  this.connectNodesAtSameLevel = connectNodesAtSameLevel;
   this.sortedArrayToBalancedBST = sortedArrayToBalancedBST;
   this.convertToSumTree = convertToSumTree;
   this.getVerticalSums = getVerticalSums;
@@ -1133,23 +1132,57 @@ function kthSmallestElement(node, stack) {
 
 // http://www.geeksforgeeks.org/print-ancestors-of-a-given-node-in-binary-tree/
 // http://www.geeksforgeeks.org/print-ancestors-of-a-given-binary-tree-node-without-recursion/
-function printAncestors(node) {
+// assumes binary tree
+function printAncestors(node, target, result) {
+  if (node === null) {
+    return false;
+  }
 
+  if (node === target) {
+    return true;
+  }
+
+  if (this.printAncestors(node.left, target, result) ||
+      this.printAncestors(node.right, target, result)) {
+    result.push(node.data);
+    return true;
+  }
+
+  return false;
 }
 
 // http://www.geeksforgeeks.org/print-bst-keys-in-the-given-range/
-function printInGivenRange(k1, k2) {
+function printInGivenRange(node, k1, k2, result) {
+  if (node === null) {
+    return;
+  }
 
-}
+  if (node.data >= k1) {
+    this.printInGivenRange(node.left, k1, k2, result);
+  } 
 
-// http://www.geeksforgeeks.org/connect-nodes-at-same-level/
-function connectNodesAtSameLevel() {
+  if (node.data >= k1 && node.data <= k2) {
+    result.push(node.data);
+  }
 
+  if (node.data <= k2) {
+    this.printInGivenRange(node.right, k1, k2, result);
+  } 
 }
 
 // http://www.geeksforgeeks.org/sorted-array-to-balanced-bst/
-function sortedArrayToBalancedBST(arr) {
+function sortedArrayToBalancedBST(arr, lo, hi) {
+  if (hi < lo) {
+    return null;
+  }
 
+  var mid = Math.floor((lo + hi) / 2),
+      root = new Node(arr[mid]);
+      
+  root.left = this.sortedArrayToBalancedBST(arr, lo, mid - 1);
+  root.right = this.sortedArrayToBalancedBST(arr, mid + 1, hi);
+
+  return root;
 }
 
 // http://www.geeksforgeeks.org/vertical-sum-in-a-given-binary-tree/
@@ -1164,12 +1197,6 @@ function findMaxSumPath() {
 
 // http://www.geeksforgeeks.org/merge-two-bsts-with-limited-extra-space/
 function mergeTwoTrees() {
-
-}
-
-// http://www.geeksforgeeks.org/construct-binary-tree-from-inorder-traversal/
-// http://www.geeksforgeeks.org/construct-a-special-tree-from-given-preorder-traversal/
-function constructSpecialBT() {
 
 }
 
@@ -1311,6 +1338,12 @@ function getRandomBSTNode() {
 // http://www.geeksforgeeks.org/print-postorder-from-given-inorder-and-preorder-traversals/
 // http://www.geeksforgeeks.org/construct-tree-inorder-level-order-traversals/
 function recreateTreeGivenTwoTraversals(t1, t2) {
+
+}
+
+// http://www.geeksforgeeks.org/construct-binary-tree-from-inorder-traversal/
+// http://www.geeksforgeeks.org/construct-a-special-tree-from-given-preorder-traversal/
+function constructSpecialBT() {
 
 }
 

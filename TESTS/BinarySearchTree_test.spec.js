@@ -307,10 +307,65 @@ describe("BST", function() {
   });
 
   it('tests canFold', function() {
+    var root1 = new BST.Node(10);
+    root1.left = new BST.Node(7);
+    root1.right = new BST.Node(15);
+    root1.left.right = new BST.Node(9);
+    root1.right.left = new BST.Node(11);
+    expect(bst.canFold(root1, root1)).toEqual(true);
 
+    var root2 = new BST.Node(10);
+    root2.left = new BST.Node(7);
+    root2.right = new BST.Node(15);
+    root2.left.left = new BST.Node(9);
+    root2.right.right = new BST.Node(11);
+    expect(bst.canFold(root2, root2)).toEqual(true);
+
+    var root3 = new BST.Node(10);
+    root3.left = new BST.Node(7);
+    root3.right = new BST.Node(15);
+    root3.left.left = new BST.Node(9);
+    root3.right.left = new BST.Node(11);
+    expect(bst.canFold(root3, root3)).toEqual(false);
+
+    var root4 = new BST.Node(10);
+    root4.left = new BST.Node(7);
+    root4.right = new BST.Node(15);
+    root4.left.left = new BST.Node(9);
+    root4.left.right = new BST.Node(10);
+    root4.right.left = new BST.Node(12);
+    expect(bst.canFold(root4, root4)).toEqual(false);
   });
 
   it('tests kDistanceFromRoot', function() {
+    var root = new BST.Node(1);
+    root.left = new BST.Node(2);
+    root.right = new BST.Node(3);
+    root.left.left = new BST.Node(4);
+    root.left.right = new BST.Node(5);
+    root.right.left = new BST.Node(8);
+    var result = [];
+    bst.kDistanceFromRoot(root, 2, result);
+    expect(result).toEqual([4,5,8]);
+  });
+
+  it('tests kDistanceFromLeaf', function() {
+    var root = new BST.Node(1);
+    root.left = new BST.Node(2);
+    root.right = new BST.Node(3);
+    root.left.left = new BST.Node(4);
+    root.left.right = new BST.Node(5);
+    root.right.left = new BST.Node(6);
+    root.right.right = new BST.Node(7);
+    root.right.left.right = new BST.Node(8);
+    var visited = [],
+        path = [],
+        results = [];
+    bst.kDistanceFromLeaf(root, path, visited, 0, 2, results);
+    expect(results).toEqual([1,3]);
+  });
+
+  it('tests kDistanceFromNode', function() {
 
   });
 

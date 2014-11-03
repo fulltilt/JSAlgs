@@ -54,6 +54,8 @@ function BST() {
   this.doubleTree = doubleTree;
   this.canFold = canFold;
   this.kDistanceFromRoot = kDistanceFromRoot;
+  this.kDistanceFromLeaf = kDistanceFromLeaf;
+  this.kDistanceFromNode = kDistanceFromNode;
   this.printArrayRepresentationOfBST = printArrayRepresentationOfBST;
   this.checkIdenticalArrayBST = checkIdenticalArrayBST;
   this.getSuccessor = getSuccessor;
@@ -942,17 +944,67 @@ function doubleTree(node) {
   var leftChild = node.left;
   node.left = new Node(node.data);
   node.left.left = leftChild;
-  
+
   this.doubleTree(node.right);
 }
 
 // http://www.geeksforgeeks.org/foldable-binary-trees/
-function canFold() {
+function canFold(node1, node2) {
+  if (node1 === null && node2 === null) {
+    return true;
+  }
 
+  if (((node1.left && node2.right) || (!node1.left && !node2.right)) &&
+      this.canFold(node1.left, node2.right) &&
+      this.canFold(node1.right, node2.left)) {
+    return true;
+  }
+
+  return false;
 }
 
-// http://www.geeksforgeeks.org/print-nodes-at-k-distance-from-root/ or http://www.geeksforgeeks.org/print-nodes-distance-k-leaf-node/ or http://www.geeksforgeeks.org/print-nodes-distance-k-given-node-binary-tree/
-function kDistanceFromRoot() {
+// http://www.geeksforgeeks.org/print-nodes-at-k-distance-from-root/
+function kDistanceFromRoot(node, k, result) {
+  if (node === null) {
+    return;
+  }
+
+  if (k === 0) {
+    result.push(node.data);
+    return;
+  } else {
+    this.kDistanceFromRoot(node.left, k - 1, result);
+    this.kDistanceFromRoot(node.right, k - 1, result);
+  }
+}
+
+// http://www.geeksforgeeks.org/print-nodes-distance-k-leaf-node/
+function kDistanceFromLeaf(node, path, visited, pathLength, k, results) {
+  if (node === null) {
+    return;
+  }
+
+  // update path
+  path.push(node.data);
+  visited[pathLength] = false;
+  pathLength += 1;
+  //visited[node.data] = true;
+
+  if (node.left === null && node.right === null && 
+     (pathLength - k - 1 >= 0) && !visited[pathLength - k - 1]) {
+    results.push(path[pathLength - k - 1]);
+    visited[pathLength - k - 1] = true;
+    path.pop();
+    return;
+  } else {
+    this.kDistanceFromLeaf(node.left, path, visited, pathLength, k, results);
+    this.kDistanceFromLeaf(node.right, path, visited, pathLength, k, results);
+  }
+  path.pop();
+}
+
+// http://www.geeksforgeeks.org/print-nodes-distance-k-given-node-binary-tree/
+function kDistanceFromNode() {
 
 }
 
@@ -1251,5 +1303,5 @@ while (right.left !== null) {
 - return this.BTFind(node.left, data) || this.BTFind(node.right, data); // apparently doing null || Object will return the Object
 -when returning values, don't mix integers (return 0) with true/false return values
 
-REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth
+REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth. kDistanceFromLeaf
 */

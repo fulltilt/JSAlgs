@@ -75,7 +75,7 @@ function BST() {
   this.isTreeComplete = isTreeComplete;
   this.boundaryTraversal = boundaryTraversal;
   this.fixBSTAfterSwap = fixBSTAfterSwap;
-  this.floorAndCeil = floorAndCeil;
+  this.ceiling = ceiling;
   this.morrisTraversal = morrisTraversal;
   this.iterativePostOrder = iterativePostOrder;
   this.existsTripletThatSumsToZero = existsTripletThatSumsToZero;
@@ -1359,32 +1359,74 @@ function getLeaves(node, leaves) {
   getLeaves(node.left, leaves);
   getLeaves(node.right, leaves);
 }
-// http://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
-function fixBSTAfterSwap() {
-
-}
 
 // http://www.geeksforgeeks.org/floor-and-ceil-from-a-bst/
-function floorAndCeil() {
+// this has tricky logic. Less efficient fallback algorithm would be to convert tree to a sorted Array and iterate to find floor and ceiling values
+function ceiling(node, n) {
+  if (node === null) {
+    return -1;
+  }
 
-}
+  // we found equal key
+  if (node.data === n) {
+    return n;
+  }
+  
+  // if root's key is smaller, ceiling must be in right subtree
+  if (node.data < n) {
+    return this.ceiling(node.right, n);
+  }
 
-// http://www.geeksforgeeks.org/morris-traversal-for-preorder/
-function morrisTraversal() {
-
-}
-
-// http://www.geeksforgeeks.org/iterative-postorder-traversal-using-stack/ 
-function iterativePostOrder() {
-
+  // else, either left subtree or root has the ceiling value (these 2 lines are the tricky part)
+  var ceil = this.ceiling(node.left, n);
+  return (ceil >= n) ? ceil : node.data;
 }
 
 // http://www.geeksforgeeks.org/find-if-there-is-a-triplet-in-bst-that-adds-to-0/
 // http://www.geeksforgeeks.org/find-a-pair-with-given-sum-in-bst/
-function existsTripletThatSumsToZero() {
+function existsTripletThatSumsToZero(root) {
+  // convert tree into an array
+  var arr = [];
+  BSTToArray(root, arr);
+  
+  var length = arr.length;
+  for (var i = 0; i < length; i++) {
+    if (hasArrayTwoCandidates(arr, -arr[i])) {
+      return true;
+    }
+  }
 
+  return false;
 }
 
+// helper fxn for existsTripletThatSumsToZero that converts a BST to an ordered array
+function BSTToArray(node, arr) {
+  if (node === null) {
+    return;
+  }
+
+  BSTToArray(node.left, arr);
+  arr.push(node.data);
+  BSTToArray(node.right, arr);
+}
+
+// helper fxn for existsTripletThatSumsToZero to determines if there are two values in array that sum up to n
+function hasArrayTwoCandidates(arr, n) {
+  var lo = 0,
+      hi = arr.length - 1;
+
+  while (hi > lo) {
+    var tempSum = arr[lo] + arr[hi];
+    if (tempSum === n) {
+      return true;
+    } else if (tempSum > n) {
+      hi -= 1;
+    } else if (tempSum < n) {
+      lo += 1;
+    }
+  }
+  return false;
+}
 // http://www.geeksforgeeks.org/remove-bst-keys-outside-the-given-range/
 function removeNodesOutsideRange() {
 
@@ -1540,6 +1582,27 @@ function mergeTwoConvertedLists(list1, list2) {
 }
 */
 
+// http://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
+function fixBSTAfterSwap(root) {
+  var stack = [],
+      inOrder = [];
+  current = root;
+  while (stack.length > 0 || current) {
+    if (current) {
+      stack.push(current);
+      current = current.left;
+    } else {
+      current = stack[stack.length - 1];
+      stack.pop();
+      inOrder.push(current);
+      current = current.right;
+    }
+  }
+
+  inOrder.sort(function(a, b) { return a.data - b.data; });
+  console.log(inOrder);
+}
+
 // http://www.geeksforgeeks.org/if-you-are-given-two-traversal-sequences-can-you-construct-the-binary-tree/
 // http://www.geeksforgeeks.org/construct-tree-from-given-inorder-and-preorder-traversal/
 // http://www.geeksforgeeks.org/full-and-complete-binary-tree-from-given-preorder-and-postorder-traversals/
@@ -1559,6 +1622,16 @@ function constructSpecialBT() {
 
 // http://www.geeksforgeeks.org/check-if-each-internal-node-of-a-bst-has-exactly-one-child/
 function doesEachNodeHaveOnlyOneChild() {
+
+}
+
+// http://www.geeksforgeeks.org/morris-traversal-for-preorder/
+function morrisTraversal() {
+
+}
+
+// http://www.geeksforgeeks.org/iterative-postorder-traversal-using-stack/ 
+function iterativePostOrder() {
 
 }
 
@@ -1607,6 +1680,10 @@ module.exports = BinarySearchTree;
 - return this.BTFind(node.left, data) || this.BTFind(node.right, data); // apparently doing null || Object will return the Object
 -when returning values, don't mix integers (return 0) with true/false return values
 
+THINGS TO TRY WHEN STUMPED: 
+-instead of the usual else-if recursive structure, take out the conditionals so that each statement can be run (see ceiling())
+
+
 REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth. kDistanceFromLeaf, *kDistanceFromNode,
-        getPredecessorAndSuccessor, verticalSum, iterativeInOrder, 
+        getPredecessorAndSuccessor, verticalSum, iterativeInOrder, ceiling
 */

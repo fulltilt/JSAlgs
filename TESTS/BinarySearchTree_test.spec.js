@@ -515,24 +515,30 @@ describe("BST", function() {
     expect(bst.isTreeComplete(root2)).toEqual(false);
   });
 
-  it('tests fixBSTAfterSwap', function() {
-
-  });
-
-  it('tests floorAndCeil', function() {
-
-  });
-
-  it('tests morrisTraversal', function() {
-
-  });
-
-  it('tests iterativePostOrder', function() {
-
+  it('tests floor', function() {
+    var root = new BST.Node(8);
+    root.left = new BST.Node(4);
+    root.right = new BST.Node(12);
+    root.left.left = new BST.Node(2);
+    root.left.right = new BST.Node(6);
+    root.right.left = new BST.Node(10);
+    root.right.right = new BST.Node(14);
+    var result = [];
+    expect(bst.ceiling(root, 0)).toEqual(2);
+    expect(bst.ceiling(root, 7)).toEqual(8);  // tricky case
+    expect(bst.ceiling(root, 15)).toEqual(-1);
   });
 
   it('tests existsTripletThatSumsToZero', function() {
-
+    var root = new BST.Node(6);
+    root.left = new BST.Node(-13);
+    root.left.right = new BST.Node(-8);
+    root.right = new BST.Node(14);
+    root.right.left = new BST.Node(13);
+    root.right.left.left = new BST.Node(7);
+    root.right.right = new BST.Node(15);
+    expect(bst.existsTripletThatSumsToZero(root)).toEqual(true);
+    expect(bst.existsTripletThatSumsToZero(bst.root)).toEqual(false);
   });
 
   it('tests removeNodesOutsideRange', function() {
@@ -619,6 +625,14 @@ describe("BST", function() {
 
   });
 
+  it('tests iterativePostOrder', function() {
+
+  });
+
+  it('tests morrisTraversal', function() {
+
+  });
+
   xit('tests mergeTwoTrees', function() {
     var root1 = new BST.Node(3);
     root1.left = new BST.Node(1);
@@ -638,6 +652,15 @@ describe("BST", function() {
     root4.left = new BST.Node(3);
     root4.left.left = new BST.Node(0);
     bst.mergeTwoTrees(root3, root4);
+  });
+
+  xit('tests fixBSTAfterSwap', function() {
+    var root = new BST.Node(10);
+    root.left = new BST.Node(5);
+    root.left.left = new BST.Node(2);
+    root.left.right = new BST.Node(20);
+    root.right = new BST.Node(8);
+    bst.fixBSTAfterSwap(root);
   });
 
   xit('tests boundaryTraversal', function() {

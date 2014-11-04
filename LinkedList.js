@@ -300,7 +300,7 @@ function mergeSortedLists(list1Head, list2Head) {
 	// deal with leftovers
 	newListPtr.next = (list1Ptr === null) ? list2Ptr : list1Ptr;
 
-	return dummyHead.next.printFromNode(); // form output from the head node and print the rest of the list (have to do this as the algorithm deals with nodes and not lists)
+	return dummyHead.next; // form output from the head node and print the rest of the list (have to do this as the algorithm deals with nodes and not lists)
 }
 
 /* Question 16 How do you check whether there is a loop in a linked list? */

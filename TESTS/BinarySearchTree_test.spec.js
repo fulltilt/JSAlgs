@@ -180,6 +180,7 @@ describe("BST", function() {
     expect(head.right.right.data).toEqual(3);
     expect(head.right.right.right.data).toEqual(4);
     expect(head.right.right.right.right.data).toEqual(5);
+    expect(head.right.right.right.right.right).toEqual(head); // show that the list is circular
   });
 
   it('tests linkedListToBinaryTree', function() {
@@ -468,27 +469,50 @@ describe("BST", function() {
   });
 
   it('tests getVerticalSums', function() {
-
+    var root = new BST.Node(1);
+    root.left = new BST.Node(2);
+    root.left.left = new BST.Node(4);
+    root.left.right = new BST.Node(5);
+    root.right = new BST.Node(3);
+    root.right.left = new BST.Node(6);
+    root.right.right = new BST.Node(7);
+    var map = {};
+    bst.getVerticalSums(root, map);
+    expect(map).toEqual({'-2':4, '-1':2, '0':12, '1':3, '2':7})
   });
 
   it('tests findMaxSumPath', function() {
-
-  });
-
-  it('tests mergeTwoTrees', function() {
-
-  });
-
-  it('tests doesEachNodeHaveOnlyOneChild', function() {
-
+    var root = new BST.Node(10);
+    root.left = new BST.Node(-2);
+    root.left.left = new BST.Node(8);
+    root.left.right = new BST.Node(-4);
+    root.right = new BST.Node(7);
+    expect(bst.findMaxSumPath(root, 0)).toEqual(17);
   });
 
   it('tests isTreeComplete', function() {
+    var root1 = new BST.Node(1);
+    root1.left = new BST.Node(2);
+    root1.right = new BST.Node(3);
+    expect(bst.isTreeComplete(root1)).toEqual(true);
 
-  });
+    root1.left.left = new BST.Node(4);
+    expect(bst.isTreeComplete(root1)).toEqual(true);
 
-  it('tests boundaryTraversal', function() {
+    root1.left.right = new BST.Node(5);
+    root1.right.left = new BST.Node(6);
+    expect(bst.isTreeComplete(root1)).toEqual(true);
 
+    var root2 = new BST.Node(1);
+    root2.right = new BST.Node(3);
+    expect(bst.isTreeComplete(root2)).toEqual(false);
+
+    root2.left = new BST.Node(2);
+    root2.left.right = new BST.Node(4);
+    root2.right = new BST.Node(3);
+    root2.right.left = new BST.Node(5);
+    root2.right.right = new BST.Node(6);
+    expect(bst.isTreeComplete(root2)).toEqual(false);
   });
 
   it('tests fixBSTAfterSwap', function() {
@@ -589,6 +613,47 @@ describe("BST", function() {
 
   it('tests checkIdenticalArrayBST', function() {
     
+  });
+
+  it('tests doesEachNodeHaveOnlyOneChild', function() {
+
+  });
+
+  xit('tests mergeTwoTrees', function() {
+    var root1 = new BST.Node(3);
+    root1.left = new BST.Node(1);
+    root1.right = new BST.Node(5);
+
+    var root2 = new BST.Node(4);
+    root2.left = new BST.Node(2);
+    root2.right = new BST.Node(6);
+    bst.mergeTwoTrees(root1, root2);
+
+    var root3 = new BST.Node(8);
+    root3.left = new BST.Node(2);
+    root3.right = new BST.Node(10);
+    root3.left.left = new BST.Node(1);
+
+    var root4 = new BST.Node(5);
+    root4.left = new BST.Node(3);
+    root4.left.left = new BST.Node(0);
+    bst.mergeTwoTrees(root3, root4);
+  });
+
+  xit('tests boundaryTraversal', function() {
+    var root = new BST.Node(20);
+    root.left = new BST.Node(8);
+    root.left.left = new BST.Node(4);
+    root.left.right = new BST.Node(12);
+    root.left.right.left = new BST.Node(10);
+    root.left.right.right = new BST.Node(14);
+    root.right = new BST.Node(22);
+    root.right.right = new BST.Node(25);
+    bst.boundaryTraversal(root);
+  });
+
+  xit('tests iterativeInOrder', function() {
+    bst.iterativeInOrder(bst.root);
   });
 
   xit('tests printAllPaths', function() {

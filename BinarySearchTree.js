@@ -1,3 +1,4 @@
+var LinkedList = require('./LinkedList.js');
 function Node(data, left, right) {
   this.data = data;
   this.left = left || null;
@@ -26,6 +27,7 @@ function BST() {
   this.min = min;
   this.max = max;
   this.getInOrder = getInOrder;
+  this.iterativeInOrder = iterativeInOrder;
   this.getPreOrder = getPreOrder;
   this.isBST = isBST;
   this._isBST = _isBST;
@@ -66,8 +68,8 @@ function BST() {
   this.sortedArrayToBalancedBST = sortedArrayToBalancedBST;
   this.convertToSumTree = convertToSumTree;
   this.getVerticalSums = getVerticalSums;
+  this._getVerticalSums = _getVerticalSums;
   this.findMaxSumPath = findMaxSumPath;
-  this.mergeTwoTrees = mergeTwoTrees;
   this.constructSpecialBT = constructSpecialBT;
   this.doesEachNodeHaveOnlyOneChild = doesEachNodeHaveOnlyOneChild;
   this.isTreeComplete = isTreeComplete;
@@ -94,12 +96,14 @@ function BST() {
   this.printAlternateLevels = printAlternateLevels;
   this.findMaxPathSumBetweenTwoLeaves = findMaxPathSumBetweenTwoLeaves;
   this.areNodesCousins = areNodesCousins;
+  //this.mergeTwoTrees = mergeTwoTrees;
 
   this.segmentTree = segmentTree;
   this.bTree = bTree;
   this.splayTree = this.splayTree;
   this.redBlackTree = redBlackTree;
   this.getRandomBSTNode = getRandomBSTNode;
+  this.treeToDoublyLinkedList = treeToDoublyLinkedList;
   this.treeToCircularDoublyLinkedList = treeToCircularDoublyLinkedList;
   this.treeToCircularDoublyLinkedListUtil = treeToCircularDoublyLinkedListUtil;
   this.linkedListToBinaryTree = linkedListToBinaryTree;
@@ -155,6 +159,23 @@ function getInOrder(node, arr) {
     this.getInOrder(node.left, arr);
     arr.push(node.data);
     this.getInOrder(node.right, arr);
+  }
+}
+
+// http://leetcode.com/2010/04/binary-search-tree-in-order-traversal.html
+function iterativeInOrder(root) {
+  var stack = [];
+  current = root;
+  while (stack.length > 0 || current) {
+    if (current) {
+      stack.push(current);
+      current = current.left;
+    } else {
+      current = stack[stack.length - 1];
+      stack.pop();
+      console.log(current.data);
+      current = current.right;
+    }
   }
 }
 
@@ -521,6 +542,23 @@ function isSubTree(node1, node2) {
   return this.isSubTree(node1.left, node2) || this.isSubTree(node1.right, node2);
 }
 
+function treeToDoublyLinkedList(root) {
+  // base case
+  if (root === null) {
+    return root;
+  }
+  
+  // convert to DLL using treeToCircularDoublyLinkedListUtil()
+  this.treeToCircularDoublyLinkedListUtil(root);
+
+  // treeToCircularDoublyLinkedListUtil returns root node of the converted DLL. Go to the leftmost node to get the head of the newly created list
+  while (root.left !== null) {
+    root = root.left;
+  }
+
+  return root;
+}
+
 // http://www.geeksforgeeks.org/the-great-tree-list-recursion-problem/
 // http://www.geeksforgeeks.org/in-place-convert-a-given-binary-tree-to-doubly-linked-list/
 // http://www.geeksforgeeks.org/convert-a-given-binary-tree-to-doubly-linked-list-set-2/
@@ -537,6 +575,13 @@ function treeToCircularDoublyLinkedList(root) {
   while (root.left !== null) {
     root = root.left;
   }
+  
+  // link last Node to root (NOTE: THESE FOLLOWING 4 LINES ARE THE ONLY DIFFERENCE BETWEEN treeToDoubleLinkedList())
+  var current = root;
+  while (current.right !== null) {
+    current = current.right;
+  }
+  current.right = root;
 
   return root;
 }
@@ -1178,7 +1223,7 @@ function sortedArrayToBalancedBST(arr, lo, hi) {
 
   var mid = Math.floor((lo + hi) / 2),
       root = new Node(arr[mid]);
-      
+
   root.left = this.sortedArrayToBalancedBST(arr, lo, mid - 1);
   root.right = this.sortedArrayToBalancedBST(arr, mid + 1, hi);
 
@@ -1186,35 +1231,134 @@ function sortedArrayToBalancedBST(arr, lo, hi) {
 }
 
 // http://www.geeksforgeeks.org/vertical-sum-in-a-given-binary-tree/
-function getVerticalSums() {
+function getVerticalSums(root, map) {
+  if (root === null) {
+    return;
+  }
 
+  var horizontalDistance = 0;
+  this._getVerticalSums(root, horizontalDistance, map);
+
+  //var sortedKeys = Object.keys(map).sort(function(a, b) { return a - b; });
+}
+
+function _getVerticalSums(root, horizontalDistance, map) {
+  if (root === null) {
+    return;
+  }
+
+  // store the values in map for left subtree
+  this._getVerticalSums(root.left, horizontalDistance - 1, map);
+
+  // update vertical sum for horizontal distance for this node
+  var previousSum = (!map[horizontalDistance]) ? 0 : map[horizontalDistance];
+  map[horizontalDistance] = previousSum + root.data;
+
+  // store the values in map for right subtree
+  this._getVerticalSums(root.right, horizontalDistance + 1, map);
 }
 
 // http://www.geeksforgeeks.org/find-the-maximum-sum-path-in-a-binary-tree/
-function findMaxSumPath() {
+function findMaxSumPath(node, sum) {
+  if (node === null) {
+    return 0;
+  }
 
-}
-
-// http://www.geeksforgeeks.org/merge-two-bsts-with-limited-extra-space/
-function mergeTwoTrees() {
-
-}
-
-// http://www.geeksforgeeks.org/check-if-each-internal-node-of-a-bst-has-exactly-one-child/
-function doesEachNodeHaveOnlyOneChild() {
-
+  if (node.left === null && node.right === null) {
+    return sum + node.data;
+  }
+  return Math.max(this.findMaxSumPath(node.left, sum + node.data), this.findMaxSumPath(node.right, sum + node.data));
 }
 
 // http://www.geeksforgeeks.org/check-if-a-given-binary-tree-is-complete-tree-or-not/
-function isTreeComplete() {
+// algorithm: use level order and once you encounter a node that has no children, all the rest must have no children
+// -there is a condition that if a node has a left child but no right child, the rest of the nodes on that level must not have any children
+function isTreeComplete(root) {
+  if (root === null) {
+    return false;
+  }
 
+  var currentLevel = [],
+      children = [],
+      noMoreChildren = false;
+
+  currentLevel.push(root);
+  while (currentLevel.length > 0) {
+    for (var i = 0; i < currentLevel.length; i++) {
+      if (currentLevel[i].left) {
+        if (noMoreChildren) {
+          return false;
+        }
+
+        children.push(currentLevel[i].left);
+      } else { 
+        noMoreChildren = true;
+      }
+
+      if (currentLevel[i].right) {
+        if (noMoreChildren) {
+          return false;
+        }
+
+        children.push(currentLevel[i].right);
+      } else {
+        noMoreChildren = true;
+      }
+    }
+
+    currentLevel = children.slice(0);
+    children = [];
+  }
+
+  return true;
 }
 
 // http://www.geeksforgeeks.org/boundary-traversal-of-binary-tree/
-function boundaryTraversal() {
+// 3 parts: left boundary, leaves and right boundary. Following algorithm prints counter-clockwise
+function boundaryTraversal(root) {
+  console.log(root.data);
 
+  // print left boundary
+  var current = root.left;
+  while (current) {
+    console.log(current.data);
+    current = current.left;
+  }
+
+  // get leaves
+  var leaves = [];
+  getLeaves(root, leaves);
+  leaves.shift();
+  leaves.pop();
+  for (var i = 0; i < leaves.length; i++) {
+    console.log(leaves[i]);
+  }
+
+  // print right boundary
+  current = root.right;
+  var queue = [];
+  while (current) {
+    queue.unshift(current.data);
+    current = current.right;
+  }
+  for (i = 0; i < queue.length; i++) {
+    console.log(queue[i]);
+  }
 }
 
+// helper fxn for boundaryTraversal() that adds leaves to an array
+function getLeaves(node, leaves) {
+  if (node === null) {
+    return;
+  }
+
+  if (node.left === null && node.right === null) {
+    leaves.push(node.data);
+  }
+
+  getLeaves(node.left, leaves);
+  getLeaves(node.right, leaves);
+}
 // http://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
 function fixBSTAfterSwap() {
 
@@ -1330,23 +1474,6 @@ function getRandomBSTNode() {
 
 }
 
-// http://www.geeksforgeeks.org/if-you-are-given-two-traversal-sequences-can-you-construct-the-binary-tree/
-// http://www.geeksforgeeks.org/construct-tree-from-given-inorder-and-preorder-traversal/
-// http://www.geeksforgeeks.org/full-and-complete-binary-tree-from-given-preorder-and-postorder-traversals/
-// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversa/
-// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversal-set-2/
-// http://www.geeksforgeeks.org/print-postorder-from-given-inorder-and-preorder-traversals/
-// http://www.geeksforgeeks.org/construct-tree-inorder-level-order-traversals/
-function recreateTreeGivenTwoTraversals(t1, t2) {
-
-}
-
-// http://www.geeksforgeeks.org/construct-binary-tree-from-inorder-traversal/
-// http://www.geeksforgeeks.org/construct-a-special-tree-from-given-preorder-traversal/
-function constructSpecialBT() {
-
-}
-
 // http://www.geeksforgeeks.org/check-for-identical-bsts-without-building-the-trees/
 function checkIdenticalArrayBST(arr1, arr2) {
 
@@ -1380,6 +1507,58 @@ function splayTree() {
 // http://www.geeksforgeeks.org/red-black-tree-set-2-insert/
 // http://www.geeksforgeeks.org/red-black-tree-set-3-delete-2/
 function redBlackTree() {
+
+}
+
+/* NOTE: delaying this as I have to implement a merge function that uses 'left' and 'right' instead of 'previous' and 'next'
+// http://www.geeksforgeeks.org/merge-two-bsts-with-limited-extra-space/
+function mergeTwoTrees(root1, root2) {
+  root1 = this.treeToDoublyLinkedList(root1);
+  root2 = this.treeToDoublyLinkedList(root2);
+  var LL = new LinkedList();
+  var list = mergeTwoConvertedLists(root1, root2);
+  console.log(list.data);
+}
+
+// helper function for mergeTwoTrees. Since the conversion fxn from a tree to a list uses 'left' instead of 'previous' and 'right' instead of 'next', 
+function mergeTwoConvertedLists(list1, list2) {
+  var dummyHead = new Node(),
+      current = dummyHead;
+
+  while (list1 !== null && list2 !== null) {
+    if (list1.data < list2.data) {
+      current.next = list1;
+      list1 = list1.right;
+    } else {
+      current.next = list2;
+      list2 = list2.right;
+    }
+  }
+
+  current.next = (list1 !== null) ? list1 : list2;
+  return dummyHead.next;  
+}
+*/
+
+// http://www.geeksforgeeks.org/if-you-are-given-two-traversal-sequences-can-you-construct-the-binary-tree/
+// http://www.geeksforgeeks.org/construct-tree-from-given-inorder-and-preorder-traversal/
+// http://www.geeksforgeeks.org/full-and-complete-binary-tree-from-given-preorder-and-postorder-traversals/
+// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversa/
+// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversal-set-2/
+// http://www.geeksforgeeks.org/print-postorder-from-given-inorder-and-preorder-traversals/
+// http://www.geeksforgeeks.org/construct-tree-inorder-level-order-traversals/
+function recreateTreeGivenTwoTraversals(t1, t2) {
+
+}
+
+// http://www.geeksforgeeks.org/construct-binary-tree-from-inorder-traversal/
+// http://www.geeksforgeeks.org/construct-a-special-tree-from-given-preorder-traversal/
+function constructSpecialBT() {
+
+}
+
+// http://www.geeksforgeeks.org/check-if-each-internal-node-of-a-bst-has-exactly-one-child/
+function doesEachNodeHaveOnlyOneChild() {
 
 }
 
@@ -1429,5 +1608,5 @@ module.exports = BinarySearchTree;
 -when returning values, don't mix integers (return 0) with true/false return values
 
 REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth. kDistanceFromLeaf, *kDistanceFromNode,
-        getPredecessorAndSuccessor
+        getPredecessorAndSuccessor, verticalSum, iterativeInOrder, 
 */

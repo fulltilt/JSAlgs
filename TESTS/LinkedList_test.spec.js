@@ -107,7 +107,7 @@ describe("LinkedList", function() {
     ll2.insertHead(4);
     ll2.insertHead(2);
 
-    expect(ll.mergeSortedLists(ll1.head, ll2.head)).toEqual('1 2 3 4 5 6 7 8');
+    expect(ll.mergeSortedLists(ll1.head, ll2.head).printFromNode()).toEqual('1 2 3 4 5 6 7 8');
     ll1.clear();
     ll2.clear();
   }); 

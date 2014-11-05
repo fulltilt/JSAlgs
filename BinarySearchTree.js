@@ -94,7 +94,7 @@ function BST() {
   this.sumOfAllNumsFormedFromRootToLeafPaths = sumOfAllNumsFormedFromRootToLeafPaths;
   this.printNodesWithoutSibling = printNodesWithoutSibling;
   this.printVerticalTree = printVerticalTree;
-  this.printAlternateLevels = printAlternateLevels;
+  this.reverseAlternateLevels = reverseAlternateLevels;
   this.findMaxPathSumBetweenTwoLeaves = findMaxPathSumBetweenTwoLeaves;
   this.areNodesCousins = areNodesCousins;
   //this.mergeTwoTrees = mergeTwoTrees;
@@ -1647,13 +1647,61 @@ function findDeepestLeftNode(node, level, isLeftChild, maxLevel) {
 }
 
 // http://www.geeksforgeeks.org/find-next-right-node-of-a-given-key/
-function getNextRightNode(node) {
+function getNextRightNode(root, k) {
+  var currentLevel = [],
+      children = [],
+      checkRight = false;;
 
+  currentLevel.push(root);
+  while (currentLevel.length > 0) {
+    for (var i = 0; i < currentLevel.length; i++) {
+      var current = currentLevel[i];
+      if (current.left) {
+        if (current.left.data === k) {
+          checkRight = true;
+        }
+        children.push(current.left);
+      }
+
+      if (current.right) {
+        if (current.right.data === k) {
+          checkRight = true;
+        }
+        children.push(current.right);
+      }
+    }
+
+    if (checkRight) {
+      for (i = 0; i < children.length; i++) {
+        if (children[i].data === k) {
+          if (i === (children.length - 1)) {  // we're at end of list so no element to the right. Return null
+            return null;
+          } else {
+            return children[i + 1].data;
+          }
+        }
+      }
+    }
+
+    currentLevel = children.slice(0);
+    children = [];
+  }
 }
 
 // http://www.geeksforgeeks.org/sum-numbers-formed-root-leaf-paths/
-function sumOfAllNumsFormedFromRootToLeafPaths() {
+function sumOfAllNumsFormedFromRootToLeafPaths(node, path, result) {
+  if (node === null) {
+    return;
+  }
 
+  path.push(node.data);
+  if (node.left === null && node.right === null) {  // we are at a leaf so get the # created by the path and push to 'result'
+    result.sum += parseInt(path.join(''), 10);
+  }
+
+  this.sumOfAllNumsFormedFromRootToLeafPaths(node.left, path, result);
+  this.sumOfAllNumsFormedFromRootToLeafPaths(node.right, path, result);
+  path.pop();
 }
 
 // http://www.geeksforgeeks.org/print-nodes-dont-sibling-binary-tree/
@@ -1667,7 +1715,7 @@ function printVerticalTree() {
 }
 
 // http://www.geeksforgeeks.org/reverse-alternate-levels-binary-tree/
-function printAlternateLevels() {
+function reverseAlternateLevels() {
 
 }
 
@@ -1890,6 +1938,7 @@ module.exports = BinarySearchTree;
 - return this.BTFind(node.left, data) || this.BTFind(node.right, data); // apparently doing null || Object will return the Object
 -when returning values, don't mix integers (return 0) with true/false return values
 -example of a way to change the tree while iterating through the tree
+-the print level (breadth-first search) algorithm can be used for a lot of problems and avoids the overhead of recursion
 
 THINGS TO TRY WHEN STUMPED: 
 -instead of the usual else-if recursive structure, take out the conditionals so that each statement can be run (see ceiling())

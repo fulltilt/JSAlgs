@@ -666,15 +666,36 @@ describe("BST", function() {
     maxLevel.level = 0;
     bst.findDeepestLeftNode(bt.root, 1, false, maxLevel);
     expect(maxLevel.level).toEqual(5);
-
   });
 
   it('tests getNextRightNode', function() {
-
+    var root = new BST.Node(10);
+    root.left = new BST.Node(2);
+    root.left.left = new BST.Node(8);
+    root.left.right = new BST.Node(4);
+    root.right = new BST.Node(6);
+    root.right.right = new BST.Node(5);
+    expect(bst.getNextRightNode(root, 2)).toEqual(6);
+    expect(bst.getNextRightNode(root, 8)).toEqual(4);
+    expect(bst.getNextRightNode(root, 4)).toEqual(5);
+    expect(bst.getNextRightNode(root, 10)).toEqual(null);
+    expect(bst.getNextRightNode(root, 6)).toEqual(null);
+    expect(bst.getNextRightNode(5)).toEqual(null);
   });
 
   it('tests sumOfAllNumsFormedFromRootToLeafPaths', function() {
-
+    var root = new BST.Node(6);
+    root.left = new BST.Node(3);
+    root.left.left = new BST.Node(2);
+    root.left.right = new BST.Node(5);
+    root.left.right.left = new BST.Node(7);
+    root.left.right.right = new BST.Node(4);
+    root.right = new BST.Node(5);
+    root.right.right = new BST.Node(4);
+    var result = { sum: 0 },
+        path = [];
+    bst.sumOfAllNumsFormedFromRootToLeafPaths(root, path, result);
+    expect(result.sum).toEqual(13997);
   });
 
   it('tests printNodesWithoutSibling', function() {

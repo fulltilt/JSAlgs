@@ -577,11 +577,29 @@ describe("BST", function() {
   });
 
   it('tests maxDepthOfOddLevelLeaf', function() {
-
+    var root = new BST.Node(1);
+    root.left = new BST.Node(2);
+    root.left.left = new BST.Node(4);
+    root.right = new BST.Node(3);
+    root.right.left = new BST.Node(5);
+    root.right.left.right = new BST.Node(7);
+    root.right.left.right.left = new BST.Node(9);
+    root.right.right = new BST.Node(6);
+    root.right.right.right = new BST.Node(8);
+    root.right.right.right.right = new BST.Node(10);
+    root.right.right.right.right.left = new BST.Node(11);
+    expect(bst.maxDepthOfOddLevelLeaf(root, 1)).toEqual(5);
   });
 
   it('tests areAllLeafsSameLevel', function() {
-
+    var root = new BST.Node();
+    root.left = new BST.Node();
+    root.left.left = new BST.Node();
+    root.right = new BST.Node();
+    root.right.right = new BST.Node();
+    expect(bt.areAllLeafsSameLevel(root, 1)).toEqual(true);
+    expect(bt.areAllLeafsSameLevel(bt.root, 1)).toEqual(false);
+    expect(bt.areAllLeafsSameLevel(bst.root, 1)).toEqual(false);
   });
 
   it('tests printLeftView', function() {

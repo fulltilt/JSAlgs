@@ -1482,13 +1482,48 @@ function areTreesIsomorphic(n1, n2) {
 }
 
 // http://www.geeksforgeeks.org/find-depth-of-the-deepest-odd-level-node/
-function maxDepthOfOddLevelLeaf() {
+function maxDepthOfOddLevelLeaf(node, level) {
+  if (node === null) {
+    return 0;
+  }
 
+  if (level % 2 === 1 && node.left === null && node.right === null) {
+    return level;
+  } else {
+    return Math.max(this.maxDepthOfOddLevelLeaf(node.left, level + 1), this.maxDepthOfOddLevelLeaf(node.right, level + 1));
+  }
 }
 
 // http://www.geeksforgeeks.org/check-leaves-level/
-function areAllLeafsSameLevel() {
+// algorithm: first get the level of the leftmost leaf and store the value. From here, iterate through tree and compare to the stored level
+function areAllLeafsSameLevel(root, level) {
+  var level = getInitialLeafLevel(root, 1);
+  return _areAllLeafsSameLevel(root, 1, level);
+}
 
+function getInitialLeafLevel(node, level) {
+  if (node === null) {
+    return;
+  }
+
+  if (node.left === null && node.right === null) {
+    return level;
+  } else {
+    return getInitialLeafLevel(node.left, level + 1) || getInitialLeafLevel(node.right, level + 1);
+  }
+}
+
+function _areAllLeafsSameLevel(node, level, savedLevel) {
+  if (node === null) {
+    return true;
+  }
+
+  if (node.left === null && node.right === null) {
+    return level === savedLevel;
+  }
+    
+  return _areAllLeafsSameLevel(node.left, level + 1, savedLevel) &&
+         _areAllLeafsSameLevel(node.right, level + 1, savedLevel);
 }
 
 // http://www.geeksforgeeks.org/print-left-view-binary-tree/

@@ -622,15 +622,50 @@ describe("BST", function() {
     expect(root.right.right.data).toEqual(80);
   });
 
-  it('tests removeNodesWhosePathLessThanK', function() {
-
-  });
-
   it('tests extractLeavesToDoublyLinkedList', function() {
+    var root = new BST.Node(1);
+    root.left = new BST.Node(2);
+    root.left.left = new BST.Node(4);
+    root.left.right = new BST.Node(5);
+    root.left.left.left = new BST.Node(7);
+    root.left.left.right = new BST.Node(8);
+    root.right = new BST.Node(3);
+    root.right.right = new BST.Node(6);
+    root.right.right.left = new BST.Node(9);
+    root.right.right.right = new BST.Node(10);
 
+    var head = bst.extractLeavesToDoublyLinkedList(root);
+    expect(head.data).toEqual(5);
+    expect(head.right.data).toEqual(7);
+    expect(head.right.right.data).toEqual(8);
+    expect(head.right.right.right.data).toEqual(9);
+    expect(head.right.right.right.right.data).toEqual(10);
+    //bst.iterativeInOrder(root);   // display modified tree after removing leafs
   });
 
   it('tests findDeepestLeftNode', function() {
+    var root = new BST.Node(1);
+    root.left = new BST.Node(2);
+    root.right = new BST.Node(3);
+    root.left.left = new BST.Node(4);
+    root.right.left = new BST.Node(5);
+    root.right.right = new BST.Node(6);
+    root.right.left.right = new BST.Node(7);
+    root.right.right.right = new BST.Node(8);
+    root.right.left.right.left = new BST.Node(9);
+    root.right.right.right.right = new BST.Node(10);
+
+    var maxLevel = { level: 0 };
+    bst.findDeepestLeftNode(root, 1, false, maxLevel);
+    expect(maxLevel.level).toEqual(5);
+
+    maxLevel.level = 0;
+    bst.findDeepestLeftNode(bst.root, 1, false, maxLevel);
+    expect(maxLevel.level).toEqual(4);
+
+    maxLevel.level = 0;
+    bst.findDeepestLeftNode(bt.root, 1, false, maxLevel);
+    expect(maxLevel.level).toEqual(5);
 
   });
 
@@ -714,6 +749,34 @@ describe("BST", function() {
     root.left.right = new BST.Node(20);
     root.right = new BST.Node(8);
     bst.fixBSTAfterSwap(root);
+  });
+
+  xit('tests removeNodesWhosePathLessThanK', function() {
+    var root = new BST.Node(1);
+    root.left = new BST.Node(2);
+    root.left.left = new BST.Node(4);
+    root.left.left.left = new BST.Node(8);
+    root.left.right = new BST.Node(5);
+    root.left.right.left = new BST.Node(12);
+    root.left.left.right = new BST.Node(9);
+    root.left.left.right.left = new BST.Node(13);
+    root.left.left.right.right = new BST.Node(14);
+    root.left.left.right.right.left = new BST.Node(15);
+    root.right = new BST.Node(3);
+    root.right.right = new BST.Node(7);
+    root.right.right.left = new BST.Node(10);
+    root.right.right.left.right = new BST.Node(11);
+    var cumulativeSum = { sum: 0 };
+    bst.iterativeInOrder(root);
+    bst.removeNodesWhosePathLessThanK(root, 45, 0);
+    //bst.iterativeInOrder(root);
+  });
+
+  xit('tests getRandomBSTNode', function() {
+    console.log(bst.getRandomBSTNode(bst.root));
+    console.log(bst.getRandomBSTNode(bst.root));
+    console.log(bst.getRandomBSTNode(bst.root));
+    console.log(bst.getRandomBSTNode(bst.root));
   });
 
   xit('tests printLeftView and printRightView', function() {

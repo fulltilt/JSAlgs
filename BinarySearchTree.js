@@ -1,4 +1,5 @@
 var LinkedList = require('./LinkedList.js');
+
 function Node(data, left, right) {
   this.data = data;
   this.left = left || null;
@@ -1580,19 +1581,69 @@ function addGreaterValuesToEachNode(node, cumulativeSum) {
   this.addGreaterValuesToEachNode(node.left, cumulativeSum);
 }
 
-// http://www.geeksforgeeks.org/remove-all-nodes-which-lie-on-a-path-having-sum-less-than-k/
-function removeNodesWhosePathLessThanK() {
+// http://www.geeksforgeeks.org/connect-leaves-doubly-linked-list/
+// didn't do this recursively as I can't change the reference to what head points to
+function extractLeavesToDoublyLinkedList(root) {
+  var currentLevel = [],
+      children = [],
+      dummyHead = new Node(),
+      head = dummyHead;
 
+  currentLevel.push(root);
+  while (currentLevel.length > 0) {
+    for (var i = 0; i < currentLevel.length; i++) {
+      var current = currentLevel[i];
+      
+      // if left child is a leaf, remove from tree and add to list. Else if left child isn't null, add left child to children
+      if (isLeaf(current.left)) {
+        head.right = current.left;
+        current.left.left = head;
+        head = head.right;
+        current.left = null;
+      } else if (current.left !== null) {
+        children.push(current.left);
+      }
+
+      // if right child is a leaf, remove from tree and add to list. Else if right child isn't null, add right child to children
+      if (isLeaf(current.right)) {
+        head.right = current.right;
+        current.right.left = head;
+        head = head.right;
+        current.right = null;
+      } else if (current.right !== null) {
+        children.push(current.right);
+      }
+    }
+
+    currentLevel = children.slice(0);
+    children = [];
+  }
+
+  return dummyHead.right;
 }
 
-// http://www.geeksforgeeks.org/connect-leaves-doubly-linked-list/
-function extractLeavesToDoublyLinkedList() {
+function isLeaf(node) {
+  if (node === null) {
+    return false;
+  }
 
+  if (node.left === null && node.right === null) {
+    return true;
+  }
 }
 
 // http://www.geeksforgeeks.org/deepest-left-leaf-node-in-a-binary-tree/
-function findDeepestLeftNode() {
+function findDeepestLeftNode(node, level, isLeftChild, maxLevel) {
+  if (node === null) {
+    return;
+  }
 
+  if (isLeftChild && level > maxLevel.level) {
+    maxLevel.level = level;
+  }
+
+  this.findDeepestLeftNode(node.left, level + 1, true, maxLevel);
+  this.findDeepestLeftNode(node.right, level + 1, false, maxLevel);
 }
 
 // http://www.geeksforgeeks.org/find-next-right-node-of-a-given-key/
@@ -1630,13 +1681,16 @@ function areNodesCousins(node1, node2) {
 
 }
 
-function getRandomBSTNode() {
-
-}
-
 // http://www.geeksforgeeks.org/check-for-identical-bsts-without-building-the-trees/
 function checkIdenticalArrayBST(arr1, arr2) {
 
+}
+
+// Note: BSTToArray just puts the data into an Array not the actual Node. To be correct, BSTToArray variation should add the Node itself
+function getRandomBSTNode(root) {
+  var arr = [];
+  BSTToArray(root, arr);
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
 // http://www.geeksforgeeks.org/convert-a-given-tree-to-sum-tree/
@@ -1721,6 +1775,44 @@ function fixBSTAfterSwap(root) {
   console.log(inOrder);
 }
 
+// NOTE: not quite working. May have something to do with me not knowing how to properly delete an object
+// http://www.geeksforgeeks.org/remove-all-nodes-which-lie-on-a-path-having-sum-less-than-k/
+function removeNodesWhosePathLessThanK(node, k, cumulativeSum) {
+  if (node === null) {
+    return null;
+  }
+
+  // initialize left and right sums as sum from root to this node (including this node)
+  var leftSum = cumulativeSum.sum + node.data,
+      rightSum = leftSum;
+
+  cumulativeSum.sum += node.data;
+  console.log(cumulativeSum.sum);
+
+  // recursively prune left and right subtrees
+  node.left = this.removeNodesWhosePathLessThanK(node.left, k, cumulativeSum);
+  node.right = this.removeNodesWhosePathLessThanK(node.right, k, cumulativeSum);
+
+  // get the max of left and right sums
+  //cumulativeSum.sum = Math.max(leftSum, rightSum);
+
+  // If max is smaller than k, then this node must be deleted
+  if (!node.left && !node.right && cumulativeSum.sum < k) {
+    console.log(cumulativeSum.sum + ' ' + node.data);
+    delete node;
+    node = null;
+  }
+
+  /*cumulativeSum += node.data;
+  node.left = this.removeNodesWhosePathLessThanK(node.left, k, cumulativeSum);
+  node.right = this.removeNodesWhosePathLessThanK(node.right, k, cumulativeSum);
+  if (!node.left && !node.right && cumulativeSum < k) {
+    delete root;
+    root = null;
+  }*/
+  return node;
+}
+
 // http://www.geeksforgeeks.org/if-you-are-given-two-traversal-sequences-can-you-construct-the-binary-tree/
 // http://www.geeksforgeeks.org/construct-tree-from-given-inorder-and-preorder-traversal/
 // http://www.geeksforgeeks.org/full-and-complete-binary-tree-from-given-preorder-and-postorder-traversals/
@@ -1797,6 +1889,7 @@ module.exports = BinarySearchTree;
 /* NOTES:
 - return this.BTFind(node.left, data) || this.BTFind(node.right, data); // apparently doing null || Object will return the Object
 -when returning values, don't mix integers (return 0) with true/false return values
+-example of a way to change the tree while iterating through the tree
 
 THINGS TO TRY WHEN STUMPED: 
 -instead of the usual else-if recursive structure, take out the conditionals so that each statement can be run (see ceiling())
@@ -1805,5 +1898,5 @@ THINGS TO TRY WHEN STUMPED:
 
 REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth. kDistanceFromLeaf, *kDistanceFromNode,
         getPredecessorAndSuccessor, verticalSum, iterativeInOrder, ceiling. _remove, removeNodesOutsideRange,
-        areTreesIsomorphic
+        areTreesIsomorphic, removeNodesWhosePathLessThanK
 */

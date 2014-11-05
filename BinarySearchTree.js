@@ -1496,6 +1496,7 @@ function maxDepthOfOddLevelLeaf(node, level) {
 
 // http://www.geeksforgeeks.org/check-leaves-level/
 // algorithm: first get the level of the leftmost leaf and store the value. From here, iterate through tree and compare to the stored level
+// note: may be able to refactor this as I figured in printLeftView a way to get around not being able to pass primitives by reference
 function areAllLeafsSameLevel(root, level) {
   var level = getInitialLeafLevel(root, 1);
   return _areAllLeafsSameLevel(root, 1, level);
@@ -1527,18 +1528,56 @@ function _areAllLeafsSameLevel(node, level, savedLevel) {
 }
 
 // http://www.geeksforgeeks.org/print-left-view-binary-tree/
-function printLeftView() {
+function printLeftView(root) {
+  var maxLevel = { level: 0 };  // hack since we can't pass primitives by reference
+  _printLeftView(root, 1, maxLevel);
+}
 
+function _printLeftView(node, level, maxLevel) {
+  if (node === null) {
+    return;
+  }
+
+  if (level > maxLevel.level) {
+    console.log(node.data);
+    maxLevel.level = level;
+  }
+  _printLeftView(node.left, level + 1, maxLevel);
+  _printLeftView(node.right, level + 1, maxLevel);
 }
 
 // http://www.geeksforgeeks.org/print-right-view-binary-tree-2/
-function printRightView() {
+// similar to printLeftView but the trick is to visit the right Node before the left Node
+function printRightView(root) {
+  var maxLevel = { level: 0 };
+  _printRightView(root, 1, maxLevel);
+}
 
+function _printRightView(node, level, maxLevel) {
+if (node === null) {
+    return;
+  }
+
+  if (level > maxLevel.level) {
+    console.log(node.data);
+    maxLevel.level = level;
+  }
+  _printRightView(node.right, level + 1, maxLevel);
+  _printRightView(node.left, level + 1, maxLevel);
 }
 
 // http://www.geeksforgeeks.org/add-greater-values-every-node-given-bst/
-function addGreaterValuesToEachNode() {
+function addGreaterValuesToEachNode(node, cumulativeSum) {
+  if (node === null) {
+    return;
+  }
 
+  this.addGreaterValuesToEachNode(node.right, cumulativeSum);
+
+  node.data = node.data + cumulativeSum.sum;
+  cumulativeSum.sum = node.data;
+
+  this.addGreaterValuesToEachNode(node.left, cumulativeSum);
 }
 
 // http://www.geeksforgeeks.org/remove-all-nodes-which-lie-on-a-path-having-sum-less-than-k/
@@ -1761,7 +1800,8 @@ module.exports = BinarySearchTree;
 
 THINGS TO TRY WHEN STUMPED: 
 -instead of the usual else-if recursive structure, take out the conditionals so that each statement can be run (see ceiling())
-
+-iterate right first instead of left
+-create and pass object that holds state as you traverse the tree
 
 REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth. kDistanceFromLeaf, *kDistanceFromNode,
         getPredecessorAndSuccessor, verticalSum, iterativeInOrder, ceiling. _remove, removeNodesOutsideRange,

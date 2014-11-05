@@ -602,16 +602,24 @@ describe("BST", function() {
     expect(bt.areAllLeafsSameLevel(bst.root, 1)).toEqual(false);
   });
 
-  it('tests printLeftView', function() {
-
-  });
-
-  it('tests printRightView', function() {
-
-  });
-
   it('tests addGreaterValuesToEachNode', function() {
-
+    var root = new BST.Node(50);
+    root.left = new BST.Node(30);
+    root.left.left = new BST.Node(20);
+    root.left.right = new BST.Node(40);
+    root.right = new BST.Node(70);
+    root.right.left = new BST.Node(60);
+    root.right.right = new BST.Node(80);
+    var cumulativeSum = { sum: 0 };
+    bst.addGreaterValuesToEachNode(root, cumulativeSum);
+    
+    expect(root.data).toEqual(260);
+    expect(root.left.data).toEqual(330);
+    expect(root.left.left.data).toEqual(350);
+    expect(root.left.right.data).toEqual(300);
+    expect(root.right.data).toEqual(150);
+    expect(root.right.left.data).toEqual(210);
+    expect(root.right.right.data).toEqual(80);
   });
 
   it('tests removeNodesWhosePathLessThanK', function() {
@@ -706,6 +714,17 @@ describe("BST", function() {
     root.left.right = new BST.Node(20);
     root.right = new BST.Node(8);
     bst.fixBSTAfterSwap(root);
+  });
+
+  xit('tests printLeftView and printRightView', function() {
+    var root = new BST.Node(12);
+    root.left = new BST.Node(10);
+    root.right = new BST.Node(30);
+    root.right.left = new BST.Node(25);
+    root.right.right = new BST.Node(40);
+    bst.printLeftView(root);
+    console.log('');
+    bst.printRightView(root);
   });
 
   xit('tests boundaryTraversal', function() {

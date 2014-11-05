@@ -1428,13 +1428,57 @@ function hasArrayTwoCandidates(arr, n) {
   return false;
 }
 // http://www.geeksforgeeks.org/remove-bst-keys-outside-the-given-range/
-function removeNodesOutsideRange() {
+function removeNodesOutsideRange(node, min, max) {
+  if (node === null) {
+    return null;
+  }
 
+  // first fix the left and right subtrees of node
+  node.left = this.removeNodesOutsideRange(node.left, min, max);
+  node.right = this.removeNodesOutsideRange(node.right, min, max);
+  
+  // fix the root. 2 cases: 
+  // 1A: Node's data is smaller than min value
+  if (node.data < min) {
+    var rightChild = node.right;
+    delete node;
+    return rightChild;
+  }
+
+  // 1B: Node's data is greater than max value
+  if (node.data > max) {
+    var leftChild = node.left;
+    delete node;
+    return leftChild;
+  }
+
+  // 2. Node is in range (do nothing)
+  return node;
 }
 
 // http://www.geeksforgeeks.org/tree-isomorphism-problem/
-function areTreesIsomorphic(tree1, tree2) {
-  
+function areTreesIsomorphic(n1, n2) {
+  // both nodes are null, trees isomorphic by definition
+  if (n1 === null && n2 === null) {
+    return true;
+  }
+
+  // exactly one of the n1 and n2 is null, trees not isomorphic
+  if (n1 === null || n2 === null) {
+    return false;
+  }
+
+  // nodes data aren't equal. Return false
+  if (n1.data !== n2.data) {
+    return false;
+  }
+
+  /* There are 2 possible cases for n1 and n2 to be isomorphic:
+     Case 1: the subtrees rooted at these nodes have NOT been 'flipped'. Both of these
+             subtrees have to be isomorphic hence the '&&'
+     Case 2: the subtrees rooted at these nodes have been 'flipped' */
+  return (this.areTreesIsomorphic(n1.left, n2.left) && this.areTreesIsomorphic(n1.right, n2.right)) ||
+         (this.areTreesIsomorphic(n1.left, n2.right) && this.areTreesIsomorphic(n1.right, n2.left));
 }
 
 // http://www.geeksforgeeks.org/find-depth-of-the-deepest-odd-level-node/
@@ -1685,5 +1729,6 @@ THINGS TO TRY WHEN STUMPED:
 
 
 REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth. kDistanceFromLeaf, *kDistanceFromNode,
-        getPredecessorAndSuccessor, verticalSum, iterativeInOrder, ceiling
+        getPredecessorAndSuccessor, verticalSum, iterativeInOrder, ceiling. _remove, removeNodesOutsideRange,
+        areTreesIsomorphic
 */

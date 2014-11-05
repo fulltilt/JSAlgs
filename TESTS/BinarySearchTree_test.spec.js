@@ -515,7 +515,7 @@ describe("BST", function() {
     expect(bst.isTreeComplete(root2)).toEqual(false);
   });
 
-  it('tests floor', function() {
+  it('tests ceiling', function() {
     var root = new BST.Node(8);
     root.left = new BST.Node(4);
     root.right = new BST.Node(12);
@@ -542,11 +542,38 @@ describe("BST", function() {
   });
 
   it('tests removeNodesOutsideRange', function() {
-
+    var root = new BST.Node(6);
+    root.left = new BST.Node(-13);
+    root.left.right = new BST.Node(-8);
+    root.right = new BST.Node(14);
+    root.right.left = new BST.Node(13);
+    root.right.left.left = new BST.Node(7);
+    root.right.right = new BST.Node(15);
+    bst.removeNodesOutsideRange(root, -10, 13);
+    //bst.iterativeInOrder(root);
   });
 
   it('tests areTreesIsomorphic', function() {
+    var root1 = new BST.Node(1);
+    root1.left = new BST.Node(2);
+    root1.left.left = new BST.Node(4);
+    root1.left.right = new BST.Node(5);
+    root1.left.right.left = new BST.Node(7);
+    root1.left.right.right = new BST.Node(8);
+    root1.right = new BST.Node(3);
+    root1.right.left = new BST.Node(6);
 
+    var root2 = new BST.Node(1);
+    root2.left = new BST.Node(3);
+    root2.left.right = new BST.Node(6);
+    root2.right = new BST.Node(2);
+    root2.right.left = new BST.Node(4);
+    root2.right.right = new BST.Node(5);
+    root2.right.right.left = new BST.Node(8);
+    root2.right.right.right = new BST.Node(7);
+
+    expect(bst.areTreesIsomorphic(root1, root2)).toEqual(true);
+    expect(bst.areTreesIsomorphic(bst.root, bt.root)).toEqual(false);
   });
 
   it('tests maxDepthOfOddLevelLeaf', function() {

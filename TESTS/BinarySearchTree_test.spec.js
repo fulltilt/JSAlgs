@@ -711,16 +711,17 @@ describe("BST", function() {
     expect(result).toEqual([4,5,6]);
   });
 
-  it('tests printAlternateLevels', function() {
-    expect(true).toEqual(false);
-  });
-
-  it('tests findMaxPathSumBetweenTwoLeaves', function() {
-
-  });
-
   it('tests areNodesCousins', function() {
-
+    var root = new BST.Node(6);
+    root.left = new BST.Node(3);
+    root.right = new BST.Node(5);
+    root.left.left = new BST.Node(7);
+    root.left.right = new BST.Node(8);
+    root.right.left = new BST.Node(1);
+    root.right.right = new BST.Node(3);
+    expect(bst.areNodesCousins(root, 7, 1)).toEqual(true);
+    expect(bst.areNodesCousins(root, 3, 5)).toEqual(false);
+    expect(bst.areNodesCousins(root, 7, 5)).toEqual(false);
   });
 
   it('tests recreateTreeGivenTwoTraversals', function() {
@@ -798,11 +799,49 @@ describe("BST", function() {
     //bst.iterativeInOrder(root);
   });
 
+  xit('tests findMaxPathSumBetweenTwoLeaves', function() {
+    var root = new BST.Node(-15);
+    root.left = new BST.Node(5);
+    root.right = new BST.Node(6);
+    root.left.left = new BST.Node(-8);
+    root.left.right = new BST.Node(1);
+    root.left.left.left = new BST.Node(2);
+    root.left.left.right = new BST.Node(6);
+    root.right.left = new BST.Node(3);
+    root.right.right = new BST.Node(9);
+    root.right.right.right= new BST.Node(0);
+    root.right.right.right.left= new BST.Node(4);
+    root.right.right.right.right= new BST.Node(-1);
+    root.right.right.right.right.left= new BST.Node(10);
+
+    var maxPath = { sum: 0 };
+    expect(bst.findMaxPathSumBetweenTwoLeaves(root, maxPath)).toEqual(27);
+  });
+
   xit('tests getRandomBSTNode', function() {
     console.log(bst.getRandomBSTNode(bst.root));
     console.log(bst.getRandomBSTNode(bst.root));
     console.log(bst.getRandomBSTNode(bst.root));
     console.log(bst.getRandomBSTNode(bst.root));
+  });
+
+  xit('tests printAlternateLevels', function() {
+    var root = new BST.Node('a');
+    root.left = new BST.Node('b');
+    root.right = new BST.Node('c');
+    root.left.left = new BST.Node('d');
+    root.left.right = new BST.Node('e');
+    root.right.left = new BST.Node('f');
+    root.right.right = new BST.Node('g');
+    root.left.left.left = new BST.Node('h');
+    root.left.left.right = new BST.Node('i');
+    root.left.right.left = new BST.Node('j');
+    root.left.right.right = new BST.Node('k');
+    root.right.left.left = new BST.Node('l');
+    root.right.left.right = new BST.Node('m');
+    root.right.right.left = new BST.Node('n');
+    root.right.right.right = new BST.Node('o');
+    bst.reverseAlternateLevels(root);
   });
 
   xit('tests printVerticalTree', function() {

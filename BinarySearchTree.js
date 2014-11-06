@@ -722,11 +722,11 @@ function BTFind(node, data) {
 }
 
 // http://www.geeksforgeeks.org/level-order-tree-traversal/
-function printByLevel() {
+function printByLevel(root) {
   var currentLevel = [],
       children = [];
 
-  currentLevel.push(this.root);
+  currentLevel.push(root);
   console.log(currentLevel[0].data);
 
   while (currentLevel.length > 0) {
@@ -1739,23 +1739,158 @@ function printVerticalTree(node, horizontalDistance, map) {
 }
 
 // http://www.geeksforgeeks.org/reverse-alternate-levels-binary-tree/
-function reverseAlternateLevels() {
+// assumption: this is a perfect binary tree
+function reverseAlternateLevels(root) {
+  var currentLevel = [],
+      children = [],
+      level = 1;
 
-}
+  currentLevel.push(root);
+  while (currentLevel.length > 0) {
+    for (var i = 0; i < currentLevel.length; i++) {
+      var current = currentLevel[i];
 
-// http://www.geeksforgeeks.org/find-maximum-path-sum-two-leaves-binary-tree/
-function findMaxPathSumBetweenTwoLeaves(leaf1, leaf2) {
+      if (current.left) {
+        children.push(current.left);
+      }
 
+      if (current.right) {
+        children.push(current.right);
+      }
+    }
+
+    // if even level, reverse nodes
+    var childLevel = level + 1; // tricky detail: child level is 1 plus the current level number
+    if ((childLevel % 2) !== 0) {
+      var lo = 0,
+          hi = children.length - 1;
+      while (hi > lo) {
+        var temp = children[lo].data;
+        children[lo].data = children[hi].data;
+        children[hi].data = temp;
+        lo += 1;
+        hi -= 1;
+      }
+    }
+
+    currentLevel = children.slice(0);
+    children = [];
+    level += 1;
+  }
+
+  this.printByLevel(root);
 }
 
 // http://www.geeksforgeeks.org/check-two-nodes-cousins-binary-tree/
-function areNodesCousins(node1, node2) {
+function areNodesCousins(root, node1, node2) {
+  var currentLevel = [],
+      children = [],
+      parent1 = null,
+      parent2 = null,
+      check = false;
 
+  currentLevel.push(root);
+  while (currentLevel.length > 0) {
+    for (var i = 0; i < currentLevel.length; i++) {
+      var current = currentLevel[i];
+
+      if (current.left) {
+        if (current.left.data === node1) {
+          parent1 = current;
+          check = true;
+        } else if (current.left.data === node2) {
+          parent2 = current;
+          check = true;
+        }
+
+        children.push(current.left);
+      }
+
+      if (current.right) {
+        if (current.right.data === node1.data) {
+          parent1 = current;
+          check = true;
+        } else if (current.right.data === node2.data) {
+          parent2 = current;
+          check = true;
+        }
+
+        children.push(current.right);
+      }
+    }
+
+    if (check) {
+      return ((parent1 !== parent2) && (parent1 !== null) && (parent2 !== null));
+    }
+
+    currentLevel = children.slice(0);
+    children = [];
+  }
+
+  return false;
 }
 
 // http://www.geeksforgeeks.org/check-for-identical-bsts-without-building-the-trees/
 function checkIdenticalArrayBST(arr1, arr2) {
 
+}
+
+// http://www.geeksforgeeks.org/if-you-are-given-two-traversal-sequences-can-you-construct-the-binary-tree/
+// http://www.geeksforgeeks.org/construct-tree-from-given-inorder-and-preorder-traversal/
+// http://www.geeksforgeeks.org/full-and-complete-binary-tree-from-given-preorder-and-postorder-traversals/
+// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversa/
+// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversal-set-2/
+// http://www.geeksforgeeks.org/print-postorder-from-given-inorder-and-preorder-traversals/
+// http://www.geeksforgeeks.org/construct-tree-inorder-level-order-traversals/
+function recreateTreeGivenTwoTraversals(t1, t2) {
+
+}
+
+// http://www.geeksforgeeks.org/construct-binary-tree-from-inorder-traversal/
+// http://www.geeksforgeeks.org/construct-a-special-tree-from-given-preorder-traversal/
+function constructSpecialBT() {
+
+}
+
+// http://www.geeksforgeeks.org/check-if-each-internal-node-of-a-bst-has-exactly-one-child/
+function doesEachNodeHaveOnlyOneChild() {
+
+}
+
+// http://www.geeksforgeeks.org/morris-traversal-for-preorder/
+function morrisTraversal() {
+
+}
+
+// http://www.geeksforgeeks.org/iterative-postorder-traversal-using-stack/ 
+function iterativePostOrder() {
+
+}
+
+// http://www.geeksforgeeks.org/check-binary-tree-subtree-another-binary-tree-set-2/ O(n) solution for isSubTree
+function isSubTree2(tree1, tree2) {
+  var inOrder1 = [],
+      preOrder1 = [],
+      inOrder2 = [],
+      preOrder2 = [];
+
+  this.getInOrder(tree1, inOrder1);
+  this.getPreOrder(tree1, preOrder1);
+  this.getInOrder(tree2, inOrder2);
+  this.getPreOrder(tree2, preOrder2);
+
+  /*
+TODO: research pattern matching algorithms  
+  console.log(inOrder1);
+  console.log(preOrder1);
+  console.log(inOrder2);
+  console.log(preOrder2);
+    c,a,x,b
+    x,a,c,b
+
+    c,a,x,b,d
+    x,a,c,b,d
+  */
 }
 
 // Note: BSTToArray just puts the data into an Array not the actual Node. To be correct, BSTToArray variation should add the Node itself
@@ -1885,62 +2020,29 @@ function removeNodesWhosePathLessThanK(node, k, cumulativeSum) {
   return node;
 }
 
-// http://www.geeksforgeeks.org/if-you-are-given-two-traversal-sequences-can-you-construct-the-binary-tree/
-// http://www.geeksforgeeks.org/construct-tree-from-given-inorder-and-preorder-traversal/
-// http://www.geeksforgeeks.org/full-and-complete-binary-tree-from-given-preorder-and-postorder-traversals/
-// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversa/
-// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversal-set-2/
-// http://www.geeksforgeeks.org/print-postorder-from-given-inorder-and-preorder-traversals/
-// http://www.geeksforgeeks.org/construct-tree-inorder-level-order-traversals/
-function recreateTreeGivenTwoTraversals(t1, t2) {
+// http://www.geeksforgeeks.org/find-maximum-path-sum-two-leaves-binary-tree/
+// given a tree, find the max path sum between any leaf in the tree I initially thought it was given 2 leafs, what is the maximum path
+// sum between the 2 leaves. Apparently that's just the leaves lowest common ancestor and get the sum of the value of the path of the first 
+// leaf + the ancestor data + the sum of the path to the second leaf
+function findMaxPathSumBetweenTwoLeaves(node, maxPath) {
+  if (node === null) {
+    return 0;
+  }
 
-}
+  // Find max sum in the left and right subtree. Also find max root to leaf sums in left and right subtrees and store
+  // in lLPSum and rLPSum
+  var lLPSum = this.findMaxPathSumBetweenTwoLeaves(node.left, maxPath),
+      rLPSum = this.findMaxPathSumBetweenTwoLeaves(node.right, maxPath);
 
-// http://www.geeksforgeeks.org/construct-binary-tree-from-inorder-traversal/
-// http://www.geeksforgeeks.org/construct-a-special-tree-from-given-preorder-traversal/
-function constructSpecialBT() {
+  // Find the max path sum passing through root
+  var currentSum = Math.max((lLPSum + node.data + rLPSum), Math.max(lLPSum, rLPSum));
 
-}
+  // Update maxPath if needed
+  if (maxPath.sum < currentSum) {
+    maxPath.sum = currentSum;
+  }
 
-// http://www.geeksforgeeks.org/check-if-each-internal-node-of-a-bst-has-exactly-one-child/
-function doesEachNodeHaveOnlyOneChild() {
-
-}
-
-// http://www.geeksforgeeks.org/morris-traversal-for-preorder/
-function morrisTraversal() {
-
-}
-
-// http://www.geeksforgeeks.org/iterative-postorder-traversal-using-stack/ 
-function iterativePostOrder() {
-
-}
-
-// http://www.geeksforgeeks.org/check-binary-tree-subtree-another-binary-tree-set-2/ O(n) solution for isSubTree
-function isSubTree2(tree1, tree2) {
-  var inOrder1 = [],
-      preOrder1 = [],
-      inOrder2 = [],
-      preOrder2 = [];
-
-  this.getInOrder(tree1, inOrder1);
-  this.getPreOrder(tree1, preOrder1);
-  this.getInOrder(tree2, inOrder2);
-  this.getPreOrder(tree2, preOrder2);
-
-  /*
-TODO: research pattern matching algorithms  
-  console.log(inOrder1);
-  console.log(preOrder1);
-  console.log(inOrder2);
-  console.log(preOrder2);
-    c,a,x,b
-    x,a,c,b
-
-    c,a,x,b,d
-    x,a,c,b,d
-  */
+  return Math.max(lLPSum, rLPSum) + node.data;
 }
 
 var BinarySearchTree = function() {
@@ -1972,5 +2074,5 @@ THINGS TO TRY WHEN STUMPED:
 
 REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth. kDistanceFromLeaf, *kDistanceFromNode,
         getPredecessorAndSuccessor, verticalSum, iterativeInOrder, ceiling. _remove, removeNodesOutsideRange,
-        areTreesIsomorphic, removeNodesWhosePathLessThanK
+        areTreesIsomorphic, removeNodesWhosePathLessThanK, findMaxPathSumBetweenTwoLeaves
 */

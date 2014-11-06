@@ -1705,13 +1705,37 @@ function sumOfAllNumsFormedFromRootToLeafPaths(node, path, result) {
 }
 
 // http://www.geeksforgeeks.org/print-nodes-dont-sibling-binary-tree/
-function printNodesWithoutSibling() {
+function printNodesWithoutSibling(node, result) {
+  if (node === null) {
+    return;
+  }
 
+  if (node.left === null && node.right !== null) {
+    result.push(node.right.data);
+  }
+
+  if (node.left !== null && node.right === null) {
+    result.push(node.left.data);
+  }
+
+  this.printNodesWithoutSibling(node.left, result);
+  this.printNodesWithoutSibling(node.right, result);
 }
 
 // http://www.geeksforgeeks.org/print-binary-tree-vertical-order/
-function printVerticalTree() {
+function printVerticalTree(node, horizontalDistance, map) {
+  if (node === null) {
+    return;
+  }
 
+  if (!map[horizontalDistance]) {
+    map[horizontalDistance] = [node.data];
+  } else {
+    map[horizontalDistance].push(node.data);
+  }
+
+  this.printVerticalTree(node.left, horizontalDistance - 1, map);
+  this.printVerticalTree(node.right, horizontalDistance + 1, map);
 }
 
 // http://www.geeksforgeeks.org/reverse-alternate-levels-binary-tree/
@@ -1939,6 +1963,7 @@ module.exports = BinarySearchTree;
 -when returning values, don't mix integers (return 0) with true/false return values
 -example of a way to change the tree while iterating through the tree
 -the print level (breadth-first search) algorithm can be used for a lot of problems and avoids the overhead of recursion
+-note: a lot of fxns are accepting a result array. This is mainly for testing purposes and can be omitted
 
 THINGS TO TRY WHEN STUMPED: 
 -instead of the usual else-if recursive structure, take out the conditionals so that each statement can be run (see ceiling())

@@ -699,15 +699,20 @@ describe("BST", function() {
   });
 
   it('tests printNodesWithoutSibling', function() {
+    var root = new BST.Node(1);
+    root.left = new BST.Node(2);
+    root.left.right = new BST.Node(4);
+    root.right = new BST.Node(3);
+    root.right.left = new BST.Node(5);
+    root.right.left.left = new BST.Node(6);
 
+    var result = [];
+    bst.printNodesWithoutSibling(root, result);
+    expect(result).toEqual([4,5,6]);
   });
 
   it('tests printAlternateLevels', function() {
-
-  });
-
-  it('tests printVerticalTree', function() {
-
+    expect(true).toEqual(false);
   });
 
   it('tests findMaxPathSumBetweenTwoLeaves', function() {
@@ -798,6 +803,26 @@ describe("BST", function() {
     console.log(bst.getRandomBSTNode(bst.root));
     console.log(bst.getRandomBSTNode(bst.root));
     console.log(bst.getRandomBSTNode(bst.root));
+  });
+
+  xit('tests printVerticalTree', function() {
+    var root = new BST.Node(1);
+    root.left = new BST.Node(2);
+    root.left.left = new BST.Node(4);
+    root.left.right = new BST.Node(5);
+    root.right = new BST.Node(3);
+    root.right.left = new BST.Node(6);
+    root.right.left.right = new BST.Node(8);
+    root.right.right = new BST.Node(7);
+    root.right.right.right = new BST.Node(9);
+
+    var map = {};
+    bst.printVerticalTree(root, 0, map);
+    
+    var keys = Object.keys(map).sort(function(a, b) { return a - b; });
+    for (var i = 0; i < keys.length; i++) {
+      console.log(map[keys[i]].join(' '));
+    }
   });
 
   xit('tests printLeftView and printRightView', function() {

@@ -1,15 +1,23 @@
-function Vertex(label) {
-  this.label = label;
+function Edge() {
+  this.src = src;
+  this.dest = dest;
+  this.weight = weight;
 }
 
-function Graph(v) {
+function Graph(v, e) {
   this.vertices = v;
-  this.edges = 0;
+  this.edges = e;
   this.adj = [];  // adjacency list for Graph
+  this.edge = []; // this can represent an weighted, undirected graph
   
   // initialize each Vertices adjacency list to an empty list
   for (var i = 0; i < this.vertices; ++i) {
     this.adj[i] = [];
+  }
+
+  // initialize edges
+  for (i = 0; i < this.edges; ++i) {
+    this.edge[i] = [];
   }
 
   this.visited = [];  // array that determines whether a Vertex was visited or not. Initialize all Vertices to false
@@ -23,7 +31,10 @@ function Graph(v) {
   this.detectCycleDirected = detectCycleDirected;
   this.detectCycleDirectedHelper = detectCycleDirectedHelper;
   this.detectCycleUndirected = detectCycleUndirected;
-  this.unionFind = unionFind;
+  this.detectCycleUndirectedHelper = detectCycleUndirectedHelper;
+  this.detectCycleUndirected2 = detectCycleUndirected2;
+  this.union = union;
+  this.find = find;
 }
 
 Graph.prototype = {
@@ -149,8 +160,24 @@ function bfs(s) {
   } 
 }
 */
-
 };
+
+/* represents a subset for union-find
+function Subset() {
+  this.parent = parent;
+  this.rank = rank;
+}
+
+// utility function to find set of an element i (uses path compression technique)
+function find(subsets, i) {
+  // find root and make root as parent of i (path compression)
+  if (subsets[i].parent !== i) {
+    subsets[i].parent = find(subsets, subsets[i].parent);
+  }
+
+  return subsets[i].parent;
+}
+*/
 
 function pathTo(start, end) {
   // build graph in terms of the start vertex
@@ -210,19 +237,81 @@ function detectCycleDirectedHelper(vertex, recursiveStack) {
 }
 
 // http://www.geeksforgeeks.org/detect-cycle-undirected-graph/
+// For every visited vertex ‘v’, if there is an adjacent ‘u’ such that u is already visited and u is not parent of v, then there is a cycle in graph
 function detectCycleUndirected() {
+  for (var i = 0; i < this.vertices; i++) {
+    if (!this.visited[i]) {
+      if (this.detectCycleUndirectedHelper(i, -1)); {
+        return true;
+      }
+    }
+  }
 
+  return false;
 }
 
-// http://www.geeksforgeeks.org/union-find/ or http://www.geeksforgeeks.org/union-find-algorithm-set-2-union-by-rank/
-function unionFind() {
+function detectCycleUndirectedHelper(vertex, parent) {
+  this.visited[vertex] = true;
 
+  // recur for all vertices adjacent to this vertex
+  var adjacencyList = this.adj[vertex];
+  for (var i = 0; i < adjacencyList.length; i++) {
+    var currentAdjacentVertex = adjacencyList[i];
+
+    if (!this.visited[currentAdjacentVertex]) {   // If adjacent vertex is not visited, recur for that adjacent vertex
+      if (this.detectCycleUndirectedHelper(currentAdjacentVertex, vertex)) {
+        return true;
+      }
+    } else if (currentAdjacentVertex !== parent) { // If an adjacent vertex is visited and not parent of current vertex, then there's a cycle
+      return true;    
+    }
+  }
+
+  return false;
 }
 
-// http://www.geeksforgeeks.org/find-if-there-is-a-path-between-two-vertices-in-a-given-graph/
-function isPath(v1, v2) {
+// http://www.geeksforgeeks.org/union-find/
+// detect cycle in an undirected graph using Union-Find algorithm
+function detectCycleUndirected2() {
+  // initially represents V single-element subsets and set values to -1
+  var parent = [];
+  for (var i = 0; i < this.edges; i++) {
+    parent[i] = -1;
+  }
 
+  // iterate through all edges of graph, find subset of both vertices of every edge, if both subsets are same, then there's a cycle in grap
+  for (i = 0; i < this.edges; i++) {
+    var srcSubset = this.find(parent, this.edge[i].src),
+        destSubset = this.find(parent, this.edge[i].dest);
+
+    if (srcSubset === destSubset) {
+      return true;
+    }
+
+    // both sets are disjoint so combine them
+    this.union(parent, srcSubset, destSubset);
+  }
+
+  return false;
 }
+
+// utility function to find the subset of an element i (naive version: see http://www.geeksforgeeks.org/union-find-algorithm-set-2-union-by-rank/)
+function find(parent, i) {
+  if (parent[i] === -1) { // element is by itself in a set
+    return i;
+  }
+
+  return this.find(parent, parent[i]);
+}
+
+// utility function to do union of 2 subsets (naive version: see http://www.geeksforgeeks.org/union-find-algorithm-set-2-union-by-rank/)
+function union(parent, src, dest) {
+  var srcSet = this.find(parent, src),
+      destSet = this.find(parent, dest);
+  parent[srcSet] = destSet;
+}
+
+// http://www.geeksforgeeks.org/union-find-algorithm-set-2-union-by-rank/
 
 // http://www.geeksforgeeks.org/greedy-algorithms-set-5-prims-minimum-spanning-tree-mst-2/
 function minSpanningPrim() {

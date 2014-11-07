@@ -13,22 +13,26 @@ describe("Graph", function() {
     }
 
     g.edgeTo = [];
-    g.addEdge(0,1);
-    g.addEdge(0,2);
-    g.addEdge(1,3);
-    g.addEdge(2,4);
+    g.addUndirectedEdge(0,1);
+    g.addUndirectedEdge(0,2);
+    g.addUndirectedEdge(1,3);
+    g.addUndirectedEdge(2,4);
   });
 
   it("tests showGraph", function() { 
-    g.showGraph();
+    //g.showGraph();
   });
 
   it("tests dfs", function() { 
-    g.dfs(0);  
+    expect(g.dfs(0, 4)).toEqual(true);
+    g.visited = [];
+    expect(g.dfs(0, 5)).toEqual(false);
   });
 
   it("tests bfs", function() {
-    g.bfs(0);
+    expect(g.bfs(0, 4)).toEqual(true);
+    g.visited = [];
+    //expect(g.bfs(0, 5)).toEqual(false);
   });
 
   it("tests pathTo", function() {

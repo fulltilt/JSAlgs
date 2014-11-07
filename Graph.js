@@ -5,46 +5,72 @@ function Vertex(label) {
 function Graph(v) {
   this.vertices = v;
   this.edges = 0;
-  this.adj = [];
+  this.adj = [];  // adjacency list for Graph
   
+  // initialize each Vertices adjacency list to an empty list
   for (var i = 0; i < this.vertices; ++i) {
     this.adj[i] = [];
   }
 
-  this.addEdge = addEdge;
-  this.showGraph = showGraph;
-
-  this.dfs = dfs;
-  this.visited = [];
+  this.visited = [];  // array that determines whether a Vertex was visited or not. Initialize all Vertices to false
   for (i = 0; i < this.vertices; ++i) {
     this.visited[i] = false;
   }
 
-  this.bfs = bfs;
   this.edgeTo = []; // use to determine shortest path
   this.pathTo = pathTo;
-
-  this.topologicalSort = topologicalSort;
 }
 
-function addEdge(v, w) {
-  this.adj[v].push(w);
-  this.adj[w].push(v);
-  this.edges++;
-}
+Graph.prototype = {
+  addUndirectedEdge: function(v, w) {
+    this.adj[v].push(w);
+    this.adj[w].push(v);
+    this.edges++;
+  },
 
-function showGraph() {
-  for (var i = 0; i < this.vertices; i++) {
-    var vertex = i + ': ';
-    for (var j = 0; j < this.vertices; j++) {
-      if (this.adj[i][j] !== undefined) {
-        vertex += this.adj[i][j] + ' ';
+  showGraph: function() {
+    for (var i = 0; i < this.vertices; i++) {
+      var vertex = i + ': ';
+      for (var j = 0; j < this.vertices; j++) {
+        if (this.adj[i][j] !== undefined) {
+          vertex += this.adj[i][j] + ' ';
+        }
+      }
+      console.log(vertex);
+    }
+  },
+    
+  // http://stackoverflow.com/questions/5278580/non-recursive-depth-first-search-algorithm  
+  dfs: function(startingVertex, target) {
+    if (startingVertex === target) {
+      return true;
+    }
+    this.visited[startingVertex] = true;
+
+    var adjacencyList = this.adj[startingVertex];
+    while (adjacencyList.length > 0) {
+      var currentVertex = adjacencyList.shift();
+      if (!this.visited[currentVertex]) {
+        if (currentVertex === target) {
+          return true;
+        }
+       
+        this.visited[currentVertex] = true;
+        
+        // prepend current Vertex's adjacency list to the current one assuming the Node hasn't been visited
+        var currentVertexAdjacencyList = this.adj[currentVertex];
+        for (var i = 0; i < currentVertexAdjacencyList.length; i++) {
+          if (!this.visited[currentVertexAdjacencyList[i]]) {
+            adjacencyList.unshift(currentVertexAdjacencyList[i]);
+          }
+        }
       }
     }
-    console.log(vertex);
-  }
-}
 
+    return false;
+  },
+
+/* recursive dfs that traverses all the reachable nodes from vertex
 function dfs(vertex) {
   if (this.visited[vertex] === false) {
     console.log('Visiting vertex ' + vertex);
@@ -57,32 +83,41 @@ function dfs(vertex) {
       this.dfs(this.adj[vertex][i]);
     }
   }
-}
-
-/*
-function bfs(vertex) {
-  this.visited[vertex] = true;
-  console.log('Visiting vertex ' + vertex);
-
-  var adjacentVertices = this.adj[vertex];
-  for (var i = 0; i < adjacentVertices.length; i++) {
-    var currentVertex = adjacentVertices[i];
-    if (this.visited[currentVertex] === false) {
-      this.visited[currentVertex] = true;
-      console.log('Visiting vertex ' + currentVertex);      
-    }
-
-    // for every vertex on the current level, push their adjacent unvisited vertices to the back of the adjacent Vertices list
-    var currentVertexAdjacencyList = this.adj[currentVertex];
-    for (var j = 0; j < currentVertexAdjacencyList.length; j++) {
-      if (this.visited[currentVertexAdjacencyList[j]] === false) {
-        adjacentVertices.push(currentVertexAdjacencyList[j]);
-      }
-    }
-  }
-}
+}  
 */
+  bfs: function(startingVertex, target) {
+    if (startingVertex === target) {
+      return true;
+    }
+    this.visited[startingVertex] = true;
 
+    var currentVertices = [],
+        adjacentVertices = [];
+
+    currentVertices.push(startingVertex);
+    while (currentVertices.length > 0) {
+      for (var i = 0; i < currentVertices.length; i++) {
+        var currentVertex = currentVertices[i];
+        if (currentVertex === target) {
+          return true;
+        }
+        this.visited[currentVertex] = true;
+
+        var currentVertexAdjacencyList = this.adj[currentVertex];
+        for (var j = 0; j < currentVertexAdjacencyList.length; j++) {
+          if (!this.visited[currentVertexAdjacencyList[j]]) {
+this.edgeTo[currentVertexAdjacencyList[j]] = currentVertex; // line explicitly for pathTo
+            adjacentVertices.push(currentVertexAdjacencyList[j]);
+          }
+        }
+      }
+      currentVertices = adjacentVertices.slice(0);
+      adjacentVertices = [];
+    }
+
+    return false;
+  }
+/*
 function bfs(s) {
   var graph = this; // need this due to the closure in the forEach loop
   var queue = [];
@@ -103,6 +138,9 @@ function bfs(s) {
     });
   } 
 }
+*/
+
+};
 
 function pathTo(start, end) {
   // build graph in terms of the start vertex
@@ -125,3 +163,138 @@ function pathTo(start, end) {
 }
 
 module.exports = Graph;
+
+// http://www.geeksforgeeks.org/detect-cycle-in-a-graph/
+function detectCycleDirected() {
+
+}
+
+// http://www.geeksforgeeks.org/detect-cycle-undirected-graph/
+function detectCycleUndirected() {
+
+}
+
+// http://www.geeksforgeeks.org/find-if-there-is-a-path-between-two-vertices-in-a-given-graph/
+function isPath(v1, v2) {
+
+}
+
+// http://www.geeksforgeeks.org/greedy-algorithms-set-5-prims-minimum-spanning-tree-mst-2/
+function minSpanningPrim() {
+
+}
+
+// http://www.geeksforgeeks.org/greedy-algorithms-set-2-kruskals-minimum-spanning-tree-mst/
+function minSpanningKruskal() {
+
+}
+
+// http://www.geeksforgeeks.org/greedy-algorithms-set-6-dijkstras-shortest-path-algorithm/
+function Dijkstra() {
+
+}
+
+// http://www.geeksforgeeks.org/union-find/ or http://www.geeksforgeeks.org/union-find-algorithm-set-2-union-by-rank/
+function unionFind() {
+
+}
+
+// http://www.geeksforgeeks.org/bipartite-graph/
+function isBipartite() {
+
+}
+
+// http://www.geeksforgeeks.org/maximum-bipartite-matching/
+function maxBipartiteMatching() {
+
+}
+
+// http://www.geeksforgeeks.org/topological-sorting/
+function topologicalSort() {
+
+}
+
+// http://www.geeksforgeeks.org/strongly-connected-components/ or http://www.geeksforgeeks.org/tarjan-algorithm-find-strongly-connected-components/
+function stronglyConnectedComponents() {
+
+}
+
+// http://www.geeksforgeeks.org/shortest-path-for-directed-acyclic-graphs/
+function shortestPathDAG() {
+
+}
+
+// http://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/
+function articulationPoints() {
+
+}
+
+// http://www.geeksforgeeks.org/fleurys-algorithm-for-printing-eulerian-path/4
+function printEulerianPath() {
+
+}
+
+// http://www.geeksforgeeks.org/given-array-strings-find-strings-can-chained-form-circle/
+function canStringsBeChained() {
+
+}
+
+// http://www.geeksforgeeks.org/euler-circuit-directed-graph/
+function EulerianCircuit() {
+
+}
+
+// http://www.geeksforgeeks.org/find-longest-path-directed-acyclic-graph/
+function longestPathInDAG() {
+
+}
+
+// http://www.geeksforgeeks.org/find-edge-disjoint-paths-two-vertices/
+function maxDisjointPaths() {
+
+}
+
+// http://www.geeksforgeeks.org/bridge-in-a-graph/
+function bridges() {
+
+}
+
+// http://www.geeksforgeeks.org/biconnectivity-in-a-graph/
+function isBiconnected() {
+
+}
+
+// http://www.geeksforgeeks.org/ford-fulkerson-algorithm-for-maximum-flow-problem/
+function FordFulkerson() {
+
+}
+
+// http://www.geeksforgeeks.org/minimum-cut-in-a-directed-graph/
+function minCut() {
+
+}
+
+// http://www.geeksforgeeks.org/backtracking-set-7-hamiltonian-cycle/
+function HamiltonianCycle() {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-16-floyd-warshall-algorithm/
+function FloydWarshall() {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-23-bellman-ford-algorithm/
+function BellmanFord() {
+
+}
+
+// http://www.geeksforgeeks.org/johnsons-algorithm/
+function Johnsons() {
+
+}
+
+// http://www.geeksforgeeks.org/transitive-closure-of-a-graph/
+function transitiveClosure() {
+
+}

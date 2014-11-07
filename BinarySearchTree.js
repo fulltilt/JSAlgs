@@ -1830,6 +1830,32 @@ function areNodesCousins(root, node1, node2) {
   return false;
 }
 
+// http://www.geeksforgeeks.org/convert-a-given-tree-to-sum-tree/
+function convertToSumTree(node) {
+  if (node === null) {
+    return 0;
+  }
+
+/* less efficient but simpler algorithm
+  node.data = sumTree(node.left) + sumTree(node.right);
+  this.convertToSumTree(node.left);
+  this.convertToSumTree(node.right);
+*/
+  
+  // more efficient algorithm
+  var oldValue = node.data;
+  node.data = this.convertToSumTree(node.left) + this.convertToSumTree(node.right);
+  return node.data + oldValue;
+}
+
+function sumTree(node) {
+  if (node === null) {
+    return 0;
+  }
+
+  return node.data + sumTree(node.left) + sumTree(node.right);
+}
+
 // http://www.geeksforgeeks.org/check-for-identical-bsts-without-building-the-trees/
 function checkIdenticalArrayBST(arr1, arr2) {
 
@@ -1898,11 +1924,6 @@ function getRandomBSTNode(root) {
   var arr = [];
   BSTToArray(root, arr);
   return arr[Math.floor(Math.random() * arr.length)];
-}
-
-// http://www.geeksforgeeks.org/convert-a-given-tree-to-sum-tree/
-function convertToSumTree() {
-
 }
 
 // http://www.geeksforgeeks.org/segment-tree-set-1-sum-of-given-range/

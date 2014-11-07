@@ -1,5 +1,6 @@
 var LinkedList = require('../LinkedList.js');
 var DLL = require('../DoublyLinkedList.js');
+var BST = require('../BinarySearchTree.js');
 
 describe("LinkedList", function() {
   var ll = new LinkedList();
@@ -600,6 +601,50 @@ describe("LinkedList", function() {
   });
 
   it('tests LRUCache', function() {
+    expect(true).toEqual(false);
+  });
 
+  xit('tests sortedLLToBalancedBST', function() {
+    var slbb1 = new LinkedList(),
+        slbb2 = new LinkedList(),
+        slbb3 = new LinkedList(),
+        slbb4 = new LinkedList(),
+        bst = new BST.BinarySearchTree();
+
+    slbb1.insertHead(3);
+    slbb1.insertHead(2);
+    slbb1.insertHead(1);
+    ll.sortedLLToBalancedBST(slbb1, 0, slbb1.size - 1, bst);
+    bst.printByLevel(bst.root);
+    bst.clear();
+
+    slbb2.insertHead(7);
+    slbb2.insertHead(6);
+    slbb2.insertHead(5);
+    slbb2.insertHead(4);
+    slbb2.insertHead(3);
+    slbb2.insertHead(2);
+    slbb2.insertHead(1);
+    ll.sortedLLToBalancedBST(slbb2, 0, slbb2.size - 1, bst);
+    bst.printByLevel(bst.root);
+    bst.clear();
+
+    slbb3.insertHead(4);
+    slbb3.insertHead(3);
+    slbb3.insertHead(2);
+    slbb3.insertHead(1);
+    ll.sortedLLToBalancedBST(slbb3, 0, slbb3.size - 1, bst);
+    bst.printByLevel(bst.root);
+    bst.clear();
+
+    slbb4.insertHead(6);
+    slbb4.insertHead(5);
+    slbb4.insertHead(4);
+    slbb4.insertHead(3);
+    slbb4.insertHead(2);
+    slbb4.insertHead(1);
+    ll.sortedLLToBalancedBST(slbb4, 0, slbb4.size - 1, bst);
+    bst.printByLevel(bst.root);
+    bst.clear();
   });
 });

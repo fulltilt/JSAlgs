@@ -57,6 +57,7 @@ function LinkedList() {
 	this.sortZeroesOnesTwos = sortZeroesOnesTwos;
 	this.deleteNNodesAfterMNodes = deleteNNodesAfterMNodes;
 	this.reverseAlternateAndAppendAtEnd = reverseAlternateAndAppendAtEnd;
+	this.sortedLLToBalancedBST = sortedLLToBalancedBST;
 }
 
 function find(item) {
@@ -983,13 +984,31 @@ function reverseAlternateAndAppendAtEnd() {
 	return firstListHead.next.printFromNode();
 }
 
+// http://www.geeksforgeeks.org/sorted-linked-list-to-balanced-bst/
+function sortedLLToBalancedBST(list, lo, hi, tree) {
+	if (hi < lo) {
+		return;
+	}
+
+	var mid = Math.floor((lo + hi) / 2),
+			current = list.head,
+			count = 0;
+
+	// get middle Node
+	while (count < mid) {
+		current = current.next;
+		count += 1;
+	}
+
+	tree.insert(current.data);
+	this.sortedLLToBalancedBST(list, lo, mid - 1, tree);
+	this.sortedLLToBalancedBST(list, mid + 1, hi, tree);
+}
+
 // http://www.geeksforgeeks.org/implement-lru-cache/
 function LRUCache() {
 
 }
-
-// STAR PROBLEMS
-// http://www.geeksforgeeks.org/sorted-linked-list-to-balanced-bst/
 
 module.exports = LinkedList;
 

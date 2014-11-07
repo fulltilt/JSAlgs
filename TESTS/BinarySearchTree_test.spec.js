@@ -724,6 +724,18 @@ describe("BST", function() {
     expect(bst.areNodesCousins(root, 7, 5)).toEqual(false);
   });
 
+  it('tests convertToSumTree', function() {
+    var root = new BST.Node(10);
+    root.left = new BST.Node(-2);
+    root.right = new BST.Node(6);
+    root.left.left = new BST.Node(8);
+    root.left.right = new BST.Node(-4);
+    root.right.left = new BST.Node(7);
+    root.right.right = new BST.Node(5);
+    bst.convertToSumTree(root);
+    bst.printByLevel(root);
+  });
+
   it('tests recreateTreeGivenTwoTraversals', function() {
 
   });

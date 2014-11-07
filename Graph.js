@@ -18,14 +18,24 @@ function Graph(v) {
   }
 
   this.edgeTo = []; // use to determine shortest path
+  
   this.pathTo = pathTo;
+  this.detectCycleDirected = detectCycleDirected;
+  this.detectCycleDirectedHelper = detectCycleDirectedHelper;
+  this.detectCycleUndirected = detectCycleUndirected;
+  this.unionFind = unionFind;
 }
 
 Graph.prototype = {
   addUndirectedEdge: function(v, w) {
     this.adj[v].push(w);
     this.adj[w].push(v);
-    this.edges++;
+    this.edges += 1;
+  },
+
+  addDirectedEdge: function(v, w) {
+    this.adj[v].push(w);
+    this.edges += 1;
   },
 
   showGraph: function() {
@@ -166,11 +176,46 @@ module.exports = Graph;
 
 // http://www.geeksforgeeks.org/detect-cycle-in-a-graph/
 function detectCycleDirected() {
+  var recursiveStack = [];
 
+  // Call the recursive helper fxn to detect cycle in different DFS tree
+  for (var i = 0; i < this.vertices; i++) {
+    if (this.detectCycleDirectedHelper(i, recursiveStack)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function detectCycleDirectedHelper(vertex, recursiveStack) {
+  if (this.visited[vertex] === false) {
+    // mark the current node as visited and part of the recursion stack
+    this.visited[vertex] = true;
+    recursiveStack[vertex] = true;
+
+    // recur for all the vertices adjacent to this vertex
+    var adjacencyList = this.adj[vertex];
+    for (var i = 0; i < adjacencyList.length; i++) {
+      var currentAdjacentVertex = adjacencyList[i];
+      if (!this.visited[currentAdjacentVertex] && this.detectCycleDirectedHelper(currentAdjacentVertex, recursiveStack)) {
+        return true;
+      } else if (recursiveStack[currentAdjacentVertex]) { // adjacent Vertex has been visited in a previous call stack meaning there's a back edge. Return true
+        return true;
+      }
+    }
+  }
+  recursiveStack[vertex] = false; // remove Vertex from recursion stack
+  return false;
 }
 
 // http://www.geeksforgeeks.org/detect-cycle-undirected-graph/
 function detectCycleUndirected() {
+
+}
+
+// http://www.geeksforgeeks.org/union-find/ or http://www.geeksforgeeks.org/union-find-algorithm-set-2-union-by-rank/
+function unionFind() {
 
 }
 
@@ -191,11 +236,6 @@ function minSpanningKruskal() {
 
 // http://www.geeksforgeeks.org/greedy-algorithms-set-6-dijkstras-shortest-path-algorithm/
 function Dijkstra() {
-
-}
-
-// http://www.geeksforgeeks.org/union-find/ or http://www.geeksforgeeks.org/union-find-algorithm-set-2-union-by-rank/
-function unionFind() {
 
 }
 

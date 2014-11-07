@@ -46,6 +46,121 @@ describe("Graph", function() {
         pathString += paths.pop();
       }
     }
-    console.log('Path from vertex ' + start + ' to vertex ' + end + ': ' + pathString);
+    expect(pathString).toEqual('0 -> 2 -> 4');
+  });
+
+  it('tests detectCycleDirected', function() {
+    var g1 = new Graph(4);
+    g1.addDirectedEdge(0, 1);
+    g1.addDirectedEdge(0, 2);
+    g1.addDirectedEdge(1, 2);
+    g1.addDirectedEdge(2, 0); // comment this line to take out a cycle
+    g1.addDirectedEdge(2, 3);
+    g1.addDirectedEdge(3, 3); // comment this line to take out a cycle
+    expect(g1.detectCycleDirected()).toEqual(true);
+  });
+
+  it('tests detectCycleUndirected', function() {
+
+  });
+
+  it('tests unionFind', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
+  });
+
+  it('tests ', function() {
+
   });
 });

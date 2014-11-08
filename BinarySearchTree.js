@@ -431,6 +431,7 @@ function AVLDelete(data) {
   
 }
 
+
 /*******************************************************/
 
 /* note: not fully tested
@@ -1941,6 +1942,8 @@ function bTree() {
 
 // http://www.geeksforgeeks.org/splay-tree-set-1-insert/
 // http://www.geeksforgeeks.org/splay-tree-set-2-insert-delete/
+// This function brings the key at root if key is present in tree. If key is not present, then it brings the last accessed item at
+// root.  This function modifies the tree and returns the new root
 function splayTree() {
 
 }

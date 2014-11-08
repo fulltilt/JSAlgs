@@ -136,8 +136,22 @@ describe("Graph", function() {
     graph.minSpanningKruskal();
   });
 
-  it('tests ', function() {
-
+  it('tests minSpanningPrim', function() {
+    /* Let us create the following graph
+          2    3
+      (0)--(1)--(2)
+       |   / \   |
+      6| 8/   \5 |7
+       | /     \ |
+      (3)-------(4)
+            9          */
+   var graph = [[0, 2, 0, 6, 0],
+                [2, 0, 3, 8, 5],
+                [0, 3, 0, 0, 7],
+                [6, 8, 0, 0, 9],
+                [0, 5, 7, 9, 0],
+               ];
+    g.minSpanningPrim(graph);
   });
 
   it('tests ', function() {

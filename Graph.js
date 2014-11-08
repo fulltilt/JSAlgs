@@ -36,6 +36,7 @@ function Graph(v, e) {
   this.union = union;
   this.find = find;
   this.minSpanningKruskal = minSpanningKruskal;
+  this.minSpanningPrim = minSpanningPrim;
 }
 
 Graph.prototype = {
@@ -302,7 +303,7 @@ function Subset(parent, rank) {
   this.rank = rank;
 }
 
-// utility function to find the subset of an element i (naive version: see http://www.geeksforgeeks.org/union-find-algorithm-set-2-union-by-rank/)
+// utility function to find the subset of an element i
 function find(subsets, i) {
   if (subsets[i].parent !== i) {
     subsets[i].parent = this.find(subsets, subsets[i].parent);
@@ -311,7 +312,7 @@ function find(subsets, i) {
   return subsets[i].parent;
 }
 
-// utility function to do union of 2 subsets (naive version: see http://www.geeksforgeeks.org/union-find-algorithm-set-2-union-by-rank/)
+// utility function to do union of 2 subsets (a more efficient version: see http://www.geeksforgeeks.org/union-find-algorithm-set-2-union-by-rank/)
 function union(subsets, src, dest) {
   var srcSet = this.find(subsets, src),
       destSet = this.find(subsets, dest);
@@ -350,16 +351,74 @@ function minSpanningKruskal() {
     }
   }
 
+  console.log('\nKruskal\'s Minimum Spanning Tree\nEdge        Weight');
   for (var i = 0; i < r; i++) {
-    console.log(result[i].src, '--', result[i].dest, result[i].weight);
+    console.log(result[i].src, '-', result[i].dest,  ' ', result[i].weight);
   }
 
   return;
 }
 
 // http://www.geeksforgeeks.org/greedy-algorithms-set-5-prims-minimum-spanning-tree-mst-2/
-function minSpanningPrim() {
+// note: uses adjacency matrix. For a more efficient but longer implementation using adjacency lists see: 
+// http://www.geeksforgeeks.org/greedy-algorithms-set-5-prims-mst-for-adjacency-list-representation/
+function minSpanningPrim(graph) {
+  var vertices = graph.length,
+      parent = [],  // array to store constructed MST
+      keys = [],     // key values used to pick minimum weight edge in cut (a cut is a group of edges that connects two set of vertices in a graph)
+      mstSet = [];  // represents a set of vertices not yet include in MST
 
+  // initialize all keys to Infinity
+  for (var i = 0; i < vertices; i++) {
+    keys[i] = Infinity;
+    mstSet[i] = false;
+  }
+
+  // Always include first vertex in MST
+  keys[0] = 0;     // make key 0 so that this vertex is picked as first vertex
+  parent[0] = -1; // first node is always root of MST
+
+  // The MST will have V vertices
+  for (var count = 0; count < vertices - 1; count++) {
+    // pick the minimum key vertex from the set of vertices not yet included in MST
+    var minVertex = minKey(keys, mstSet, vertices);
+
+    // add the picked vertex to the MST set
+    mstSet[minVertex] = true;
+
+    // Update key value and parent index of the adjacent vertices of the picked vertex. Consider only those vertices
+    // which are not yet included in the MST
+    for (var v = 0; v < vertices; v++) {
+      // graph[minVertex][v] is non-zero only for adjacent vertices of m
+      // mstSet[v] is false for vertices not yet included in MST
+      // Update the key only if graph[u][v] is smaller than key[v]
+      if (graph[minVertex][v] && mstSet[v] === false && (graph[minVertex][v] < keys[v])) {
+        parent[v] = minVertex;
+        keys[v] = graph[minVertex][v];
+      }
+    }
+  }
+
+  // print MST
+  console.log('\nPrim\'s Minimum Spanning Tree\nEdge        Weight');
+  for (i = 1; i < vertices; i++) {
+    console.log(parent[i], '-', i, ' ', graph[i][parent[i]]);
+  }
+}
+
+// helper fxn for Prim's algorithm to find vertex with minimum key value from set of vertices not yet included in minimum spanning tree
+function minKey(keys, mstSet, vertices) {
+  var min = Infinity,
+      minIndex;
+
+  for (var v = 0; v < vertices; v++) {
+    if (mstSet[v] === false && keys[v] < min) {
+      min = keys[v];
+      minIndex = v;
+    }
+  }
+
+  return minIndex;
 }
 
 // http://www.geeksforgeeks.org/greedy-algorithms-set-6-dijkstras-shortest-path-algorithm/

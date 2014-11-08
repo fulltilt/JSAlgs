@@ -35,6 +35,7 @@ function Graph(v, e) {
   this.detectCycleUndirected2 = detectCycleUndirected2;
   this.union = union;
   this.find = find;
+  this.minSpanningKruskal = minSpanningKruskal;
 }
 
 Graph.prototype = {
@@ -274,52 +275,90 @@ function detectCycleUndirectedHelper(vertex, parent) {
 // detect cycle in an undirected graph using Union-Find algorithm
 function detectCycleUndirected2() {
   // initially represents V single-element subsets and set values to -1
-  var parent = [];
+  var subsets = [];
   for (var i = 0; i < this.edges; i++) {
-    parent[i] = -1;
+    subsets[i] = new Subset(i);
   }
 
   // iterate through all edges of graph, find subset of both vertices of every edge, if both subsets are same, then there's a cycle in grap
   for (i = 0; i < this.edges; i++) {
-    var srcSubset = this.find(parent, this.edge[i].src),
-        destSubset = this.find(parent, this.edge[i].dest);
+    var srcSubset = this.find(subsets, this.edge[i].src),
+        destSubset = this.find(subsets, this.edge[i].dest);
 
     if (srcSubset === destSubset) {
       return true;
     }
 
     // both sets are disjoint so combine them
-    this.union(parent, srcSubset, destSubset);
+    this.union(subsets, srcSubset, destSubset);
   }
 
   return false;
 }
 
+// structure to represent a subset for Union-Find
+function Subset(parent, rank) {
+  this.parent = parent;
+  this.rank = rank;
+}
+
 // utility function to find the subset of an element i (naive version: see http://www.geeksforgeeks.org/union-find-algorithm-set-2-union-by-rank/)
-function find(parent, i) {
-  if (parent[i] === -1) { // element is by itself in a set
-    return i;
+function find(subsets, i) {
+  if (subsets[i].parent !== i) {
+    subsets[i].parent = this.find(subsets, subsets[i].parent);
   }
 
-  return this.find(parent, parent[i]);
+  return subsets[i].parent;
 }
 
 // utility function to do union of 2 subsets (naive version: see http://www.geeksforgeeks.org/union-find-algorithm-set-2-union-by-rank/)
-function union(parent, src, dest) {
-  var srcSet = this.find(parent, src),
-      destSet = this.find(parent, dest);
-  parent[srcSet] = destSet;
-}
-
-// http://www.geeksforgeeks.org/union-find-algorithm-set-2-union-by-rank/
-
-// http://www.geeksforgeeks.org/greedy-algorithms-set-5-prims-minimum-spanning-tree-mst-2/
-function minSpanningPrim() {
-
+function union(subsets, src, dest) {
+  var srcSet = this.find(subsets, src),
+      destSet = this.find(subsets, dest);
+  subsets[srcSet].parent = destSet;
 }
 
 // http://www.geeksforgeeks.org/greedy-algorithms-set-2-kruskals-minimum-spanning-tree-mst/
 function minSpanningKruskal() {
+  var vertices = this.vertices,
+      result = [],  // will store resultant MST
+      r = 0,        // index variable used for result[]
+      s = 0,        // index variable used for sorted edges
+      subsets = [];
+
+  // Step 1: sort all the edges in non-decreasing order of their weight
+  this.edge = this.edge.sort(function(a, b) { return a.weight - b.weight; });
+
+  // create V single-element subsets
+  for (var i = 0; i < vertices; i++) {
+    subsets[i] = new Subset(i, 0);
+  }
+
+  // Number of edges to be taken is equal to vertices - 1
+  while (r < vertices - 1) {
+    // Step 2: pick the smallest edge and increment theindex for next iteration
+    var nextEdge = this.edge[s++];
+
+    var srcSet = this.find(subsets, nextEdge.src),
+        destSet = this.find(subsets, nextEdge.dest);
+
+    // If including this edge doesn't cause cycle, include it in result and increment the index of result for next edge
+    // else discard nextEdge
+    if (srcSet !== destSet) {
+      result[r++] = nextEdge;
+      this.union(subsets, srcSet, destSet);
+    }
+  }
+
+  for (var i = 0; i < r; i++) {
+    console.log(result[i].src, '--', result[i].dest, result[i].weight);
+  }
+
+  return;
+}
+
+// http://www.geeksforgeeks.org/greedy-algorithms-set-5-prims-minimum-spanning-tree-mst-2/
+function minSpanningPrim() {
 
 }
 

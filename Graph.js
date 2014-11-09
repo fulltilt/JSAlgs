@@ -56,6 +56,7 @@ function Graph(v, e) {
   this.maxDisjointPaths = maxDisjointPaths;
   this.isBiconnected = isBiconnected;
   this.FordFulkerson = FordFulkerson;
+  this.FFbfs = FFbfs;
   this.minCut = minCut;
   this.HamiltonianCycle = HamiltonianCycle;
   this.FloydWarshall = FloydWarshall;
@@ -243,8 +244,6 @@ function pathTo(start, end) {
   path.push(start);
   return path;
 }
-
-module.exports = Graph;
 
 // http://www.geeksforgeeks.org/detect-cycle-in-a-graph/
 function detectCycleDirected() {
@@ -542,13 +541,6 @@ function topologicalSortUtil(vertex, visited, stack) {
   stack.push(vertex); // push current vertex to stack
 }
 
-// http://www.geeksforgeeks.org/shortest-path-for-directed-acyclic-graphs/
-// topological sort is on applicable to DAGs
-// algorithm: modified DFS
-function shortestPathDAG() {
-
-}
-
 // http://www.geeksforgeeks.org/bipartite-graph/
 function isBipartite(graph, src) {
   // Create a color array to store colors assigned to all veritces. Vertex 
@@ -593,64 +585,71 @@ function isBipartite(graph, src) {
   return true;
 }
 
-// http://www.geeksforgeeks.org/given-array-strings-find-strings-can-chained-form-circle/
-function canStringsBeChained() {
-
-}
-
-// http://www.geeksforgeeks.org/euler-circuit-directed-graph/
-function EulerianCircuit() {
-
-}
-
-// http://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/
-function articulationPoints() {
-
-}
-
-// http://www.geeksforgeeks.org/strongly-connected-components/ or http://www.geeksforgeeks.org/tarjan-algorithm-find-strongly-connected-components/
-function stronglyConnectedComponents() {
-
-}
-
-// http://www.geeksforgeeks.org/bridge-in-a-graph/
-function bridges() {
-
-}
-
-// http://www.geeksforgeeks.org/find-longest-path-directed-acyclic-graph/
-function longestPathInDAG() {
-
-}
-
-// http://www.geeksforgeeks.org/find-edge-disjoint-paths-two-vertices/
-function maxDisjointPaths() {
-
-}
-
-// http://www.geeksforgeeks.org/biconnectivity-in-a-graph/
-function isBiconnected() {
-
-}
-
 // http://www.geeksforgeeks.org/ford-fulkerson-algorithm-for-maximum-flow-problem/
-function FordFulkerson() {
+function FordFulkerson(graph, src, sink) {
+  // create a residual graph and fill with given capacities in the original graph as residual capacities in residual graph
+  var residualGraph = [];   // Residual graph where rGraph[i][j] indicates residual capacity of edge from i to j (if there
+                            // is an edge. If rGraph[i][j] is 0, then there is not)
+  var vertices = graph.length;
+  for (var i = 0; i < vertices; i++) {
+    residualGraph[i] = graph[i].slice();
+  }
 
+  var parent = [],    // this array is filled by BFS and to store path
+      maxFlow = 0;
+
+  // Augment the flow while there is path from souce to sink
+  while (this.FFbfs(residualGraph, src, sink, parent)) {
+    // find minimum residual capacit of the edges along the path filled by BFS. Or we can say find the max flow through the path found
+    var pathFlow = Infinity;
+    for (var v = sink; v !== src; v = parent[v]) {
+      i = parent[v];
+      pathFlow = Math.min(pathFlow, residualGraph[i][v]);
+    }
+
+    // update residual capacities of the edges and reverse edges along the path
+    for (v = sink; v !== src; v = parent[v]) {
+      i = parent[v];
+      residualGraph[i][v] -= pathFlow;
+      residualGraph[v][i] += pathFlow;
+    }
+
+    // add path flow to overall flow
+    maxFlow += pathFlow;
+  }
+
+  return maxFlow;
 }
 
-// http://www.geeksforgeeks.org/maximum-bipartite-matching/
-function maxBipartiteMatching() {
+function FFbfs(graph, src, sink, parent) {
+  // created a visited array and mark all vertices as not visited
+  var visited = [],
+      vertices = graph.length;
+  for (var i = 0; i < vertices; i++) {
+    visited[i] = false;
+  }
 
-}
+  // create a queue and enqueue src vertex and mark it as visited
+  var queue = [];
+  queue.push(src);
+  visited[src] = true;
+  parent[src] = -1;
 
-// http://www.geeksforgeeks.org/minimum-cut-in-a-directed-graph/
-function minCut() {
+  // Standard BFS loop
+  while (queue.length > 0) {
+    var currentVertex = queue.shift();
 
-}
+    for (var v = 0; v < vertices; v++) {
+      if (visited[v] === false && graph[currentVertex][v] > 0) {
+        queue.push(v);
+        parent[v] = currentVertex;
+        visited[v] = true;
+      }
+    }
+  }
 
-// http://www.geeksforgeeks.org/backtracking-set-7-hamiltonian-cycle/
-function HamiltonianCycle() {
-
+  // if we reached sink in BFS starting from source, then return true
+  return visited[sink] === true;
 }
 
 // http://www.geeksforgeeks.org/dynamic-programming-set-16-floyd-warshall-algorithm/
@@ -668,8 +667,82 @@ function Johnsons() {
 
 }
 
+// http://www.geeksforgeeks.org/backtracking-set-7-hamiltonian-cycle/
+function HamiltonianCycle() {
+
+}
+
 // http://www.geeksforgeeks.org/transitive-closure-of-a-graph/
 function transitiveClosure() {
+
+}
+
+// http://www.geeksforgeeks.org/maximum-bipartite-matching/
+function maxBipartiteMatching() {
+
+}
+
+// http://www.geeksforgeeks.org/find-edge-disjoint-paths-two-vertices/
+function maxDisjointPaths() {
+
+}
+
+// http://www.geeksforgeeks.org/minimum-cut-in-a-directed-graph/
+function minCut() {
+
+}
+
+// http://www.geeksforgeeks.org/shortest-path-for-directed-acyclic-graphs/
+// topological sort is on applicable to DAGs
+// algorithm: modified DFS
+function shortestPathDAG(src) {
+  var stack = [],
+      dist = [],
+      visited = [];
+
+  // mark all vertices as not visited
+  for (var i = 0; i < this.vertices; i++) {
+    visited[i] = false;
+  }
+
+  // call topologicalSortUtil to store topological sort starting from all vertices one by one
+  for (i = 0; i < this.vertices; i++) {
+    if (visited[i] === false) {
+      this.topologicalSortUtil(i, visited, stack);
+    }
+  }
+
+  // initialize distance to all vertices as Infinity and distance to source as 0
+  for (i = 0; i < this.vertices; i++) {
+    dist[i] = Infinity;
+  }
+
+  dist[src] = 0;  // Distance from starting src to itself is 0
+
+  // Process vertices in topological order
+  while (stack.length > 0) {
+    // get the next vertex from topological order
+    currentVertex = stack.pop();
+
+    // update distances of all adjacent vertices
+    var adjacencyList = this.adj[currentVertex];
+    if (dist[currentVertex] !== Infinity) {
+      var currentVertexAdjacencyList = this.adj[currentVertex];
+      for (i = 0; i < currentVertexAdjacencyList.length; i++) {
+        if (dist[i] > dist[currentVertex] + currentVertexAdjacencyList[i].weight) {
+          dist[i] = dist[startingVertex] + currentVertexAdjacencyList[i].weight;
+        }
+      }
+    }
+  }
+
+  for (i = 0; i < this.vertices; i++) {
+    console.log(dist[i]);
+  }
+}
+
+// http://www.geeksforgeeks.org/find-longest-path-directed-acyclic-graph/
+function longestPathInDAG() {
 
 }
 
@@ -758,3 +831,41 @@ function DFSCount(v, visited) {
 
   return count;
 }
+
+// http://www.geeksforgeeks.org/euler-circuit-directed-graph/
+function EulerianCircuit() {
+
+}
+
+// http://www.geeksforgeeks.org/given-array-strings-find-strings-can-chained-form-circle/
+function canStringsBeChained() {
+
+}
+
+// http://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/
+function articulationPoints() {
+
+}
+
+// http://www.geeksforgeeks.org/biconnectivity-in-a-graph/
+function isBiconnected() {
+
+}
+
+// http://www.geeksforgeeks.org/strongly-connected-components/ or http://www.geeksforgeeks.org/tarjan-algorithm-find-strongly-connected-components/
+function stronglyConnectedComponents() {
+
+}
+
+// http://www.geeksforgeeks.org/bridge-in-a-graph/
+function bridges() {
+
+}
+
+module.exports = Graph;
+
+/* NOTES
+-adjacency matrix representations are easier to implement than adjacency lists. However, adjacency lists usage is more efficient
+
+
+*/

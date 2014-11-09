@@ -181,10 +181,6 @@ describe("Graph", function() {
     expect(graph.topologicalSort()).toEqual('5 4 2 3 1 0');
   });
 
-  it('tests shortestPathDAG', function() {
-
-  });
-
   it('tests isBipartite', function() {
     var graph = [[0, 1, 0, 1],
                  [1, 0, 1, 0],
@@ -195,43 +191,22 @@ describe("Graph", function() {
     expect(g.isBipartite(graph, 0)).toEqual(true);
   });
 
-  it('tests canStringsBeChained', function() {
-
+  it('tests FordFulkerson', function() {
+    var graph = [[0, 16, 13, 0, 0, 0],
+                 [0, 0, 10, 12, 0, 0],
+                 [0, 4, 0, 0, 14, 0],
+                 [0, 0, 9, 0, 0, 20],
+                 [0, 0, 0, 7, 0, 4],
+                 [0, 0, 0, 0, 0, 0]
+                ];
+    expect(g.FordFulkerson(graph, 0, 5)).toEqual(23);
   });
 
-  it('tests EulerianCircuit', function() {
-
-  });
-
-  it('tests articulationPoints', function() {
-
-  });
-
-  it('tests stronglyConnectedComponents', function() {
-
-  });
-
-  it('tests bridges', function() {
-
-  });
-
-  it('tests longestPathInDAG', function() {
+  it('tests maxBipartiteMatching', function() {
 
   });
 
   it('tests maxDisjointPaths', function() {
-
-  });
-
-  it('tests isBiconnected', function() {
-
-  });
-
-  it('tests FordFulkerson', function() {
-
-  });
-
-  it('tests maxBipartiteMatching', function() {
 
   });
 
@@ -259,6 +234,24 @@ describe("Graph", function() {
     
   });
 
+  xit('tests shortestPathDAG', function() {
+    var graph = new Graph(6);
+    graph.addDirectedEdge(0, 1, 5);
+    graph.addDirectedEdge(0, 2, 3);
+    graph.addDirectedEdge(1, 3, 6);
+    graph.addDirectedEdge(1, 2, 2);
+    graph.addDirectedEdge(2, 4, 4);
+    graph.addDirectedEdge(2, 5, 2);
+    graph.addDirectedEdge(2, 3, 7);
+    graph.addDirectedEdge(3, 4, -1);
+    graph.addDirectedEdge(4, 5, -2);
+    graph.shortestPathDAG(1);
+  });
+
+  xit('tests longestPathInDAG', function() {
+
+  });
+
   xit('tests printEulerianTour', function() {
     var g1 = new Graph(4);
     g1.addUndirectedEdge(0, 1);
@@ -266,5 +259,29 @@ describe("Graph", function() {
     g1.addUndirectedEdge(1, 2);
     g1.addUndirectedEdge(2, 3);
     g1.printEulerianTour();
+  });
+
+  xit('tests EulerianCircuit', function() {
+
+  });
+
+  xit('tests canStringsBeChained', function() {
+
+  });
+
+  xit('tests articulationPoints', function() {
+
+  });
+
+  xit('tests isBiconnected', function() {
+
+  });
+
+  xit('tests stronglyConnectedComponents', function() {
+
+  });
+
+  xit('tests bridges', function() {
+
   });
 });

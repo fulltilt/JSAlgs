@@ -37,6 +37,27 @@ function Graph(v, e) {
   this.find = find;
   this.minSpanningKruskal = minSpanningKruskal;
   this.minSpanningPrim = minSpanningPrim;
+  this.Dijkstra = Dijkstra;
+  this.shortestPathDAG = shortestPathDAG;
+  this.isBipartite = isBipartite;
+  this.maxBipartiteMatching = maxBipartiteMatching;
+  this.topologicalSort = this.topologicalSort;
+  this.printEulerianPath = printEulerianPath;
+  this.canStringsBeChained = canStringsBeChained;
+  this.EulerianCircuit = EulerianCircuit;
+  this.articulationPoints = articulationPoints;
+  this.stronglyConnectedComponents = stronglyConnectedComponents;
+  this.bridges = bridges;
+  this.longestPathInDAG = longestPathInDAG;
+  this.maxDisjointPaths = maxDisjointPaths;
+  this.isBiconnected = isBiconnected;
+  this.FordFulkerson = FordFulkerson;
+  this.minCut = minCut;
+  this.HamiltonianCycle = HamiltonianCycle;
+  this.FloydWarshall = FloydWarshall;
+  this.BellmanFord = BellmanFord;
+  this.Johnsons = Johnsons;
+  this.transitiveClosure = transitiveClosure;
 }
 
 Graph.prototype = {
@@ -365,23 +386,23 @@ function minSpanningKruskal() {
 function minSpanningPrim(graph) {
   var vertices = graph.length,
       parent = [],  // array to store constructed MST
-      keys = [],     // key values used to pick minimum weight edge in cut (a cut is a group of edges that connects two set of vertices in a graph)
+      dist = [],     // key values used to pick minimum weight edge in cut (a cut is a group of edges that connects two set of vertices in a graph)
       mstSet = [];  // represents a set of vertices not yet include in MST
 
-  // initialize all keys to Infinity
+  // initialize all dist values to Infinity
   for (var i = 0; i < vertices; i++) {
-    keys[i] = Infinity;
+    dist[i] = Infinity;
     mstSet[i] = false;
   }
 
   // Always include first vertex in MST
-  keys[0] = 0;     // make key 0 so that this vertex is picked as first vertex
+  dist[0] = 0;     // make key 0 so that this vertex is picked as first vertex
   parent[0] = -1; // first node is always root of MST
 
   // The MST will have V vertices
   for (var count = 0; count < vertices - 1; count++) {
-    // pick the minimum key vertex from the set of vertices not yet included in MST
-    var minVertex = minKey(keys, mstSet, vertices);
+    // pick the minimum distance vertex from the set of vertices not yet included in MST
+    var minVertex = minDistance(dist, mstSet, vertices);
 
     // add the picked vertex to the MST set
     mstSet[minVertex] = true;
@@ -391,10 +412,10 @@ function minSpanningPrim(graph) {
     for (var v = 0; v < vertices; v++) {
       // graph[minVertex][v] is non-zero only for adjacent vertices of m
       // mstSet[v] is false for vertices not yet included in MST
-      // Update the key only if graph[u][v] is smaller than key[v]
-      if (graph[minVertex][v] && mstSet[v] === false && (graph[minVertex][v] < keys[v])) {
+      // Update the distance only if graph[u][v] is smaller than dist[v]
+      if (graph[minVertex][v] && mstSet[v] === false && (graph[minVertex][v] < dist[v])) {
         parent[v] = minVertex;
-        keys[v] = graph[minVertex][v];
+        dist[v] = graph[minVertex][v];
       }
     }
   }
@@ -406,14 +427,14 @@ function minSpanningPrim(graph) {
   }
 }
 
-// helper fxn for Prim's algorithm to find vertex with minimum key value from set of vertices not yet included in minimum spanning tree
-function minKey(keys, mstSet, vertices) {
+// helper fxn for Prim's algorithm to find vertex with minimum dist value from set of vertices not yet included in minimum spanning tree
+function minDistance(dist, mstSet, vertices) {
   var min = Infinity,
       minIndex;
 
   for (var v = 0; v < vertices; v++) {
-    if (mstSet[v] === false && keys[v] < min) {
-      min = keys[v];
+    if (mstSet[v] === false && dist[v] <= min) {
+      min = dist[v];
       minIndex = v;
     }
   }
@@ -422,13 +443,90 @@ function minKey(keys, mstSet, vertices) {
 }
 
 // http://www.geeksforgeeks.org/greedy-algorithms-set-6-dijkstras-shortest-path-algorithm/
-function Dijkstra() {
+// algorithm is very similar to Prim's minimum spannign tree algorithm
+function Dijkstra(graph, startVertex) {
+  var vertices = graph.length,
+      dist = [],    // output array. Dist[i] will hold the shortest distance from startVertex to vertex i
+      sptSet = [];  // sptSet[i] is true if vertex i is included in shortest path tree or shortest distance from startVertex to i is finalized
+
+  // Initialize all distances to Infinity and stpSet entries to false
+  for (var i = 0; i < vertices; i++) {
+    dist[i] = Infinity;
+    sptSet[i] = false;
+  }
+
+  dist[startVertex] = 0;  // distance of source vertex from itself is always 0
+
+  // Find shortest path for all vertices
+  for (var count = 0; count < vertices - 1; count++) {
+    // pick the minimum distance vertex from the set of vertices not yet processed. minVertex is always equal to startVertex in first iteration
+    var minIndex = minDistance(dist, sptSet, vertices);
+
+    sptSet[minIndex] = true;  // set the min index to true
+
+    // update distance value of the adjacent vertices of minIndex
+    for (var v = 0; v < vertices; v++) {
+      // Update dist[v] only if it isn't in sptSet, there is an edge from minIndex to v and total weight of
+      // path from startVerte to v through minIndex is smaller than current value of dist[v]
+      if (!sptSet[v] && graph[minIndex][v] && dist[minIndex] !== Infinity 
+                     && dist[minIndex] + graph[minIndex][v] < dist[v]) {
+        dist[v] = dist[minIndex] + graph[minIndex][v];
+      }
+    }
+  }
+
+  console.log('\nDijkstra\'s algorithm\nVertex   Distance from Source');
+  for (i = 0; i < vertices; i++)
+    console.log(i, '    ', dist[i]);
+}
+
+// http://www.geeksforgeeks.org/shortest-path-for-directed-acyclic-graphs/
+function shortestPathDAG() {
 
 }
 
 // http://www.geeksforgeeks.org/bipartite-graph/
-function isBipartite() {
+function isBipartite(graph, src) {
+  // Create a color array to store colors assigned to all veritces. Vertex 
+  // number is used as index in this array. The value '-1' of  colorArr[i] 
+  // is used to indicate that no color is assigned to vertex 'i'.  The value 
+  // 1 is used to indicate first color is assigned and value 0 indicates 
+  // second color is assigned.
+  var vertices = graph.length,
+      colorArr = [];
+  
+  for (var i = 0; i < vertices; i++) {
+    colorArr[i] = -1;
+  }
 
+  colorArr[src] = 1;  // assign first color to source
+
+  // Create a queue of vertex numbers and enqueue source vertex for BFS traversal
+  var queue = [];
+  queue.push(src);
+
+  // Run while there are vertices in queue (similar to BFS)
+  while (queue.length > 0) {
+    var currentVertex = queue.shift();
+
+    // find all non-colored adjacent vertices
+    for (var v = 0; v < vertices; v++) {
+      // an edge from currentVertex to v exists and destination is not colored
+      if (graph[currentVertex][v] === 1 && colorArr[v] === -1) {
+        // assign alternate color to vertex v
+        colorArr[v] = 1 - colorArr[currentVertex];  // if currentVertex is 1, 1 - 1 is 0. If it's 0, 1 - 0 is 1
+        queue.push(v);
+      }
+
+      // An edge from currentVertex to v exists and destination is colored with same color as currentIndex
+      if (graph[currentVertex][v] === 1 && colorArr[v] === colorArr[currentVertex]) {
+        return false;
+      }
+    }
+  }
+
+  // If we reach here, then all adjacent vertices can be colored with alternate color
+  return true;
 }
 
 // http://www.geeksforgeeks.org/maximum-bipartite-matching/
@@ -438,21 +536,6 @@ function maxBipartiteMatching() {
 
 // http://www.geeksforgeeks.org/topological-sorting/
 function topologicalSort() {
-
-}
-
-// http://www.geeksforgeeks.org/strongly-connected-components/ or http://www.geeksforgeeks.org/tarjan-algorithm-find-strongly-connected-components/
-function stronglyConnectedComponents() {
-
-}
-
-// http://www.geeksforgeeks.org/shortest-path-for-directed-acyclic-graphs/
-function shortestPathDAG() {
-
-}
-
-// http://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/
-function articulationPoints() {
 
 }
 
@@ -471,6 +554,21 @@ function EulerianCircuit() {
 
 }
 
+// http://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/
+function articulationPoints() {
+
+}
+
+// http://www.geeksforgeeks.org/strongly-connected-components/ or http://www.geeksforgeeks.org/tarjan-algorithm-find-strongly-connected-components/
+function stronglyConnectedComponents() {
+
+}
+
+// http://www.geeksforgeeks.org/bridge-in-a-graph/
+function bridges() {
+
+}
+
 // http://www.geeksforgeeks.org/find-longest-path-directed-acyclic-graph/
 function longestPathInDAG() {
 
@@ -478,11 +576,6 @@ function longestPathInDAG() {
 
 // http://www.geeksforgeeks.org/find-edge-disjoint-paths-two-vertices/
 function maxDisjointPaths() {
-
-}
-
-// http://www.geeksforgeeks.org/bridge-in-a-graph/
-function bridges() {
 
 }
 

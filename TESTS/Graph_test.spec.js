@@ -154,87 +154,104 @@ describe("Graph", function() {
     g.minSpanningPrim(graph);
   });
 
-  it('tests ', function() {
+  it('tests Dijkstra\'s algorithm', function() {
+    var graph = [[0, 4, 0, 0, 0, 0, 0, 8, 0],
+                 [4, 0, 8, 0, 0, 0, 0, 11, 0],
+                 [0, 8, 0, 7, 0, 4, 0, 0, 2],
+                 [0, 0, 7, 0, 9, 14, 0, 0, 0],
+                 [0, 0, 0, 9, 0, 10, 0, 0, 0],
+                 [0, 0, 4, 0, 10, 0, 2, 0, 0],
+                 [0, 0, 0, 14, 0, 2, 0, 1, 6],
+                 [8, 11, 0, 0, 0, 0, 1, 0, 7],
+                 [0, 0, 2, 0, 0, 0, 6, 7, 0]
+                ];
+ 
+    g.Dijkstra(graph, 0);
+  });
+
+  it('tests shortestPathDAG', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests isBipartite', function() {
+    var graph = [[0, 1, 0, 1],
+                 [1, 0, 1, 0],
+                 [0, 1, 0, 1],
+                 [1, 0, 1, 0]
+                ];
+ 
+    expect(g.isBipartite(graph, 0)).toEqual(true);
+  });
+
+  it('tests maxBipartiteMatching', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests topologicalSort', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests printEulerianPath', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests canStringsBeChained', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests EulerianCircuit', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests articulationPoints', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests stronglyConnectedComponents', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests bridges', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests longestPathInDAG', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests maxDisjointPaths', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests isBiconnected', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests FordFulkerson', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests minCut', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests HamiltonianCycle', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests FloydWarshall', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests BellmanFord', function() {
 
   });
 
-  it('tests ', function() {
+  it('tests Johnsons', function() {
 
   });
 
-  it('tests ', function() {
-
-  });
-
-  it('tests ', function() {
-
-  });
-
-  it('tests ', function() {
-
+  it('tests transitiveClosure', function() {
+    
   });
 });

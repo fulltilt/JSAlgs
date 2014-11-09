@@ -28,6 +28,7 @@ function Graph(v, e) {
   this.edgeTo = []; // use to determine shortest path
   
   this.pathTo = pathTo;
+  this.DFSCount = DFSCount;
   this.detectCycleDirected = detectCycleDirected;
   this.detectCycleDirectedHelper = detectCycleDirectedHelper;
   this.detectCycleUndirected = detectCycleUndirected;
@@ -41,8 +42,11 @@ function Graph(v, e) {
   this.shortestPathDAG = shortestPathDAG;
   this.isBipartite = isBipartite;
   this.maxBipartiteMatching = maxBipartiteMatching;
-  this.topologicalSort = this.topologicalSort;
-  this.printEulerianPath = printEulerianPath;
+  this.topologicalSort = topologicalSort;
+  this.topologicalSortUtil = topologicalSortUtil;
+  this.printEulerianTour = printEulerianTour;
+  this.printEulerUtil = printEulerUtil;
+  this.isValidNextEdge = isValidNextEdge;
   this.canStringsBeChained = canStringsBeChained;
   this.EulerianCircuit = EulerianCircuit;
   this.articulationPoints = articulationPoints;
@@ -70,6 +74,24 @@ Graph.prototype = {
   addDirectedEdge: function(v, w) {
     this.adj[v].push(w);
     this.edges += 1;
+  },
+
+  removeEdge: function(v, w) {
+    // find w in adjacency of v and replace it with -1
+    var adjacencyList = this.adj[v];
+    for (var i = 0; i < adjacencyList.length; i++) {
+      if (adjacencyList[i] === w) {
+        adjacencyList[i] = -1;
+      }
+    }
+
+    adjacencyList = this.adj[w];
+    console.log(adjacencyList);
+    for (var i = 0; i < adjacencyList.length; i++) {
+      if (adjacencyList[i] === v) {
+        adjacencyList[i] = -1;
+      }
+    }
   },
 
   showGraph: function() {
@@ -443,7 +465,8 @@ function minDistance(dist, mstSet, vertices) {
 }
 
 // http://www.geeksforgeeks.org/greedy-algorithms-set-6-dijkstras-shortest-path-algorithm/
-// algorithm is very similar to Prim's minimum spannign tree algorithm
+// algorithm is very similar to Prim's minimum spanning tree algorithm
+// Assumptions: no negative edges
 function Dijkstra(graph, startVertex) {
   var vertices = graph.length,
       dist = [],    // output array. Dist[i] will hold the shortest distance from startVertex to vertex i
@@ -480,7 +503,48 @@ function Dijkstra(graph, startVertex) {
     console.log(i, '    ', dist[i]);
 }
 
+// http://www.geeksforgeeks.org/topological-sorting/
+function topologicalSort() {
+  var stack = [],
+      visited = [];
+
+  // mark all the vertices as not visited
+  for (var i = 0; i < this.vertices; i++) {
+    visited[i] = false;
+  }
+
+  // call recursive helper fxn to store topological sort starting from all vertices one by one
+  for (i = 0; i < this.vertices; i++) {
+    if (visited[i] === false) {
+      this.topologicalSortUtil(i, visited, stack);
+    }
+  }
+
+  var output = '';
+  while (stack.length > 0) {
+    output += stack.pop() + ' ';
+  }
+
+  return output.trim();
+}
+
+function topologicalSortUtil(vertex, visited, stack) {
+  visited[vertex] = true; // mark current vertex as visited
+
+  // recur for all vertices adjacent to this vertex
+  var adjacencyList = this.adj[vertex];
+  for (var i = 0; i < adjacencyList.length; i++) {
+    if (!visited[adjacencyList[i]]) {
+      this.topologicalSortUtil(adjacencyList[i], visited, stack);
+    }
+  }
+
+  stack.push(vertex); // push current vertex to stack
+}
+
 // http://www.geeksforgeeks.org/shortest-path-for-directed-acyclic-graphs/
+// topological sort is on applicable to DAGs
+// algorithm: modified DFS
 function shortestPathDAG() {
 
 }
@@ -529,21 +593,6 @@ function isBipartite(graph, src) {
   return true;
 }
 
-// http://www.geeksforgeeks.org/maximum-bipartite-matching/
-function maxBipartiteMatching() {
-
-}
-
-// http://www.geeksforgeeks.org/topological-sorting/
-function topologicalSort() {
-
-}
-
-// http://www.geeksforgeeks.org/fleurys-algorithm-for-printing-eulerian-path/4
-function printEulerianPath() {
-
-}
-
 // http://www.geeksforgeeks.org/given-array-strings-find-strings-can-chained-form-circle/
 function canStringsBeChained() {
 
@@ -589,6 +638,11 @@ function FordFulkerson() {
 
 }
 
+// http://www.geeksforgeeks.org/maximum-bipartite-matching/
+function maxBipartiteMatching() {
+
+}
+
 // http://www.geeksforgeeks.org/minimum-cut-in-a-directed-graph/
 function minCut() {
 
@@ -617,4 +671,90 @@ function Johnsons() {
 // http://www.geeksforgeeks.org/transitive-closure-of-a-graph/
 function transitiveClosure() {
 
+}
+
+// http://www.geeksforgeeks.org/fleurys-algorithm-for-printing-eulerian-path/4
+function printEulerianTour() {
+  // find a vertex with odd degree
+  var startingVertex;
+  for (var i = 0; i < this.vertices; i++) {
+    if (this.adj[i].length % 2 === 1) {
+      startingVertex = i;
+      break;
+    }
+  }
+  
+  // print tour starting from startingVertex
+  this.printEulerUtil(startingVertex);
+}
+
+// Print Euler tour starting from vertex u
+function printEulerUtil(startingVertex) {
+  // recur for all vertices adjacent to this vertex
+  var adjacencyList = this.adj[startingVertex];
+  for (var i = 0; i < adjacencyList.length; i++) {
+    var currentAdjacentVertex = adjacencyList[i];
+
+    // if edge is not removed and it's a valid next edge
+    if (currentAdjacentVertex !== -1 && this.isValidNextEdge(startingVertex, currentAdjacentVertex)) {
+      console.log(startingVertex, '-', currentAdjacentVertex);
+      this.removeEdge(startingVertex, currentAdjacentVertex);
+      this.printEulerUtil(currentAdjacentVertex);
+    }
+  }
+}
+
+function isValidNextEdge(startingVertex, currentAdjacentVertex) {
+  // the edge is valid in one of the following 2 cases
+
+  // Case 1: If currentAdjacentVertex is the only adjacent vertex of startingVertex
+  var count = 0,      // store count of adjacent vertices
+      adjacencyList = this.adj[startingVertex];
+  for (var i = 0; i < adjacencyList.length; i++) {
+    if (adjacencyList[i] === -1) {
+      count += 1;
+    }
+  }
+
+  if (count === 1) {
+    return true;
+  }
+
+  // Case 2: If there are multiple adjacent vertices, then edge is not a bridge.
+  // Case 2a: count of vertices reachable from startingVertex
+  var visited = [];
+  for (i = 0; i < this.vertices; i++) {
+    visited[i] = false;
+  }
+  var count1 = this.DFSCount(startingVertex, visited);
+
+  // Case 2b: remove edge and after removing edge, count vertices reachable from startingVertex
+  this.removeEdge(startingVertex, currentAdjacentVertex);
+  for (i = 0; i < this.vertices; i++) {
+    visited[i] = false;
+  }
+  var count2 = this.DFSCount(startingVertex, visited);
+
+  // Case 2c: add edge back to the graph
+  this.addUndirectedEdge(startingVertex, currentAdjacentVertex);
+
+  // Case 2d: If count1 is greater, then edge is a bridge
+  return (count1 > count2) ? false : true;
+}
+
+// DFS based fxn to count reachable vertices from v
+function DFSCount(v, visited) {
+  // mark current vertex as visited
+  visited[v] = true;
+  var count = 1,
+      adjacencyList = this.adj[v];
+
+  for (var i = 0; i < adjacencyList.length; i++) {
+    var currentAdjacentVertex = adjacencyList[i];
+    if (currentAdjacentVertex !== -1 && !visited[currentAdjacentVertex]) {
+      count += this.DFSCount(currentAdjacentVertex, visited);
+    }
+  }
+
+  return count;
 }

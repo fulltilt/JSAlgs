@@ -169,6 +169,18 @@ describe("Graph", function() {
     g.Dijkstra(graph, 0);
   });
 
+  it('tests topologicalSort', function() {
+    var graph = new Graph(6);
+    graph.addDirectedEdge(5, 2);
+    graph.addDirectedEdge(5, 0);
+    graph.addDirectedEdge(4, 0);
+    graph.addDirectedEdge(4, 1);
+    graph.addDirectedEdge(2, 3);
+    graph.addDirectedEdge(3, 1);
+
+    expect(graph.topologicalSort()).toEqual('5 4 2 3 1 0');
+  });
+
   it('tests shortestPathDAG', function() {
 
   });
@@ -181,18 +193,6 @@ describe("Graph", function() {
                 ];
  
     expect(g.isBipartite(graph, 0)).toEqual(true);
-  });
-
-  it('tests maxBipartiteMatching', function() {
-
-  });
-
-  it('tests topologicalSort', function() {
-
-  });
-
-  it('tests printEulerianPath', function() {
-
   });
 
   it('tests canStringsBeChained', function() {
@@ -231,6 +231,10 @@ describe("Graph", function() {
 
   });
 
+  it('tests maxBipartiteMatching', function() {
+
+  });
+
   it('tests minCut', function() {
 
   });
@@ -253,5 +257,14 @@ describe("Graph", function() {
 
   it('tests transitiveClosure', function() {
     
+  });
+
+  xit('tests printEulerianTour', function() {
+    var g1 = new Graph(4);
+    g1.addUndirectedEdge(0, 1);
+    g1.addUndirectedEdge(0, 2);
+    g1.addUndirectedEdge(1, 2);
+    g1.addUndirectedEdge(2, 3);
+    g1.printEulerianTour();
   });
 });

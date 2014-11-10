@@ -150,19 +150,6 @@ describe("BST", function() {
     expect(bst.mirror(root, bst.root)).toEqual(false);
   });
 
-  it('tests AVL Tree insert', function() {
-    var avl = new BST.AVLTree();
-    avl.AVLInsert(10);
-    avl.AVLInsert(20);
-    avl.AVLInsert(30);
-    avl.AVLInsert(40);
-    avl.AVLInsert(50);
-    avl.AVLInsert(25);
-    var output = [];
-    avl.AVLPreOrder(avl.root, output);
-    expect(output).toEqual([30,20,10,25,40,50]);
-  });
-
   it('tests isSubTree', function() {
     bst.isSubTree(bt2.root, bt3.root);
   });

@@ -4,12 +4,13 @@ function Node(data, left, right) {
   this.data = data;
   this.left = left || null;
   this.right = right || null;
-  this.show = show;
 }
 
-function show() {
-  return this.data;
-}
+Node.prototype = {
+  show: function() {
+    return this.data;
+  }
+} 
 
 function BST() {
   this.root = null;
@@ -24,12 +25,12 @@ function BST() {
   this.size = size;
   this.clear = clear;
   this._clear = _clear;
-
   this.min = min;
   this.max = max;
   this.getInOrder = getInOrder;
   this.iterativeInOrder = iterativeInOrder;
   this.getPreOrder = getPreOrder;
+
   this.isBST = isBST;
   this._isBST = _isBST;
   this.getHeight = getHeight;
@@ -38,7 +39,6 @@ function BST() {
   this.getLargestBSTSubTreeSize = getLargestBSTSubTreeSize;
   this.areTreesIdentical = areTreesIdentical;
   this.mirror = mirror;
-
   this.printAllPaths = printAllPaths;
   this.lowestCommonAncestorBST = lowestCommonAncestorBST;
   this.lowestCommonAncestorBT = lowestCommonAncestorBT;
@@ -100,9 +100,6 @@ function BST() {
   //this.mergeTwoTrees = mergeTwoTrees;
 
   this.segmentTree = segmentTree;
-  this.bTree = bTree;
-  this.splayTree = this.splayTree;
-  this.redBlackTree = redBlackTree;
   this.getRandomBSTNode = getRandomBSTNode;
   this.treeToDoublyLinkedList = treeToDoublyLinkedList;
   this.treeToCircularDoublyLinkedList = treeToCircularDoublyLinkedList;
@@ -279,160 +276,6 @@ function _clear(node) {
   node.right = null;
   node = null;
 }
-
-/*******************************************************/
-
-// AVL Tree
-function AVLNode(data) {
-  this.data = data;
-  this.left = null;
-  this.right = null;
-  this.height = 1;  // new Nodes are always inserted at a leaf so it's default height is always 1
-}
-
-function AVLTree() {
-  this.root = null;
-  this.leftRotate = leftRotate;
-  this.rightRotate = rightRotate;
-  this.AVLInsert = AVLInsert;
-  this._AVLInsert = _AVLInsert;
-//this.delete = AVLDelete;
-//this._delete = _AVLDelete;
-  this.AVLGetHeight = AVLGetHeight;
-  this.getBalance = getBalance;
-  this.AVLPreOrder = AVLPreOrder;
-  this.find = find;
-  this._find = find;
-  this.size = size;
-}
-
-function AVLPreOrder(node, arr) {
-  if (node !== null) {
-    arr.push(node.data);
-    this.AVLPreOrder(node.left, arr);
-    this.AVLPreOrder(node.right, arr);
-  }
-}
-
-function leftRotate(node) {
-  var rightChild = node.right;
-
-  // perform rotation
-  node.right = rightChild.left;
-  rightChild.left = node;
-
-  // update root if applicable
-  if (node === this.root) {
-    this.root = rightChild;
-  }
-
-  // update heights
-  node.height = Math.max(this.AVLGetHeight(node.left), this.AVLGetHeight(node.right)) + 1;
-  rightChild.height = Math.max(this.AVLGetHeight(rightChild.left), this.AVLGetHeight(rightChild.right)) + 1;
-
-  // return new root
-  return rightChild;
-}
-
-function rightRotate(node) {
-  var leftChild = node.left;
-
-  // perform rotation
-  node.left = leftChild.right;
-  leftChild.right = node;
-
-  // update root if applicable
-  if (node === this.root) {
-    this.root = leftChild;
-  }
-
-  // update heights
-  node.height = Math.max(this.AVLGetHeight(node.left), this.AVLGetHeight(node.right)) + 1;
-  leftChild.height = Math.max(this.AVLGetHeight(leftChild.left), this.AVLGetHeight(leftChild.right)) + 1;
-
-  // return new root
-  return leftChild;
-}
-
-// http://www.geeksforgeeks.org/avl-tree-set-1-insertion/
-function AVLInsert(data) {
-  if (this.root === null) {
-    this.root = new AVLNode(data, null, null);
-    return;
-  }
-
-  this._AVLInsert(this.root, data);
-}
-
-function _AVLInsert(node, data) {
-  /* 1. Normal BST insertion */
-  if (node === null) {
-    return new AVLNode(data, null, null);
-  }
-
-  if (data < node.data) {
-    node.left = this._AVLInsert(node.left, data);
-  } else {
-    node.right = this._AVLInsert(node.right, data);
-  }
-
-  /* 2. Update height of this ancestor node */
-  node.height = Math.max(this.AVLGetHeight(node.left), this.AVLGetHeight(node.right)) + 1;
-
-  /* 3. Check balance factor of this Node to check whether this Node became unbalanced with the insertion */
-  var balance = this.getBalance(node);
-
-  // 4. If this Node becomes unbalanced, then there are 4 cases (note: a negative balance means that the tree longer on the right):
-
-  // Left Left Case
-  if (balance > 1 && data < node.left.data) {
-    return this.rightRotate(node);
-  }
-
-  // Right Right Case
-  if (balance < -1 && data > node.right.data) {
-    return this.leftRotate(node);
-  }
-
-  // Left Right Case
-  if (balance > 1 && data > node.left.data) {
-    node.left = this.leftRotate(node.left);
-    return this.rightRotate(node);
-  }
-
-  // Right Left Case
-  if (balance < -1 && data < node.right.data) {
-    node.right = this.rightRotate(node.right);
-    return this.leftRotate(node);
-  }
-
-  // return the (unchanged) node pointer
-  return node;
-}
-
-// AVL Tree helper fxn. Gets height relative to Node 
-function AVLGetHeight(node) {
-  if (node === null) {
-    return 0;
-  }
-  return node.height;
-}
-
-// AVLTree helper fxn. Gets balance factor of Node N
-function getBalance(node) {
-  if (node === null) {
-    return 0;
-  }
-  return this.AVLGetHeight(node.left) - this.AVLGetHeight(node.right);
-}
-
-// http://www.geeksforgeeks.org/avl-tree-set-2-deletion/
-function AVLDelete(data) {
-  
-}
-
-
-/*******************************************************/
 
 /* note: not fully tested
 function isBST() {
@@ -1933,28 +1776,6 @@ function segmentTree() {
 
 }
 
-// http://www.geeksforgeeks.org/b-tree-set-1-introduction-2/
-// http://www.geeksforgeeks.org/b-tree-set-1-insert-2/
-// http://www.geeksforgeeks.org/b-tree-set-3delete/
-function bTree() {
-
-}
-
-// http://www.geeksforgeeks.org/splay-tree-set-1-insert/
-// http://www.geeksforgeeks.org/splay-tree-set-2-insert-delete/
-// This function brings the key at root if key is present in tree. If key is not present, then it brings the last accessed item at
-// root.  This function modifies the tree and returns the new root
-function splayTree() {
-
-}
-
-// http://www.geeksforgeeks.org/red-black-tree-set-1-introduction-2/
-// http://www.geeksforgeeks.org/red-black-tree-set-2-insert/
-// http://www.geeksforgeeks.org/red-black-tree-set-3-delete-2/
-function redBlackTree() {
-
-}
-
 /* NOTE: delaying this as I have to implement a merge function that uses 'left' and 'right' instead of 'previous' and 'next'
 // http://www.geeksforgeeks.org/merge-two-bsts-with-limited-extra-space/
 function mergeTwoTrees(root1, root2) {
@@ -2072,8 +1893,7 @@ function findMaxPathSumBetweenTwoLeaves(node, maxPath) {
 var BinarySearchTree = function() {
   return {
     BinarySearchTree: BST,
-    Node: Node,
-    AVLTree: AVLTree
+    Node: Node
   }
 }();
 
@@ -2083,6 +1903,7 @@ module.exports = BinarySearchTree;
 // http://www.geeksforgeeks.org/tournament-tree-and-binary-heap/
 // http://www.geeksforgeeks.org/find-all-possible-interpretations/
 // http://www.geeksforgeeks.org/clone-binary-tree-random-pointers/
+// http://www.geeksforgeeks.org/serialize-deserialize-binary-tree/
 
 /* NOTES:
 - return this.BTFind(node.left, data) || this.BTFind(node.right, data); // apparently doing null || Object will return the Object

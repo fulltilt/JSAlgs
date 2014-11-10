@@ -169,6 +169,52 @@ describe("Graph", function() {
     g.Dijkstra(graph, 0);
   });
 
+  it('tests BellmanFord', function() {
+    var graph = new Graph(5, 8);
+ 
+    // add edge 0-1 (or A-B in above figure)
+    graph.edge[0].src = 0;
+    graph.edge[0].dest = 1;
+    graph.edge[0].weight = -1;
+ 
+    // add edge 0-2 (or A-C in above figure)
+    graph.edge[1].src = 0;
+    graph.edge[1].dest = 2;
+    graph.edge[1].weight = 4;
+ 
+    // add edge 1-2 (or B-C in above figure)
+    graph.edge[2].src = 1;
+    graph.edge[2].dest = 2;
+    graph.edge[2].weight = 3;
+ 
+    // add edge 1-3 (or B-D in above figure)
+    graph.edge[3].src = 1;
+    graph.edge[3].dest = 3;
+    graph.edge[3].weight = 2;
+ 
+    // add edge 1-4 (or A-E in above figure)
+    graph.edge[4].src = 1;
+    graph.edge[4].dest = 4;
+    graph.edge[4].weight = 2;
+ 
+    // add edge 3-2 (or D-C in above figure)
+    graph.edge[5].src = 3;
+    graph.edge[5].dest = 2;
+    graph.edge[5].weight = 5;
+ 
+    // add edge 3-1 (or D-B in above figure)
+    graph.edge[6].src = 3;
+    graph.edge[6].dest = 1;
+    graph.edge[6].weight = 1;
+ 
+    // add edge 4-3 (or E-D in above figure)
+    graph.edge[7].src = 4;
+    graph.edge[7].dest = 3;
+    graph.edge[7].weight = -3;
+ 
+    graph.BellmanFord(graph, 0);
+  });
+
   it('tests topologicalSort', function() {
     var graph = new Graph(6);
     graph.addDirectedEdge(5, 2);
@@ -202,6 +248,62 @@ describe("Graph", function() {
     expect(g.FordFulkerson(graph, 0, 5)).toEqual(23);
   });
 
+  it('tests FloydWarshall', function() {
+    /* Let us create the following weighted graph
+            10
+       (0)------.(3)
+        |         /|\
+      5 |          |
+        |          | 1
+       \|/         |
+       (1)------.(2)
+            3           */
+    var graph =  [[0,   5,  Infinity, 10],
+                  [Infinity, 0,   3, Infinity],
+                  [Infinity, Infinity, 0,   1],
+                  [Infinity, Infinity, Infinity, 0]
+                ];
+ 
+    // Print the solution
+    g.FloydWarshell(graph);
+  });
+
+  it('tests Johnsons', function() {
+
+  });
+
+  it('tests HamiltonianCycle', function() {
+    /* Let us create the following graph
+      (0)--(1)--(2)
+       |   / \   |
+       |  /   \  |
+       | /     \ |
+      (3)-------(4)    */
+    var graph1 = [[0, 1, 0, 1, 0],
+                  [1, 0, 1, 1, 1],
+                  [0, 1, 0, 0, 1],
+                  [1, 1, 0, 0, 1],
+                  [0, 1, 1, 1, 0],
+                 ];
+   
+    g.HamiltonianCycle(graph1);
+
+    /* Let us create the following graph
+      (0)--(1)--(2)
+       |   / \   |
+       |  /   \  |
+       | /     \ |
+      (3)       (4)    */
+    var graph2 = [[0, 1, 0, 1, 0],
+                  [1, 0, 1, 1, 1],
+                  [0, 1, 0, 0, 1],
+                  [1, 1, 0, 0, 0],
+                  [0, 1, 1, 0, 0],
+                 ];
+ 
+    g.HamiltonianCycle(graph2);
+  });
+
   it('tests maxBipartiteMatching', function() {
 
   });
@@ -211,22 +313,6 @@ describe("Graph", function() {
   });
 
   it('tests minCut', function() {
-
-  });
-
-  it('tests HamiltonianCycle', function() {
-
-  });
-
-  it('tests FloydWarshall', function() {
-
-  });
-
-  it('tests BellmanFord', function() {
-
-  });
-
-  it('tests Johnsons', function() {
 
   });
 

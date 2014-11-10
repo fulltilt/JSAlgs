@@ -44,10 +44,18 @@ function Graph(v, e) {
   this.maxBipartiteMatching = maxBipartiteMatching;
   this.topologicalSort = topologicalSort;
   this.topologicalSortUtil = topologicalSortUtil;
+  this.FordFulkerson = FordFulkerson;
+  this.FFbfs = FFbfs;
+  this.FloydWarshell = FloydWarshell;
+  this.BellmanFord = BellmanFord;
+  this.Johnsons = Johnsons;
+  this.HamiltonianCycle = HamiltonianCycle;
+  this.HamiltonianCycleUtil = HamiltonianCycleUtil;
+  this.isSafe = isSafe;
+  this.canStringsBeChained = canStringsBeChained;
   this.printEulerianTour = printEulerianTour;
   this.printEulerUtil = printEulerUtil;
   this.isValidNextEdge = isValidNextEdge;
-  this.canStringsBeChained = canStringsBeChained;
   this.EulerianCircuit = EulerianCircuit;
   this.articulationPoints = articulationPoints;
   this.stronglyConnectedComponents = stronglyConnectedComponents;
@@ -55,13 +63,7 @@ function Graph(v, e) {
   this.longestPathInDAG = longestPathInDAG;
   this.maxDisjointPaths = maxDisjointPaths;
   this.isBiconnected = isBiconnected;
-  this.FordFulkerson = FordFulkerson;
-  this.FFbfs = FFbfs;
   this.minCut = minCut;
-  this.HamiltonianCycle = HamiltonianCycle;
-  this.FloydWarshall = FloydWarshall;
-  this.BellmanFord = BellmanFord;
-  this.Johnsons = Johnsons;
   this.transitiveClosure = transitiveClosure;
 }
 
@@ -502,6 +504,52 @@ function Dijkstra(graph, startVertex) {
     console.log(i, '    ', dist[i]);
 }
 
+// http://www.geeksforgeeks.org/dynamic-programming-set-23-bellman-ford-algorithm/
+// Same purpose as Dijkstra's algorithm but graph may contain negative edges. Algorithm is simpler but is less time efficient
+function BellmanFord(graph, src) {
+  var dist = [];
+console.log(this.vertices, this.edges);
+  // Step 1: Initialize distances from src to all other vertices as INFINITE
+  for (var i = 0; i < this.vertices; i++) {
+    dist[i] = Infinity;
+  }
+  dist[src] = 0;
+
+  // Step 2: Relax all edges |V| - 1 times. A simple shortest path from src
+  // to any other vertex can have at-most |V| - 1 edges
+  for (var i = 1; i < this.vertices; i++) {
+    for (var j = 0; j < this.edges; j++) {
+      var u = graph.edge[j].src,
+          v = graph.edge[j].dest,
+          weight = graph.edge[j].weight;
+
+      if (dist[u] !== Infinity && dist[u] + weight < dist[v]) {
+        dist[v] = dist[u] + weight;
+      }
+    }
+  }
+
+  // Step 3: check for negative-weight cycles.  The above step guarantees
+  // shortest distances if graph doesn't contain negative weight cycle.
+  // If we get a shorter path, then there is a cycle.
+  for (i = 0; i < this.edges; i++) {
+    u = graph.edge[i].src,
+    v = graph.edge[i].dest,
+    weight = graph.edge[i].weight;
+
+    if (dist[u] !== Infinity && dist[u] + weight < dist[v]) {
+      console.log('Graph contains negative weight cycle');
+    }
+  }
+
+  console.log('\nBellman-Ford Algorithm\nVertex   Distance from Source');
+  for (i = 0; i < this.vertices; i++) {
+    console.log(i, '    ', dist[i]);
+  }
+
+  return;
+}
+
 // http://www.geeksforgeeks.org/topological-sorting/
 function topologicalSort() {
   var stack = [],
@@ -537,7 +585,7 @@ function topologicalSortUtil(vertex, visited, stack) {
       this.topologicalSortUtil(adjacencyList[i], visited, stack);
     }
   }
-
+-
   stack.push(vertex); // push current vertex to stack
 }
 
@@ -653,23 +701,114 @@ function FFbfs(graph, src, sink, parent) {
 }
 
 // http://www.geeksforgeeks.org/dynamic-programming-set-16-floyd-warshall-algorithm/
-function FloydWarshall() {
-
-}
-
-// http://www.geeksforgeeks.org/dynamic-programming-set-23-bellman-ford-algorithm/
-function BellmanFord() {
-
+function FloydWarshell(graph) {
+  //dist will be theoutput matrix that will have the shortest distances between every pair of vertices
+  var vertices = graph.length,
+      dist = [];
+  for (var i = 0; i < vertices; i++) {
+    dist[i] = graph[i].slice();
+  }
+  
+  /* add all vertices one by one to the set of intermediate vertices.
+   -before start of an iteration, we havshortest distances between all pairs of vertices such that the shortests
+    distances consider only the vertices in set {0, 1, 2,...k-1} as intermediate vertices
+    -after the end of an iteration, vertex k is added to the set of intermediate vertices and the set becomes {0, 1, 2,...k}
+  */
+  for (var k = 0; k < vertices; k++) {
+    // pick all vertices as source one by one
+    for (i = 0; i < vertices; i++) {
+      // pick all vertices as source one by one
+      for (var j = 0; j < vertices; j++) {
+        // If vertex k is on the shortest path from i to j, then update the value of dist[i][j]
+        if (dist[i][k] + dist[k][j] < dist[i][j]) {
+          dist[i][j] = dist[i][k] + dist[k][j];
+        }
+      }
+    }
+  }
+  console.log('\nFloyd-Warshell');
+  console.log(dist);
 }
 
 // http://www.geeksforgeeks.org/johnsons-algorithm/
+// no code so implement later as an excercise
 function Johnsons() {
 
 }
 
 // http://www.geeksforgeeks.org/backtracking-set-7-hamiltonian-cycle/
-function HamiltonianCycle() {
+/* This function solves the Hamiltonian Cycle problem using Backtracking.
+  It mainly uses hamCycleUtil() to solve the problem. It returns false
+  if there is no Hamiltonian Cycle possible, otherwise return true and
+  prints the path. Please note that there may be more than one solutions,
+  this function prints one of the feasible solutions. */
+function HamiltonianCycle(graph) {
+  var vertices = graph.length,
+      path = [];
+  for (var i = 0; i < vertices; i++) {
+    path[i] = -1;
+  }
 
+  /* Let us put vertex 0 as the first vertex in the path. If there is
+     a Hamiltonian Cycle, then the path can be started from any point
+    of the cycle as the graph is undirected */
+  path[0] = 0;
+  if (this.HamiltonianCycleUtil(graph, path, 1) === false) {
+    console.log('\nSolution does not exist');
+    return false;
+  }
+
+  console.log('\nSolution exists');
+  console.log(path.join(' ') + ' ' + path[0]);
+  return true;
+}
+
+// recursive utility fxn for Hamiltonian cycle problem
+function HamiltonianCycleUtil(graph, path, position) {
+  var vertices = graph.length;
+
+  // base case: if all verties are included in Hamiltonian cycle
+  if (position === vertices) {
+    // and if there is an edge from the last included vertex to the first vertex
+    return (graph[path[position - 1]][path[0]] === 1);
+  }
+
+  // Try different vertices as a next candidate in Hamiltonian Cycle. We don't try for 0
+  // as we included 0 as starting point in HamiltonianCycle()
+  for (var v = 1; v < vertices; v++) {
+    // check if this vertex can be added to Hamiltonian cycle
+    if (this.isSafe(v, graph, path, position)) {
+      path[position] = v;
+
+      // recur to construct rest of the path
+      if (this.HamiltonianCycleUtil(graph, path, position + 1) === true) {
+        return true;
+      }
+
+      // if adding vertex v doesn't lead to a solution, then remove it
+      path[position] = -1
+    }
+  }
+
+  // if no vertex can be added to Hamiltonian cycle constructed s far, return false
+  return false;
+}
+
+// utility fxn to check if vertex v can be added at index 'position' in Hamiltonian cycle constructed so far (path[])
+function isSafe(v, graph, path, position) {
+  // check if this vertex is an adjacent vertex of the previously added vertex
+  if (graph[path[position - 1]][v] === 0) {
+    return false;
+  }
+
+  // check if the vertex has already been included. This step can be optimized by creating an array equal to the # of vertices
+  for (var i = 0; i < position; i++) {
+    if (path[i] === v) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 // http://www.geeksforgeeks.org/transitive-closure-of-a-graph/

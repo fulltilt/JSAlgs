@@ -83,3 +83,7 @@ module.exports = Trie;
 // http://www.geeksforgeeks.org/trie-delete/
 // http://www.geeksforgeeks.org/longest-prefix-matching-a-trie-based-solution-in-java/
 // main code from: https://github.com/mutaphysis/wordlistparser/blob/master/wordparser.js
+
+/* NOTES
+-If time is at its premium, go for TRIE. If space is at its premium, go for Ternary search tree.
+*/

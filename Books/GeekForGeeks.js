@@ -31,8 +31,6 @@ function GeekForGeeks() {
   this.dutchNationalFlag = dutchNationalFlag;
   this.binarySearchTreeToArray = binarySearchTreeToArray;
   this._binarySearchTreeToArray = _binarySearchTreeToArray;
-  this.unionOfTwoArrays = unionOfTwoArrays;
-  this.intersectionOfTwoArrays = intersectionOfTwoArrays;
   this.floorAndCeilOfSortedArray = floorAndCeilOfSortedArray;
   this.prodArrayPuzzle = prodArrayPuzzle;
   this.findMinUnsortedSubArray = findMinUnsortedSubArray;
@@ -589,41 +587,6 @@ function _binarySearchTreeToArray(node, arr) {
   this._binarySearchTreeToArray(node.left, arr);
   arr.push(node.data);
   this._binarySearchTreeToArray(node.right, arr);
-}
-
-// http://www.geeksforgeeks.org/union-and-intersection-of-two-sorted-arrays-2/
-// if it's sorted, we can use the merge algorithm. However, it doesn't work if the arrays have duplicates
-function unionOfTwoArrays(arr1, arr2) {
-  var bst = new BST.BinarySearchTree();
-  for (var i = 0; i < arr2.length; i++) {
-    bst.insert(arr2[i]);
-  }
-  
-  for (i = 0; i < arr1.length; i++) {
-    if (!bst.find(arr1[i])) {
-      bst.insert(arr1[i]);
-    }
-  }
-
-  return this.binarySearchTreeToArray(bst.root);
-}
-
-// http://www.geeksforgeeks.org/union-and-intersection-of-two-sorted-arrays-2/
-// if it's sorted, we can use the merge algorithm. However, it doesn't work if the arrays have duplicates
-function intersectionOfTwoArrays(arr1, arr2) {
-  var bst = new BST.BinarySearchTree();
-  for (var i = 0; i < arr2.length; i++) {
-    bst.insert(arr2[i]);
-  }
-  
-  var results = []
-  for (i = 0; i < arr1.length; i++) {
-    if (bst.find(arr1[i])) {
-      results.push(arr1[i]);
-    }
-  }
-
-  return results;
 }
 
 // http://www.geeksforgeeks.org/search-floor-and-ceil-in-a-sorted-array/
@@ -1699,7 +1662,6 @@ function countSmallerElementsOnRight(arr) {
 // http://www.geeksforgeeks.org/suffix-array-set-1-introduction/
 // http://www.geeksforgeeks.org/find-next-greater-number-set-digits/
 // http://www.geeksforgeeks.org/an-in-place-algorithm-for-string-transformation/
-// http://www.geeksforgeeks.org/rearrange-a-string-so-that-all-same-characters-become-at-least-d-distance-away/
 
 // PRACTICE - search '***'
 

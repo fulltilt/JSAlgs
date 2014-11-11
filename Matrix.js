@@ -78,3 +78,5 @@ function findSubSquares(arr) {
 function findIslands(arr) {
 
 }
+
+module.exports = Matrix;

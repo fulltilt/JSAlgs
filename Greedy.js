@@ -1,6 +1,8 @@
 function Greedy() {
   this.makeChange = makeChange;
   this.greedyKnapsack = greedyKnapsack;
+  this.activitySelection = activitySelection;
+  this.huffmanCoding = huffmanCoding;
 }
 
 function makeChange(origAmt, coins) { var remainAmt = 0;
@@ -71,4 +73,18 @@ function greedyKnapsack(values, weights, capacity) {
   var capacity = 30;
 */
 
+// http://www.geeksforgeeks.org/greedy-algorithms-set-1-activity-selection-problem/
+function activitySelection(startTimes, finishTimes, n) {
+
+}
+
+// http://www.geeksforgeeks.org/greedy-algorithms-set-3-huffman-coding/
+function huffmanCoding() {
+
+}
+
 module.exports = Greedy;
+
+/* NOTES
+-Greedy graph algorithms: Kruskal's minimum spanning tree, Prim's minimum spanning tree, Dijkstra's shortest path, graph coloring
+*/

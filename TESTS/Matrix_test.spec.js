@@ -7,7 +7,6 @@ describe('Matrix', function() {
 
   });
 
-
   it('tests rotateImage', function() {
 
   });

@@ -14,6 +14,8 @@ function Strings() {
   this.findExcelColumnName = findExcelColumnName;
   this.printAllPermutations = printAllPermutations;
   this.printAnagrams = printAnagrams;  
+  this.sameCharsNDistanceAway = sameCharsNDistanceAway;
+  this.connectRopes = connectRopes;
 }
 
 // http://www.geeksforgeeks.org/a-program-to-check-if-strings-are-rotations-of-each-other-or-not/
@@ -371,6 +373,16 @@ function findAllPossibleWordsFromPhoneDigits(num, results, tempArr) {
 
 // http://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together/ or http://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together-set-2/
 function printAnagrams(list) {
+
+}
+
+// http://www.geeksforgeeks.org/rearrange-a-string-so-that-all-same-characters-become-at-least-d-distance-away/
+function sameCharsNDistanceAway(str, n) {
+
+}
+
+// http://www.geeksforgeeks.org/connect-n-ropes-minimum-cost/
+function connectRopes() {
 
 }
 

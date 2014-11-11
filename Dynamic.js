@@ -1,20 +1,13 @@
-/*
-Common themes with dynamic programming solutions:
- -there is always a table to store previous values. This can be either a 1-dimensional or 2-dimensional array.
- -if it's a 1-dimensional array, the 0th column is always zero. For a 2-dimensional array, the first row is all zeroes and the 0th column is all zeroes
- -there is a lot of potential fence post errors that one must be wary of
- -updating the table can get crazy but the code tends to be relatively short. However, to get the actual values could bloat the code a lot
-  The reason it gets bloated is another pitfall: you have to keep track of the index of longest/greatest/etc and you also have to keep track 
-  of the value
-  -update: you should be able to deduce the 'path' from the table making the code bloat unnecessary (https://class.coursera.org/algo2-003/lecture/221)
-*/
 function Dynamic() {
-  this.lcs = lcs;
+  this.nthFibonacci = nthFibonacci;
+  this.longestCommonSubsequence = longestCommonSubsequence;
   this.recursiveKnapsack = recursiveKnapsack;
   this.dynamicKnapsack = dynamicKnapsack;
   this.dynamicCoinChange = dynamicCoinChange;
   this.longestIncreasingSequence = longestIncreasingSequence;
   this.wordBreak = wordBreak;
+  this.editDistance = editDistance;
+  this.minCostPath = minCostPath;
   this.largestContiguousSumSubarray = largestContiguousSumSubarray;
   this.maxSumOfNonAdjacentElements = maxSumOfNonAdjacentElements;
   this.minNumOfJumpsToEnd = minNumOfJumpsToEnd;
@@ -27,7 +20,13 @@ function Dynamic() {
   this.possibleDecodings = possibleDecodings;
 }
 
-function lcs(string1, string2) {
+// http://www.geeksforgeeks.org/program-for-nth-fibonacci-number/
+function nthFibonacci() {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-4-longest-common-subsequence/
+function longestCommonSubsequence(string1, string2) {
   var lcsLength = 0;  // init max lcs length
 
   // initialize 2D array with all zeroes. The dimensions will be (string1.length + 1) X (string2.length + 1)
@@ -205,6 +204,7 @@ function dynamicCoinChange2(sum, values) {
   return table[sum][0];
 }
 
+// http://www.geeksforgeeks.org/dynamic-programming-set-3-longest-increasing-subsequence/
 function longestIncreasingSequence(arr) {
   var length = arr.length;
   if (length === 0) {
@@ -257,6 +257,16 @@ console.log(input.substr(0, i) + ' ' + input.substr(i, length - 1)); // interest
   }
 
   return false;
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-5-edit-distance/
+function editDistance() {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-6-min-cost-path/
+function minCostPath() {
+
 }
 
 // http://www.geeksforgeeks.org/largest-sum-contiguous-subarray/, http://www.geeksforgeeks.org/dynamic-programming-set-14-maximum-sum-increasing-subsequence/
@@ -326,3 +336,13 @@ function posssibleDecodings(str) {
 
 module.exports = Dynamic;
 
+/* NOTES
+Common themes with dynamic programming solutions:
+ -there is always a table to store previous values. This can be either a 1-dimensional or 2-dimensional array.
+ -if it's a 1-dimensional array, the 0th column is always zero. For a 2-dimensional array, the first row is all zeroes and the 0th column is all zeroes
+ -there is a lot of potential fence post errors that one must be wary of
+ -updating the table can get crazy but the code tends to be relatively short. However, to get the actual values could bloat the code a lot
+  The reason it gets bloated is another pitfall: you have to keep track of the index of longest/greatest/etc and you also have to keep track 
+  of the value
+  -update: you should be able to deduce the 'path' from the table making the code bloat unnecessary (https://class.coursera.org/algo2-003/lecture/221)
+*/

@@ -65,6 +65,8 @@ function Graph(v, e) {
   this.isBiconnected = isBiconnected;
   this.minCut = minCut;
   this.transitiveClosure = transitiveClosure;
+  this.graphColoring = graphColoring;
+  this.mColoring = mColoring;
 }
 
 Graph.prototype = {
@@ -998,6 +1000,16 @@ function stronglyConnectedComponents() {
 
 // http://www.geeksforgeeks.org/bridge-in-a-graph/
 function bridges() {
+
+}
+
+// http://www.geeksforgeeks.org/graph-coloring-set-2-greedy-algorithm/
+function graphColoring() {
+
+}
+
+// http://www.geeksforgeeks.org/backttracking-set-5-m-coloring-problem/
+function mColoring() {
 
 }
 

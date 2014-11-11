@@ -195,7 +195,55 @@ PatternSearch.prototype = {
 
   // http://www.geeksforgeeks.org/pattern-searching-set-7-boyer-moore-algorithm-bad-character-heuristic/
   BoyerMoore: function(pattern, source) {
+    var patternLength = pattern.length,
+        sourceLength = source.length,
+        badChar = [],
+        result = [];
 
+    // fill the bad character array
+    this.badCharacterHeuristic(pattern, badChar);
+
+    var shift = 0;    // s is shift the pattern w.r.t. text
+    while (shift <= (sourceLength - patternLength)) {
+      var j = patternLength - 1;
+
+      // keep reducing index j of pattern while characters of pattern and text are matching at this shift s
+      while (j >= 0 && (pattern[j] === source[shift + j])) {
+        j -= 1;
+      }
+
+      // if the pattern is present at current shift, then index j will become -1 after the above loop
+      if (j < 0) {
+        result.push(shift);
+
+        // shift the pattern so that the next char in text aligns w/the last occurrence of it in pattern.
+        // The condition s + patternLength < sourceLength is necessary for the case when pattern occurs at end of text
+        shift += (shift + patternLength < sourceLength) ? patternLength - badChar[source.charCodeAt(shift + patternLength)] : 1;
+      } else {
+        // shift pattern so that the bad char in text aligns w/the last occurence of it in pattern. The max fxn is used to
+        // make sure that we get a positive shift. We may get a negative shift if the last occurrence of bad char in
+        // pattern is on the right side of the current char
+        shift += Math.max(1, j - badChar[source.charCodeAt(shift + j)]);
+      }
+    }
+
+    return result;
+  },
+
+  // preprocessing fxn for Boyer Moore's bad character heuristic
+  badCharacterHeuristic: function(str, badChar) {
+    var length = str.length,
+        radix = 256;
+
+    // initialize all occurrences as -1
+    for (var i = 0; i < radix; i++) {
+      badChar[i] = -1;
+    }
+
+    // fill the actual value of last occurrence of a character
+    for (i = 0; i < length; i++) {
+      badChar[str.charCodeAt(i)] = i;
+    }
   }
 }
 

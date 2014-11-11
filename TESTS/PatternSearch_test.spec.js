@@ -19,18 +19,14 @@ describe("PatternSearch", function() {
     expect(ps.RabinKarp('AABA', 'AABAACAADAABAAABAA')).toEqual([0,9,13]);
   });
 
+  it('tests BoyerMoore', function() {
+    expect(ps.BoyerMoore('AABA', 'AABAACAADAABAAABAA')).toEqual([0,9,13]);
+  });
+
   xit('tests finiteAutomata', function() {
     expect(ps.finiteAutomata('AABA', 'AABAACAADAABAAABAA')).toEqual([0,9,13]);
   });
-
-  it('tests ternarySearchTree', function() {
-    //expect(ps.ternarySearchTree('AABA', 'AABAACAADAABAAABAA')).toEqual([0,9,13]);
-  });
-
-  it('tests BoyerMoore', function() {
-    //expect(ps.BoyerMoore('AABA', 'AABAACAADAABAAABAA')).toEqual([0,9,13]);
-  });
-
+  
   it('tests addWord and isWord', function() {
     trie.addWord('banana');
     trie.addWord('anana');

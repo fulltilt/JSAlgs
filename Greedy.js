@@ -3,6 +3,7 @@ function Greedy() {
   this.greedyKnapsack = greedyKnapsack;
   this.activitySelection = activitySelection;
   this.huffmanCoding = huffmanCoding;
+  this.connectRopes = connectRopes;
 }
 
 function makeChange(origAmt, coins) { var remainAmt = 0;
@@ -80,6 +81,11 @@ function activitySelection(startTimes, finishTimes, n) {
 
 // http://www.geeksforgeeks.org/greedy-algorithms-set-3-huffman-coding/
 function huffmanCoding() {
+
+}
+
+// http://www.geeksforgeeks.org/connect-n-ropes-minimum-cost/
+function connectRopes() {
 
 }
 

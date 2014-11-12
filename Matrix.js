@@ -1,4 +1,5 @@
-var Trie = require('./Strings/Trie.js');
+var Trie = require('./Strings/Trie.js'),
+    Heap = require('./Heap.js');
 
 function Matrix() {
   this.maxSquareSubMatrix = maxSquareSubMatrix;
@@ -8,9 +9,10 @@ function Matrix() {
   this.maxNumberOnes = maxNumberOnes;
   this.printUniqueRows = printUniqueRows;
   this.printMatrixDiagonally = printMatrixDiagonally;
-  this.strassensMatrixMultiplication = strassensMatrixMultiplication;
+  this.naiveMatrixMultiplication = naiveMatrixMultiplication;
   this.kthSmallestElement = kthSmallestElement;
-  this.searchSortedMatrix = searchSortedMatrix;
+  this.searchSortedMatrix1 = searchSortedMatrix1;
+  this.searchSortedMatrix2 = searchSortedMatrix2;
   this.findSubSquares = findSubSquares;
   this.findIslands = findIslands;
   this.inPlaceTranspose = inPlaceTranspose;
@@ -215,49 +217,156 @@ function printUniqueRows(matrix) {
   }
 }
 
-// http://www.geeksforgeeks.org/print-matrix-diagonally/
-function printMatrixDiagonally(matrix) {
 
+// see http://www.geeksforgeeks.org/dynamic-programming-set-8-matrix-chain-multiplication/
+// also see http://www.geeksforgeeks.org/strassens-matrix-multiplication/
+// assumes a square matrix
+function naiveMatrixMultiplication(m1, m2) {
+  var n = m1.length,  // since it's a square matrix, rows and columns are the same
+      result = [];
+  for (var i = 0; i < n; i++) {
+    result[i] = [];
+  }
+
+  for (i = 0; i < n; i++) {
+    for (var j = 0; j < n; j++) {
+      result[i][j] = 0;
+      for (var k = 0; k < n; k++) {
+        result[i][j] += m1[i][k] * m2[k][j];
+      }
+    }
+  }
+
+  return result;
 }
 
-// http://www.geeksforgeeks.org/strassens-matrix-multiplication/ (see http://www.geeksforgeeks.org/dynamic-programming-set-8-matrix-chain-multiplication/)
-function strassensMatrixMultiplication(matrix) {
+// http://www.geeksforgeeks.org/kth-smallest-element-in-a-row-wise-and-column-wise-sorted-2d-array-set-1/
+// algorithm: add all elements into a min-heap and pop elements k times. Return kth pop. (there is probably a better solution)
+function kthSmallestElement(matrix, k) {
+  var rows = matrix.length,
+      columns = matrix[0].length,
+      heap = new Heap(function(x) { return x; });
 
+  for (var i = 0; i < rows; i++) {
+    for (var j = 0; j < columns; j++) {
+      heap.push(matrix[i][j]);
+    }
+  }
+
+  for (i = 0; i < k - 1; i++) {
+    heap.pop();
+  }
+  return heap.pop();
 }
 
-// http://www.geeksforgeeks.org/kth-smallest-element-in-a-row-wise-and-column-wise-sorted-2d-matrixay-set-1/
-function kthSmallestElement(matrix) {
+// http://www.geeksforgeeks.org/divide-conquer-set-6-search-row-wise-column-wise-sorted-2d-array/
+// assumption: every row is sorted from left to right last # in each row is less than the first # in the next row
+// algorithm: you can treat the matrix as a 1-D sorted array
+function searchSortedMatrix1(matrix, value) {
+  var rows = matrix.length,
+      columns = matrix[0].length,
+      lo = 0,
+      hi = rows * columns - 1;
 
+  while (hi >= lo) {
+    var mid = Math.floor((hi + lo) / 2),
+
+        /** this is the tricky part **/
+        row = Math.floor(mid / columns);
+        column = mid % columns,
+        
+        v = matrix[row][column];
+
+    if (v === value) {
+      return true;
+    }
+
+    if (v > value) {
+      hi = mid - 1;
+    } else {
+      lo = mid + 1;
+    }
+  }
+  return false;
 }
 
-// http://www.geeksforgeeks.org/divide-conquer-set-6-search-row-wise-column-wise-sorted-2d-matrixay/
-function searchSortedMatrix(matrix) {
+// every row is increasingly sorted from left to right, and every column is increasingly sorted from top to bottom
+// http://www.geeksforgeeks.org/divide-conquer-set-6-search-row-wise-column-wise-sorted-2d-array/ (Apress book solution below)
+function searchSortedMatrix2(matrix, value) {
+  var rows = matrix.length,
+      columns = matrix[0].length,
+      row = 0,
+      column = columns - 1;
 
+  while (row < rows && column >= 0) {
+    if (matrix[row][column] === value) {
+      return true;
+    }
+
+    if (matrix[row][column] > value) {
+      column -= 1;
+    } else {
+      row += 1;
+    }
+  }
+
+  return false;
 }
 
 // http://www.geeksforgeeks.org/given-n-x-n-square-matrix-find-sum-sub-squares-size-k-x-k/
 function findSubSquares(matrix) {
-
+  var rows = matrix.length,
+      columns = matrix[0].length;
 }
 
 // http://www.geeksforgeeks.org/find-number-of-islands/
 function findIslands(matrix) {
-
+  var rows = matrix.length,
+      columns = matrix[0].length;
 }
 
 // http://www.geeksforgeeks.org/dynamic-programming-set-27-max-sum-rectangle-in-a-2d-matrix/
 function maxSumRectangle(matrix) {
-
+  var rows = matrix.length,
+      columns = matrix[0].length;
 }
 
 // http://www.geeksforgeeks.org/count-possible-paths-top-left-bottom-right-nxm-matrix/
 function countAllPaths(matrix) {
-
+  var rows = matrix.length,
+      columns = matrix[0].length;
 }
 
 // http://www.geeksforgeeks.org/inplace-m-x-n-size-matrix-transpose/
 function inPlaceTranspose(matrix) {
-//  var rows = matrix
+  var rows = matrix.length,
+      columns = matrix[0].length;
+}
+
+// http://www.geeksforgeeks.org/print-matrix-diagonally/
+function printMatrixDiagonally(matrix) {
+  var rows = matrix.length,
+      columns = matrix[0].length,
+      totalLines = rows + columns - 1;  // there will be rows + columns - 1 lines in the output
+
+  for (var line = 1; line <= totalLines; line++) {
+    // get column index of the first element in this line. Index is 0 for first rows lines and line - row for remaining lines
+    var startColumn = Math.max(0, line - rows);
+
+    // get count of elements in this line. Count is equal to minimum of line number, column - startColumn and row
+    var count = Math.min(line, Math.min(columns - startColumn, rows));
+
+    // print elements of this line
+    var output = '';
+    for (var j = 0; j < count; j++) {
+      output += matrix[Math.min(rows, line) - j - 1][startColumn + j] + ' ';
+    }
+    console.log(output);
+  }
 }
 
 module.exports = Matrix;
+
+/* NOTES
+REVIEW: matrix multiplication
+*/

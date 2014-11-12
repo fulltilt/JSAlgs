@@ -31,16 +31,26 @@ describe('Matrix', function() {
   });
 
   it('tests printSpiral', function() {
-    var matrix = [[1,2,3,4,5,6], [7,8,9,10,11,12], [13,14,15,16,17,18]]
-    m.printSpiral(matrix);
+    var matrix = [[1,2,3,4,5,6], 
+                  [7,8,9,10,11,12], 
+                  [13,14,15,16,17,18]]
+   // m.printSpiral(matrix);
   });
 
   it('tests maxNumberOnes', function() {
-
+    var matrix = [[0,0,0,1],
+                  [0,1,1,1],
+                  [1,1,1,1],
+                  [0,0,0,0]];
+    expect(m.maxNumberOnes(matrix)).toEqual(1);
   });
 
   it('tests printUniqueRows', function() {
-
+    var matrix = [[0,1,0,0,1],
+                  [1,0,1,1,0],
+                  [0,1,0,0,1],
+                  [1,1,1,0,0]];
+    m.printUniqueRows(matrix);
   });
 
   it('tests inPlaceTranspose', function() {

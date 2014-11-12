@@ -1,3 +1,5 @@
+var Trie = require('./Strings/Trie.js');
+
 function Matrix() {
   this.maxSquareSubMatrix = maxSquareSubMatrix;
   this.rotateImage = rotateImage;
@@ -5,13 +7,15 @@ function Matrix() {
   this.printSpiral = printSpiral;
   this.maxNumberOnes = maxNumberOnes;
   this.printUniqueRows = printUniqueRows;
-  this.inPlaceTranspose = inPlaceTranspose;
   this.printMatrixDiagonally = printMatrixDiagonally;
   this.strassensMatrixMultiplication = strassensMatrixMultiplication;
   this.kthSmallestElement = kthSmallestElement;
   this.searchSortedMatrix = searchSortedMatrix;
   this.findSubSquares = findSubSquares;
   this.findIslands = findIslands;
+  this.inPlaceTranspose = inPlaceTranspose;
+  this.maxSumRectangle = maxSumRectangle;
+  this.countAllPaths = countAllPaths;
 }
 
 // http://www.geeksforgeeks.org/maximum-size-sub-matrix-with-all-1s-in-a-binary-matrix/
@@ -157,18 +161,58 @@ function printSpiral(matrix) {
 }
 
 // http://www.geeksforgeeks.org/find-the-row-with-maximum-number-1s/
+// assumption: rows are ordered
 function maxNumberOnes(matrix) {
+  var rows = matrix.length,
+      columns = matrix[0].length,
+      max = -Infinity,
+      maxRow = 0;
 
+  for (var i = 0; i < rows; i++) {
+    var firstOneIndex = findFirstOneIndex(matrix[i]);
+    if (firstOneIndex !== -1 && (columns - firstOneIndex) > max) {
+      max = columns - firstOneIndex;
+      maxRow = i;
+    }
+  }
+
+  return maxRow;
+}
+
+function findFirstOneIndex(arr) {
+  var lo = 0,
+      hi = arr.length - 1;
+
+  while (hi > lo) {
+    var mid = lo + Math.floor((hi - lo) / 2);
+
+    if (mid === 0 || (arr[mid - 1]) === 0 && arr[mid] === 1) {
+      return mid;
+    } else if (arr[mid] === 0) {
+      lo = mid + 1;
+    } else {
+      hi = mid - 1;
+    }
+  }
+
+  return -1;
 }
 
 // http://www.geeksforgeeks.org/print-unique-rows/
 function printUniqueRows(matrix) {
+  var rows = matrix.length,
+      columns = matrix[0].length,
+      trie = new Trie();
 
-}
+  // insert first row into trie
+  trie.addWord(matrix[0].join(''));
+  console.log(matrix[0]);
 
-// http://www.geeksforgeeks.org/inplace-m-x-n-size-matrix-transpose/
-function inPlaceTranspose(matrix) {
-
+  for (var i = 1; i < rows; i++) {
+    if (!trie.isWord(matrix[i].join(''))) {
+      console.log(matrix[i]);
+    }
+  }
 }
 
 // http://www.geeksforgeeks.org/print-matrix-diagonally/
@@ -176,7 +220,7 @@ function printMatrixDiagonally(matrix) {
 
 }
 
-// http://www.geeksforgeeks.org/strassens-matrix-multiplication/
+// http://www.geeksforgeeks.org/strassens-matrix-multiplication/ (see http://www.geeksforgeeks.org/dynamic-programming-set-8-matrix-chain-multiplication/)
 function strassensMatrixMultiplication(matrix) {
 
 }
@@ -199,6 +243,21 @@ function findSubSquares(matrix) {
 // http://www.geeksforgeeks.org/find-number-of-islands/
 function findIslands(matrix) {
 
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-27-max-sum-rectangle-in-a-2d-matrix/
+function maxSumRectangle(matrix) {
+
+}
+
+// http://www.geeksforgeeks.org/count-possible-paths-top-left-bottom-right-nxm-matrix/
+function countAllPaths(matrix) {
+
+}
+
+// http://www.geeksforgeeks.org/inplace-m-x-n-size-matrix-transpose/
+function inPlaceTranspose(matrix) {
+//  var rows = matrix
 }
 
 module.exports = Matrix;

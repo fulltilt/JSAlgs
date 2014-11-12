@@ -67,6 +67,7 @@ function Graph(v, e) {
   this.transitiveClosure = transitiveClosure;
   this.graphColoring = graphColoring;
   this.mColoring = mColoring;
+  this.countAllWalks = countAllWalks;
 }
 
 Graph.prototype = {
@@ -1010,6 +1011,11 @@ function graphColoring() {
 
 // http://www.geeksforgeeks.org/backttracking-set-5-m-coloring-problem/
 function mColoring() {
+
+}
+
+// http://www.geeksforgeeks.org/count-possible-paths-source-destination-exactly-k-edges/ (see http://www.geeksforgeeks.org/shortest-path-exactly-k-edges-directed-weighted-graph/)
+function countAllWalks() {
 
 }
 

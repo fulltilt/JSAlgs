@@ -27,7 +27,7 @@ describe("PatternSearch", function() {
     expect(ps.finiteAutomata('AABA', 'AABAACAADAABAAABAA')).toEqual([0,9,13]);
   });
   
-  it('tests addWord and isWord', function() {
+  it('tests Trie addWord and isWord', function() {
     trie.addWord('banana');
     trie.addWord('anana');
     trie.addWord('nana');

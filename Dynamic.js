@@ -18,6 +18,28 @@ function Dynamic() {
   this.palindromPartitioning = palindromPartitioning;
   this.longestPalindromicSubstring = longestPalindromicSubstring;
   this.possibleDecodings = possibleDecodings;
+  this.minJumps = minJumps;
+  this.binomialCoefficient = binomialCoefficient;
+  this.eggDroppingProblem = eggDroppingProblem;
+  this.cuttingRod = cuttingRod;
+  this.longestBitonicSubsequence = longestBitonicSubsequence;
+  this.wordWrap = wordWrap;
+  this.boxStacking = boxStacking;
+  this.optimalBST = optimalBST;
+  this.subsetSum = subsetSum;
+  this.largestIndependentSet = largestIndependentSet;
+  this.minInsertionsToFormPalindrome = minInsertionsToFormPalindrome;
+  this.longestCommonSubstring = longestCommonSubstring;
+  this.diceThrow = diceThrow;
+  this.toyGameStrategy = toyGameStrategy;
+  this.areStringsInterleaving = areStringsInterleaving;
+  this.assemblyLineScheduling = assemblyLineScheduling;
+  this.longestArithmeticProgression = longestArithmeticProgression;
+  this.maxProductCutting = maxProductCutting;
+  this.nthCatalan = nthCatalan;
+  this.countNumBinaryStringsWOConsecutiveOnes = countNumBinaryStringsWOConsecutiveOnes;
+  this.countDecodings = countDecodings;
+  this.numericKeypad = numericKeypad;
 }
 
 // http://www.geeksforgeeks.org/program-for-nth-fibonacci-number/
@@ -108,6 +130,7 @@ function recursiveKnapsack(capacity, size, value, n) {
 }
 
 // n: number of items
+// http://www.geeksforgeeks.org/dynamic-programming-set-10-0-1-knapsack-problem/
 function dynamicKnapsack(capacity, size, value, n) {
   // initialize dynamic table (instead of just 'n', book initialized it to 'capacity + 1' which resulted in a lot of unused rows)
   var K = []; 
@@ -152,6 +175,7 @@ Notes:
 */
 
 // http://www.topcoder.com/tc?d1=tutorials&d2=dynProg&module=Static
+// http://www.geeksforgeeks.org/dynamic-programming-set-7-coin-change/
 function dynamicCoinChange(sum, values) {
   var table = [];
   table[0] = 0
@@ -240,6 +264,7 @@ function longestIncreasingSequence(arr) {
 }
 
 // Given an input string and a dictionary of words, find out if the input string can be segmented into a space-separated sequence of dictionary words
+// http://www.geeksforgeeks.org/dynamic-programming-set-32-word-break-problem/
 function wordBreak(words, input) {
   // base case  
   if (input.length === 0) {
@@ -325,12 +350,123 @@ function palindromePartitioning(str1) {
 }
 
 // http://www.geeksforgeeks.org/longest-palindrome-substring-set-1/
+// http://www.geeksforgeeks.org/dynamic-programming-set-12-longest-palindromic-subsequence/
 function longestPalindromicSubstring(str) {
 
 }
 
 // http://www.geeksforgeeks.org/count-possible-decodings-given-digit-sequence/
 function posssibleDecodings(str) {
+
+}
+
+// http://www.geeksforgeeks.org/minimum-number-of-jumps-to-reach-end-of-a-given-array/
+function minJumps() {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-9-binomial-coefficient/
+function binomialCoefficient() {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-11-egg-dropping-puzzle/
+function eggDroppingProblem() {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-13-cutting-a-rod/
+function cuttingRod() {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-15-longest-bitonic-subsequence/
+function longestBitonicSubsequence() {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-18-word-wrap/
+function wordWrap() {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-21-box-stacking-problem/
+function boxStacking() {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-24-optimal-binary-search-tree/
+function optimalBST() {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-subset-sum-problem/
+function subsetSum() {
+
+}
+
+// http://www.geeksforgeeks.org/largest-independent-set-problem/
+function largestIndependentSet() {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-28-minimum-insertions-to-form-a-palindrome/
+function minInsertionsToFormPalindrome() {
+
+}
+
+// http://www.geeksforgeeks.org/longest-common-substring/
+function longestCommonSubstring() {
+
+}
+
+// http://www.geeksforgeeks.org/dice-throw-problem/
+function diceThrow() {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-31-optimal-strategy-for-a-game/
+function toyGameStrategy() {
+
+}
+
+// http://www.geeksforgeeks.org/check-whether-a-given-string-is-an-interleaving-of-two-other-given-strings-set-2/
+function areStringsInterleaving(str1, str2, str3) {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-34-assembly-line-scheduling/
+function assemblyLineScheduling() {
+
+}
+
+// http://www.geeksforgeeks.org/length-of-the-longest-arithmatic-progression-in-a-sorted-array/
+function longestArithmeticProgression() {
+
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-36-cut-a-rope-to-maximize-product/
+function maxProductCutting() {
+
+}
+
+// http://www.geeksforgeeks.org/program-nth-catalan-number/
+function nthCatalan() {
+
+}
+
+// http://www.geeksforgeeks.org/count-number-binary-strings-without-consecutive-1s/
+function countNumBinaryStringsWOConsecutiveOnes() {
+
+}
+
+// http://www.geeksforgeeks.org/count-possible-decodings-given-digit-sequence/
+function countDecodings() {
+
+}
+
+// http://www.geeksforgeeks.org/mobile-numeric-keypad-problem/
+function numericKeypad() {
 
 }
 

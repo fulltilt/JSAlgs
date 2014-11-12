@@ -17,7 +17,6 @@ function Matrix() {
   this.findIslands = findIslands;
   this.inPlaceTranspose = inPlaceTranspose;
   this.maxSumRectangle = maxSumRectangle;
-  this.countAllPaths = countAllPaths;
 }
 
 // http://www.geeksforgeeks.org/maximum-size-sub-matrix-with-all-1s-in-a-binary-matrix/
@@ -314,25 +313,63 @@ function searchSortedMatrix2(matrix, value) {
 }
 
 // http://www.geeksforgeeks.org/given-n-x-n-square-matrix-find-sum-sub-squares-size-k-x-k/
-function findSubSquares(matrix) {
-  var rows = matrix.length,
-      columns = matrix[0].length;
-}
+function findSubSquares(matrix, k) {
+  var n = matrix.length,
+      stripSum = [];
+      result = [];
 
-// http://www.geeksforgeeks.org/find-number-of-islands/
-function findIslands(matrix) {
-  var rows = matrix.length,
-      columns = matrix[0].length;
+  if (k > n) {
+    return;
+  }
+
+  for (var i = 0; i < (n - k + 1); i++) { // columns - k + 1 equals the max # of k-dimension subsquares plus 1
+    stripSum[i] = [];
+    result[i] = [];
+  }
+
+  // Step 1: Preprocessing - store sums of all strips of dimensions k x 1
+  for (var j = 0; j < n; j++) {
+    // calculate sum f the first k x 1 rectangle in this column
+    var sum = 0;
+    for (i = 0; i < k; i++) {
+      sum += matrix[i][j];
+    }
+    stripSum[0][j] = sum;
+
+    // calculate remaining rectangles (we do the very first strip separately as the sum is used going forward down the rows)
+    for (i = 1; i < (n - k + 1); i++) {   // columns - k + 1 equals the max # of k-dimension subsquares plus 1
+      sum += matrix[i + k - 1][j] - matrix[i - 1][j]; // add the next row value and subtract the value of the top row of the subsquare
+      stripSum[i][j] = sum;
+    }
+  }
+/* stripSum so far from test case matrix:
+[ [ 6, 6, 6, 6, 6 ], 
+  [ 9, 9, 9, 9, 9 ], 
+  [ 12, 12, 12, 12, 12 ] ]
+*/
+
+  // Step 2: Calculate sum of subsquares using stripSum
+  for (i = 0; i < (n - k + 1); i++) {
+    // calculate and print sum of first subsquare in this row
+    var sum = 0;
+    for (j = 0; j < k; j++) {
+      sum += stripSum[i][j];
+    }
+    var output = '';
+    output += sum + ' ';
+
+    // calculate sum of remaining squares in current row by removing the leftmost strip of previous subsquare and adding a new strip
+    for (j = 1; j < (n - k + 1); j++) {
+      sum += stripSum[i][j + k - 1] - stripSum[i][j - 1];
+      output += sum + ' ';
+    }
+    console.log(output);
+
+  }
 }
 
 // http://www.geeksforgeeks.org/dynamic-programming-set-27-max-sum-rectangle-in-a-2d-matrix/
 function maxSumRectangle(matrix) {
-  var rows = matrix.length,
-      columns = matrix[0].length;
-}
-
-// http://www.geeksforgeeks.org/count-possible-paths-top-left-bottom-right-nxm-matrix/
-function countAllPaths(matrix) {
   var rows = matrix.length,
       columns = matrix[0].length;
 }

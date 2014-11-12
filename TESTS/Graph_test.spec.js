@@ -370,4 +370,8 @@ describe("Graph", function() {
   xit('tests bridges', function() {
 
   });
+
+  it('tests findIslands', function() {
+
+  });
 });

@@ -68,6 +68,7 @@ function Graph(v, e) {
   this.graphColoring = graphColoring;
   this.mColoring = mColoring;
   this.countAllWalks = countAllWalks;
+  this.findIslands = findIslands;
 }
 
 Graph.prototype = {
@@ -1017,6 +1018,12 @@ function mColoring() {
 // http://www.geeksforgeeks.org/count-possible-paths-source-destination-exactly-k-edges/ (see http://www.geeksforgeeks.org/shortest-path-exactly-k-edges-directed-weighted-graph/)
 function countAllWalks() {
 
+}
+
+// http://www.geeksforgeeks.org/find-number-of-islands/
+function findIslands(matrix) {
+  var rows = matrix.length,
+      columns = matrix[0].length;
 }
 
 module.exports = Graph;

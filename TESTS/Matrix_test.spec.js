@@ -90,11 +90,13 @@ describe('Matrix', function() {
   });  
 
   it('tests findSubSquares', function() {
-
-  });
-
-  it('tests findIslands', function() {
-
+    var matrix = [[1, 1, 1, 1, 1],
+                  [2, 2, 2, 2, 2],
+                  [3, 3, 3, 3, 3],
+                  [4, 4, 4, 4, 4],
+                  [5, 5, 5, 5, 5],
+                 ];
+    m.findSubSquares(matrix, 3);
   });
 
   it('tests inPlaceTranspose', function() {

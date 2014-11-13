@@ -1,11 +1,11 @@
-var Heap = require('./Heap.js')            // for Huffman Coding
+var Heap = require('./Heap.js')            // for Huffman Coding and connectRopes
 
 function Greedy() {
   this.makeChange = makeChange;
   this.greedyKnapsack = greedyKnapsack;
   this.activitySelection = activitySelection;
-  this.huffmanCoding = huffmanCoding;
   this.connectRopes = connectRopes;
+  this.huffmanCoding = huffmanCoding;
 }
 
 function makeChange(origAmt, coins) {
@@ -97,6 +97,27 @@ function activitySelection(startTimes, finishTimes) {
   return result;
 }
 
+// http://www.geeksforgeeks.org/connect-n-ropes-minimum-cost/
+function connectRopes(arr) {
+  var heap = new Heap(function(x) { return x; }),
+      length = arr.length,
+      cost = 0;
+  // fill heap
+  for (var i = 0; i < length; i++) {
+    heap.push(arr[i]);
+  }
+
+  while (heap.content.length !== 1) {
+    var r1 = heap.pop(),
+        r2 = heap.pop();
+
+    cost += r1 + r2;
+    heap.push(r1 + r2);
+  }
+
+  return cost;
+}
+
 // http://www.geeksforgeeks.org/greedy-algorithms-set-3-huffman-coding/
 function huffmanCoding(arr, freq) {
   // create heap
@@ -151,11 +172,6 @@ function printCodes(node, path, index) {
     printCodes(node.right, path);
     path.pop();
   }
-}
-
-// http://www.geeksforgeeks.org/connect-n-ropes-minimum-cost/
-function connectRopes() {
-
 }
 
 module.exports = Greedy;

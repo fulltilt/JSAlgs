@@ -34,6 +34,6 @@ describe("Greedy", function() {
   });
 
   it('tests connectRopes', function() {
-
+    expect(g.connectRopes([4,3,2,6])).toEqual(29);
   });
 });

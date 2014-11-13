@@ -131,6 +131,7 @@ function recursiveKnapsack(capacity, size, value, n) {
 
 // n: number of items
 // http://www.geeksforgeeks.org/dynamic-programming-set-10-0-1-knapsack-problem/
+// Discrete or 0-1 Knapsack problem. For fractional knapsack problem use greedy algorithm
 function dynamicKnapsack(capacity, size, value, n) {
   // initialize dynamic table (instead of just 'n', book initialized it to 'capacity + 1' which resulted in a lot of unused rows)
   var K = []; 

@@ -17,19 +17,33 @@ describe("BackTracking", function() {
   });
 
   it('tests knightsTour', function() {
-    bt.knightsTour();
+    //bt.knightsTour();
   });
 
   it('tests mazePuzzle', function() {
-
+    var maze = [[1, 0, 0, 0],
+                [1, 1, 0, 1],
+                [0, 1, 0, 0],
+                [1, 1, 1, 1]];
+    //bt.mazePuzzle(maze);
   });
 
-  it('tests nQueenProblem', function() {
-
+  it('tests nQueen', function() {
+    var board = [[0,0,0,0,0,0,0,0],
+                 [0,0,0,0,0,0,0,0],
+                 [0,0,0,0,0,0,0,0],
+                 [0,0,0,0,0,0,0,0],
+                 [0,0,0,0,0,0,0,0],
+                 [0,0,0,0,0,0,0,0],
+                 [0,0,0,0,0,0,0,0],
+                 [0,0,0,0,0,0,0,0]];
+    bt.nQueen(board, 0);
+    //console.log(board);
   });
 
   it('tests subsetSum', function() {
-
+    var weights = [10,7,5,18,12,20,15];
+    bt.subsetSum(weights, 35);
   });
 
   it('tests tugOfWar', function() {

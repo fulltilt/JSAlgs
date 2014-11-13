@@ -2,7 +2,7 @@ function BackTracking() {
   this.printAllPermutations = printAllPermutations;
   this.knightsTour = knightsTour;
   this.mazePuzzle = mazePuzzle;
-  this.nQueenProblem = nQueenProblem;
+  this.nQueen = nQueen;
   this.subsetSum = subsetSum;
   this.sudoku = sudoku;
   this.tugOfWar = tugOfWar;
@@ -76,11 +76,11 @@ function knightsTourUtil(x, y, successes, board, xMove, yMove) {
     return true;
   }
 
-  // try all next moves from the current coordinat x,y
+  // try all next moves from the current coordinate x,y
   for (var i = 0; i < potentialMoves; i++) {
     var nextX = x + xMove[i],
         nextY = y + yMove[i];
-    if (isSafe(board, nextX, nextY)) {
+    if (isKnightSafe(board, nextX, nextY)) {
       board[nextX][nextY] = successes;
       if (knightsTourUtil(nextX, nextY, successes + 1, board, xMove, yMove) === true) {
         return true;
@@ -94,24 +94,142 @@ function knightsTourUtil(x, y, successes, board, xMove, yMove) {
 }
 
 // make sure i and j are valid indexes
-function isSafe(board, x, y) {
+function isKnightSafe(board, x, y) {
   var dimension = 8;
   return (x >= 0 && x < dimension && y >= 0 && y < dimension && board[x][y] === -1);
 }
 
 // http://www.geeksforgeeks.org/backttracking-set-2-rat-in-a-maze/
-function mazePuzzle() {
+// assumes an N x N matrix
+// start at upper left corner and goal is lower-right corner. In maze, 1 represents valid spot, 0 represents a dead end
+function mazePuzzle(maze) {
+  var n = maze.length,
+      solution = [];
+  for (var i = 0; i < n; i++) {
+    solution[i] = [];
+    for (var j = 0; j < n; j++) {
+      solution[i][j] = -1;
+    }
+  }
 
+  /* xMove[] and yMove[] define next move of Knight.
+     xMove[] is for next value of x coordinate
+     yMove[] is for next value of y coordinate */
+  var xMove = [1, -1, 0, 0],
+      yMove = [0, 0, 1, -1];
+
+  solution[0][0] = 1;
+
+  // start from [0,0] and explore all tours using knightsTourUtil
+  if (mazePuzzleUtil(0, 0, solution, maze, xMove, yMove) === false) {
+    return false;
+  } else {
+    console.log(solution);
+  }
+
+  return true;
+}
+
+function mazePuzzleUtil(x, y, solution, maze, xMove, yMove) {
+  var goal = solution.length - 1,
+      directions = xMove.length;
+
+  if (x === goal && y === goal) {
+    return true;
+  }
+
+  for (var i = 0; i < directions; i++) {
+    var nextX = x + xMove[i],
+        nextY = y + yMove[i];
+    if (isPathSafe(nextX, nextY, solution, maze) === true) {
+      solution[nextX][nextY] = 1;
+      if (mazePuzzleUtil(nextX, nextY, solution, maze, xMove, yMove) === true) {
+        return true;
+      } else {
+        solution[nextX][nextY] = -1;  //backtrack
+      }
+    }
+  }
+
+  return false;
+}
+
+function isPathSafe(x, y, solution, maze) {
+  var dimension = solution.length;
+  return (x >= 0 && x < dimension && y >= 0 && y < dimension && maze[x][y] !== 0 && solution[x][y] !== 1);
 }
 
 // http://www.geeksforgeeks.org/backtracking-set-3-n-queen-problem/
-function nQueenProblem() {
+// high-level algorithm: place queens from left to right (or right to left or top to bottom or bottom to top)
+function nQueen(board, column) {
+  var N = board.length;
 
+  // base case: if all queens are placed then return true
+  if (column >= N) {
+    return true;
+  }
+
+  // consider this column and try placing this queen in all rows one by one
+  for (var row = 0; row < N; row++) {
+    if (isQueenSafe(board, row, column) === true) {
+      board[row][column] = 1;
+      if (this.nQueen(board, column + 1) === true) {
+        return true;
+      } else {
+        board[row][column] = 0; // backtrack
+      }
+    }
+  }
+
+  return false;
+}
+
+// for this version of the algorithm we're placing queens from left to right. Because of this, we don't have to check above, below and to our right
+function isQueenSafe(board, row, column) {
+  var N = board.length;
+
+  // check left on row
+  for (var i = 0; i < column; i++) {
+    if (board[row][i] === 1) {
+      return false;
+    }
+  }
+
+  // check upper-left diagonal
+  for (var i = row, j = column; i >= 0 && j >= 0; i--, j--) {
+    if (board[i][j] === 1) {
+      return false;
+    }
+  }
+
+  // check lower-left diagonal
+  for (i = row, j = column; i < N && j >= 0; i++, j--) {
+    if (board[i][j] === 1) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 // http://www.geeksforgeeks.org/backttracking-set-4-subset-sum/
-function subsetSum() {
+function subsetSum(weights, targetSum) {
+  var set = [],
+      currentSum = 0;
 
+  for (var i = 0; i < weights.length; i++) {
+    set.push(weights[i]);
+    currentSum = weights[i];
+    if (subsetSumUtil(weights, set, currentSum, targetSum) === true) {
+      return true;
+    } else {
+      set.pop();  // backtrack
+    }
+  }
+}
+
+function subsetSumUtil(weights, set, currentSum, targetSum) {
+  if ()
 }
 
 // http://www.geeksforgeeks.org/tug-of-war/

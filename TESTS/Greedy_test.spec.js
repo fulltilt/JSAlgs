@@ -7,7 +7,6 @@ describe("Greedy", function() {
     var origAmt = .63;
     var coins = []; 
     var arr = g.makeChange(origAmt, coins); 
-    //  showChange(coins);
 
     expect(arr[0]).toEqual(3);
     expect(arr[1]).toEqual(undefined);
@@ -21,4 +20,20 @@ describe("Greedy", function() {
     var capacity = 30;
     expect(g.greedyKnapsack(values, weights, capacity)).toEqual(220);
   })
+
+  it('tests activitySelection', function() {
+    var start  =  [1, 3, 0, 5, 8, 5],
+        finish =  [2, 4, 6, 7, 9, 9];
+    expect(g.activitySelection(start, finish)).toEqual([0,1,3,4]);
+  });
+
+  it('tests huffmanCoding', function() {
+    var arr = ['a', 'b', 'c', 'd', 'e', 'f'],
+        freq = [5, 9, 12, 13, 16, 45];
+    g.huffmanCoding(arr, freq);
+  });
+
+  it('tests connectRopes', function() {
+
+  });
 });

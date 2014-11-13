@@ -1,4 +1,5 @@
 // Note: this doesn't use content[0] as a dummy input to make the math easier
+// this is a min Heap
 function Heap(scoreFunction) {
   this.content = [];
   this.scoreFunction = scoreFunction; // allows us to store objects that can not be directly compared

@@ -1,3 +1,5 @@
+var Heap = require('./Heap.js')            // for Huffman Coding
+
 function Greedy() {
   this.makeChange = makeChange;
   this.greedyKnapsack = greedyKnapsack;
@@ -6,7 +8,7 @@ function Greedy() {
   this.connectRopes = connectRopes;
 }
 
-function makeChange(origAmt, coins) { var remainAmt = 0;
+function makeChange(origAmt, coins) {
   if (origAmt % .25 < origAmt) {
     coins[3] = parseInt(origAmt / .25);
     origAmt = origAmt % .25;
@@ -75,13 +77,80 @@ function greedyKnapsack(values, weights, capacity) {
 */
 
 // http://www.geeksforgeeks.org/greedy-algorithms-set-1-activity-selection-problem/
-function activitySelection(startTimes, finishTimes, n) {
+// assumes finishTimes is sorted. First activity is always selected first
+// note: this is really not-optimal
+function activitySelection(startTimes, finishTimes) {
+  var result = [],
+      activities = finishTimes.length,
+      start = startTimes[0],
+      finish = finishTimes[0];
+  result.push(0);
 
+  for (var i = 1; i < activities; i++) {
+    start = startTimes[i];
+    if (start >= finish) {
+      result.push(i);
+      finish = finishTimes[i];
+    }
+  }
+
+  return result;
 }
 
 // http://www.geeksforgeeks.org/greedy-algorithms-set-3-huffman-coding/
-function huffmanCoding() {
+function huffmanCoding(arr, freq) {
+  // create heap
+  var length = arr.length,
+      heap = new Heap(function(x) { return x.frequency; });
+  for (var i = 0; i < length; i++) {
+    heap.push(new Node(arr[i], freq[i]));
+  }
 
+  // create tree by iterating while size of heap doesn't become 1
+  while (heap.content.length !== 1) {
+    // extract the 2 minimum frequency items from min heap
+    var left = heap.pop(),
+        right = heap.pop();
+
+    // create a new internal node with frequency equal to the sum of left and right. Make left and right children of new node.
+    // New node's char value will be a '$' to act as an unused placeholder
+    var top = new Node('$', left.frequency + right.frequency);
+    top.left = left;
+    top.right = right;
+    heap.push(top);
+  }
+
+  // print codes
+  printCodes(heap.content[0], [], 0);
+}
+
+// function that represents Nodes for Huffman Tree
+function Node(char, frequency) {
+  this.char = char;
+  this.frequency = frequency;
+  left = null;
+  right = null;
+}
+
+// helper fxn for huffmanTree. This is basically print all paths binary tree algo
+// if we go left, add 0 to the path; if we go right, add 1 to the path
+function printCodes(node, path, index) {
+  if (node === null) {
+    return;
+  }
+
+  if (node.char !== '$') {  // we're at a leaf
+    console.log(node.char, path.join(''));
+    return;
+  } else {
+    path.push(0);
+    printCodes(node.left, path);
+    path.pop();
+
+    path.push(1);
+    printCodes(node.right, path);
+    path.pop();
+  }
 }
 
 // http://www.geeksforgeeks.org/connect-n-ropes-minimum-cost/

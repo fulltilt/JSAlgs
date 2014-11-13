@@ -1030,6 +1030,6 @@ module.exports = Graph;
 
 /* NOTES
 -adjacency matrix representations are easier to implement than adjacency lists. However, adjacency lists usage is more efficient
-
+ -comparison: http://www.geeksforgeeks.org/graph-and-its-representations/
 
 */

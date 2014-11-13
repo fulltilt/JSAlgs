@@ -18,19 +18,6 @@ describe("Strings", function() {
     expect(s.runLengthEncoding('wwwwaaadexxxxxx')).toEqual('w4a3d1e1x6');
   });
 
-  it('tests printAllPermutations', function() {
-    var permArr = [],   // used only to hold the results
-        usedChars = []; // used to hold the temporary permutations
-    s.printAllPermutations('ABC'.split(''), permArr, usedChars);  // have to convert string to array for algorithm to work
-
-    // join the results back into a string
-    for (var i = 0; i < permArr.length; i++) {
-      permArr[i] = permArr[i].join('');
-    }
-
-    expect(permArr).toEqual([ 'ABC', 'ACB', 'BAC', 'BCA', 'CAB', 'CBA' ]);
-  });
-
   it('tests printListItemsContainingWord', function() {
     expect(s.printListItemsContainingWord(['sunday','geeksforgeeks','utensils','just','sss'], 'sun')).toEqual(['sunday','utensils']);
   });

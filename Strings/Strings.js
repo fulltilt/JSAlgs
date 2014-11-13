@@ -66,29 +66,6 @@ function runLengthEncoding(str) {
   return result;
 }
 
-// http://stackoverflow.com/questions/9960908/permutations-in-javascript or http://www.geeksforgeeks.org/print-all-permutations-with-repetition-of-characters/
-// assumptions: input is in array form
-// NOTE: to print lexicographically (http://www.geeksforgeeks.org/lexicographic-permutations-of-string/) I think all we need to do is to sort the string in order before running the algorithm
-function printAllPermutations(arr, permArr, usedChars) {
-  var i, ch;
-  for (i = 0; i < arr.length; i++) {
-    ch = arr.splice(i, 1)[0]; // cut out the each index from the array one at a time (splice alters the original array; it also returns an Array hence the '[0]')
-    usedChars.push(ch);
-
-    // if after the splice arr is empty, usedChars should be the length of the original arr so push it to the results
-    if (arr.length === 0) {
-      permArr.push(usedChars.slice());
-    }
-
-    // recurse using a different starting point
-    this.printAllPermutations(arr, permArr, usedChars);
-    
-    // put array back to its original state and remove the char from usedChars. This is so every index becomes the starting index before the first recursion
-    arr.splice(i, 0, ch);
-    usedChars.pop();
-  }
-}
-
 // http://www.geeksforgeeks.org/print-list-items-containing-all-characters-of-a-given-word/
 // this solution is kind of crazy as it handles repetitions in the base word
 function printListItemsContainingWord(list, word) {

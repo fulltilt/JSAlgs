@@ -1667,8 +1667,8 @@ function countSmallerElementsOnRight(arr) {
 
 // DIDN'T COMPLETELY UNDERSTAND: nextGreaterElement, findSmallestMissingNumber, countNumberOfOccurrences,
 // maxLengthBitonicSubArray, compare findSubArrayWithGivenSum with findTwoNumsThatSumToN, findSortedSubSequenceOfThree,
-// biggestNumCompare, findSmallestValueNotReppedBySubArraySum, printAllPermutations
-// Recursion practice: printInterleavingsRecur, printAllPermutations, removeAdjacentDuplicates
+// biggestNumCompare, findSmallestValueNotReppedBySubArraySum
+// Recursion practice: printInterleavingsRecur removeAdjacentDuplicates
 
 // MATHY: findRepeatingAndMissing
 module.exports = GeekForGeeks;

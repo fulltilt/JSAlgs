@@ -128,18 +128,67 @@ function intersectionOfTwoArrays(arr1, arr2) {
 
 // http://www.geeksforgeeks.org/print-all-possible-combinations-of-r-elements-in-a-given-array-of-size-n/
 // assumptions: no negative numbers and no duplicates
-function printSubsetsOfKElements(arr, K) {
+// note: can use a variation of printPermutations where result is a Set data structure. As it stands it adds every permutation of length k into result
+function printSubsetsOfKElements(arr, result, usedChars, k) {
+  var length = arr.length;
 
+  for (var i = 0; i < length; i++) {
+    var ch = arr.splice(i, 1)[0];
+    usedChars.push(ch);
+
+    if (usedChars.length === k) {
+      result.push(usedChars.slice());
+    }
+
+    this.printSubsetsOfKElements(arr, result, usedChars, k);
+
+    // put array back to its original state and remove the char from usedChars. This is so every index becomes the starting index before the first recursion. Basically, backtrack
+    arr.splice(i, 0, ch); 
+    usedChars.pop();
+  }
 }
 
 // http://www.geeksforgeeks.org/print-all-combinations-of-given-length/
-function kLengthStringsFromNChars(arr, k) {
+function kLengthStringsFromNChars(arr, prefix, k) {
+  // base case: k is 0, print prefix
+  if (k === 0) {
+    console.log(prefix);
+    return;
+  }
 
+  // one by one add all characters from set and recursively call for k equals to k - 1
+  for (var i = 0; i < arr.length; i++) {
+    // nxt character of input added
+    var newPrefix = prefix + arr[i];
+
+    // k is decreased because we have added a new character
+    this.kLengthStringsFromNChars(arr, newPrefix, k - 1);
+  }
 }
 
-// http://www.geeksforgeeks.org/print-increasing-sequences-length-k-first-n-natural-numbers/
-function printFirstKIncSequenceFromNNumbers(k, n) {
+// *** http://www.geeksforgeeks.org/print-increasing-sequences-length-k-first-n-natural-numbers/
+function printFirstKIncSequenceFromNNumbers(n, k, index, arr) {
+  if (index === k) {
+    console.log(arr);
+    //arr.pop();
+    return;
+  }
 
+  /* Decide the starting number to put at current position. If length is 0, then there are no previous elements.
+     So start putting new numbers with 1. If length is not 0, then start from value of previous element plus 1 */
+  var i = (index === 0) ? 1 : arr[index - 1] + 1;
+
+  index += 1; // increase index
+
+  // put all numbers (which are greater than the previous element) at new position
+  while (i <= n) {
+    arr[index - 1] = i;
+    this.printFirstKIncSequenceFromNNumbers(n, k, index, arr);
+    i += 1;
+  }
+
+  // this is important as 'index' is shared among all fxn calls in recursion tree. Its value must be brought back before next iteration of loop
+  index -= 1;
 }
 
 module.exports = Set;

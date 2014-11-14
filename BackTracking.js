@@ -1,5 +1,6 @@
 function BackTracking() {
   this.printAllPermutations = printAllPermutations;
+  this.printAllPermutationsWithRepetitions = printAllPermutationsWithRepetitions;
   this.knightsTour = knightsTour;
   this.mazePuzzle = mazePuzzle;
   this.nQueen = nQueen;
@@ -30,6 +31,11 @@ function printAllPermutations(arr, permArr, usedChars) {
     arr.splice(i, 0, ch);
     usedChars.pop();
   }
+}
+
+// http://www.geeksforgeeks.org/print-all-permutations-with-repetition-of-characters/
+function printAllPermutationsWithRepetitions() {
+
 }
 
 function swap(str, x, y) {

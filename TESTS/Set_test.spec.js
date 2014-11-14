@@ -63,5 +63,20 @@ describe("Set", function() {
     expect(set3.size()).toEqual(1);
     expect(set3.dataStore.indexOf('Peter')).toEqual(-1);
     expect(set3.dataStore.indexOf('David')).toNotEqual(-1);
-  });  
+  });
+
+  xit('tests printSubsetsOfKElements', function() {
+    var result = [];
+    set1.printSubsetsOfKElements([1, 2, 3, 4, 5], result, [], 3);
+    console.log(result);
+  });
+
+  it('tests kLengthStringsFromNChars', function() {
+    var prefix = '';
+    set1.kLengthStringsFromNChars(['a','b'], '', 3);
+  });
+
+  it('tests printFirstKIncSequenceFromNNumbers', function() {
+    set1.printFirstKIncSequenceFromNNumbers(7, 3, 0, []);
+  });
 });

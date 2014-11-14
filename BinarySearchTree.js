@@ -1911,6 +1911,7 @@ module.exports = BinarySearchTree;
 -example of a way to change the tree while iterating through the tree
 -the print level (breadth-first search) algorithm can be used for a lot of problems and avoids the overhead of recursion
 -note: a lot of fxns are accepting a result array. This is mainly for testing purposes and can be omitted
+-when given a preorder traversal array, the root is always the first element. For postorder, the root is always the last element
 
 THINGS TO TRY WHEN STUMPED: 
 -instead of the usual else-if recursive structure, take out the conditionals so that each statement can be run (see ceiling())

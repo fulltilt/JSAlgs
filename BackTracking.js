@@ -34,8 +34,30 @@ function printAllPermutations(arr, permArr, usedChars) {
 }
 
 // http://www.geeksforgeeks.org/print-all-permutations-with-repetition-of-characters/
-function printAllPermutationsWithRepetitions() {
+function printAllPermutationsWithRepetitions(str) {
+  var arr = [],
+      strArr = str.split(''),
+      length = str.length;
 
+  strArr = strArr.sort();
+  printAllPermutationsWithRepetitionsUtil(strArr, arr, length - 1, 0);
+}
+
+function printAllPermutationsWithRepetitionsUtil(strArr, arr, last, index) {
+  var length = strArr.length;
+
+  // one by one, fix all characters at the given index and recur for the subsequent indexes
+  for (var i = 0; i < length; i++) {
+    // fix the ith character at index and if this isn't the last index, recursively call for higher indexes
+    arr[index] = strArr[i];
+
+    // if this is the last index then print the string stored in arr[]
+    if (index === last) {
+      console.log(arr);
+    } else {
+      printAllPermutationsWithRepetitionsUtil(strArr, arr, last, index + 1);
+    }
+  }
 }
 
 function swap(str, x, y) {
@@ -235,7 +257,7 @@ function subsetSum(weights, targetSum) {
 }
 
 function subsetSumUtil(weights, set, currentSum, targetSum) {
-  if ()
+  
 }
 
 // http://www.geeksforgeeks.org/tug-of-war/

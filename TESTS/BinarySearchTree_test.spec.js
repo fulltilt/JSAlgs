@@ -711,7 +711,36 @@ describe("BST", function() {
     expect(bst.areNodesCousins(root, 7, 5)).toEqual(false);
   });
 
-  it('tests recreateTreeGivenTwoTraversals', function() {
+  it('tests recreateFromInOrderAndPreOrder', function() {
+    var inOrder = ['D', 'B', 'E', 'A', 'F', 'C'],
+        preOrder = ['A', 'B', 'D', 'E', 'C', 'F'],
+        preOrderIndex = { index: 0 },
+        root = bst.recreateFromInOrderAndPreOrder(inOrder, preOrder, 0, inOrder.length - 1, preOrderIndex);
+
+    //bst.printByLevel(root);
+  });
+
+  it('tests recreateFromPreOrderAndPostOrder', function() {
+    var pre = [1, 2, 4, 8, 9, 5, 3, 6, 7],
+        post = [8, 9, 4, 5, 2, 6, 7, 3, 1],
+        preOrderIndex = { index: 0 },
+        root = bst.recreateFromPreOrderAndPostOrder(pre, post, 0, pre.length - 1, preOrderIndex);
+    bst.printByLevel(root);
+  });
+
+  it('tests recreateFromInOrderAndLevelOrer', function() {
+
+  });
+
+  it('tests recreateFromInOrder', function() {
+
+  });
+
+  it('tests recreateFromPreOrder', function() {
+
+  });
+
+  it('tests postOrderFromInOrderAndPreOrder', function() {
 
   });
 

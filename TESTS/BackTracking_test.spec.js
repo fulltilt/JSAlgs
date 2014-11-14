@@ -16,6 +16,10 @@ describe("BackTracking", function() {
     expect(permArr).toEqual([ 'ABC', 'ACB', 'BAC', 'BCA', 'CAB', 'CBA' ]);
   });
 
+  it('tests printAllPermutationsWithRepetitions', function() {
+    bt.printAllPermutationsWithRepetitions('ABC');
+  });
+
   it('tests knightsTour', function() {
     //bt.knightsTour();
   });

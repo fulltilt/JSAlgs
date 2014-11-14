@@ -53,7 +53,6 @@ function BST() {
   this._getMaxWidth = _getMaxWidth;
   this.isTreeBalanced = isTreeBalanced;
   this.existsPathSum = existsPathSum;
-  this.recreateTreeGivenTwoTraversals = recreateTreeGivenTwoTraversals;
   this.doubleTree = doubleTree;
   this.canFold = canFold;
   this.kDistanceFromRoot = kDistanceFromRoot;
@@ -98,6 +97,12 @@ function BST() {
   this.findMaxPathSumBetweenTwoLeaves = findMaxPathSumBetweenTwoLeaves;
   this.areNodesCousins = areNodesCousins;
   //this.mergeTwoTrees = mergeTwoTrees;
+  this.recreateFromInOrderAndPreOrder = recreateFromInOrderAndPreOrder;
+  this.recreateFromPreOrderAndPostOrder = recreateFromPreOrderAndPostOrder;
+  this.recreateFromInOrderAndLevelOrder = recreateFromInOrderAndLevelOrder;
+  this.recreateFromInOrder = recreateFromInOrder;
+  this.recreateFromPreOrder = recreateFromPreOrder;
+  this.postOrderFromInOrderAndPreOrder = postOrderFromInOrderAndPreOrder;
 
   this.segmentTree = segmentTree;
   this.getRandomBSTNode = getRandomBSTNode;
@@ -296,6 +301,7 @@ function _isBST(node, isLeftChild, isRightChild, parentData) {
 }
 */
 
+// http://www.geeksforgeeks.org/a-program-to-check-if-a-binary-tree-is-bst-or-not/
 function isBST(node) {
   return this._isBST(node, -Infinity, Infinity);
 }
@@ -1700,25 +1706,76 @@ function sumTree(node) {
   return node.data + sumTree(node.left) + sumTree(node.right);
 }
 
-// http://www.geeksforgeeks.org/check-for-identical-bsts-without-building-the-trees/
-function checkIdenticalArrayBST(arr1, arr2) {
-
-}
-
 // http://www.geeksforgeeks.org/if-you-are-given-two-traversal-sequences-can-you-construct-the-binary-tree/
 // http://www.geeksforgeeks.org/construct-tree-from-given-inorder-and-preorder-traversal/
+// the trick is to keep a pointer to the preOrderIndex which you increment by one in each call
+function recreateFromInOrderAndPreOrder(inOrder, preOrder, lo, hi, preOrderIndex) {
+  if (hi < lo) {
+    return null;
+  }
+
+  var root = new Node(preOrder[preOrderIndex.index]);   // root is always the left-most element within a subarray
+  preOrderIndex.index += 1;
+
+  // search for root in in-order to see where to split the tree
+  var splitIndex = inOrder.indexOf(root.data);
+  root.left = this.recreateFromInOrderAndPreOrder(inOrder, preOrder, lo, splitIndex - 1, preOrderIndex);
+  root.right = this.recreateFromInOrderAndPreOrder(inOrder, preOrder, splitIndex + 1, hi, preOrderIndex);
+
+  return root;
+}
+
 // http://www.geeksforgeeks.org/full-and-complete-binary-tree-from-given-preorder-and-postorder-traversals/
-// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversa/
-// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversal-set-2/
-// http://www.geeksforgeeks.org/print-postorder-from-given-inorder-and-preorder-traversals/
+// assumption: this is a complete tree. No ambiguity if the tree is complete (a binary tree whose nodes either have zero or 2 children)
+// similar to recreateFromInOrderAndPreOrder but we split on root's left child and the tricky part is the conditional (splitIndex <= hi)
+function recreateFromPreOrderAndPostOrder(preOrder, postOrder, lo, hi, preOrderIndex) {
+  if (hi < lo || preOrderIndex.index === preOrder.length) {
+    return null;
+  }
+
+  var root = new Node(preOrder[preOrderIndex.index]);
+      rootLeftChildData = preOrder[++preOrderIndex.index];
+
+  // in postOrder, everything to the left of an index is in the left subtree
+  var splitIndex = postOrder.indexOf(rootLeftChildData);
+
+  // Use the index of element found in postorder to divide postorder array in two parts. Left subtree and right subtree
+  if (splitIndex <= hi) { // must have this conditional
+    root.left = this.recreateFromPreOrderAndPostOrder(preOrder, postOrder, lo, splitIndex, preOrderIndex);
+    root.right = this.recreateFromPreOrderAndPostOrder(preOrder, postOrder, splitIndex + 1, hi, preOrderIndex);
+  }
+  return root;
+
+}
+//1LXG to X-Guard, Unbalance and Roll Over Sweep from X-Guard
 // http://www.geeksforgeeks.org/construct-tree-inorder-level-order-traversals/
-function recreateTreeGivenTwoTraversals(t1, t2) {
+function recreateFromInOrderAndLevelOrder(inOrder, levelOrder) {
 
 }
 
 // http://www.geeksforgeeks.org/construct-binary-tree-from-inorder-traversal/
+function recreateFromInOrder(inOrder) {
+  
+}
+
+// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversa/
+// http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversal-set-2/
+function recreateFromPreOrder(preOrder) {
+
+}
+
+// http://www.geeksforgeeks.org/print-postorder-from-given-inorder-and-preorder-traversals/
+function postOrderFromInOrderAndPreOrder(inOrder, preOrder) {
+
+}
+
 // http://www.geeksforgeeks.org/construct-a-special-tree-from-given-preorder-traversal/
-function constructSpecialBT() {
+function constructSpecialBT(preOrder) {
+
+}
+
+// http://www.geeksforgeeks.org/check-for-identical-bsts-without-building-the-trees/
+function checkIdenticalArrayBST(arr1, arr2) {
 
 }
 

@@ -135,34 +135,6 @@ PatternSearch.prototype = {
     return result;
   },
 
-  // http://www.gzeeksforgeeks.org/searching-for-patterns-set-5-finite-automata/
-  // not finished. Having issues with the compute TF fxn
-  finiteAutomata: function (pattern, source) {
-    var patternLength = pattern.length,
-        sourceLength = source.length,
-        radix = 256;
-        TF = [],
-        j = 0,
-        result = [];
-
-    // initialize 2-D array
-    for (var i = 0; i < sourceLength; i++) {
-      TF[i] = [];
-    }
-
-    computeTrans(pattern, TF);
-
-    // process text over finite automata
-    for (var i = 0; i < sourceLength; i++) {
-      j = TF[j][source[i]];
-      if (j === sourceLength) {
-        result.push(i - sourceLength + 1);
-      }
-    }
-
-    return result;
-  },
-
   // http://www.geeksforgeeks.org/pattern-searching-set-5-efficient-constructtion-of-finite-automata/
   // this function builds the TF table which represents finite automata for a given pattern
   computeTrans: function(pattern, TF) {
@@ -244,6 +216,39 @@ PatternSearch.prototype = {
     for (i = 0; i < length; i++) {
       badChar[str.charCodeAt(i)] = i;
     }
+  },
+
+  // http://www.geeksforgeeks.org/suffix-array-set-1-introduction/
+  suffixArray: function(str) {
+
+  },
+
+  // http://www.gzeeksforgeeks.org/searching-for-patterns-set-5-finite-automata/
+  // not finished. Having issues with the compute TF fxn
+  finiteAutomata: function (pattern, source) {
+    var patternLength = pattern.length,
+        sourceLength = source.length,
+        radix = 256;
+        TF = [],
+        j = 0,
+        result = [];
+
+    // initialize 2-D array
+    for (var i = 0; i < sourceLength; i++) {
+      TF[i] = [];
+    }
+
+    computeTrans(pattern, TF);
+
+    // process text over finite automata
+    for (var i = 0; i < sourceLength; i++) {
+      j = TF[j][source[i]];
+      if (j === sourceLength) {
+        result.push(i - sourceLength + 1);
+      }
+    }
+
+    return result;
   }
 }
 

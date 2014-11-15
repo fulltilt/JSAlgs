@@ -725,23 +725,35 @@ describe("BST", function() {
         post = [8, 9, 4, 5, 2, 6, 7, 3, 1],
         preOrderIndex = { index: 0 },
         root = bst.recreateFromPreOrderAndPostOrder(pre, post, 0, pre.length - 1, preOrderIndex);
-    bst.printByLevel(root);
+    //bst.printByLevel(root);
   });
 
-  it('tests recreateFromInOrderAndLevelOrer', function() {
-
+/**/xit('tests recreateFromInOrderAndLevelOrder', function() {
+    var inOrder = [4, 8, 10, 12, 14, 20, 22],
+        levelOrder = [20, 8, 22, 4, 12, 10, 14],
+        root = bst.recreateFromInOrderAndLevelOrder(inOrder, levelOrder, 0, inOrder.length - 1);
+    //bst.printByLevel(root);
   });
 
   it('tests recreateFromInOrder', function() {
-
+    var arr = [1, 5, 10, 40, 30, 15, 28, 20],
+        root = bst.recreateFromInOrder(arr, 0, arr.length - 1);
+    //bst.printByLevel(root);
   });
 
   it('tests recreateFromPreOrder', function() {
-
+    var arr = [10, 5, 1, 7, 40, 50],
+        root = bst.recreateFromPreOrder(arr, 0, arr.length - 1);
+    //bst.printByLevel(root);
   });
 
   it('tests postOrderFromInOrderAndPreOrder', function() {
-
+    var inOrder = [4, 2, 5, 1, 3, 6],
+        preOrder = [1, 2, 4, 5, 3, 6],
+        preOrderIndex = { index: 0 },
+        result = [],
+        root = bst.postOrderFromInOrderAndPreOrder(inOrder, preOrder, 0, inOrder.length - 1, preOrderIndex, result);
+    expect(result).toEqual([4,5,2,6,3,1]);
   });
 
   it('tests constructSpecialBT', function() {

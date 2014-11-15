@@ -15,6 +15,7 @@ function Strings() {
   this.printAllPermutations = printAllPermutations;
   this.printAnagrams = printAnagrams;  
   this.sameCharsNDistanceAway = sameCharsNDistanceAway;
+  this.inPlaceStringTransform = inPlaceStringTransform;
 }
 
 // http://www.geeksforgeeks.org/a-program-to-check-if-strings-are-rotations-of-each-other-or-not/
@@ -354,6 +355,11 @@ function printAnagrams(list) {
 
 // http://www.geeksforgeeks.org/rearrange-a-string-so-that-all-same-characters-become-at-least-d-distance-away/
 function sameCharsNDistanceAway(str, n) {
+
+}
+
+// http://www.geeksforgeeks.org/an-in-place-algorithm-for-string-transformation/
+function inPlaceStringTransform(str) {
 
 }
 

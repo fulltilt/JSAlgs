@@ -1745,33 +1745,106 @@ function recreateFromPreOrderAndPostOrder(preOrder, postOrder, lo, hi, preOrderI
     root.right = this.recreateFromPreOrderAndPostOrder(preOrder, postOrder, splitIndex + 1, hi, preOrderIndex);
   }
   return root;
-
 }
-//1LXG to X-Guard, Unbalance and Roll Over Sweep from X-Guard
-// http://www.geeksforgeeks.org/construct-tree-inorder-level-order-traversals/
-function recreateFromInOrderAndLevelOrder(inOrder, levelOrder) {
 
+// *** http://www.geeksforgeeks.org/construct-tree-inorder-level-order-traversals/
+function recreateFromInOrderAndLevelOrder(inOrder, levelOrder, lo, hi) {
+  if (hi < lo) {
+    return null;
+  }
+
+  var root = new Node(levelOrder[lo]),
+      splitIndex = inOrder.indexOf(root.data);
+  
+  // extract left subtree keys from level order traversal
+  var leftLevel = extractKeys(inOrder, levelOrder, splitIndex, inOrder.length);
+
+  // extract right subtree keys from level order traversal
+  var rightLevel = extractKeys(inOrder, levelOrder, hi - splitIndex - 1, inOrder.length);
+    
+  root.left = this.recreateFromInOrderAndLevelOrder(inOrder, leftLevel, lo, splitIndex - 1);
+  root.right = this.recreateFromInOrderAndLevelOrder(inOrder, rightLevel, splitIndex + 1, hi);
+
+  return root;
+}
+
+// helper fxn for recreateFromInOrderAndLevelOrder
+function extractKeys(inOrder, levelOrder, lo, hi) {
+  var newLevel = [];
+  for (var i = 0; i < hi; i++) {
+    if(inOrder.indexOf(levelOrder[i]) !== -1) {
+      newLevel.push(levelOrder[i]);
+    }
+  }
+
+  return newLevel;
 }
 
 // http://www.geeksforgeeks.org/construct-binary-tree-from-inorder-traversal/
-function recreateFromInOrder(inOrder) {
-  
+// assumption: special binary tree where the root data is greater than all the nodes of its left and right children
+function recreateFromInOrder(inOrder, lo, hi) {
+  if (hi < lo) {
+    return null;
+  }
+
+  // get max index within range
+  var max = inOrder[lo],
+      maxIndex = lo;
+  for (var i = lo + 1; i <= hi; i++) {
+    if (inOrder[i] > max) {
+      max = inOrder[i];
+      maxIndex = i;
+    }
+  }
+
+  var root = new Node(inOrder[maxIndex]);
+  root.left = this.recreateFromInOrder(inOrder, lo, maxIndex - 1);
+  root.right = this.recreateFromInOrder(inOrder, maxIndex + 1, hi);
+
+  return root;
+}
+
+// http://www.geeksforgeeks.org/construct-a-special-tree-from-given-preorder-traversal/
+// special tree in this case is a complete tree
+function constructSpecialBT(preOrder) {
+
 }
 
 // http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversa/
 // http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversal-set-2/
-function recreateFromPreOrder(preOrder) {
+function recreateFromPreOrder(preOrder, lo, hi) {
+  if (hi < lo) {
+    return null;
+  }
 
+  var root = new Node(preOrder[lo]),
+      leftLo = lo + 1,
+      temp = leftLo;
+
+  while (preOrder[temp] < root.data && temp !== preOrder.length) {
+    temp += 1;
+  }
+  root.left = this.recreateFromPreOrder(preOrder, leftLo, temp - 1);
+  root.right = this.recreateFromPreOrder(preOrder, temp, hi);
+
+  return root;
 }
 
 // http://www.geeksforgeeks.org/print-postorder-from-given-inorder-and-preorder-traversals/
-function postOrderFromInOrderAndPreOrder(inOrder, preOrder) {
+function postOrderFromInOrderAndPreOrder(inOrder, preOrder, lo, hi, preOrderIndex, result) {
+  if (hi < lo) {
+    return;
+  }
 
-}
+  // the first element in preOrder is always root. Search element in inOrder to find left and right subtrees
+  var splitIndex = inOrder.indexOf(preOrder[preOrderIndex.index]);
+  preOrderIndex.index += 1;
 
-// http://www.geeksforgeeks.org/construct-a-special-tree-from-given-preorder-traversal/
-function constructSpecialBT(preOrder) {
+  // if left subtree is not empty, print left subtree
+  this.postOrderFromInOrderAndPreOrder(inOrder, preOrder, lo, splitIndex - 1, preOrderIndex, result);
+  this.postOrderFromInOrderAndPreOrder(inOrder, preOrder, splitIndex + 1, hi, preOrderIndex, result);
 
+  result.push(inOrder[splitIndex]);
 }
 
 // http://www.geeksforgeeks.org/check-for-identical-bsts-without-building-the-trees/

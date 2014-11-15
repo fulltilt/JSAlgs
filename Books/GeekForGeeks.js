@@ -1659,9 +1659,7 @@ function countSmallerElementsOnRight(arr) {
 // http://www.geeksforgeeks.org/find-first-non-repeating-character-stream-characters/
 // http://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
 // http://www.geeksforgeeks.org/maximum-contiguous-circular-sum/
-// http://www.geeksforgeeks.org/suffix-array-set-1-introduction/
 // http://www.geeksforgeeks.org/find-next-greater-number-set-digits/
-// http://www.geeksforgeeks.org/an-in-place-algorithm-for-string-transformation/
 
 // PRACTICE - search '***'
 

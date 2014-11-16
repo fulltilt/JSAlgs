@@ -741,6 +741,14 @@ describe("BST", function() {
     //bst.printByLevel(root);
   });
 
+  it('tests constructSpecialBT', function() {
+    var preOrder = [10, 30, 20, 5, 15],
+        preLN = ['N', 'N', 'L', 'L', 'L'],
+        preOrderIndex = { index: 0 },
+        root = bst.constructSpecialBT(preOrder, preLN, preOrderIndex);
+    bst.printByLevel(root);
+  });
+
   it('tests recreateFromPreOrder', function() {
     var arr = [10, 5, 1, 7, 40, 50],
         root = bst.recreateFromPreOrder(arr, 0, arr.length - 1);
@@ -756,16 +764,9 @@ describe("BST", function() {
     expect(result).toEqual([4,5,2,6,3,1]);
   });
 
-  it('tests constructSpecialBT', function() {
-
-  });
-
-  it('tests checkIdenticalArrayBST', function() {
-    
-  });
-
   it('tests doesEachNodeHaveOnlyOneChild', function() {
-
+    var preOrder = [20, 10, 11, 13, 12];
+    expect(bst.doesEachNodeHaveOnlyOneChild(preOrder, -Infinity, Infinity, 0)).toEqual(true);
   });
 
   it('tests iterativePostOrder', function() {
@@ -844,6 +845,10 @@ describe("BST", function() {
 
     var maxPath = { sum: 0 };
     expect(bst.findMaxPathSumBetweenTwoLeaves(root, maxPath)).toEqual(27);
+  });
+
+  it('tests checkIdenticalArrayBST', function() {
+    
   });
 
   xit('tests getRandomBSTNode', function() {

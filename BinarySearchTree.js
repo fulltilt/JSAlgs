@@ -76,7 +76,8 @@ function BST() {
   this.boundaryTraversal = boundaryTraversal;
   this.fixBSTAfterSwap = fixBSTAfterSwap;
   this.ceiling = ceiling;
-  this.morrisTraversal = morrisTraversal;
+  this.morrisTraversalInOrder = morrisTraversalInOrder;
+  this.morrisTraversalPreOrder = morrisTraversalPreOrder
   this.iterativePostOrder = iterativePostOrder;
   this.existsTripletThatSumsToZero = existsTripletThatSumsToZero;
   this.removeNodesOutsideRange = removeNodesOutsideRange;
@@ -162,23 +163,6 @@ function getInOrder(node, arr) {
     this.getInOrder(node.left, arr);
     arr.push(node.data);
     this.getInOrder(node.right, arr);
-  }
-}
-
-// http://leetcode.com/2010/04/binary-search-tree-in-order-traversal.html
-function iterativeInOrder(root) {
-  var stack = [];
-  current = root;
-  while (stack.length > 0 || current) {
-    if (current) {
-      stack.push(current);
-      current = current.left;
-    } else {
-      current = stack[stack.length - 1];
-      stack.pop();
-      console.log(current.data);
-      current = current.right;
-    }
   }
 }
 
@@ -1806,8 +1790,23 @@ function recreateFromInOrder(inOrder, lo, hi) {
 
 // http://www.geeksforgeeks.org/construct-a-special-tree-from-given-preorder-traversal/
 // special tree in this case is a complete tree
-function constructSpecialBT(preOrder) {
+function constructSpecialBT(preOrder, preLN, preOrderIndex) {
+  if (preOrderIndex === preOrder.length) {
+    return null;
+  }
 
+  var currentIndex = preOrderIndex.index,
+      root = new Node(preOrder[currentIndex]);
+  preOrderIndex.index += 1;
+
+  if (preLN[currentIndex] === 'L') {
+    return root;
+  } else {
+    root.left = this.constructSpecialBT(preOrder, preLN, preOrderIndex);
+    root.right = this.constructSpecialBT(preOrder, preLN, preOrderIndex);
+  }
+
+  return root;
 }
 
 // http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversa/
@@ -1847,18 +1846,50 @@ function postOrderFromInOrderAndPreOrder(inOrder, preOrder, lo, hi, preOrderInde
   result.push(inOrder[splitIndex]);
 }
 
-// http://www.geeksforgeeks.org/check-for-identical-bsts-without-building-the-trees/
-function checkIdenticalArrayBST(arr1, arr2) {
+// http://www.geeksforgeeks.org/check-if-each-internal-node-of-a-bst-has-exactly-one-child/
+function doesEachNodeHaveOnlyOneChild(preOrder) {
+  var length = preOrder.length,
+      min = -Infinity,
+      max = Infinity;
 
+  for (var i = 1; i < length; i++) {
+    if (preOrder[i] < preOrder[i - 1] && preOrder[i] > min) {
+      max = preOrder[i - 1];
+    } else if (preOrder[i] > preOrder[i - 1] && preOrder[i] < max) {
+      min = preOrder[i - 1];
+    } else {
+      return false;
+    }
+  }
+
+  return true;
 }
 
-// http://www.geeksforgeeks.org/check-if-each-internal-node-of-a-bst-has-exactly-one-child/
-function doesEachNodeHaveOnlyOneChild() {
+// http://www.geeksforgeeks.org/inorder-tree-traversal-without-recursion/
+// http://leetcode.com/2010/04/binary-search-tree-in-order-traversal.html
+function iterativeInOrder(root) {
+  var stack = [];
+  current = root;
+  while (stack.length > 0 || current) {
+    if (current) {
+      stack.push(current);
+      current = current.left;
+    } else {
+      current = stack[stack.length - 1];
+      stack.pop();
+      console.log(current.data);
+      current = current.right;
+    }
+  }
+}
+
+// 
+function morrisTraversalInOrder() {
 
 }
 
 // http://www.geeksforgeeks.org/morris-traversal-for-preorder/
-function morrisTraversal() {
+function morrisTraversalPreOrder() {
 
 }
 
@@ -2020,6 +2051,11 @@ function findMaxPathSumBetweenTwoLeaves(node, maxPath) {
   return Math.max(lLPSum, rLPSum) + node.data;
 }
 
+// *** http://www.geeksforgeeks.org/check-for-identical-bsts-without-building-the-trees/
+function checkIdenticalArrayBST(arr1, arr2) {
+
+}
+
 var BinarySearchTree = function() {
   return {
     BinarySearchTree: BST,
@@ -2042,6 +2078,8 @@ module.exports = BinarySearchTree;
 -the print level (breadth-first search) algorithm can be used for a lot of problems and avoids the overhead of recursion
 -note: a lot of fxns are accepting a result array. This is mainly for testing purposes and can be omitted
 -when given a preorder traversal array, the root is always the first element. For postorder, the root is always the last element
+-when having to recreate a tree given 2 arrays, every algorithm that had preorder in it always required to have a reference to the current
+ index which was incremented by one at each call
 
 THINGS TO TRY WHEN STUMPED: 
 -instead of the usual else-if recursive structure, take out the conditionals so that each statement can be run (see ceiling())
@@ -2050,5 +2088,5 @@ THINGS TO TRY WHEN STUMPED:
 
 REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth. kDistanceFromLeaf, *kDistanceFromNode,
         getPredecessorAndSuccessor, verticalSum, iterativeInOrder, ceiling. _remove, removeNodesOutsideRange,
-        areTreesIsomorphic, removeNodesWhosePathLessThanK, findMaxPathSumBetweenTwoLeaves
+        areTreesIsomorphic, removeNodesWhosePathLessThanK, findMaxPathSumBetweenTwoLeaves, doesEachNodeHaveOnlyOneChild
 */

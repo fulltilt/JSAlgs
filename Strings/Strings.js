@@ -12,8 +12,7 @@ function Strings() {
   this.removeFromString = removeFromString;
   this.removeAdjacentDuplicates = removeAdjacentDuplicates;
   this.findExcelColumnName = findExcelColumnName;
-  this.printAllPermutations = printAllPermutations;
-  this.printAnagrams = printAnagrams;  
+  this.printAnagramsTogether = printAnagramsTogether;
   this.sameCharsNDistanceAway = sameCharsNDistanceAway;
   this.inPlaceStringTransform = inPlaceStringTransform;
 }
@@ -276,6 +275,148 @@ function removeFromString(str) {
   return str.join('');
 }
 
+// http://www.geeksforgeeks.org/find-excel-column-name-given-number/
+// the tricky part is that if the remainder is zero, num equals Math.floor(num / 26) - 1. All other cases you don't have to do the '- 1'
+function findExcelColumnName(num) {
+  var column = 'ZABCDEFGHIJKLMNOPQRSTUVWXYZ',
+      result = '';
+
+  while (num > 0) {
+    var remainder = num % 26;
+
+    if (remainder === 0) {  // If reminder is zero, then append a 'Z'
+      result = column[remainder] + result;
+      num = Math.floor(num / 26) - 1;
+    } else {                // if remainder is non-zero
+      result = column[remainder] + result;
+      num = Math.floor(num / 26);
+    }
+  }
+  return result;
+}
+
+// http://www.geeksforgeeks.org/find-possible-words-phone-digits/ (see link for keypad diagram)
+function findAllPossibleWordsFromPhoneDigits(num, currentIndex, result) {
+  var keypad = ['', '', 'abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxyz'];
+
+  // base case: if current output word is prepared
+  if (currentIndex === num.length) {
+    console.log(result.join(''));
+    return;
+  }
+
+  // try all possible characters for current digit in num and recur for remaining digits
+  var currentDigit = num[currentIndex];
+  if (currentDigit === 0 || currentDigit === 1) {   // edge case when digit is 0 or 1 since they don't have letters associated with them
+    result[currentIndex] = '';  
+    this.findAllPossibleWordsFromPhoneDigits(num, currentIndex + 1, result);
+  } else {
+    for (var i = 0; i < keypad[currentDigit].length; i++) {
+      result[currentIndex] = keypad[currentDigit][i];
+      this.findAllPossibleWordsFromPhoneDigits(num, currentIndex + 1, result);
+    }
+  }
+}
+
+// http://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together/ or http://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together-set-2/
+function printAnagramsTogether(list) {
+  var length = list.length,
+      wordsAux = list.slice();  // copy word list to auxiliary list
+
+  // initialize index
+  for (var i = 0; i < length; i++) {
+    wordsAux[i] = { word: list[i],
+                    index: i };
+  }
+
+  // sort each individual word in wordsAux by individual character
+  for (i = 0; i < length; i++) {
+    wordsAux[i].word = wordsAux[i].word.split('').sort().join('');
+  }
+
+  // with each individual word sorted, sort the array by each word
+  wordsAux = wordsAux.sort(compare);
+
+  // with words sorted, print out the original index entry as per the current wordAux entry
+  for (i = 0; i < length; i++) {
+    console.log(list[wordsAux[i].index]);
+  }
+}
+
+// helper fxn to compare 2 strings. Can't do 'return a.word - b.word' as that returns 'NaN'
+function compare(a, b) {
+  if (a.word < b.word) {
+    return -1;
+  }
+
+  if (a.word > b.word) {
+    return 1;
+  }
+  return 0;
+}
+
+// http://www.geeksforgeeks.org/rearrange-a-string-so-that-all-same-characters-become-at-least-d-distance-away/
+function sameCharsNDistanceAway(str, n) {
+  var length = str.length,
+      result = [],
+      dict = {};
+  // create a dictionary that keeps track of characters and their frequencies
+  for (var i = 0; i < length; i++) {
+    if (!dict[str[i]]) {
+      dict[str[i]] = 1;
+    } else {
+      dict[str[i]] += 1;
+    }
+  }
+
+  // insert dictionary values into an array so that we can sort by frequencies
+  var frequencies = [];
+  for (var key in dict) {
+    frequencies.push([key, dict[key]]);
+  }
+  frequencies = frequencies.sort(function(a, b) { return b[1] - a[1]; }); // sort descending
+ 
+  var freqLength = frequencies.length;
+  for (i = 0; i < freqLength; i++) {
+    // find the first undefined index in array. This will be where we start inserting. From here we will be inserting every n spots
+    var j = i;
+    while (result[j] !== undefined) {
+      j += 1;
+    }
+
+    // insert current character as per the frequency, spaced out by n spots
+    for (var k = 0; k < frequencies[i][1]; k++) {
+      if (j > length) { // if the next index goes past length of the array, an arrangement isn't possible
+        return false;
+      }
+
+      result[j] = frequencies[i][0];
+      j += n;
+    }
+  }
+
+  return result.join('');
+}
+
+// *** http://www.geeksforgeeks.org/an-in-place-algorithm-for-string-transformation/
+// move even indices to the end. Keep everything in order
+function inPlaceStringTransform(str) {
+  var length = str.length,
+      arr = str.split(''),
+      i, j;
+  for (i = 0; i < Math.floor(length / 2); i++, j = i) {
+    //if ((i % 2) === 0) {  // we're at an even index
+
+    //}
+  }    
+}
+
+function swap(arr, x, y) {
+  var temp = arr[x];
+  arr[x] = arr[y];
+  arr[y] = temp;
+}
+
 // http://www.geeksforgeeks.org/recursively-remove-adjacent-duplicates-given-string/
 // NOTE: fails some test cases
 function removeAdjacentDuplicates(str, index, previous) {
@@ -304,63 +445,6 @@ function removeAdjacentDuplicates(str, index, previous) {
   }
 
   return str.join('');
-}
-
-// http://www.geeksforgeeks.org/find-excel-column-name-given-number/
-// the tricky part is that if the remainder is zero, num equals Math.floor(num / 26) - 1. All other cases you don't have to do the '- 1'
-function findExcelColumnName(num) {
-  var column = 'ZABCDEFGHIJKLMNOPQRSTUVWXYZ',
-      result = '';
-
-  while (num > 0) {
-    var remainder = num % 26;
-
-    if (remainder === 0) {  // If reminder is zero, then append a 'Z'
-      result = column[remainder] + result;
-      num = Math.floor(num / 26) - 1;
-    } else {                // if remainder is non-zero
-      result = column[remainder] + result;
-      num = Math.floor(num / 26);
-    }
-  }
-  return result;
-}
-
-// http://www.geeksforgeeks.org/find-possible-words-phone-digits/
-function findAllPossibleWordsFromPhoneDigits(num, results, tempArr) {
-  var table = ['', '', 'abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxyz'];
-
-  for (var i = 0; i < num.length; i++) {
-    var letters = table[i].split('');
-    for (var k = 0; k < letters.length; k++) {
-      var ch = letters.splice(k, 1)[0];
-      tempArr.push(ch);
-
-      if (letters.length === 0) {
-        results.push(tempArr.slice());
-      }
-
-      this.findAllPossibleWordsFromPhoneDigits(num, results, tempArr);
-
-      letters.splice(k, 0, ch);
-      tempArr.pop();
-    }
-  }
-}
-
-// http://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together/ or http://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together-set-2/
-function printAnagrams(list) {
-
-}
-
-// http://www.geeksforgeeks.org/rearrange-a-string-so-that-all-same-characters-become-at-least-d-distance-away/
-function sameCharsNDistanceAway(str, n) {
-
-}
-
-// http://www.geeksforgeeks.org/an-in-place-algorithm-for-string-transformation/
-function inPlaceStringTransform(str) {
-
 }
 
 module.exports = Strings;

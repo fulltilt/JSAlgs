@@ -1,8 +1,8 @@
-var Queue = require('../Queue.js'); // used for maxOfAllSubArrays()
-var BST = require('../BinarySearchTree.js');  // for binarySearchTreeToArray, countSmallerElementsOnRight
-var Heap = require('../Heap.js'); // used for mergeKSortedArrays
+var Queue = require('./Queue.js'); // used for maxOfAllSubArrays()
+var BST = require('./BinarySearchTree.js');  // for binarySearchTreeToArray, countSmallerElementsOnRight
+var Heap = require('./Heap.js'); // used for mergeKSortedArrays
 
-function GeekForGeeks() {
+function Arrays() {
   this.getMedianValue = getMedianValue;
   this.findEquilibriumIndex = findEquilibriumIndex;
   this.findAngleBetweenClockHands = findAngleBetweenClockHands;
@@ -63,6 +63,8 @@ function GeekForGeeks() {
   this.alternatePositiveAndNegative = alternatePositiveAndNegative;
   this.findSmallestValueNotReppedBySubArraySum = findSmallestValueNotReppedBySubArraySum;
   this.findCommonElementsInThreeSortedArrays = findCommonElementsInThreeSortedArrays;
+  this.maxDifferenceBetweenTwoElements = maxDifferenceBetweenTwoElements;
+  this.maxDifferenceBetweenGreaterAndLesserIndices = maxDifferenceBetweenGreaterAndLesserIndices;
 
   // Mathematical Properties
   this.findExpPairs = findExpPairs;
@@ -1596,6 +1598,86 @@ function findCommonElementsInThreeSortedArrays(arr1, arr2, arr3) {
   return results;
 }
 
+// http://www.geeksforgeeks.org/maximum-difference-between-two-elements/
+function maxDifferenceBetweenTwoElements(arr) {
+  if (arr === null) {
+    return;
+  }
+
+  var length = arr.length;
+  if (arr.length < 2) {
+    return;
+  }
+
+  var maxDifference = arr[1] - arr[0],
+      min = arr[0];
+
+  for (i = 1; i < length; i++) {
+    if ((arr[i] - min) > maxDifference) {
+      maxDifference = arr[i] - min;
+    }
+    if (arr[i] < min) {
+      min = arr[i];
+    }
+  }
+  return maxDifference;
+}
+
+// http://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/
+// similar to maxDifferenceBetweenTwoElements but you're finding the difference between the indices
+function maxDifferenceBetweenGreaterAndLesserIndices(arr) {
+  if (arr === null) {
+    return;
+  }
+
+  var length = arr.length;
+  if (arr.length < 2) {
+    return;
+  }
+
+  var lo = 0,
+      hi = length - 1;
+
+  while (hi > lo) {
+    if (arr[hi] > arr[lo]) {
+      return hi - lo;
+    }
+
+    if (arr[hi] > arr[lo + 1] || arr[hi - 1] > arr[lo]) {
+      return hi - lo - 1;
+    }
+
+    lo += 1;
+    hi -= 1;
+  }  
+  return -1;
+}
+
+// http://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
+function longestMonotonicallyIncreasingLogN(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/maximum-contiguous-circular-sum/
+function maxContiguousCircularSum(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/find-next-greater-number-set-digits/
+function findNextGreaterNum(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/find-first-non-repeating-character-stream-characters/
+function firstNonRepeatingCharInStream(arr) {
+
+}
+
+// http://www.geeksforgeeks.org/median-of-stream-of-integers-running-integers/
+function medianInStream(arr) {
+
+}
+
 // http://www.geeksforgeeks.org/find-number-pairs-xy-yx/
 function findExpPairs(arr1, arr2) {
 
@@ -1652,15 +1734,6 @@ function countSmallerElementsOnRight(arr) {
   return results;
 }
 
-// STAR PROBS
-// http://www.geeksforgeeks.org/maximum-difference-between-two-elements/
-// http://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/
-// http://www.geeksforgeeks.org/median-of-stream-of-integers-running-integers/
-// http://www.geeksforgeeks.org/find-first-non-repeating-character-stream-characters/
-// http://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
-// http://www.geeksforgeeks.org/maximum-contiguous-circular-sum/
-// http://www.geeksforgeeks.org/find-next-greater-number-set-digits/
-
 // PRACTICE - search '***'
 
 // DIDN'T COMPLETELY UNDERSTAND: nextGreaterElement, findSmallestMissingNumber, countNumberOfOccurrences,
@@ -1669,4 +1742,4 @@ function countSmallerElementsOnRight(arr) {
 // Recursion practice: printInterleavingsRecur removeAdjacentDuplicates
 
 // MATHY: findRepeatingAndMissing
-module.exports = GeekForGeeks;
+module.exports = Arrays;

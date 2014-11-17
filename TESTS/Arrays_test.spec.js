@@ -1,8 +1,8 @@
-var GeekForGeeks = require('./GeekForGeeks.js');
+var Arrays = require('../Arrays.js');
 var BST = require('../BinarySearchTree.js');  // for binarySearchTreeToArray
 
-describe("GeekForGeeks", function() {
-  var gfg = new GeekForGeeks();
+describe("Arrays", function() {
+  var gfg = new Arrays();
 
   it('it tests getting the median number', function() {
     expect(gfg.getMedianValue([0,5,13,19,22,41,55,68,72,81,98])).toEqual(5);  // odd (picks the exact middle element)
@@ -121,14 +121,6 @@ describe("GeekForGeeks", function() {
       }
 
       expect(gfg.binarySearchTreeToArray(bst.root)).toEqual([1, 2, 12, 13, 15, 17, 26, 30, 38, 45]);
-    });
-
-    it('tests union of 2 arrays', function() {
-      expect(gfg.unionOfTwoArrays([1, 3, 4, 5, 7], [2, 3, 5, 6])).toEqual([1,2,3,4,5,6,7]);
-    });
-
-    it('tests intersection of 2 arrays', function() {
-      expect(gfg.intersectionOfTwoArrays([1, 3, 4, 5, 7], [2, 3, 5, 6])).toEqual([3,5]);
     });
 
     it('floorAndCeilOfSortedArray' , function() {
@@ -311,6 +303,38 @@ describe("GeekForGeeks", function() {
 
     it('tests sortDefinedBySecondArray', function() {
       expect(gfg.sortDefinedBySecondArray([2, 1, 2, 5, 7, 1, 9, 3, 6, 8, 8], [2,1,8,3])).toEqual([2, 2, 1, 1, 8, 8, 3, 5, 6, 7, 9]);
+    });
+
+    it('tests maxDifferenceBetweenTwoElements', function() {
+      expect(gfg.maxDifferenceBetweenTwoElements([2, 3, 10, 6, 4, 8, 1])).toEqual(8);
+      expect(gfg.maxDifferenceBetweenTwoElements([7, 9, 5, 6, 3, 2])).toEqual(2);
+    });
+
+    it('tests maxDifferenceBetweenGreaterAndLesserIndices', function() {
+      //expect(gfg.maxDifferenceBetweenGreaterAndLesserIndices([34, 8, 10, 3, 2, 80, 30, 33, 1])).toEqual(6);
+      expect(gfg.maxDifferenceBetweenGreaterAndLesserIndices([9, 2, 3, 4, 5, 6, 7, 8, 18, 0])).toEqual(8);
+      //expect(gfg.maxDifferenceBetweenGreaterAndLesserIndices([1,2,3,4,5,6])).toEqual(5);
+      //expect(gfg.maxDifferenceBetweenGreaterAndLesserIndices([6,5,4,3,2,1])).toEqual(-1);
+    });
+
+    it('tests medianInStream', function() {
+
+    });
+
+    it('tests firstNonRepeatingCharInStream', function() {
+
+    });
+
+    it('tests longestMonotonicallyIncreasingLogN', function() {
+
+    });
+
+    it('tests maxContiguousCircularSum', function() {
+
+    });
+
+    it('tests findNextGreaterNum', function() {
+
     });
 
     xit('tests alternatePositiveAndNegative', function() {

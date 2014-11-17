@@ -105,7 +105,20 @@ function unionOfTwoArrays(arr1, arr2) {
     }
   }
 
-  return this.binarySearchTreeToArray(bst.root);
+  var result = [];
+  binarySearchTreeToArray(bst.root, result);
+
+  return result;
+}
+
+function binarySearchTreeToArray(node, arr) {
+  if (node === null) {
+    return null;
+  }
+
+  binarySearchTreeToArray(node.left, arr);
+  arr.push(node.data);
+  binarySearchTreeToArray(node.right, arr);
 }
 
 // http://www.geeksforgeeks.org/union-and-intersection-of-two-sorted-arrays-2/

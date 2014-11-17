@@ -65,6 +65,14 @@ describe("Set", function() {
     expect(set3.dataStore.indexOf('David')).toNotEqual(-1);
   });
 
+  it('tests union of 2 arrays', function() {
+    expect(set1.unionOfTwoArrays([1, 3, 4, 5, 7], [2, 3, 5, 6])).toEqual([1,2,3,4,5,6,7]);
+  });
+
+  it('tests intersection of 2 arrays', function() {
+    expect(set1.intersectionOfTwoArrays([1, 3, 4, 5, 7], [2, 3, 5, 6])).toEqual([3,5]);
+  });
+
   xit('tests printSubsetsOfKElements', function() {
     var result = [];
     set1.printSubsetsOfKElements([1, 2, 3, 4, 5], result, [], 3);

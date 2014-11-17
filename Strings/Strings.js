@@ -10,11 +10,11 @@ function Strings() {
   this.printInterleavings = printInterleavings;
   this.printInterleavingsRecur = printInterleavingsRecur;
   this.removeFromString = removeFromString;
-  this.removeAdjacentDuplicates = removeAdjacentDuplicates;
   this.findExcelColumnName = findExcelColumnName;
   this.printAnagramsTogether = printAnagramsTogether;
   this.sameCharsNDistanceAway = sameCharsNDistanceAway;
   this.inPlaceStringTransform = inPlaceStringTransform;
+  this.removeAdjacentDuplicates = removeAdjacentDuplicates;
 }
 
 // http://www.geeksforgeeks.org/a-program-to-check-if-strings-are-rotations-of-each-other-or-not/

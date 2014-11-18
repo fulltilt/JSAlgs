@@ -1,5 +1,5 @@
 var Trie = require('./Strings/Trie.js'),
-    Heap = require('./Heap.js');
+    Heap = require('./Heaps.js');
 
 function Matrix() {
   this.maxSquareSubMatrix = maxSquareSubMatrix;
@@ -243,7 +243,7 @@ function naiveMatrixMultiplication(m1, m2) {
 function kthSmallestElement(matrix, k) {
   var rows = matrix.length,
       columns = matrix[0].length,
-      heap = new Heap(function(x) { return x; });
+      heap = new Heap.MinHeap(function(x) { return x; });
 
   for (var i = 0; i < rows; i++) {
     for (var j = 0; j < columns; j++) {

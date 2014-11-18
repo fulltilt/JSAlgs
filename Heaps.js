@@ -74,6 +74,10 @@ MinHeap.prototype = {
         index = minChildIndex;
       }
     }
+  },
+
+  size: function() {
+    return this.contents.length;
   }
 }
 
@@ -155,6 +159,10 @@ MaxHeap.prototype = {
 
       index = maxChildIndex;
     }  
+  },
+
+  size: function() {
+    return this.contents.length;
   }
 }
 

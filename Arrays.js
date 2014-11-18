@@ -1,6 +1,6 @@
 var Queue = require('./Queue.js'); // used for maxOfAllSubArrays()
 var BST = require('./BinarySearchTree.js');  // for binarySearchTreeToArray, countSmallerElementsOnRight
-var Heap = require('./Heap.js'); // used for mergeKSortedArrays
+var Heap = require('./Heaps.js'); // used for mergeKSortedArrays
 
 function Arrays() {
   this.getMedianValue = getMedianValue;
@@ -1286,7 +1286,7 @@ function biggestNumCompare(x, y) {
 
 // http://www.geeksforgeeks.org/merge-k-sorted-arrays/
 function mergeKSortedArrays(arr) {
-  var heap = new Heap(function(x) { return x; }),
+  var heap = new Heap.MinHeap(function(x) { return x; }),
       rows = arr.length,
       columns = arr[0].length,
       result = [];

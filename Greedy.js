@@ -1,4 +1,4 @@
-var Heap = require('./Heap.js')            // for Huffman Coding and connectRopes
+var Heap = require('./Heaps.js')            // for Huffman Coding and connectRopes
 
 function Greedy() {
   this.makeChange = makeChange;
@@ -99,7 +99,7 @@ function activitySelection(startTimes, finishTimes) {
 
 // http://www.geeksforgeeks.org/connect-n-ropes-minimum-cost/
 function connectRopes(arr) {
-  var heap = new Heap(function(x) { return x; }),
+  var heap = new Heap.MinHeap(function(x) { return x; }),
       length = arr.length,
       cost = 0;
   // fill heap
@@ -107,7 +107,7 @@ function connectRopes(arr) {
     heap.push(arr[i]);
   }
 
-  while (heap.content.length !== 1) {
+  while (heap.size() !== 1) {
     var r1 = heap.pop(),
         r2 = heap.pop();
 
@@ -122,13 +122,13 @@ function connectRopes(arr) {
 function huffmanCoding(arr, freq) {
   // create heap
   var length = arr.length,
-      heap = new Heap(function(x) { return x.frequency; });
+      heap = new Heap.MinHeap(function(x) { return x.frequency; });
   for (var i = 0; i < length; i++) {
     heap.push(new Node(arr[i], freq[i]));
   }
 
   // create tree by iterating while size of heap doesn't become 1
-  while (heap.content.length !== 1) {
+  while (heap.size() !== 1) {
     // extract the 2 minimum frequency items from min heap
     var left = heap.pop(),
         right = heap.pop();
@@ -142,7 +142,7 @@ function huffmanCoding(arr, freq) {
   }
 
   // print codes
-  printCodes(heap.content[0], [], 0);
+  printCodes(heap.contents[0], [], 0);
 }
 
 // function that represents Nodes for Huffman Tree

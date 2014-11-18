@@ -318,15 +318,15 @@ describe("Arrays", function() {
     });
 
     it('tests medianInStream', function() {
-
+      //gfg.medianInStream([5, 15, 1, 3, 2, 8, 7, 9, 10, 6, 11, 4]);
     });
 
     it('tests firstNonRepeatingCharInStream', function() {
-
+      //gfg.firstNonRepeatingCharInStream(['g','e','e','k','s','f','o','r','g','e','e','k','s','a','n','d','g','e','e','k','s','q','u','i','z','f','o','r',]);
     });
 
-    it('tests longestMonotonicallyIncreasingLogN', function() {
-
+    it('tests largestSumContiguousSubarray', function() {
+      expect(gfg.largestSumContiguousSubarray([-2, -3, 4, -1, -2, 1, 5, -3])).toEqual(7);
     });
 
     it('tests maxContiguousCircularSum', function() {
@@ -378,6 +378,10 @@ describe("Arrays", function() {
       expect(gfg.isSubArray([11, 1, 13, 21, 3, 7], [11, 3, 7, 1])).toEqual(true);
       expect(gfg.isSubArray([1, 2, 3, 4, 5, 6], [1, 2, 4])).toEqual(true);
       expect(gfg.isSubArray([10, 5, 2, 23, 19], [19, 5, 3])).toEqual(false);
+    });
+
+    /**/xit('tests longestMonotonicallyIncreasingLogN', function() {
+
     });
   });
 });

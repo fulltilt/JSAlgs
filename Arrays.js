@@ -1,6 +1,7 @@
 var Queue = require('./Queue.js'); // used for maxOfAllSubArrays()
 var BST = require('./BinarySearchTree.js');  // for binarySearchTreeToArray, countSmallerElementsOnRight
 var Heap = require('./Heaps.js'); // used for mergeKSortedArrays
+var DLL = require('./DoublyLinkedList.js'); // for firstNonRepeatingCharInStream
 
 function Arrays() {
   this.getMedianValue = getMedianValue;
@@ -65,6 +66,12 @@ function Arrays() {
   this.findCommonElementsInThreeSortedArrays = findCommonElementsInThreeSortedArrays;
   this.maxDifferenceBetweenTwoElements = maxDifferenceBetweenTwoElements;
   this.maxDifferenceBetweenGreaterAndLesserIndices = maxDifferenceBetweenGreaterAndLesserIndices;
+  this.longestMonotonicallyIncreasingLogN = longestMonotonicallyIncreasingLogN;
+  this.largestSumContiguousSubarray = largestSumContiguousSubarray;
+  this.maxContiguousCircularSum = maxContiguousCircularSum;
+  this.findNextGreaterNum = findNextGreaterNum;
+  this.firstNonRepeatingCharInStream = firstNonRepeatingCharInStream;
+  this.medianInStream = medianInStream
 
   // Mathematical Properties
   this.findExpPairs = findExpPairs;
@@ -1653,9 +1660,25 @@ function maxDifferenceBetweenGreaterAndLesserIndices(arr) {
   return -1;
 }
 
-// http://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
-function longestMonotonicallyIncreasingLogN(arr) {
+// http://www.geeksforgeeks.org/largest-sum-contiguous-subarray/
+// also referred to as Kadane's algorithm (note: this algorithm doesn't work if all numbers are negative but link above briefly talks about how to handle it)
+function largestSumContiguousSubarray(arr) {
+  var length = arr.length,
+      maxSoFar = 0,
+      maxEndingHere = 0;
 
+  for (i = 0; i < length; i++) {
+    maxEndingHere += arr[i];
+    if (maxEndingHere < 0) {
+      maxEndingHere = 0;
+    }
+
+    if (maxEndingHere > maxSoFar) {
+      maxSoFar = maxEndingHere;
+    }
+  }
+
+  return maxSoFar;
 }
 
 // http://www.geeksforgeeks.org/maximum-contiguous-circular-sum/
@@ -1669,13 +1692,92 @@ function findNextGreaterNum(arr) {
 }
 
 // http://www.geeksforgeeks.org/find-first-non-repeating-character-stream-characters/
+// NOTE: I had to access a lot of private variables in DoublyLinkedList to get this to work
 function firstNonRepeatingCharInStream(arr) {
+  var dll = new DLL.DoublyLinkedList(),   // doubly linked list as we can delete in constant time
+      hash = [],
+      length = arr.length,
+      i;
 
+  for (i = 0; i < length; i++) {
+    firstNonRepeatingCharInStreamUtil(arr[i], dll, hash);
+  }
+}
+
+// helper fxn for firstNonRepeatingCharInStream
+function firstNonRepeatingCharInStreamUtil(element, dll, hash) {
+  console.log('Reading', element, 'from stream');
+  if (hash[element]) {
+    if (hash[element].node !== null) {
+      dll.deleteNode(hash[element].node);
+      hash[element].node = null;
+    }
+  } else {
+    if (dll.size === 0) {
+      dll.insertHead(element);
+      hash[element] = { node : dll.head };
+    } else {
+      var newNode = new DLL.Node(element),
+          tail = dll.getTail();
+          tail.next = newNode;
+          newNode.previous = tail;
+      dll.tail = newNode;
+      dll.size += 1;
+
+      hash[element] = { node: newNode };
+    }
+  }
+
+  console.log('First non-repeating character so far is', dll.head.data);
 }
 
 // http://www.geeksforgeeks.org/median-of-stream-of-integers-running-integers/
 function medianInStream(arr) {
+  var median = 0,   // effective median
+      left = new Heap.MaxHeap(function(x) { return x; }),
+      right = new Heap.MinHeap(function(x) { return x; }),
+      length = arr.length,
+      i;
 
+  for (var i = 0; i < length; i++) {
+    median = getMedian(arr[i], median, left, right)
+    console.log(median);
+  }
+}
+
+// helper fxn for medianInStream
+function getMedian(element, median, left, right) {
+  if (left.size() > right.size()) { // more elements in left (max) heap
+    if (element < median) { // current element fits in left (max) heap
+      // remove top element from left heap and insert into right heap
+      right.push(left.pop());
+
+      // insert element into left (max) heap
+      left.push(element);
+    } else {
+      right.push(element);
+    }
+
+    // both heaps are balanced meaning the total # of elements is even
+    return (left.contents[0] + right.contents[0]) / 2;
+  } else if (left.size() === right.size()) {  // equal amount of elements in both heaps. After addition of element, one heap will be bigger than the other
+    if (element < median) {
+      left.push(element);
+      return left.contents[0];
+    } else {
+      right.push(element);
+      return right.contents[0];
+    }
+  } else {  // more elements in right (min) heap
+    if (element < median) {
+      left.push(element);
+    } else {
+      left.push(right.pop());
+      right.push(element);
+    }
+
+    return (left.contents[0] + right.contents[0]) / 2;
+  }
 }
 
 // http://www.geeksforgeeks.org/find-number-pairs-xy-yx/
@@ -1732,6 +1834,11 @@ function countSmallerElementsOnRight(arr) {
     }
   }
   return results;
+}
+
+// *** http://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
+function longestMonotonicallyIncreasingLogN(arr) {
+
 }
 
 // PRACTICE - search '***'

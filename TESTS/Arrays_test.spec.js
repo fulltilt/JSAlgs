@@ -330,11 +330,17 @@ describe("Arrays", function() {
     });
 
     it('tests maxContiguousCircularSum', function() {
-
+      expect(gfg.maxContiguousCircularSum([11, 10, -20, 5, -3, -5, 8, -13, 10])).toEqual(31);
+      expect(gfg.maxContiguousCircularSum([-10, 2, -1, 5])).toEqual(6);
+      expect(gfg.maxContiguousCircularSum([10,-12,11])).toEqual(21);
     });
 
     it('tests findNextGreaterNum', function() {
-
+      expect(gfg.findNextGreaterNum(218765)).toEqual(251678);
+      expect(gfg.findNextGreaterNum(1234)).toEqual(1243);
+      expect(gfg.findNextGreaterNum(4321)).toEqual(4321);
+      expect(gfg.findNextGreaterNum(534976)).toEqual(536479);
+      expect(gfg.findNextGreaterNum(5231)).toEqual(5312);
     });
 
     xit('tests alternatePositiveAndNegative', function() {
@@ -355,7 +361,7 @@ describe("Arrays", function() {
       expect(gfg.findCommonElementsInThreeSortedArrays([1,5,5],[3,4,5,5],[5,5,10,20])).toEqual([5,5]);
     });
 
-    xit('tests maxProductSubArray', function() {
+    it('tests maxProductSubArray', function() {
       expect(gfg.maxProductSubArray([6, -3, -10, 0, 2])).toEqual(180);
       expect(gfg.maxProductSubArray([-1, -3, -10, 0, 60])).toEqual(60);
       expect(gfg.maxProductSubArray([-2, -3, 0, -2, -40])).toEqual(80);
@@ -381,6 +387,10 @@ describe("Arrays", function() {
     });
 
     /**/xit('tests longestMonotonicallyIncreasingLogN', function() {
+
+    });
+
+    /**/xit('tests findExpPairs', function() {
 
     });
   });

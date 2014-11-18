@@ -1682,13 +1682,71 @@ function largestSumContiguousSubarray(arr) {
 }
 
 // http://www.geeksforgeeks.org/maximum-contiguous-circular-sum/
+// as is, algorithm doesn't work for all negatives but you can do a check beforehand and proceed accordingly
 function maxContiguousCircularSum(arr) {
+  var length = arr.length, 
+      max_kadane = 0,
+      max_wrap = 0,
+      i;
 
+  // Case 1: get max sum without wrapping
+  max_kadane = this.largestSumContiguousSubarray(arr);
+
+  // Case 2: get max sum with wrapping
+  for (i = 0; i < length; i++) {
+    max_wrap += arr[i];   // calculate array sum
+    arr[i] = -arr[i];         // invert array
+  }
+
+  // max sum with wrapping will be max_wrap - (-max subarray sum of inverted array)
+  max_wrap += this.largestSumContiguousSubarray(arr);
+
+  return (max_wrap > max_kadane) ? max_wrap : max_kadane;
 }
 
 // http://www.geeksforgeeks.org/find-next-greater-number-set-digits/
-function findNextGreaterNum(arr) {
+// tricky part is when the last digit isn't involved in the swapping
+function findNextGreaterNum(num) {
+  var arr = num.toString().split(''),
+      length = arr.length,
+      currentIndex = length - 1,
+      lastNumIndex = currentIndex;
 
+  currentIndex -= 1;
+  while (lastNumIndex > 0) {
+    if (arr[lastNumIndex] > arr[currentIndex]) {
+      swap(arr, currentIndex, lastNumIndex);  // swap the current index with the last number
+
+      // reverse subarray from currentIndex + 1 to the end
+      reverseSubArray(arr, currentIndex + 1, length - 1);
+      break;
+    }
+    currentIndex -= 1;
+
+    if (currentIndex < 0) {
+      lastNumIndex -= 1;
+      currentIndex = lastNumIndex;
+    }
+  }
+
+  return parseInt(arr.join(''));
+}
+
+function swap(arr, x, y) {
+  var temp = arr[x];
+  arr[x] = arr[y];
+  arr[y] = temp;
+}
+
+function reverseSubArray(arr, lo, hi) {
+  while (hi > lo) {
+    var temp = arr[lo];
+    arr[lo] = arr[hi];
+    arr[hi] = temp;
+    
+    lo += 1;
+    hi -= 1;
+  }
 }
 
 // http://www.geeksforgeeks.org/find-first-non-repeating-character-stream-characters/
@@ -1780,15 +1838,50 @@ function getMedian(element, median, left, right) {
   }
 }
 
-// http://www.geeksforgeeks.org/find-number-pairs-xy-yx/
-function findExpPairs(arr1, arr2) {
-
-}
-
 // http://www.geeksforgeeks.org/maximum-product-subarray/
 // assumption: input array always has a positive output
 function maxProductSubArray(arr) {
+  var length = arr.length,
+      maxEndingHere = 1,      // max positive product ending at the current position
+      minEndingHere = 1,      // min negative product ending at the current position
+      maxSoFar = 1,           // initialize overall max product
+      i;
 
+  /* traverse array. Following values are maintained after the ith iteration. 
+    maxEndingHere is always 1 or some positive product ending with arr[i]
+    minEndingHere is always 1 or some negative product ending with arr[i] */
+  for (i = 0; i < length; i++) {
+    // if this element is positive, update maxEndingHere. Update minEndingHere only if minEndingHere is negative
+    if (arr[i] > 0) {
+      maxEndingHere *= arr[i];
+      minEndingHere = Math.min(minEndingHere * arr[i], 1);
+    }
+
+    // if this element is 0, then max product cannot end here. Make both maxEndingHere and minEndingHere 0.
+    // assumption: output is always greater than or equal to 1
+    else if (arr[i] === 0) {
+      maxEndingHere = 1;
+      minEndingHere = 1;
+    }
+
+    /* if element is negative. This is where it's tricky. maxEndingHere can either be 1 or positive. minEndingHere can either
+       be positive or negative.
+       next minEndingHere will always be previous maxEndingHere * arr[i]
+       next maxEndingHere will be 1 if previous minEndingHere is 1, otherwise
+       next maxEndingHere will be previous minEndingHere * arr[i] */
+    else {
+      var temp = maxEndingHere;
+      maxEndingHere = Math.max(minEndingHere * arr[i], 1);
+      minEndingHere = temp * arr[i];
+    }
+
+    // update maxSoFar if needed
+    if (maxSoFar < maxEndingHere) {
+      maxSoFar = maxEndingHere;
+    }
+  }
+
+  return maxSoFar;
 }
 
 // http://www.geeksforgeeks.org/largest-subarray-with-equal-number-of-0s-and-1s/
@@ -1836,6 +1929,11 @@ function countSmallerElementsOnRight(arr) {
   return results;
 }
 
+// *** http://www.geeksforgeeks.org/find-number-pairs-xy-yx/
+function findExpPairs(arr1, arr2) {
+
+}
+
 // *** http://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
 function longestMonotonicallyIncreasingLogN(arr) {
 
@@ -1845,7 +1943,7 @@ function longestMonotonicallyIncreasingLogN(arr) {
 
 // DIDN'T COMPLETELY UNDERSTAND: nextGreaterElement, findSmallestMissingNumber, countNumberOfOccurrences,
 // maxLengthBitonicSubArray, compare findSubArrayWithGivenSum with findTwoNumsThatSumToN, findSortedSubSequenceOfThree,
-// biggestNumCompare, findSmallestValueNotReppedBySubArraySum
+// biggestNumCompare, findSmallestValueNotReppedBySubArraySum, maxContiguousCircularSum
 // Recursion practice: printInterleavingsRecur removeAdjacentDuplicates
 
 // MATHY: findRepeatingAndMissing

@@ -1,9 +1,10 @@
-var Heap = require('../Heap.js');
+var Heap = require('../Heaps.js');
 
 describe("Heap", function() {
-  var heap = new Heap(function(x) { return x; });
+  var heap = new Heap.MinHeap(function(x) { return x; });
 
   beforeEach(function() {
+    heap.contents = [];
     heap.push(10);
     heap.push(3);
     heap.push(4);
@@ -18,7 +19,7 @@ describe("Heap", function() {
   });
 
   it('tests Heap with objects', function() {
-    var test = new Heap(function(x) { return x.frequency; });
+    var test = new Heap.MinHeap(function(x) { return x.frequency; });
     test.push(new Node('a', 16));
     test.push(new Node('b', 2));
     test.push(new Node('c', 8));

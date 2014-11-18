@@ -766,7 +766,7 @@ describe("BST", function() {
 
   it('tests doesEachNodeHaveOnlyOneChild', function() {
     var preOrder = [20, 10, 11, 13, 12];
-    expect(bst.doesEachNodeHaveOnlyOneChild(preOrder, -Infinity, Infinity, 0)).toEqual(true);
+    expect(bst.doesEachNodeHaveOnlyOneChild(preOrder)).toEqual(true);
   });
 
   it('tests iterativePostOrder', function() {

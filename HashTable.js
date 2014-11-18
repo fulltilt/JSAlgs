@@ -107,3 +107,5 @@ function getBucket(key) {
 		}
 	}
 }
+
+module.exports = HashTable;

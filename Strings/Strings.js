@@ -398,19 +398,6 @@ function sameCharsNDistanceAway(str, n) {
   return result.join('');
 }
 
-// *** http://www.geeksforgeeks.org/an-in-place-algorithm-for-string-transformation/
-// move even indices to the end. Keep everything in order
-function inPlaceStringTransform(str) {
-  var length = str.length,
-      arr = str.split(''),
-      i, j;
-  for (i = 0; i < Math.floor(length / 2); i++, j = i) {
-    //if ((i % 2) === 0) {  // we're at an even index
-
-    //}
-  }    
-}
-
 function swap(arr, x, y) {
   var temp = arr[x];
   arr[x] = arr[y];
@@ -445,6 +432,19 @@ function removeAdjacentDuplicates(str, index, previous) {
   }
 
   return str.join('');
+}
+
+// *** http://www.geeksforgeeks.org/an-in-place-algorithm-for-string-transformation/
+// move even indices to the end. Keep everything in order
+function inPlaceStringTransform(str) {
+  var length = str.length,
+      arr = str.split(''),
+      i, j;
+  for (i = 0; i < Math.floor(length / 2); i++, j = i) {
+    //if ((i % 2) === 0) {  // we're at an even index
+
+    //}
+  }    
 }
 
 module.exports = Strings;

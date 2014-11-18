@@ -14,7 +14,6 @@ function Matrix() {
   this.searchSortedMatrix1 = searchSortedMatrix1;
   this.searchSortedMatrix2 = searchSortedMatrix2;
   this.findSubSquares = findSubSquares;
-  this.findIslands = findIslands;
   this.inPlaceTranspose = inPlaceTranspose;
   this.maxSumRectangle = maxSumRectangle;
 }

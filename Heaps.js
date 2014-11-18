@@ -49,14 +49,20 @@ MinHeap.prototype = {
     var index = 0,  // swim down starts from root
         score = this.scoreFunction(this.contents[index]),
         length = this.contents.length;
-    
-    while ((index * 2) < length) {  // (index * 2) because inside the loop we're accessing the current indexes children. Without this check, we'll check past the array bounds
+
+    while (((index * 2) + 1) < length) {  // (index * 2) + 1 because inside the loop we're accessing the current indexes children. Without this check, we'll check past the array bounds
       var leftChildIndex = (index * 2) + 1,
           rightChildIndex = (index * 2) + 2,
-          leftChildScore = this.scoreFunction(this.contents[leftChildIndex]),
-          rightChildScore = this.scoreFunction(this.contents[rightChildIndex]),
-          minChild = Math.mix(leftChildScore, rightChildScore),
-          minChildIndex = (minChild === leftChildScore || isNaN(maxChild)) ? leftChildIndex : rightChildIndex;
+          minChildIndex;
+
+      if (rightChildIndex >= length) {
+        minChildIndex = leftChildIndex;
+      } else {
+        var leftChildScore = this.scoreFunction(this.contents[leftChildIndex]),
+            rightChildScore = this.scoreFunction(this.contents[rightChildIndex]),
+            minChild = Math.min(leftChildScore, rightChildScore);
+        minChildIndex = (minChild === leftChildScore) ? leftChildIndex : rightChildIndex;
+      }
 
       if (score < this.scoreFunction(this.contents[minChildIndex])) {
         break;
@@ -125,13 +131,19 @@ MaxHeap.prototype = {
         score = this.scoreFunction(this.contents[index]),
         length = this.contents.length;
 
-    while ((index * 2) < length) {  // (index * 2) because inside the loop we're accessing the current indexes children. Without this check, we'll check past the array bounds
+    while (((index * 2) + 1) < length) {  // (index * 2) + 1 because inside the loop we're accessing the current indexes children. Without this check, we'll check past the array bounds
       var leftChildIndex = (index * 2) + 1,
           rightChildIndex = (index * 2) + 2,
-          leftChildScore = this.scoreFunction(this.contents[leftChildIndex]),
-          rightChildScore = this.scoreFunction(this.contents[rightChildIndex]),
-          maxChild = Math.max(leftChildScore, rightChildScore), // note, if rightChild is undefined, this will return 'NaN'
-          maxChildIndex = (maxChild === leftChildScore || isNaN(maxChild)) ? leftChildIndex : rightChildIndex;
+          maxChildIndex;
+
+      if (rightChildIndex >= length) {
+        maxChildIndex = leftChildIndex;
+      } else {
+        var leftChildScore = this.scoreFunction(this.contents[leftChildIndex]),
+            rightChildScore = this.scoreFunction(this.contents[rightChildIndex]),
+            maxChild = Math.max(leftChildScore, rightChildScore);
+        maxChildIndex = (maxChild === leftChildScore) ? leftChildIndex : rightChildIndex;
+      }
 
       if (score > this.scoreFunction(this.contents[maxChildIndex])) {
         break;

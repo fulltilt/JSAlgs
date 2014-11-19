@@ -227,7 +227,7 @@ function partition(arr, lo, hi) {
       this.swap(arr, i, j);
     }
   }
-  this.swap(arr, lo, j);  // swap pivot into the correct position, swapping with the low value since values less than pivot should be on the left
+  this.swap(arr, lo, j);  // swap pivot into the correct position, swapping with the j value since values less than pivot should be on the left and in this point of the algorithm, j is equal to or less than i
 
   return j;
 }
@@ -284,4 +284,9 @@ function countInversions() {
 
 module.exports = Sorting;
 
-// Note: the hardest part about mergeSort and quickSort are there are numerous places that are ripe for fencepost errors
+/* NOTES
+-the hardest part about mergeSort and quickSort are there are numerous places that are ripe for fencepost errors
+-a difference between merge sort and quick sort when it comes to arrays is that quicksort is in-place while mergesort requires the creation of
+ new arrays. It also uses split()
+-since you can't do array indexing with linked lists, merge sort works great with linked lists whereas you can use quicksort
+*/

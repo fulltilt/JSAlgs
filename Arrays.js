@@ -1,5 +1,6 @@
 var Queue = require('./Queue.js'); // used for maxOfAllSubArrays()
-var BST = require('./BinarySearchTree.js');  // for binarySearchTreeToArray, countSmallerElementsOnRight
+var BST = require('./BinarySearchTree.js');  // for binarySearchTreeToArray
+var AVLTree = require('./Trees/AVLTree.js');  // for countSmallerElementsOnRight;
 var Heap = require('./Heaps.js'); // used for mergeKSortedArrays
 var DLL = require('./DoublyLinkedList.js'); // for firstNonRepeatingCharInStream
 
@@ -265,7 +266,26 @@ function partition(arr, lo, hi) {
 // http://www.geeksforgeeks.org/find-whether-an-array-is-subset-of-another-array-set-1/
 // determine whether arr2 is a subarray of arr1
 function isSubArray(arr1, arr2) {
+  var length1 = arr1.length,
+      length2 = arr2.length;
 
+  arr1 = arr1.sort();
+  arr2 = arr2.sort();
+
+  // enter arr1 into a binary search tree
+  var bst = new BST.BinarySearchTree();
+  for (var i = 0; i < length1; i++) {
+    bst.insert(arr1[i]);
+  }
+
+  // iterate through the 2nd array and search for elements in binary search tree. If an element isn't found, return false
+  for (i = 0; i < length2; i++) {
+    if (!bst.find(arr2[i])) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 // http://www.geeksforgeeks.org/majority-element/ (unsorted) or http://www.geeksforgeeks.org/check-for-majority-element-in-a-sorted-array/
@@ -1840,6 +1860,7 @@ function getMedian(element, median, left, right) {
 
 // http://www.geeksforgeeks.org/maximum-product-subarray/
 // assumption: input array always has a positive output
+// similar to longestContiguousSumSubarray but is harder due to the fact that we have to handle negatives and zeroes
 function maxProductSubArray(arr) {
   var length = arr.length,
       maxEndingHere = 1,      // max positive product ending at the current position
@@ -1865,7 +1886,7 @@ function maxProductSubArray(arr) {
     }
 
     /* if element is negative. This is where it's tricky. maxEndingHere can either be 1 or positive. minEndingHere can either
-       be positive or negative.
+       be 1 or negative.
        next minEndingHere will always be previous maxEndingHere * arr[i]
        next maxEndingHere will be 1 if previous minEndingHere is 1, otherwise
        next maxEndingHere will be previous minEndingHere * arr[i] */
@@ -1884,40 +1905,19 @@ function maxProductSubArray(arr) {
   return maxSoFar;
 }
 
-// http://www.geeksforgeeks.org/largest-subarray-with-equal-number-of-0s-and-1s/
-// algorithm: consider all zero values as -1. The problem now reduces to find the max length subarray with sum = 0
-// see: http://stackoverflow.com/questions/5534063/zero-sum-subarray ;we can do a similar approach combining above and instead
-//  of looking for an index with the same value, look for an index with the same value plus 1 (apparently we have to do this since
-//    we treat zeroes as '-1'. I'm not sure why this is so.) and do a binary search to the right of the index for these values making
-//    algorithm O(n logn). The problem is when we have multiple sets where the index is the same and comparing their lengths
-function largestSubArrayOfZeroesAndOnes(arr) {
-  var length = arr.length,
-      lo = 0,
-      hi = length -1,
-      sum = 0;
-
-  // get sum of array treating zeroes as '-1'
-  for (var i = 0; i < length; i++) {
-    if (arr[i] === 0) {
-      sum += -1;
-    } else {
-      sum += 1;
-    }
-  }
-
-}
-
 // http://www.geeksforgeeks.org/count-smaller-elements-on-right-side/
-// TODO: not finished as the O(nlog n) solution requires a modified AVL Tree which is at this point a lot of work for a solution I don't understand
+// TODO: not finished as the O(nlog n) solution requires a modified AVL Tree
 function countSmallerElementsOnRight(arr) {
-  var avl = new BST.AVLTree(),
+  var avl = new AVLTree(),
       length = arr.length,
       results = [];
 
   for (var i = length - 1; i >= 0; i--) {
-    avl.AVLInsert(arr[i]);
+    avl.insert(arr[i]);
   }
 
+
+/*
   for (i = 0; i < length; i++) {
     var currentNode = avl.find(arr[i]);
     if (currentNode.left !== null) {
@@ -1926,7 +1926,31 @@ function countSmallerElementsOnRight(arr) {
       results[i] = 0;
     }
   }
+*/  
   return results;
+}
+
+// *** http://www.geeksforgeeks.org/largest-subarray-with-equal-number-of-0s-and-1s/
+// algorithm: consider all zero values as -1. The problem now reduces to find the max length subarray with sum = 0
+// see: http://stackoverflow.com/questions/5534063/zero-sum-subarray ;we can do a similar approach combining above and instead
+//  of looking for an index with the same value, look for an index with the same value plus 1 (apparently we have to do this since
+//    we treat zeroes as '-1'. I'm not sure why this is so.) and do a binary search to the right of the index for these values making
+//    algorithm O(n logn). The problem is when we have multiple sets where the index is the same and comparing their lengths
+function largestSubArrayOfZeroesAndOnes(arr) {
+  var length = arr.length,
+      sumLeft = [],
+      sumRight = [],
+      sum = 0,
+      i;
+
+  // fill out sumLeft
+  for (i = 0; i < length; i++) {
+    sum += (arr[i] === 0) ? -1 : 1;
+    sumLeft[i] = sum;
+  }
+  
+  console.log(sumLeft);
+  
 }
 
 // *** http://www.geeksforgeeks.org/find-number-pairs-xy-yx/
@@ -1943,7 +1967,7 @@ function longestMonotonicallyIncreasingLogN(arr) {
 
 // DIDN'T COMPLETELY UNDERSTAND: nextGreaterElement, findSmallestMissingNumber, countNumberOfOccurrences,
 // maxLengthBitonicSubArray, compare findSubArrayWithGivenSum with findTwoNumsThatSumToN, findSortedSubSequenceOfThree,
-// biggestNumCompare, findSmallestValueNotReppedBySubArraySum, maxContiguousCircularSum
+// biggestNumCompare, findSmallestValueNotReppedBySubArraySum, maxContiguousCircularSum, maxProductSubArray
 // Recursion practice: printInterleavingsRecur removeAdjacentDuplicates
 
 // MATHY: findRepeatingAndMissing

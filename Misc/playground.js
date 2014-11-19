@@ -1,174 +1,150 @@
-function MinHeap(scoreFunction) {
-  this.contents = [];
-  this.scoreFunction = scoreFunction;
+function Trie() {
+  this.wordTree = {};
+  this.words = 0;
 }
 
-MinHeap.prototype = {
-  push: function(data) {
-    this.contents.push(data);
-    this.bubbleUp(this.contents.length - 1);
-  },
+Trie.prototype = {
+  addWord: function(word) {
+    var root = this.wordTree,
+        length = word.length,
+        word = word.trim().toUpperCase();
 
-  pop: function() {
-    if (this.contents.length === 0) {
-      throw new Error('empty heap');
-    }
-
-    var min = this.contents[0];
-    
-    // pop off the last index and set it as root. From here, swim down
-    var temp = this.contents.pop();
-
-    if (this.contents.length > 0) {
-      this.contents[0] = temp;
-      this.swimDown();
-    }
-
-    return min;
-  },
-
-  bubbleUp: function(index) {
-    var element = this.contents[index],
-        score = this.scoreFunction(element);
-
-    while (index > 0) {
-      var parentIndex = Math.floor((index - 1)/ 2);
-      if (this.scoreFunction(this.contents[parentIndex]) < score) {
-        break;
+    for (i = 0; i < length; i++) {
+      var c = word[i];
+      if (!root[c]) {
+        root[c] = {};
       }
+      root = root[c];
 
-      var temp = this.contents[parentIndex];
-      this.contents[parentIndex] = this.contents[index];
-      this.contents[index] = temp;
-
-      index = parentIndex;
+      if (i === length - 1) {
+        this.words += 1;
+        root.$ = 1;
+      }
     }
   },
 
-  swimDown: function() {
-    var index = 0,  // swim down starts from root
-        score = this.scoreFunction(this.contents[index]),
-        length = this.contents.length;
-    
-    while ((index * 2) < length) {  // (index * 2) because inside the loop we're accessing the current indexes children. Without this check, we'll check past the array bounds
-      var leftChildIndex = (index * 2) + 1,
-          rightChildIndex = (index * 2) + 2,
-          leftChildScore = this.scoreFunction(this.contents[leftChildIndex]),
-          rightChildScore = this.scoreFunction(this.contents[rightChildIndex]),
-          minChild = Math.mix(leftChildScore, rightChildScore),
-          minChildIndex = (minChild === leftChildScore || isNaN(maxChild)) ? leftChildIndex : rightChildIndex;
+  isWord: function(word) {
+    var root = this.wordTree,
+        length = word.length,
+        word = word.trim().toUpperCase(),
+        i;
 
-      if (score < this.scoreFunction(this.contents[minChildIndex])) {
-        break;
-      } else {
-        var temp = this.contents[index];
-        this.contents[index] = this.contents[minChildIndex];
-        this.contents[minChildIndex] = temp;
+    for (i = 0; i < length; i++) {
+      var c = word[i];
+      if (!root[c]) {
+        return false;
+      }
+      root = root[c];
 
-        index = minChildIndex;
+      if (i === length - 1) {
+        return (root.$ === 1);
       }
     }
   }
 }
 
-function MaxHeap(scoreFunction) {
-  this.contents = [];
-  this.scoreFunction = scoreFunction;
+/*
+var trie = new Trie();
+trie.addWord('banana');
+trie.addWord('anana');
+trie.addWord('nana');
+trie.addWord('ana');
+trie.addWord('na');
+trie.addWord('a');
+console.log(trie.wordTree);
+console.log(trie.isWord('nana'));
+console.log(trie.isWord('nan'));
+*/
+
+function QuickSort(arr, lo, hi) {
+  if (hi <= lo) {
+    return;
+  }
+
+  var k = partition(arr, lo, hi);
+  QuickSort(arr, lo, k - 1);
+  QuickSort(arr, k + 1, hi);
 }
 
-MaxHeap.prototype = {
-  push: function(data) {
-    this.contents.push(data);
-    this.bubbleUp(this.contents.length - 1);
-  },
+function partition(arr, lo, hi) {
+  var i = lo + 1,
+      j = hi,
+      pivot = arr[lo];
 
-  pop: function() {
-    if (this.contents.length === 0) {
-      throw new Error('empty heap');
-    }
-
-    var result = this.contents[0];
-
-    // pop off the last index and set it as root. From here, swim down
-    var temp = this.contents.pop();
-
-    if (this.contents.length > 0) {
-      this.contents[0] = temp;
-      this.swimDown();
-    }
-
-    return result;
-  },
-
-  bubbleUp: function(index) {
-    var element = this.contents[index],
-        score = this.scoreFunction(element);
-
-    while (index > 0) {
-      var parentIndex = Math.floor((index - 1)/ 2),
-          parentScore = this.scoreFunction(this.contents[parentIndex]);
-
-      if (parentScore > score) {
+  while (true) {
+    while (arr[i] < pivot) {
+      i += 1;
+      if (i === hi) {
         break;
       }
-
-      var temp = this.contents[parentIndex];
-      this.contents[parentIndex] = this.contents[index];
-      this.contents[index] = temp;
-
-      index = parentIndex;
     }
-  },
 
-  swimDown: function() {
-    var index = 0,  // swimDown always starts from root inde
-        score = this.scoreFunction(this.contents[index]),
-        length = this.contents.length;
-
-    while ((index * 2) < length) {  // (index * 2) because inside the loop we're accessing the current indexes children. Without this check, we'll check past the array bounds
-      var leftChildIndex = (index * 2) + 1,
-          rightChildIndex = (index * 2) + 2,
-          leftChildScore = this.scoreFunction(this.contents[leftChildIndex]),
-          rightChildScore = this.scoreFunction(this.contents[rightChildIndex]),
-          maxChild = Math.max(leftChildScore, rightChildScore), // note, if rightChild is undefined, this will return 'NaN'
-          maxChildIndex = (maxChild === leftChildScore || isNaN(maxChild)) ? leftChildIndex : rightChildIndex;
-
-      if (score > this.scoreFunction(this.contents[maxChildIndex])) {
+    while (arr[j] > pivot) {
+      j -= 1;
+      if (j === lo) {
         break;
       }
+    }
 
-      var temp = this.contents[maxChildIndex];
-      this.contents[maxChildIndex] = this.contents[index];
-      this.contents[index] = temp;
+    if (i >= j) {
+      break;
+    }
 
-      index = maxChildIndex;
-    }  
+    var temp = arr[j];
+    arr[j] = arr[i];
+    arr[i] = temp;
   }
+
+  var temp = arr[j];
+  arr[j] = arr[lo];
+  arr[lo] = temp;
+
+  return j;
 }
 
-var Heaps = function() {
-  return {
-    MinHeap: MinHeap,
-    MaxHeap: MaxHeap
+/*
+var arr = [10,5,2,161,8,9,4,15,33];
+partition(arr, 0, arr.length - 1);
+console.log(arr);
+*/
+
+function MergeSort(arr) {
+  if (arr.length <= 1) {
+    return arr;
   }
-}();
 
-module.exports = Heaps;
-/* NOTES
--assuming the head is at index 0:
--to get children:
-for root (index 0), children should be at 1 and 2
-      0
-  1       2
-3   4   5   6 
+  var start = 0,
+      mid = Math.floor((arr.length) / 2),
+      end = arr.length - 1;
 
-for the 2nd element (index 1), children should be at index 3 and 4
-leftChild = (index * 2) + 1
-rightChild = (index * 2) + 2
-note: Eloquent JS used: var child2N = (n + 1) * 2, child1N = child2N - 1;
+  var left = arr.slice(start, mid),
+      right = arr.slice(mid, end + 1),
+      merged = merge(MergeSort(left), MergeSort(right));
 
--to get parents:
-index 3 and index 4 should return 1. 
-parent = Math.floor((index - 1)/ 2)
-note: Eloquent JS used: var parentN = Math.floor((n + 1) / 2) - 1
-*/  
+  return merged;
+}
+
+function merge(arr1, arr2) {
+  var newArr = [],
+      arr1Length = arr1.length,
+      arr2Length = arr2.length,
+      arr1Ptr = 0,
+      arr2Ptr = 0;
+
+  while (arr1Ptr !== arr1Length && arr2Ptr !== arr2Length) {
+    if (arr1[arr1Ptr] < arr2[arr2Ptr]) {
+      newArr.push(arr1[arr1Ptr]);
+      arr1Ptr += 1;
+    } else {
+      newArr.push(arr2[arr2Ptr]);
+      arr2Ptr += 1;
+    }
+  }
+
+  newArr = newArr.concat(arr1.slice(arr1Ptr)).concat(arr2.slice(arr2Ptr));
+  return newArr;
+}
+
+console.log(merge([1,5,6,7,8],[2,3,19]));
+var arr = [10,5,2,161,8,9,4,15,33];
+console.log(MergeSort(arr));

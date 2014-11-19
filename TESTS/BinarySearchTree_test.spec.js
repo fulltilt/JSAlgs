@@ -746,7 +746,7 @@ describe("BST", function() {
         preLN = ['N', 'N', 'L', 'L', 'L'],
         preOrderIndex = { index: 0 },
         root = bst.constructSpecialBT(preOrder, preLN, preOrderIndex);
-    bst.printByLevel(root);
+    //bst.printByLevel(root);
   });
 
   it('tests recreateFromPreOrder', function() {
@@ -807,7 +807,7 @@ describe("BST", function() {
     bst.fixBSTAfterSwap(root);
   });
 
-  xit('tests removeNodesWhosePathLessThanK', function() {
+  it('tests removeNodesWhosePathLessThanK', function() {
     var root = new BST.Node(1);
     root.left = new BST.Node(2);
     root.left.left = new BST.Node(4);
@@ -823,12 +823,14 @@ describe("BST", function() {
     root.right.right.left = new BST.Node(10);
     root.right.right.left.right = new BST.Node(11);
     var cumulativeSum = { sum: 0 };
-    bst.iterativeInOrder(root);
-    bst.removeNodesWhosePathLessThanK(root, 45, 0);
     //bst.iterativeInOrder(root);
+    bst.printByLevel(root);
+    bst.removeNodesWhosePathLessThanK(root, 45, cumulativeSum);
+    //bst.iterativeInOrder(root);
+    bst.printByLevel(root);
   });
 
-  xit('tests findMaxPathSumBetweenTwoLeaves', function() {
+  it('tests findMaxPathSumBetweenTwoLeaves', function() {
     var root = new BST.Node(-15);
     root.left = new BST.Node(5);
     root.right = new BST.Node(6);
@@ -844,11 +846,8 @@ describe("BST", function() {
     root.right.right.right.right.left= new BST.Node(10);
 
     var maxPath = { sum: 0 };
-    expect(bst.findMaxPathSumBetweenTwoLeaves(root, maxPath)).toEqual(27);
-  });
-
-  it('tests checkIdenticalArrayBST', function() {
-    
+    bst.findMaxPathSumBetweenTwoLeaves(root, maxPath);
+    expect(maxPath.sum).toEqual(27);
   });
 
   xit('tests getRandomBSTNode', function() {
@@ -944,5 +943,9 @@ describe("BST", function() {
   xit('tests printByLevel', function() {
     bst.printByLevel();
     bt.printByLevel();
+  });
+
+  /**/it('tests checkIdenticalArrayBST', function() {
+    
   });
 });

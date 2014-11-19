@@ -1937,8 +1937,8 @@ function segmentTree() {
 
 }
 
-/* NOTE: delaying this as I have to implement a merge function that uses 'left' and 'right' instead of 'previous' and 'next'
-// http://www.geeksforgeeks.org/merge-two-bsts-with-limited-extra-space/
+/* *** http://www.geeksforgeeks.org/merge-two-bsts-with-limited-extra-space/
+// NOTE: delaying this as I have to implement a merge function that uses 'left' and 'right' instead of 'previous' and 'next'
 function mergeTwoTrees(root1, root2) {
   root1 = this.treeToDoublyLinkedList(root1);
   root2 = this.treeToDoublyLinkedList(root2);
@@ -1967,7 +1967,7 @@ function mergeTwoConvertedLists(list1, list2) {
 }
 */
 
-// http://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
+// *** http://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
 function fixBSTAfterSwap(root) {
   var stack = [],
       inOrder = [];
@@ -1985,11 +1985,12 @@ function fixBSTAfterSwap(root) {
   }
 
   inOrder.sort(function(a, b) { return a.data - b.data; });
-  console.log(inOrder);
+  //console.log(inOrder);
 }
 
+// *** http://www.geeksforgeeks.org/remove-all-nodes-which-lie-on-a-path-having-sum-less-than-k/
+// trick is to work bottom up and to delete a node only when it's a leaf
 // NOTE: not quite working. May have something to do with me not knowing how to properly delete an object
-// http://www.geeksforgeeks.org/remove-all-nodes-which-lie-on-a-path-having-sum-less-than-k/
 function removeNodesWhosePathLessThanK(node, k, cumulativeSum) {
   if (node === null) {
     return null;
@@ -2000,33 +2001,23 @@ function removeNodesWhosePathLessThanK(node, k, cumulativeSum) {
       rightSum = leftSum;
 
   cumulativeSum.sum += node.data;
-  console.log(cumulativeSum.sum);
 
   // recursively prune left and right subtrees
   node.left = this.removeNodesWhosePathLessThanK(node.left, k, cumulativeSum);
   node.right = this.removeNodesWhosePathLessThanK(node.right, k, cumulativeSum);
 
   // get the max of left and right sums
-  //cumulativeSum.sum = Math.max(leftSum, rightSum);
+  cumulativeSum.sum = Math.max(leftSum, rightSum);
 
-  // If max is smaller than k, then this node must be deleted
+  // If max is smaller than k and is a leaf, then this node must be deleted
   if (!node.left && !node.right && cumulativeSum.sum < k) {
-    console.log(cumulativeSum.sum + ' ' + node.data);
-    delete node;
     node = null;
   }
 
-  /*cumulativeSum += node.data;
-  node.left = this.removeNodesWhosePathLessThanK(node.left, k, cumulativeSum);
-  node.right = this.removeNodesWhosePathLessThanK(node.right, k, cumulativeSum);
-  if (!node.left && !node.right && cumulativeSum < k) {
-    delete root;
-    root = null;
-  }*/
   return node;
 }
 
-// http://www.geeksforgeeks.org/find-maximum-path-sum-two-leaves-binary-tree/
+// *** http://www.geeksforgeeks.org/find-maximum-path-sum-two-leaves-binary-tree/
 // given a tree, find the max path sum between any leaf in the tree I initially thought it was given 2 leafs, what is the maximum path
 // sum between the 2 leaves. Apparently that's just the leaves lowest common ancestor and get the sum of the value of the path of the first 
 // leaf + the ancestor data + the sum of the path to the second leaf
@@ -2041,7 +2032,7 @@ function findMaxPathSumBetweenTwoLeaves(node, maxPath) {
       rLPSum = this.findMaxPathSumBetweenTwoLeaves(node.right, maxPath);
 
   // Find the max path sum passing through root
-  var currentSum = Math.max((lLPSum + node.data + rLPSum), Math.max(lLPSum, rLPSum));
+  var currentSum = Math.max((lLPSum + node.data + rLPSum), Math.max(lLPSum, rLPSum));   // would 'var currentSum = lLPSum + node.data + rLPSum;' wor by itself?
 
   // Update maxPath if needed
   if (maxPath.sum < currentSum) {

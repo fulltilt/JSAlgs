@@ -1,4 +1,5 @@
 var LinkedList = require('./LinkedList.js');
+var Trie = require('./Strings/Trie.js');
 
 function Node(data, left, right) {
   this.data = data;
@@ -36,6 +37,7 @@ function BST() {
   this.getHeight = getHeight;
   this._getHeight = _getHeight;
   this.isSubTree = isSubTree;
+  this.isSubTree2 = isSubTree2;
   this.getLargestBSTSubTreeSize = getLargestBSTSubTreeSize;
   this.areTreesIdentical = areTreesIdentical;
   this.mirror = mirror;
@@ -97,7 +99,7 @@ function BST() {
   this.reverseAlternateLevels = reverseAlternateLevels;
   this.findMaxPathSumBetweenTwoLeaves = findMaxPathSumBetweenTwoLeaves;
   this.areNodesCousins = areNodesCousins;
-  //this.mergeTwoTrees = mergeTwoTrees;
+  this.mergeTwoTrees = mergeTwoTrees;
   this.recreateFromInOrderAndPreOrder = recreateFromInOrderAndPreOrder;
   this.recreateFromPreOrderAndPostOrder = recreateFromPreOrderAndPostOrder;
   this.recreateFromInOrderAndLevelOrder = recreateFromInOrderAndLevelOrder;
@@ -1898,30 +1900,50 @@ function iterativePostOrder() {
 
 }
 
+// http://www.geeksforgeeks.org/segment-tree-set-1-sum-of-given-range/
+// http://www.geeksforgeeks.org/segment-tree-set-1-range-minimum-query/
+function segmentTree() {
+
+}
+
 // http://www.geeksforgeeks.org/check-binary-tree-subtree-another-binary-tree-set-2/ O(n) solution for isSubTree
+// note: check if tree1 is a subtree of tree2
 function isSubTree2(tree1, tree2) {
   var inOrder1 = [],
       preOrder1 = [],
       inOrder2 = [],
       preOrder2 = [];
 
+  // get respective in-order and pre-order traversal arrays
   this.getInOrder(tree1, inOrder1);
   this.getPreOrder(tree1, preOrder1);
   this.getInOrder(tree2, inOrder2);
   this.getPreOrder(tree2, preOrder2);
 
-  /*
-TODO: research pattern matching algorithms  
-  console.log(inOrder1);
-  console.log(preOrder1);
-  console.log(inOrder2);
-  console.log(preOrder2);
-    c,a,x,b
+  // create a trie for the in-order traversal and pre-order traversal of tree2 (the bigger tree)
+  var inOrderTrie = new Trie(),
+      inOrder2 = inOrder2.join(''),
+      length = inOrder2.length, i;
+  for (i = 0; i < length; i++) {
+    for (var j = i; j < length; j++) {
+      inOrderTrie.addWord(inOrder2.slice(i));
+    }
+  }
+  if (!inOrderTrie.isWord(inOrder1.join(''))) {
+    return false;
+  }
+  /*  c,a,x,b
     x,a,c,b
 
     c,a,x,b,d
     x,a,c,b,d
+
+[ 'a', 'c', 'x', 'b' ]
+[ 'x', 'a', 'c', 'b' ]
+[ 'a', 'c', 'x', 'b', 'z', 'e', 'k' ]
+[ 'z', 'x', 'a', 'c', 'b', 'e', 'k' ]
   */
+  return true;
 }
 
 // Note: BSTToArray just puts the data into an Array not the actual Node. To be correct, BSTToArray variation should add the Node itself
@@ -1931,20 +1953,13 @@ function getRandomBSTNode(root) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// http://www.geeksforgeeks.org/segment-tree-set-1-sum-of-given-range/
-// http://www.geeksforgeeks.org/segment-tree-set-1-range-minimum-query/
-function segmentTree() {
-
-}
-
-/* *** http://www.geeksforgeeks.org/merge-two-bsts-with-limited-extra-space/
-// NOTE: delaying this as I have to implement a merge function that uses 'left' and 'right' instead of 'previous' and 'next'
+// *** http://www.geeksforgeeks.org/merge-two-bsts-with-limited-extra-space/
 function mergeTwoTrees(root1, root2) {
+  // convert both trees into doubly linked lists
   root1 = this.treeToDoublyLinkedList(root1);
   root2 = this.treeToDoublyLinkedList(root2);
-  var LL = new LinkedList();
-  var list = mergeTwoConvertedLists(root1, root2);
-  console.log(list.data);
+
+  return mergeTwoConvertedLists(root1, root2);  // return a merged doubly linked list
 }
 
 // helper function for mergeTwoTrees. Since the conversion fxn from a tree to a list uses 'left' instead of 'previous' and 'right' instead of 'next', 
@@ -1954,38 +1969,66 @@ function mergeTwoConvertedLists(list1, list2) {
 
   while (list1 !== null && list2 !== null) {
     if (list1.data < list2.data) {
-      current.next = list1;
+      current.right = list1;
       list1 = list1.right;
     } else {
-      current.next = list2;
+      current.right = list2;
       list2 = list2.right;
     }
+    current = current.right;
   }
 
-  current.next = (list1 !== null) ? list1 : list2;
-  return dummyHead.next;  
+  current.right = (list1 !== null) ? list1 : list2;
+  
+  return dummyHead.right;  
 }
-*/
 
 // *** http://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
+// naive: a simple method is to store inorder traversal of the input tree in an auxiliary array. Sort the auxiliary array. Finally, insert the 
+//  auxiilary array elements back to the BST, keeping the structure of the BST same. Time complexity of this method is O(nLogn) and auxiliary space needed is O(n).
+// -tricky part is that there are 2 situations: swapped nodes are adjacent in inOrder BST and swapped nodes are not adjacent in inOrder BST
 function fixBSTAfterSwap(root) {
-  var stack = [],
-      inOrder = [];
-  current = root;
-  while (stack.length > 0 || current) {
-    if (current) {
-      stack.push(current);
-      current = current.left;
-    } else {
-      current = stack[stack.length - 1];
-      stack.pop();
-      inOrder.push(current);
-      current = current.right;
+  // have to pass these as objects so I can pass them as references
+  var previous = { node: null },
+        first = { node: null },
+        middle = { node: null },
+        last = { node: null };
+
+  fixBSTAfterSwapUtil(root, previous, first, middle, last);
+
+  // fix tree
+  if (first.node && last.node) {
+    var temp = first.node.data;
+    first.node.data = last.node.data;
+    last.node.data = temp;
+  } else if (first.node && middle.node) { // adjacent nodes swapped
+    var temp = first.node.data;
+    first.node.data = middle.node.data;
+    middle.node.data = temp;
+  }
+}
+
+function fixBSTAfterSwapUtil(root, previous, first, middle, last) {
+  if (root === null) {
+    return;
+  }
+
+  fixBSTAfterSwapUtil(root.left, previous, first, middle, last);
+
+  // if this node is smaller than the previous node, it's violating the BST rule
+  if (previous.node !== null && previous.node.data > root.data) {
+    // if this is the first violation, mark these 2 nodes as 'first' and 'middle'
+    if (first.node === null) {
+      first.node = previous.node;
+      middle.node = root;
+    } else {  // if this is the 2nd violation, mark this node as last
+      last.node = root;
     }
   }
 
-  inOrder.sort(function(a, b) { return a.data - b.data; });
-  //console.log(inOrder);
+  previous.node = root; // mark the current node as previous before recurring to the right subtree
+  
+  fixBSTAfterSwapUtil(root.right, previous, first, middle, last);
 }
 
 // *** http://www.geeksforgeeks.org/remove-all-nodes-which-lie-on-a-path-having-sum-less-than-k/

@@ -154,6 +154,10 @@ describe("BST", function() {
     bst.isSubTree(bt2.root, bt3.root);
   });
 
+  it('tests isSubTree', function() {
+    expect(bst.isSubTree2(bt2.root, bt3.root)).toEqual(true);
+  });
+
   it('tests treeToCircularDoublyLinkedList', function() {
     var tcdl = new BST.BinarySearchTree();
     tcdl.insert(4);
@@ -777,7 +781,7 @@ describe("BST", function() {
 
   });
 
-  xit('tests mergeTwoTrees', function() {
+  it('tests mergeTwoTrees', function() {
     var root1 = new BST.Node(3);
     root1.left = new BST.Node(1);
     root1.right = new BST.Node(5);
@@ -785,7 +789,13 @@ describe("BST", function() {
     var root2 = new BST.Node(4);
     root2.left = new BST.Node(2);
     root2.right = new BST.Node(6);
-    bst.mergeTwoTrees(root1, root2);
+    var l1 = bst.mergeTwoTrees(root1, root2);
+    expect(l1.data).toEqual(1);
+    expect(l1.right.data).toEqual(2);
+    expect(l1.right.right.data).toEqual(3);
+    expect(l1.right.right.right.data).toEqual(4);
+    expect(l1.right.right.right.right.data).toEqual(5);
+    expect(l1.right.right.right.right.right.data).toEqual(6);
 
     var root3 = new BST.Node(8);
     root3.left = new BST.Node(2);
@@ -795,16 +805,26 @@ describe("BST", function() {
     var root4 = new BST.Node(5);
     root4.left = new BST.Node(3);
     root4.left.left = new BST.Node(0);
-    bst.mergeTwoTrees(root3, root4);
+    var l2 = bst.mergeTwoTrees(root3, root4);
+    expect(l2.data).toEqual(0);
+    expect(l2.right.data).toEqual(1);
+    expect(l2.right.right.data).toEqual(2);
+    expect(l2.right.right.right.data).toEqual(3);
+    expect(l2.right.right.right.right.data).toEqual(5);
+    expect(l2.right.right.right.right.right.data).toEqual(8);
+    expect(l2.right.right.right.right.right.right.data).toEqual(10);
   });
 
-  xit('tests fixBSTAfterSwap', function() {
+  it('tests fixBSTAfterSwap', function() {
     var root = new BST.Node(10);
     root.left = new BST.Node(5);
     root.left.left = new BST.Node(2);
     root.left.right = new BST.Node(20);
     root.right = new BST.Node(8);
+
+    //bst.iterativeInOrder(root);    
     bst.fixBSTAfterSwap(root);
+    //bst.iterativeInOrder(root);
   });
 
   it('tests removeNodesWhosePathLessThanK', function() {
@@ -823,11 +843,9 @@ describe("BST", function() {
     root.right.right.left = new BST.Node(10);
     root.right.right.left.right = new BST.Node(11);
     var cumulativeSum = { sum: 0 };
-    //bst.iterativeInOrder(root);
-    bst.printByLevel(root);
+    //bst.printByLevel(root);
     bst.removeNodesWhosePathLessThanK(root, 45, cumulativeSum);
-    //bst.iterativeInOrder(root);
-    bst.printByLevel(root);
+    //bst.printByLevel(root);
   });
 
   it('tests findMaxPathSumBetweenTwoLeaves', function() {

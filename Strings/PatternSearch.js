@@ -218,11 +218,6 @@ PatternSearch.prototype = {
     }
   },
 
-  // http://www.geeksforgeeks.org/suffix-array-set-1-introduction/
-  suffixArray: function(str) {
-
-  },
-
   // http://www.gzeeksforgeeks.org/searching-for-patterns-set-5-finite-automata/
   // not finished. Having issues with the compute TF fxn
   finiteAutomata: function (pattern, source) {

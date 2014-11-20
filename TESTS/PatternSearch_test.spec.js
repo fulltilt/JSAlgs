@@ -22,10 +22,6 @@ describe("PatternSearch", function() {
   it('tests BoyerMoore', function() {
     expect(ps.BoyerMoore('AABA', 'AABAACAADAABAAABAA')).toEqual([0,9,13]);
   });
-
-  xit('tests finiteAutomata', function() {
-    expect(ps.finiteAutomata('AABA', 'AABAACAADAABAAABAA')).toEqual([0,9,13]);
-  });
   
   it('tests Trie addWord and isWord', function() {
     trie.addWord('banana');
@@ -51,5 +47,9 @@ describe("PatternSearch", function() {
     expect(tst.search('cats')).toEqual(true);
     expect(tst.search('bu')).toEqual(false);
     expect(tst.search('cat')).toEqual(true);
+  });
+
+  xit('tests finiteAutomata', function() {
+    expect(ps.finiteAutomata('AABA', 'AABAACAADAABAAABAA')).toEqual([0,9,13]);
   });
 });

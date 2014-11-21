@@ -62,6 +62,7 @@ function Arrays() {
   this.findKClosestElementsToN = findKClosestElementsToN;
   this.maxSumPathBetweenTwoArrays = maxSumPathBetweenTwoArrays;
   this.sortDefinedBySecondArray = sortDefinedBySecondArray;
+  this.rearrangePositiveAndNegative = rearrangePositiveAndNegative;
   this.alternatePositiveAndNegative = alternatePositiveAndNegative;
   this.findSmallestValueNotReppedBySubArraySum = findSmallestValueNotReppedBySubArraySum;
   this.findCommonElementsInThreeSortedArrays = findCommonElementsInThreeSortedArrays;
@@ -1535,6 +1536,11 @@ function sortDefinedBySecondArray(arr1, arr2) {
   }
 
   return arr1;
+}
+
+// http://www.geeksforgeeks.org/rearrange-positive-and-negative-numbers-publish/
+function rearrangePositiveAndNegative(arr) {
+  
 }
 
 // http://www.geeksforgeeks.org/rearrange-array-alternating-positive-negative-items-o1-extra-space/

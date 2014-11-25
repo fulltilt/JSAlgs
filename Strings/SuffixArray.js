@@ -13,9 +13,9 @@ function buildSuffixArray1(str) {
   for (i = 0; i < length; i++) {
     suffixes[i] = new Suffix(i, str.substring(i));
   }
-  console.log(suffixes);
+console.log(suffixes);
   suffixes = suffixes.sort(compare);   // sort the suffixes
-  
+console.log(suffixes);  
   // store indexes of all sorted suffixes in the suffix array
   var suffixArray = [];
   for (i = 0; i < length; i++) {
@@ -86,5 +86,97 @@ function buildSuffixArray2(str) {
   }
 }
 
-console.log(buildSuffixArray2('banana'));
-//console.log(buildSuffixArray('bobocel'));
+// compares 2 strings up to a certain length
+function strncmp(str1, str2, length) {
+  var sub1 = str1.substring(0, length),
+      sub2 = str2.substring(0, length);
+  if (sub1 === sub2) {
+    return 0;
+  } else if (sub1 > sub2) {
+    return 1;
+  } else {
+    return -1;
+  }
+}
+
+// suffix array based search fxn to search a given pattern
+function search(pattern, src, suffixArray) {
+  var srcLength = src.length,
+      patternLength = pattern.length;
+
+  // do simple binary search for the pattern in src using the suffix array
+  var lo = 0,
+      hi = srcLength - 1;
+  while (lo <= hi) {
+    // see if pattern is prefix of middle suffix in suffix array
+    var mid = Math.floor(lo + ((hi - lo) / 2)),
+        result = strncmp(pattern, src.substring(suffixArray[mid]), patternLength);
+
+    if (result === 0) {
+
+// O(n) modification to return all occurrences of pattern in source
+var count = 1,
+    result = [],
+    temp = mid;
+result.push(src.substring(suffixArray[temp]));
+while (strncmp(pattern, src.substring(suffixArray[++temp]), patternLength) === 0) {
+  result.push(src.substring(suffixArray[temp]));
+  count += 1;
+}
+temp = mid;
+while (temp !== 0 && strncmp(pattern, src.substring(suffixArray[--temp]), patternLength) === 0) {
+  result.push(src.substring(suffixArray[temp]));
+  count += 1;
+}
+console.log(count, result);
+
+      return true;
+    } else if (result < 0) {
+      hi = mid - 1;
+    } else {
+      lo = mid + 1;
+    }
+  }
+
+  return false;
+}
+
+// algorithm: use binary search to find the first and last index that has n as its value. Return (last - first + 1)
+// note: see also solution that uses two specialized binary search fxns to find the first occurrence and last occurrence
+function countNumberOfOccurrences(arr, n, lo, hi) {
+  if (hi < lo) {
+    return 0;
+  }
+
+  // case when whole subarray is filled with element n
+  if (arr[lo] === n && arr[hi] === n) {
+    return hi - lo + 1;
+  }
+
+  var mid = Math.floor((lo + hi) / 2),
+      count = 0;
+
+  if (arr[mid] === n) {
+    ++count;
+  }    
+
+  // search the left side
+  if (arr[mid] >= n) {
+    count += this.countNumberOfOccurrences(arr, n, lo, mid - 1);
+  }
+
+  // search the right side
+  if (arr[mid] <= n) {
+    count += this.countNumberOfOccurrences(arr, n, mid + 1, hi);
+  }
+
+  return count;
+}
+/*console.log(strncmp('hello', 'goodbye', 2));
+console.log(strncmp('hello', 'qw', 2));
+console.log(strncmp('hello', 'heodbye', 2));*/
+var sa = buildSuffixArray1('banana hello banana');
+console.log(search('ana', 'banana hello banana', sa));
+//var sa = buildSuffixArray1('banana');
+//console.log(search('nan', 'banana', sa));
+//console.log(buildSuffixArray2('banana'));

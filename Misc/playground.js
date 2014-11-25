@@ -145,6 +145,18 @@ function merge(arr1, arr2) {
   return newArr;
 }
 
+/*
 console.log(merge([1,5,6,7,8],[2,3,19]));
 var arr = [10,5,2,161,8,9,4,15,33];
 console.log(MergeSort(arr));
+*/
+
+// get the greatest common multiple between 2 numbers
+function gcm(a, b) {
+  return (b === 0) ? a : gcm(b, a % b);
+}
+
+console.log(gcm(3,1));
+console.log(gcm(160,100));
+console.log(gcm(33,3));
+console.log(gcm(16,10));

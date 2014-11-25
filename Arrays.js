@@ -98,7 +98,7 @@ function binarySearch(arr, n) {
 
   while (high >= low) { // breaks if not >=
     var middle = Math.ceil((high + low) / 2);  // what happens if we use floor?
-    // use middle = (low + (high - low)) / 2);  if we're talking an extremely huge high number
+    // use middle = (low + (high - low)) / 2);  if we're talking an extremely huge high number (be aware that the '/ 2' only applies to (high - low))
 
     if (arr[middle] === n) {
       return middle;

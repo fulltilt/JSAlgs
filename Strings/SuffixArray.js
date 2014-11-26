@@ -141,37 +141,6 @@ console.log(count, result);
   return false;
 }
 
-// algorithm: use binary search to find the first and last index that has n as its value. Return (last - first + 1)
-// note: see also solution that uses two specialized binary search fxns to find the first occurrence and last occurrence
-function countNumberOfOccurrences(arr, n, lo, hi) {
-  if (hi < lo) {
-    return 0;
-  }
-
-  // case when whole subarray is filled with element n
-  if (arr[lo] === n && arr[hi] === n) {
-    return hi - lo + 1;
-  }
-
-  var mid = Math.floor((lo + hi) / 2),
-      count = 0;
-
-  if (arr[mid] === n) {
-    ++count;
-  }    
-
-  // search the left side
-  if (arr[mid] >= n) {
-    count += this.countNumberOfOccurrences(arr, n, lo, mid - 1);
-  }
-
-  // search the right side
-  if (arr[mid] <= n) {
-    count += this.countNumberOfOccurrences(arr, n, mid + 1, hi);
-  }
-
-  return count;
-}
 /*console.log(strncmp('hello', 'goodbye', 2));
 console.log(strncmp('hello', 'qw', 2));
 console.log(strncmp('hello', 'heodbye', 2));*/

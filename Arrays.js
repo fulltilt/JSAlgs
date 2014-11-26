@@ -41,6 +41,7 @@ function Arrays() {
   this.areAllElementsConsecutive = areAllElementsConsecutive;
   this.findSmallestMissingNumber = findSmallestMissingNumber;
   this.countNumberOfOccurrences = countNumberOfOccurrences;
+  this.countInversions = countInversions;
   this.maxOfAllSubArrays = maxOfAllSubArrays; 
   this.minDistanceBetweenTwoNums = minDistanceBetweenTwoNums;
   this.findRepeatingAndMissing = findRepeatingAndMissing;
@@ -881,6 +882,7 @@ function findSmallestMissingNumber(arr, start, end) {
 
 // http://www.geeksforgeeks.org/count-number-of-occurrences-in-a-sorted-array/
 // algorithm: use binary search to find the first and last index that has n as its value. Return (last - first + 1)
+// note: see also solution that uses two specialized binary search fxns to find the first occurrence and last occurrence
 function countNumberOfOccurrences(arr, n, lo, hi) {
   if (hi < lo) {
     return 0;
@@ -909,6 +911,46 @@ function countNumberOfOccurrences(arr, n, lo, hi) {
   }
 
   return count;
+}
+
+// http://www.geeksforgeeks.org/counting-inversions/
+// algorithm: modified merge sort with an addition of practically one line that keeps track of an additional count variable: count.count += arr1Length - arr1Ptr; (see above link for more details)
+function countInversions(arr, count) {
+  if (arr.length <= 1) {
+    return arr;
+  }
+
+  var start = 0,
+      mid = Math.floor((arr.length) / 2),
+      end = arr.length - 1;
+
+  var left = arr.slice(start, mid, count),
+      right = arr.slice(mid, end + 1, count),
+      merged = merge(countInversions(left, count), countInversions(right, count), count);
+
+  return merged;
+}
+
+function merge(arr1, arr2, count) {
+  var newArr = [],
+      arr1Length = arr1.length,
+      arr2Length = arr2.length,
+      arr1Ptr = 0,
+      arr2Ptr = 0;    
+
+  while (arr1Ptr !== arr1Length && arr2Ptr !== arr2Length) {
+    if (arr1[arr1Ptr] < arr2[arr2Ptr]) {
+      newArr.push(arr1[arr1Ptr]);
+      arr1Ptr += 1;
+    } else {
+      newArr.push(arr2[arr2Ptr]);
+      arr2Ptr += 1;
+      count.count += arr1Length - arr1Ptr;   
+    }
+  }
+
+  newArr = newArr.concat(arr1.slice(arr1Ptr)).concat(arr2.slice(arr2Ptr));
+  return newArr;
 }
 
 // http://www.geeksforgeeks.org/maximum-of-all-subarrays-of-size-k/

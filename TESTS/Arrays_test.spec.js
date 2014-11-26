@@ -185,6 +185,18 @@ describe("Arrays", function() {
       expect(gfg.countNumberOfOccurrences([1, 1, 2, 2, 2, 2, 3], 4, 0, 6)).toEqual(0);
     });
 
+    it('tests countInversions', function() {
+      var count = { count: 0 };
+      gfg.countInversions([10,5,2,161,8,9,4,15,33], count);
+      expect(count.count).toEqual(14);
+      count.count = 0;
+      gfg.countInversions([2,4,1,3,5], count);
+      expect(count.count).toEqual(3);
+      count.count = 0;
+      gfg.countInversions([1, 20, 6, 4, 5], count);
+      expect(count.count).toEqual(5);
+    });
+
     it('tests maxOfAllSubArrays()', function() {
       expect(gfg.maxOfAllSubArrays([1, 2, 3, 1, 4, 5, 2, 3, 6], 3)).toEqual([3, 3, 4, 5, 5, 5, 6]);
       expect(gfg.maxOfAllSubArrays([10, 5, 3, 7, 9, 4, 15, 12, 90, 13], 4)).toEqual([10, 9, 9, 15, 15, 90, 90]);

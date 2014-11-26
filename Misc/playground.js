@@ -108,7 +108,7 @@ partition(arr, 0, arr.length - 1);
 console.log(arr);
 */
 
-function MergeSort(arr) {
+function MergeSort(arr, count) {
   if (arr.length <= 1) {
     return arr;
   }
@@ -117,9 +117,9 @@ function MergeSort(arr) {
       mid = Math.floor((arr.length) / 2),
       end = arr.length - 1;
 
-  var left = arr.slice(start, mid),
-      right = arr.slice(mid, end + 1),
-      merged = merge(MergeSort(left), MergeSort(right));
+  var left = arr.slice(start, mid, count),
+      right = arr.slice(mid, end + 1, count),
+      merged = merge(MergeSort(left, count), MergeSort(right, count));
 
   return merged;
 }
@@ -129,7 +129,7 @@ function merge(arr1, arr2) {
       arr1Length = arr1.length,
       arr2Length = arr2.length,
       arr1Ptr = 0,
-      arr2Ptr = 0;
+      arr2Ptr = 0;    
 
   while (arr1Ptr !== arr1Length && arr2Ptr !== arr2Length) {
     if (arr1[arr1Ptr] < arr2[arr2Ptr]) {
@@ -138,6 +138,7 @@ function merge(arr1, arr2) {
     } else {
       newArr.push(arr2[arr2Ptr]);
       arr2Ptr += 1;
+count.count += arr1Length - arr1Ptr;      
     }
   }
 
@@ -145,18 +146,30 @@ function merge(arr1, arr2) {
   return newArr;
 }
 
-/*
-console.log(merge([1,5,6,7,8],[2,3,19]));
-var arr = [10,5,2,161,8,9,4,15,33];
-console.log(MergeSort(arr));
-*/
+//console.log(merge([1,5,6,7,8],[2,3,19]));
+//var arr = [10,5,2,161,8,9,4,15,33];
+//var arr = [2,4,1,3,5];
+var arr = [1, 20, 6, 4, 5];
+var count = {count: 0};
+MergeSort(arr, count);
+console.log(count.count);
 
-// get the greatest common multiple between 2 numbers
-function gcm(a, b) {
-  return (b === 0) ? a : gcm(b, a % b);
+
+
+function inversion(arr) {
+  var length = arr.length, i, j, count = 0;
+  for (i = 0; i < length; i++) {
+    for (j = i + 1; j < length; j++) {
+      if (i < j && arr[i] > arr[j]) {
+        ++count;
+      }
+    }
+  }
+  console.log(count);
 }
 
-console.log(gcm(3,1));
-console.log(gcm(160,100));
-console.log(gcm(33,3));
-console.log(gcm(16,10));
+/*
+inversion([2,4,1,3,5]);
+inversion([1, 20, 6, 4, 5]);
+inversion([10,5,2,161,8,9,4,15,33]);
+*/

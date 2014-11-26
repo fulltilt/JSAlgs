@@ -10,6 +10,19 @@ function sumOfFirstNCubes(n) {
 
 // fast exponentiation
 function power(a, n) {
+  if (n === 0) {
+    return 1;
+  }
+
+  if (n === 1) {
+    return a;
+  }
+
+  var t = power(a, Math.floor(n / 2));
+  return t * t * power(a, n % 2);
+}
+// non-recursive version of above
+function power2(a, n) {
   var result = 1;
   while (n) {
     if (n % 2 === 1) {
@@ -18,6 +31,7 @@ function power(a, n) {
     a *= a;
     n = Math.floor(n / 2);
   }
+  return result;
 }
 
 // get the greatest common multiple between 2 numbers
@@ -25,6 +39,7 @@ function gcm(a, b) {
   return (b === 0) ? a : gcm(b, a % b);
 }
 
+// non-recursive version of above
 function gcm2(a, b) {
   while (b) {
     var r = a % b;
@@ -42,3 +57,5 @@ console.log(sumOfFirstNCubes(6)); // 100 + 125 = 441
 
 console.log(gcm(16,10));
 console.log(gcm2(16,10));
+
+console.log(power(2, 10));

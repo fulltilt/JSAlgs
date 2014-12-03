@@ -146,14 +146,14 @@ count.count += arr1Length - arr1Ptr;
   return newArr;
 }
 
-//console.log(merge([1,5,6,7,8],[2,3,19]));
+/*console.log(merge([1,5,6,7,8],[2,3,19]));
 //var arr = [10,5,2,161,8,9,4,15,33];
 //var arr = [2,4,1,3,5];
 var arr = [1, 20, 6, 4, 5];
 var count = {count: 0};
 MergeSort(arr, count);
 console.log(count.count);
-
+*/
 
 
 function inversion(arr) {
@@ -173,3 +173,75 @@ inversion([2,4,1,3,5]);
 inversion([1, 20, 6, 4, 5]);
 inversion([10,5,2,161,8,9,4,15,33]);
 */
+/*
+var alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'],
+    cipher = 'vwduwljudeehghyhubwklqjlfrxogilqgsohdvhuhwxuqdqbeoxhsulqwviruydxowdqgdodupghvljqedvhgrqzklfkedqnbrxghflghrqldpvhwwlqjxsvdihkrxvhfr',
+    shift = 7,
+    output = '';
+
+for (var i = 0; i < cipher.length; i++) {
+  var letterIndex = (alphabet.indexOf(cipher[i]) - shift) % 26;
+
+  if (letterIndex < 0) {
+    letterIndex += 26;
+  }
+  output += alphabet[letterIndex];
+}
+
+console.log(output);
+*/
+//zename blackout worried that our cipher is too weak on next message switch to vigenere cipher keyword is the hidden symbol of death in my favorite holbeinend
+function lcss(arr) {
+  var currentSum = 0,
+      maxSum = 0,
+      length = arr.length;
+
+  for (var i = 0; i < length; i++) {
+    currentSum += arr[i];
+    if (currentSum < 0) {
+      currentSum = 0;
+    }    
+
+    if (currentSum > maxSum) {
+      maxSum = currentSum;
+    }
+  }
+  return maxSum;
+}
+
+function lcss2(arr) {
+  var currentMax = arr[0],
+      max = arr[0], i;
+
+  for (i = 0; i < arr.length; i++) {
+    currentMax = Math.max(arr[i], currentMax + arr[i]);
+    max = Math.max(currentMax, max)
+  }
+
+  return max;
+}
+var arr = [-2, -3, 4, -1, -2, 1, 5, -3];
+//console.log(lcss2(arr));
+
+arr = [10, 22, 9, 33, 21, 50, 41, 60, 80];
+function lis(arr) {
+  var length = arr.length,
+      table = [],
+      longestStreak = 1,
+      currentStreak = 1,
+      i;
+
+  table[0] = 1;
+  for (i = 1; i < length; i++) {
+    if (arr[i] > arr[i + 1] || currentStreak === 0) {
+      currentStreak += 1;
+    } else {
+      if (currentStreak > longestStreak) {
+        longestStreak = currentStreak;
+      }
+      currentStreak = 0;
+    }
+  }
+  console.log(longestStreak);
+}
+lis(arr);

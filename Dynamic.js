@@ -5,7 +5,9 @@ function Dynamic() {
   this.dynamicKnapsack = dynamicKnapsack;
   this.dynamicCoinChange = dynamicCoinChange;
   this.longestIncreasingSequence = longestIncreasingSequence;
+  this.longestIncreasingSubsequence = longestIncreasingSubsequence;
   this.wordBreak = wordBreak;
+  this.maxWines = maxWines;
   this.editDistance = editDistance;
   this.minCostPath = minCostPath;
   this.largestContiguousSumSubarray = largestContiguousSumSubarray;
@@ -15,7 +17,7 @@ function Dynamic() {
   this.removeMinElems = removeMinElems;
   this.binaryStringCountWithoutConsecutiveZeroes = binaryStringCountWithoutConsecutiveZeroes;
   this.longestSubstringWithoutRepeatedChars = longestSubstringWithoutRepeatedChars;
-  this.palindromPartitioning = palindromPartitioning;
+  this.palindromePartitioning = palindromePartitioning;
   this.longestPalindromicSubstring = longestPalindromicSubstring;
   this.possibleDecodings = possibleDecodings;
   this.minJumps = minJumps;
@@ -264,6 +266,57 @@ function longestIncreasingSequence(arr) {
   return arr.splice(indexOfEnd - (longestSequenceLength - 1), longestSequenceLength);
 }
 
+/* w/o dynamic programming
+function lis(arr) {
+  var length = arr.length,
+      table = [],
+      longestStreak = 1,
+      currentStreak = 1,
+      i;
+
+//  table[0] = 1;
+  for (i = 1; i < length; i++) {
+    if (arr[i] > arr[i + 1] || currentStreak === 0) {
+      currentStreak += 1;
+    } else {
+      if (currentStreak > longestStreak) {
+        longestStreak = currentStreak;
+      }
+      currentStreak = 0;
+    }
+  }
+  console.log(longestStreak);
+}
+*/
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-3-longest-increasing-subsequence/
+function longestIncreasingSubsequence(arr) {
+  var lis = [], i, j, max = 0, length = arr.length;
+
+  // initialize lis values for all indexes
+  for (i = 0; i < length; i++) {
+    lis[i] = 1;
+  }
+
+  // compute optimized lis values in bottom up manner
+  for (i = 1; i < length; i++) {
+    for (j = 0; j < i; j++) {
+      if (arr[i] > arr[j] && lis[i] < lis[j] + 1) {
+        lis[i] = lis[j] + 1;
+      }
+    }
+  }
+
+  // pick maximum of all lis values
+  for (i = 0; i < length; i++) {
+    if (max < lis[i]) {
+      max = lis[i];
+    }
+  }
+
+  return max;
+}
+
 // Given an input string and a dictionary of words, find out if the input string can be segmented into a space-separated sequence of dictionary words
 // http://www.geeksforgeeks.org/dynamic-programming-set-32-word-break-problem/
 function wordBreak(words, input) {
@@ -285,6 +338,36 @@ console.log(input.substr(0, i) + ' ' + input.substr(i, length - 1)); // interest
   return false;
 }
 
+// http://www.quora.com/Are-there-any-good-resources-or-tutorials-for-dynamic-programming-besides-the-TopCoder-tutorial
+/* backtrack
+function maxWines(arr, lo, hi) {
+  if (lo > hi) {
+    return 0;
+  }
+
+  // (hi - lo + 1) is the # of unsold wines
+  var year = arr.length - (hi - lo + 1) + 1;
+  return Math.max(maxWines(arr, lo + 1, hi) + arr[lo] * year,
+                  maxWines(arr, lo, hi - 1) + arr[hi] * year);
+}
+*/
+function maxWines(arr, cache, lo, hi) {
+  if (lo > hi) {
+    return 0;
+  }
+
+  if (cache[lo][hi] !== -1) {
+    return cache[lo][hi];
+  }
+
+  // (hi - lo + 1) is the # of unsold wines
+  var year = arr.length - (hi - lo + 1) + 1;
+
+  return cache[lo][hi] = Math.max(maxWines(arr, cache, lo + 1, hi) + arr[lo] * year,
+                                  maxWines(arr, cache, lo, hi - 1) + arr[hi] * year);
+}
+
+
 // http://www.geeksforgeeks.org/dynamic-programming-set-5-edit-distance/
 function editDistance() {
 
@@ -296,8 +379,17 @@ function minCostPath() {
 }
 
 // http://www.geeksforgeeks.org/largest-sum-contiguous-subarray/, http://www.geeksforgeeks.org/dynamic-programming-set-14-maximum-sum-increasing-subsequence/
-function largestContiguousSumSubarray() {
+function largestContiguousSumSubarray(arr) {
+  var currentSum = arr[0],
+      max = arr[0],
+      i;
 
+  for (i = 1; i < arr.length; i++) {
+    currentSum = Math.max(arr[i], currentSum + arr[i]);
+    max = Math.max(currentSum, max);
+  }
+
+  return max;
 }
 
 // http://www.geeksforgeeks.org/maximum-sum-such-that-no-two-elements-are-adjacent/
@@ -306,7 +398,7 @@ function maxSumOfNonAdjacentElements(arr) {
 }
 
 // http://www.geeksforgeeks.org/minimum-number-of-jumps-to-reach-end-of-a-given-array/
-function minNumJumpsToReachEnd(arr) {
+function minNumOfJumpsToEnd(arr) {
 
 }
 
@@ -336,7 +428,7 @@ function removeMinElems(arr) {
 }
 
 // http://www.geeksforgeeks.org/count-number-binary-strings-without-consecutive-1s/
-function binaryStringWithoutConsecutiveZeroes(n) {
+function binaryStringCountWithoutConsecutiveZeroes(n) {
 
 }
 
@@ -357,7 +449,7 @@ function longestPalindromicSubstring(str) {
 }
 
 // http://www.geeksforgeeks.org/count-possible-decodings-given-digit-sequence/
-function posssibleDecodings(str) {
+function possibleDecodings(str) {
 
 }
 
@@ -482,4 +574,7 @@ Common themes with dynamic programming solutions:
   The reason it gets bloated is another pitfall: you have to keep track of the index of longest/greatest/etc and you also have to keep track 
   of the value
   -update: you should be able to deduce the 'path' from the table making the code bloat unnecessary (https://class.coursera.org/algo2-003/lecture/221)
+
+-http://www.quora.com/Are-there-any-good-resources-or-tutorials-for-dynamic-programming-besides-the-TopCoder-tutorial
+
 */

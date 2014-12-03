@@ -945,7 +945,7 @@ function merge(arr1, arr2, count) {
     } else {
       newArr.push(arr2[arr2Ptr]);
       arr2Ptr += 1;
-      count.count += arr1Length - arr1Ptr;   
+      count.count += arr1Length - arr1Ptr;
     }
   }
 

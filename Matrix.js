@@ -2,6 +2,7 @@ var Trie = require('./Strings/Trie.js'),
     Heap = require('./Heaps.js');
 
 function Matrix() {
+  this.searchIncreasinglySorted = searchIncreasinglySorted;
   this.maxSquareSubMatrix = maxSquareSubMatrix;
   this.rotateImage = rotateImage;
   this.booleanMatrix = booleanMatrix;
@@ -16,6 +17,39 @@ function Matrix() {
   this.findSubSquares = findSubSquares;
   this.inPlaceTranspose = inPlaceTranspose;
   this.maxSumRectangle = maxSumRectangle;
+}
+
+/* Question 8: In a 2-D matrix, every row is increasingly sorted from left to right, and every column is 
+increasingly sorted from top to bottom. Please implement a function to check whether a number is in such a 
+matrix or not. For example, all rows and columns are increasingly sorted in the following matrix. It returns trueif it 
+tries to find number 7, but it returns falseif it tries to find number 5. 
+1 2 8 9 
+2 4 9 12 
+4 7 10 13 
+6 8 11 15 
+
+-algorithm: removing columns and rows. Starting from the upper-right, keep going left until you find the first column whose first value is less than the target.
+            Then once you eliminated the columns, to eliminate rows, keep going down the current row until you either find the value in question or find a value
+            that is greater than the target. From here, you have eliminated all the parts of the array where the answer can't be
+*/
+function searchIncreasinglySorted(matrix, n) {
+  var row = 0,
+      column = matrix[0].length - 1; // start and the upper-right corner
+
+  while (row < matrix.length && column >= 0) {
+    if (matrix[row][column] === n) {
+      return true;
+    }
+
+    // when I originally wrote this, I had two separate while statements to individually find the column and row respectively. Lastly, I needed a 3rd clause to search for the value
+    if (matrix[row][column] > n) {
+      --column;
+    } else {
+      ++row;
+    }
+  }
+
+  return false;
 }
 
 // http://www.geeksforgeeks.org/maximum-size-sub-matrix-with-all-1s-in-a-binary-matrix/

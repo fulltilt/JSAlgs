@@ -191,57 +191,56 @@ for (var i = 0; i < cipher.length; i++) {
 console.log(output);
 */
 //zename blackout worried that our cipher is too weak on next message switch to vigenere cipher keyword is the hidden symbol of death in my favorite holbeinend
-function lcss(arr) {
-  var currentSum = 0,
-      maxSum = 0,
-      length = arr.length;
 
-  for (var i = 0; i < length; i++) {
-    currentSum += arr[i];
-    if (currentSum < 0) {
-      currentSum = 0;
-    }    
-
-    if (currentSum > maxSum) {
-      maxSum = currentSum;
+var BST = require('../BinarySearchTree.js');
+BST.BinarySearchTree.prototype = {
+  isBST2: function(node, prev) {
+    if (node === null) {
+      return true;
     }
+
+    if (node.data < prev) return false;
+
+    return this.isBST2(node.left, prev) &&
+           node.data >= prev &&
+           this.isBST2(node.right, node.data);
   }
-  return maxSum;
+};
+var bst = new BST.BinarySearchTree();
+bst.insert(10);
+bst.insert(6);
+bst.insert(4);
+bst.insert(8);
+bst.insert(14);
+bst.insert(12);
+bst.insert(16);
+bst.root.right.right.right = new BST.Node(1);
+console.log(bst.isBST2(bst.root, -Infinity));
+
+function fib(n) {
+  if (n === 0) {
+    return 0;
+  }
+
+  if (n === 1) {
+    return 1;
+  }
+
+  var prev2 = 0,
+      prev1 = 1,
+      current;
+
+  for (var i = 1; i < n; i++) {
+    current = prev1 + prev2;
+    prev2 = prev1;
+    prev1 = current;
+  }
+
+  return current;
 }
 
-function lcss2(arr) {
-  var currentMax = arr[0],
-      max = arr[0], i;
-
-  for (i = 0; i < arr.length; i++) {
-    currentMax = Math.max(arr[i], currentMax + arr[i]);
-    max = Math.max(currentMax, max)
-  }
-
-  return max;
-}
-var arr = [-2, -3, 4, -1, -2, 1, 5, -3];
-//console.log(lcss2(arr));
-
-arr = [10, 22, 9, 33, 21, 50, 41, 60, 80];
-function lis(arr) {
-  var length = arr.length,
-      table = [],
-      longestStreak = 1,
-      currentStreak = 1,
-      i;
-
-  table[0] = 1;
-  for (i = 1; i < length; i++) {
-    if (arr[i] > arr[i + 1] || currentStreak === 0) {
-      currentStreak += 1;
-    } else {
-      if (currentStreak > longestStreak) {
-        longestStreak = currentStreak;
-      }
-      currentStreak = 0;
-    }
-  }
-  console.log(longestStreak);
-}
-lis(arr);
+console.log(fib(0));
+console.log(fib(1));
+console.log(fib(2));
+console.log(fib(3));
+console.log(fib(4));

@@ -40,6 +40,7 @@ function LinkedList() {
 	this.getNthFromEnd = getNthFromEnd;
 	this.reverse = reverse;
 	this._reverse = _reverse;
+	this.printReverse = printReverse;
 	this.reverseFromNode = reverseFromNode;
 	this.isPalindrome = isPalindrome;
 	this.copyLinkedListWithArbitraryPtr = copyLinkedListWithArbitraryPtr;
@@ -398,6 +399,14 @@ function _reverse(previous, node) {
 
 	this._reverse(node, node.next);
 	node.next = previous;
+}
+
+function printReverse(node) {
+	if (node === null) {
+		return;
+	}
+	printReverse(node.next);
+	console.log(node.data);
 }
 
 function reverseFromNode(node) {

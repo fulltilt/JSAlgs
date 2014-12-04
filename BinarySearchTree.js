@@ -268,25 +268,6 @@ function _clear(node) {
   node = null;
 }
 
-/* note: not fully tested
-function isBST() {
-  var dummy = new Node(Infinity, this.root, null);
-  return _isBST(this.root, true, false, dummy.data);
-}
-
-function _isBST(node, isLeftChild, isRightChild, parentData) {
-  if (node === null) {
-    return true;
-  } else if (isLeftChild && node.data > parentData) {
-    return false;
-  } else if (isRightChild && node.data < parentData) {
-    return false;
-  }
-
-  return _isBST(node.left, true, false, node.data) && _isBST(node.right, false, true, node.data);
-}
-*/
-
 // http://www.geeksforgeeks.org/a-program-to-check-if-a-binary-tree-is-bst-or-not/
 function isBST(node) {
   return this._isBST(node, -Infinity, Infinity);
@@ -304,6 +285,19 @@ function _isBST(node, min, max) {
 
   return this._isBST(node.left, min, node.data - 1) && this._isBST(node.right, node.data + 1, max);
 }
+
+/* without using min-max
+function isBST2: function(node, prev) {
+  if (node === null) {
+    return true;
+  }
+
+  if (node.data < prev) return false;
+
+  return this.isBST2(node.left, prev) &&
+         node.data >= prev &&
+         this.isBST2(node.right, node.data);
+}*/
 
 function getHeight() {
   return this._getHeight(this.root);
@@ -930,8 +924,10 @@ function kDistanceFromNode(root, target, k, result) {
 }
 
 // http://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/
-// this algorithm doesn't need a parent pointer
-// 2 cases we need to handle: if the right child is not null or is null
+// this algorithm doesn't need a parent pointer; also, this algorithm only works for binary search trees
+// 2 cases we need to handle: if the right child is not null or is null (tricky)
+// algorithm if right child is null: start from root. If root's data is greater than node's data, set root as potential successor and then set root to left child.
+//  Else, traverse to the right child. Stop when you reach the target node and whatever was marked as successor last is node's successor
 function getSuccessor(root, node) {
   // 1st case
   if (node.right !== null) {
@@ -950,7 +946,7 @@ function getSuccessor(root, node) {
       root = root.left;
     } else if (node.data > root.data) {
       root = root.right;
-    } else {
+    } else {  // if we get here, that means we reached 'node'
       break;
     }
   }

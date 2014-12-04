@@ -3,6 +3,23 @@ var Matrix = require('../Matrix.js');
 describe('Matrix', function() {
   var m = new Matrix();
 
+  it("tests search increasingly sorted multidimensional array", function() {
+    var arr = [];
+    arr[0] = [10,20,30,80,90];
+    arr[1] = [20,31,40,70,120];
+    arr[2] = [40,60,70,100,130];
+    arr[3] = [60,70,80,110,150];
+    
+    expect(m.searchIncreasinglySorted(arr, 70)).toEqual(true);
+    expect(m.searchIncreasinglySorted(arr, 55)).toEqual(false);
+    expect(m.searchIncreasinglySorted(arr, 60)).toEqual(true);
+    expect(m.searchIncreasinglySorted(arr, 10)).toEqual(true);
+    expect(m.searchIncreasinglySorted(arr, 150)).toEqual(true);
+    expect(m.searchIncreasinglySorted(arr, -1)).toEqual(false);
+    expect(m.searchIncreasinglySorted(arr, 160)).toEqual(false);
+    expect(m.searchIncreasinglySorted([[3]], 3)).toEqual(true);
+  });
+
   it('tests maxSquareSubMatrix', function() {
     var matrix = [[0, 1, 1, 0, 1], 
                   [1, 1, 0, 1, 0], 

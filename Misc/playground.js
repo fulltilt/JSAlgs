@@ -215,15 +215,11 @@ bst.insert(14);
 bst.insert(12);
 bst.insert(16);
 bst.root.right.right.right = new BST.Node(1);
-console.log(bst.isBST2(bst.root, -Infinity));
+//console.log(bst.isBST2(bst.root, -Infinity));
 
-function fib(n) {
-  if (n === 0) {
-    return 0;
-  }
-
-  if (n === 1) {
-    return 1;
+function iterativeFibonacci(n) {
+  if (n < 2) {
+    return n;
   }
 
   var prev2 = 0,
@@ -239,8 +235,47 @@ function fib(n) {
   return current;
 }
 
-console.log(fib(0));
-console.log(fib(1));
-console.log(fib(2));
-console.log(fib(3));
-console.log(fib(4));
+function findMajoritySorted(arr) {
+  var length = arr.length,
+      lo = 0,
+      hi = length - 1,
+      middle = (lo + hi) >> 1,
+      candidate = arr[middle], // if a candidate is in the majority, it will have to be equal to the middle element
+      firstOccurrence, lastOccurrence, mid;
+
+  // get first occurrence of candidate
+  lo = 0;
+  hi = middle;  // middle and not middle - 1 as the middle index may be the first occurrence
+  while (hi >= lo) {
+    mid = (lo + hi) >> 1;
+    if ((mid - 1) < 0 || (arr[mid] === candidate && arr[mid - 1] < candidate)) {
+      firstOccurrence = mid;
+      break;
+    } else if (arr[mid] === candidate) {
+      hi = mid - 1;
+    } else {
+      lo = mid + 1;
+    }
+  }
+
+  // get last occurrence of candidate     
+  lo = middle;  // middle and not middle + 1 as the middle index may be the first occurrence
+  hi = length - 1;
+  while (hi >= lo) {
+    mid = (lo + hi) >> 1;
+    if ((mid + 1) === length || (arr[mid] === candidate && arr[mid + 1] > candidate)) {
+      lastOccurrence = mid;
+      break;
+    } else if (arr[mid] === candidate) {
+      lo = mid + 1;
+    } else {
+      hi = mid - 1;
+    }
+  }
+
+  return (lastOccurrence - firstOccurrence + 1) >= (length >> 2);
+}
+
+findMajoritySorted([1, 2, 3, 4, 4, 4, 4]);
+findMajoritySorted([1, 1, 1, 2, 2]);
+findMajoritySorted([1, 1, 2, 4, 4, 4, 6, 6]);

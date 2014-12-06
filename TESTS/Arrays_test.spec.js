@@ -57,9 +57,15 @@ describe("Arrays", function() {
       expect(gfg.isSubArray([10, 5, 2, 23, 19], [19, 5, 3])).toEqual(false);
     });
     
-    it('tests findMajority', function() {
-      expect(gfg.findMajority([3, 3, 4, 2, 4, 4, 2, 4, 4])).toEqual(4);
-      expect(gfg.findMajority([3, 3, 4, 2, 4, 4, 2, 4])).toEqual(null);
+    it('tests findMajorityUnsorted', function() {
+      expect(gfg.findMajorityUnsorted([3, 3, 4, 2, 4, 4, 2, 4, 4])).toEqual(4);
+      expect(gfg.findMajorityUnsorted([3, 3, 4, 2, 4, 4, 2, 4])).toEqual(4);
+    });
+
+    it('tests findMajoritySorted', function() {
+      expect(gfg.findMajoritySorted([1, 2, 3, 4, 4, 4, 4])).toEqual(4);
+      expect(gfg.findMajoritySorted([1, 1, 1, 2, 2])).toEqual(1);
+      expect(gfg.findMajoritySorted([1, 1, 2, 4, 4, 4, 6, 6])).toEqual(null);
     });
 
     it('tests findMissingNumber', function() {
@@ -241,8 +247,8 @@ describe("Arrays", function() {
       expect(gfg.findMaxInIncreasingDecreasing([1, 30, 40, 50, 60, 70, 23, 20])).toEqual(70);
       expect(gfg.findMaxInIncreasingDecreasing([3, 50, 10, 9, 7, 6])).toEqual(50);
       expect(gfg.findMaxInIncreasingDecreasing([2, 4, 6, 8, 10, 3, 1])).toEqual(10);
-      //expect(gfg.findMaxInIncreasingDecreasing([10, 20, 30, 40])).toEqual(40); // algo doesn't work for this or the one below
-      //expect(gfg.findMaxInIncreasingDecreasing([40, 30, 20, 10])).toEqual(40);
+      expect(gfg.findMaxInIncreasingDecreasing([10, 20, 30, 40])).toEqual(-1);
+      expect(gfg.findMaxInIncreasingDecreasing([40, 30, 20, 10])).toEqual(-1);
     });
 
     it('tests findSubArrayWithGivenSum', function() {

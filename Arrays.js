@@ -18,7 +18,8 @@ function Arrays() {
 
   // Arrays
   this.isSubArray = isSubArray;
-  this.findMajority = findMajority;
+  this.findMajoritySorted = findMajoritySorted;
+  this.findMajorityUnsorted = findMajorityUnsorted;
   this.findMissingNumber = findMissingNumber;
   this.findPivotInRotatedArray = findPivotInRotatedArray;
   this.findMedianOfTwoSortedArrays = findMedianOfTwoSortedArrays;
@@ -290,8 +291,47 @@ function isSubArray(arr1, arr2) {
   return true;
 }
 
-// http://www.geeksforgeeks.org/majority-element/ (unsorted) or http://www.geeksforgeeks.org/check-for-majority-element-in-a-sorted-array/
-function findMajority(arr) {
+// http://www.geeksforgeeks.org/majority-element/ (unsorted)
+// algorithm: Moore's voiting algorithm
+function findMajorityUnsorted(arr) {
+  var length = arr.length,
+      candidate = arr[0],
+      count = 1,
+      i;
+
+  for (i = 1; i < length; i++) {
+    (arr[i] === candidate) ? count += 1 : count -= 1;
+    
+    if (count === 0) {
+      candidate = arr[i];
+      count = 1;
+    }
+  }
+
+  return checkMajorityCandidate(arr, candidate);
+}
+
+// helper fxn for findMajorityUnsorted()
+function checkMajorityCandidate(arr, candidate) {
+  var length = arr.length,
+      count = 0,
+      i;
+
+  for (i = 0; i < length; i++) {
+    if (arr[i] === candidate) {
+      count += 1;
+    }
+  }
+
+  if (count >= (length >> 1)) {
+    return candidate;
+  } else {
+    return null;
+  }
+}
+
+/* less efficient version as it requires O(n) space
+function findMajorityUnsorted(arr) {
   if (arr.length === 0) {
     return null;
   }
@@ -315,6 +355,54 @@ function findMajority(arr) {
 
   if (table[biggestCount] > Math.floor(length / 2)) {
     return biggestCount;
+  } else {
+    return null;
+  }
+}
+*/
+
+// http://www.geeksforgeeks.org/check-for-majority-element-in-a-sorted-array/
+// same as last algo but this time the input is sorted. Algo to use is binary search and you can find majority in O(log n) time
+function findMajoritySorted(arr) {
+  var length = arr.length,
+      lo = 0,
+      hi = length - 1,
+      middle = (lo + hi) >> 1,
+      candidate = arr[middle], // if a candidate is in the majority, it will have to be equal to the middle element
+      firstOccurrence, lastOccurrence, mid;
+
+  // get first occurrence of candidate using modified binary search
+  lo = 0;
+  hi = middle;  // middle and not middle - 1 as the middle index may be the first occurrence
+  while (hi >= lo) {
+    mid = (lo + hi) >> 1;
+    if ((mid - 1) < 0 || (arr[mid] === candidate && arr[mid - 1] < candidate)) {
+      firstOccurrence = mid;
+      break;
+    } else if (arr[mid] === candidate) {
+      hi = mid - 1;
+    } else {
+      lo = mid + 1;
+    }
+  }
+
+  // get last occurrence of candidate using modified binary search
+  lo = middle;  // middle and not middle + 1 as the middle index may be the first occurrence
+  hi = length - 1;
+  while (hi >= lo) {
+    mid = (lo + hi) >> 1;
+    if ((mid + 1) === length || (arr[mid] === candidate && arr[mid + 1] > candidate)) {
+      lastOccurrence = mid;
+      break;
+    } else if (arr[mid] === candidate) {
+      lo = mid + 1;
+    } else {
+      hi = mid - 1;
+    }
+  }
+
+  if ((lastOccurrence - firstOccurrence + 1) >= (length >> 1)) {
+    return candidate;
   } else {
     return null;
   }
@@ -351,6 +439,27 @@ function findPivotInRotatedArray(arr, start, end) {
     return this.findPivotInRotatedArray(arr, medianIndex + 1, end);
   }
 }
+
+/* non-recursive
+function getRotation(arr) {
+  var length = arr.length, 
+      lo = 0,
+      hi = length - 1,
+      i, mid;
+
+  while (hi > lo) {
+    mid = Math.floor((lo + hi) / 2);
+
+    if (arr[mid] > arr[mid + 1]) {
+      return mid;
+    } else if (arr[mid] > arr[lo]) {
+      lo = mid + 1;
+    } else {
+      hi = mid - 1;
+    }
+  }
+  return -1;
+} */
 
 // http://www.geeksforgeeks.org/median-of-two-sorted-arrays/, does it take into account different sized arrays? (http://www.geeksforgeeks.org/median-of-two-sorted-arrays-of-different-sizes/)
 // naive solution: get the total length of both arrays. Then do a merge sort and once you find the (n / 2)nd element, return it (may have to tweak what to return for even lengthed arrays)
@@ -1210,7 +1319,34 @@ function findMaxInIncreasingDecreasing(arr) {
       hi = mid - 1;
     }
   }
+
+  return -1;
 }
+
+/* alternate way: observation is that in each version there is a tricky way to handle situations where one gets close to an edge and/or the range is 2
+function getTurningPoint(arr) {
+  var length = arr.length,
+      lo = 0,
+      hi = length - 1;
+
+  while (hi > lo) {
+    var mid = Math.floor((hi + lo) / 2);
+    if(mid === 0 || mid === length - 1) {
+      return -1;
+    }
+
+    if (arr[mid - 1] < arr[mid] && arr[mid] > arr[mid + 1]) {
+      return mid;
+    } else if (arr[mid - 1] < arr[mid] && arr[mid] < arr[mid + 1]) {
+      lo = mid;
+    } else {
+      hi = mid;
+    }
+  }
+
+  return -1;
+}
+*/
 
 // http://www.geeksforgeeks.org/find-subarray-with-given-sum/
 // note: array is unordered

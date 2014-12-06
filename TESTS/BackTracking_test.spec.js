@@ -45,6 +45,21 @@ describe("BackTracking", function() {
     //console.log(board);
   });
 
+  it('tests stairs', function() {
+    var count = { count: 0 };
+    bt.stairs(1, count);
+    expect(count.count).toEqual(1);
+    count.count = 0;
+    bt.stairs(2, count);
+    expect(count.count).toEqual(2);
+    count.count = 0;
+    bt.stairs(3, count);
+    expect(count.count).toEqual(3);
+    count.count = 0;
+    bt.stairs(4, count);
+    expect(count.count).toEqual(5);
+  });
+
   it('tests subsetSum', function() {
     var weights = [10,7,5,18,12,20,15];
     //bt.subsetSum(weights, 35);

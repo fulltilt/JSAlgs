@@ -5,6 +5,7 @@ function BackTracking() {
   this.mazePuzzle = mazePuzzle;
   this.nQueen = nQueen;
   this.subsetSum = subsetSum;
+  this.stairs = stairs;
   this.sudoku = sudoku;
   this.tugOfWar = tugOfWar;
 }
@@ -238,6 +239,18 @@ function isQueenSafe(board, row, column) {
   }
 
   return true;
+}
+
+// Apress #24
+function stairs(n, count) {
+  if (n < 0) {
+    return;
+  } else if (n === 0) {
+    count.count += 1;
+  }
+
+  stairs(n - 2, count);
+  stairs(n - 1, count);
 }
 
 // http://www.geeksforgeeks.org/backttracking-set-4-subset-sum/

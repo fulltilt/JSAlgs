@@ -235,47 +235,50 @@ function iterativeFibonacci(n) {
   return current;
 }
 
-function findMajoritySorted(arr) {
-  var length = arr.length,
-      lo = 0,
-      hi = length - 1,
-      middle = (lo + hi) >> 1,
-      candidate = arr[middle], // if a candidate is in the majority, it will have to be equal to the middle element
-      firstOccurrence, lastOccurrence, mid;
+function doesPathExist(matrix, str) {
+  var rows = matrix.length,
+      columns = matrix[0].length,
+      visited = [],
+      currentIndex = 0, i, j;
 
-  // get first occurrence of candidate
-  lo = 0;
-  hi = middle;  // middle and not middle - 1 as the middle index may be the first occurrence
-  while (hi >= lo) {
-    mid = (lo + hi) >> 1;
-    if ((mid - 1) < 0 || (arr[mid] === candidate && arr[mid - 1] < candidate)) {
-      firstOccurrence = mid;
-      break;
-    } else if (arr[mid] === candidate) {
-      hi = mid - 1;
-    } else {
-      lo = mid + 1;
+  // initialize visited matrix
+  for (i = 0; i < rows; i++) {
+    visited[i] = [];
+    for (j = 0; j < columns; j++) {
+      visited[i][j] = 0;
     }
   }
 
-  // get last occurrence of candidate     
-  lo = middle;  // middle and not middle + 1 as the middle index may be the first occurrence
-  hi = length - 1;
-  while (hi >= lo) {
-    mid = (lo + hi) >> 1;
-    if ((mid + 1) === length || (arr[mid] === candidate && arr[mid + 1] > candidate)) {
-      lastOccurrence = mid;
-      break;
-    } else if (arr[mid] === candidate) {
-      lo = mid + 1;
-    } else {
-      hi = mid - 1;
+  for (i = 0; i < rows; i++) {
+    for (j = 0; j < columns; j++) {
+      if (checkPath(matrix, str, currentIndex, visited, rows, columns, i, j)) {
+        return true;
+      }
     }
   }
 
-  return (lastOccurrence - firstOccurrence + 1) >= (length >> 2);
+  return false;
 }
 
-findMajoritySorted([1, 2, 3, 4, 4, 4, 4]);
-findMajoritySorted([1, 1, 1, 2, 2]);
-findMajoritySorted([1, 1, 2, 4, 4, 4, 6, 6]);
+function checkPath(matrix, str, currentIndex, visited, rows, columns, row, column) {
+  //console.log(matrix);
+  if (currentIndex === str.length) {
+    return true;
+  } if (row < 0 || column < 0 || row === rows || column === columns || matrix[row][column] !== str[currentIndex]) {
+    return false;
+  } else if (matrix[row][column] === str[currentIndex] && visited[row][column] === 0) {
+    visited[row][column] = 1;
+    return checkPath(matrix, str, currentIndex + 1, visited, rows, columns, row - 1, column) || // check above
+           checkPath(matrix, str, currentIndex + 1, visited, rows, columns, row, column + 1) || // check right
+           checkPath(matrix, str, currentIndex + 1, visited, rows, columns, row + 1, column) || // check bottom
+           checkPath(matrix, str, currentIndex + 1, visited, rows, columns, row, column - 1);   // check left
+  }
+  visited[row][column] = 0;
+}
+
+var matrix = [
+['a','b','c','e'],
+['s','f','c','s'],
+['a','d','e','e']];
+
+console.log(doesPathExist(matrix, 'abcb'));

@@ -32,6 +32,20 @@ describe("BackTracking", function() {
     //bt.mazePuzzle(maze);
   });
 
+  it('tests doesPathExist', function() {
+    var matrix = [['a','b','c','e'],
+                  ['s','f','c','s'],
+                  ['a','d','e','e']];
+
+    expect(bt.doesPathExist(matrix, 'abcb')).toEqual(false);
+    expect(bt.doesPathExist(matrix, 'bcced')).toEqual(true);
+  });
+
+  it('tests robotMove', function() {
+    expect(bt.robotMove(40, 40, 18)).toEqual(1484); // don't know if this is correct
+    expect(bt.robotMove(10, 10, 5)).toEqual(21);
+  });
+
   it('tests nQueen', function() {
     var board = [[0,0,0,0,0,0,0,0],
                  [0,0,0,0,0,0,0,0],

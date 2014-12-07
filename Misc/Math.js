@@ -59,3 +59,16 @@ console.log(gcm(16,10));
 console.log(gcm2(16,10));
 
 console.log(power(2, 10));
+
+
+function getDigitSum(number) {
+  var sum = 0;
+  while (number > 0) {
+    sum += number % 10;
+    number = Math.floor(number / 10);
+  }
+
+  return sum;
+}
+console.log(getDigitSum(35));
+console.log(getDigitSum(38));

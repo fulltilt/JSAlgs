@@ -3,6 +3,8 @@ function BackTracking() {
   this.printAllPermutationsWithRepetitions = printAllPermutationsWithRepetitions;
   this.knightsTour = knightsTour;
   this.mazePuzzle = mazePuzzle;
+  this.doesPathExist = doesPathExist;
+  this.robotMove = robotMove;
   this.nQueen = nQueen;
   this.subsetSum = subsetSum;
   this.stairs = stairs;
@@ -141,7 +143,7 @@ function mazePuzzle(maze) {
     }
   }
 
-  /* xMove[] and yMove[] define next move of Knight.
+  /* xMove[] and yMove[] define next move.
      xMove[] is for next value of x coordinate
      yMove[] is for next value of y coordinate */
   var xMove = [1, -1, 0, 0],
@@ -149,7 +151,7 @@ function mazePuzzle(maze) {
 
   solution[0][0] = 1;
 
-  // start from [0,0] and explore all tours using knightsTourUtil
+  // start from [0,0] and explore all paths using mazePuzzleUtil
   if (mazePuzzleUtil(0, 0, solution, maze, xMove, yMove) === false) {
     return false;
   } else {
@@ -186,6 +188,101 @@ function mazePuzzleUtil(x, y, solution, maze, xMove, yMove) {
 function isPathSafe(x, y, solution, maze) {
   var dimension = solution.length;
   return (x >= 0 && x < dimension && y >= 0 && y < dimension && maze[x][y] !== 0 && solution[x][y] !== 1);
+}
+
+// Apress #30
+function doesPathExist(matrix, str) {
+  var rows = matrix.length,
+      columns = matrix[0].length,
+      visited = [],
+      pathIndex = 0, i, j;
+
+  // initialize visited matrix
+  for (i = 0; i < rows; i++) {
+    visited[i] = [];
+    for (j = 0; j < columns; j++) {
+      visited[i][j] = false;
+    }
+  }
+
+  for (i = 0; i < rows; i++) {
+    for (j = 0; j < columns; j++) {
+      if (checkPath(matrix, str, visited, pathIndex, rows, columns, i, j)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function checkPath(matrix, str, visited, pathIndex, rows, columns, row, column) {
+  if (pathIndex === str.length) {
+    return true;
+  }
+
+  var validPath = false;
+  if (row >= 0 && column >= 0 && row < rows && column < columns && matrix[row][column] === str[pathIndex] && !visited[row][column]) {
+    visited[row][column] = true;
+
+    validPath = checkPath(matrix, str, visited, pathIndex + 1, rows, columns, row - 1, column) || // check on top
+                checkPath(matrix, str, visited, pathIndex + 1, rows, columns, row, column + 1) || // check right
+                checkPath(matrix, str, visited, pathIndex + 1, rows, columns, row + 1, column) || // check bottom
+                checkPath(matrix, str, visited, pathIndex + 1, rows, columns, row, column - 1);   // check left
+
+    if (!validPath) {
+      visited[row][column] = false;
+    }
+  }
+
+  return validPath;
+}
+
+/* Apress #31:  A robot starts at cell (0, 0) of a grid with mrows and ncolumns. It can move to the left, right, 
+up, and down, and moves one cell for a step. It cannot enter cells where the digit sum of the row index and 
+column index are greater than a given k. 
+For example, when kis 18, the robot can reach cell (35, 37) because 3+5+3+7=18. However, it cannot reach cell 
+(35, 38) because 3+5+3+8=19 and that is greater than k. How many cells can the robot reach? */
+function robotMove(rows, columns, k) {
+  var visited = [],
+      i, j;
+
+  // initialize visited matrix
+  for (i = 0; i < rows; i++) {
+    visited[i] = [];
+    for (j = 0; j < columns; j++) {
+      visited[i][j] = 0;
+    }
+  }
+
+  return robotMoveUtil(visited, rows, columns, k, 0, 0);
+  //console.log(visited);
+}
+
+function robotMoveUtil(visited, rows, columns, k, row, column) {
+  if (row < 0 || column < 0 || row === rows || column === columns || (getDigitSum(row) + getDigitSum(column)) > k || visited[row][column] === 1) {
+    return 0;
+  }
+
+  var count = 0;
+  visited[row][column] = 1;
+
+  count = 1 + robotMoveUtil(visited, rows, columns, k, row - 1, column)
+            + robotMoveUtil(visited, rows, columns, k, row, column + 1)
+            + robotMoveUtil(visited, rows, columns, k, row + 1, column)
+            + robotMoveUtil(visited, rows, columns, k, row, column - 1);
+  return count;
+}
+
+// helper fxn for robotMove()
+function getDigitSum(number) {
+  var sum = 0;
+  while (number > 0) {
+    sum += number % 10;
+    number = Math.floor(number / 10);
+  }
+
+  return sum;
 }
 
 // http://www.geeksforgeeks.org/backtracking-set-3-n-queen-problem/

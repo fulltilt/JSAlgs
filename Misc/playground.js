@@ -192,31 +192,28 @@ console.log(output);
 */
 //zename blackout worried that our cipher is too weak on next message switch to vigenere cipher keyword is the hidden symbol of death in my favorite holbeinend
 
-var BST = require('../BinarySearchTree.js');
-BST.BinarySearchTree.prototype = {
-  isBST2: function(node, prev) {
-    if (node === null) {
-      return true;
+
+/* backtracking
+function dynamicCoinChange(sum, values, currentSum, result, count) {
+  if (currentSum === sum) {
+    if (result.length < count.count) {
+      count.count = result.length;
     }
-
-    if (node.data < prev) return false;
-
-    return this.isBST2(node.left, prev) &&
-           node.data >= prev &&
-           this.isBST2(node.right, node.data);
+    console.log(result);
+    return;
+  } else if (currentSum > sum) {
+    return;
   }
-};
-var bst = new BST.BinarySearchTree();
-bst.insert(10);
-bst.insert(6);
-bst.insert(4);
-bst.insert(8);
-bst.insert(14);
-bst.insert(12);
-bst.insert(16);
-bst.root.right.right.right = new BST.Node(1);
-//console.log(bst.isBST2(bst.root, -Infinity));
 
-
-//console.log(robotMove(40, 40, 18));
-console.log(robotMove(10, 10, 5));
+  var length = values.length, 
+      results = [], i;
+  for (i = 0; i < length; i++) {
+    result.push(values[i]);
+    dynamicCoinChange(sum, values, currentSum + values[i], result, count);
+    result.pop();
+  }
+}
+var result = [],
+    count = { count: Infinity };
+console.log(dynamicCoinChange(15, [1,3,9,10], 0, result, count));
+console.log(count.count); */

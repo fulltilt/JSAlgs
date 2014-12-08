@@ -24,6 +24,7 @@ describe("Dynamic", function() {
     var sum = 11;
     var values = [1, 3, 5];
     expect(d.dynamicCoinChange(sum, values)).toEqual(3);
+    expect(d.dynamicCoinChange(15, [1,3,9,10])).toEqual(3);
   });
 
   it('tests longestIncreasingSequence', function() {
@@ -56,6 +57,10 @@ describe("Dynamic", function() {
     }
 
     expect(d.maxWines(arr, cache, 0, length - 1)).toEqual(50);
+  });
+
+  it('tests editDistance', function() {
+    expect(d.editDistance('SATURDAY', 'SUNDAY')).toEqual(3);
   });
 
   it('tests largestContiguousSumSubarray', function() {

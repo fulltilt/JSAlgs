@@ -19,6 +19,19 @@ describe("Bits", function() {
     expect(b.clearLSB(5)).toEqual(4);
   })
 
+  it('tests isPowerOf2', function() {
+    expect(b.isPowerOf2(4)).toEqual(true);
+    expect(b.isPowerOf2(8)).toEqual(true);
+    expect(b.isPowerOf2(16)).toEqual(true);
+    expect(b.isPowerOf2(3)).toEqual(false);
+    expect(b.isPowerOf2(23523)).toEqual(false);
+    expect(b.isPowerOf2(67)).toEqual(false);
+  });
+
+  it('tests countModifiedBits', function() {
+    expect(b.countModifiedBits(13, 10)).toEqual(3);
+  });
+
   it('tests extractLowestSetBit', function() {
     expect(b.extractLowestSetBit(1)).toEqual(1);
     expect(b.extractLowestSetBit(2)).toEqual(2);
@@ -38,5 +51,9 @@ describe("Bits", function() {
     expect(b.numToGrayCode(5)).toEqual(7);
     expect(b.numToGrayCode(6)).toEqual(5);
     expect(b.numToGrayCode(7)).toEqual(4);
+  });
+
+  it('tests numbersOccurringOnce', function() {
+    //expect(b.numbersOccurringOnce([2, 4, 3, 6, 3, 2, 5, 5])).toEqual(4)
   });
 });

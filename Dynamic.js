@@ -179,6 +179,31 @@ Notes:
 
 // http://www.topcoder.com/tc?d1=tutorials&d2=dynProg&module=Static
 // http://www.geeksforgeeks.org/dynamic-programming-set-7-coin-change/
+/* backtracking
+function dynamicCoinChange(sum, values, currentSum, result, count) {
+  if (currentSum === sum) {
+    if (result.length < count.count) {
+      count.count = result.length;
+    }
+    console.log(result);
+    return;
+  } else if (currentSum > sum) {
+    return;
+  }
+
+  var length = values.length, 
+      results = [], i;
+  for (i = 0; i < length; i++) {
+    result.push(values[i]);
+    dynamicCoinChange(sum, values, currentSum + values[i], result, count);
+    result.pop();
+  }
+}
+var result = [],
+    count = { count: Infinity };
+console.log(dynamicCoinChange(15, [1,3,9,10], 0, result, count));
+console.log(count.count); */
+
 function dynamicCoinChange(sum, values) {
   var table = [];
   table[0] = 0
@@ -369,9 +394,67 @@ function maxWines(arr, cache, lo, hi) {
 
 
 // http://www.geeksforgeeks.org/dynamic-programming-set-5-edit-distance/
-function editDistance() {
+function editDistance(str1, str2) {
+  var length1 = str1.length,
+      length2 = str2.length,
+      cache = [], i, j;
 
+  // initialize cache
+  for (i = 0; i <= length2; i++) {
+    cache[i] = [];
+    for (j = 0; j <= length1; j++) {
+      cache[i][j] = 0;
+    }
+  }
+
+  for (i = 0; i <= length1; i++) {
+    cache[0][i] = i;
+  }
+  for (i = 0; i <= length2; i++) {
+    cache[i][0] = i;
+  }
+
+  return editDistanceHelper(str1, str2, length1, length2, cache);
 }
+
+function editDistanceHelper(str1, str2, length1, length2, cache) {
+  var i, j, deletion, insertion, substitution;
+
+  for (i = 1; i <= length2; i++) {
+    for (j = 1; j <= length1; j++) {
+      if (str1[j - 1] === str2[i - 1]) {
+        cache[i][j] = cache[i - 1][j - 1];
+      } else {
+        deletion = cache[i][j - 1] + 1;
+        insertion = cache[i - 1][j] + 1;
+        substitution = cache[i - 1][j - 1] + 1;
+
+        cache[i][j] = Math.min(deletion, Math.min(insertion, substitution));
+      }
+    }
+  }
+  //console.log(cache);
+  return cache[length2][length1];
+}
+
+/*
+          S  A  T  U  R  D  A  Y  
+   [ [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ],
+S    [ 1, 0, 1, 2, 3, 4, 5, 6, 7 ],
+U    [ 2, 1, 1, 2, 2, 3, 4, 5, 6 ],
+N    [ 3, 2, 2, 2, 3, 3, 4, 5, 6 ],
+D    [ 4, 3, 3, 3, 3, 4, 3, 4, 5 ],
+A    [ 5, 4, 3, 4, 4, 4, 4, 3, 4 ],
+Y    [ 6, 5, 4, 4, 5, 5, 5, 4, 3 ] ]
+-deletion: left to right
+-insertion: top to bottom
+-substitution: upper-left diagonal
+-examples of what's going on in indices: 
+ [0][8]: 'SATURDAY' -> ''
+ [6][0]: '' -> 'SUNDAY'
+ [4][6]: 'SATURD' -> 'SUND'
+ [6][8]: 'SATURDAY' -> 'SUNDAY'
+*/
 
 // http://www.geeksforgeeks.org/dynamic-programming-set-6-min-cost-path/
 function minCostPath() {

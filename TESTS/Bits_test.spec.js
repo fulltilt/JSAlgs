@@ -53,7 +53,20 @@ describe("Bits", function() {
     expect(b.numToGrayCode(7)).toEqual(4);
   });
 
+  it('tests getLSBIndex', function() {
+    expect(b.getLSBIndex(4)).toEqual(2);  // 00000100
+    expect(b.getLSBIndex(24)).toEqual(3); // 00011000
+    expect(b.getLSBIndex(68)).toEqual(2); // 01000100
+    expect(b.getLSBIndex(80)).toEqual(4); // 01010000
+  });
+
+  it('tests isIthBitSet', function() {
+    expect(b.isIthBitSet(80, 6)).toEqual(true);
+    expect(b.isIthBitSet(80, 5)).toEqual(false);
+    expect(b.isIthBitSet(80, 4)).toEqual(true);
+  });
+
   it('tests numbersOccurringOnce', function() {
-    //expect(b.numbersOccurringOnce([2, 4, 3, 6, 3, 2, 5, 5])).toEqual(4)
+    expect(b.numbersOccurringOnce([2, 4, 3, 6, 3, 2, 5, 5])).toEqual([6,4]);  // note: order matters
   });
 });

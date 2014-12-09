@@ -8,6 +8,7 @@ function sumOfFirstNCubes(n) {
   return Math.pow((n * (n + 1)) / 2, 2);
 }
 
+// http://www.programminglogic.com/fast-exponentiation-algorithms/
 // fast exponentiation
 function power(a, n) {
   if (n === 0) {
@@ -21,16 +22,34 @@ function power(a, n) {
   var t = power(a, Math.floor(n / 2));
   return t * t * power(a, n % 2);
 }
+
 // non-recursive version of above
 function power2(a, n) {
   var result = 1;
   while (n) {
-    if (n % 2 === 1) {
-      result *= a;
+    if (n % 2 === 1) {  // exponent is odd
+      result = result * a;
     }
-    a *= a;
-    n = Math.floor(n / 2);
+    a = a * a;
+    n = n >> 1;
   }
+  return result;
+}
+
+// Apress #40: More robust power function that handles negative exponents and double bases (didn't finish)
+function power3(base, exp) {
+  if (exp === 0) {
+    return 1;
+  } else if (exp === 1) {
+    return base;
+  }
+
+  var result = 1;
+  while (exp > 0) {
+    result = result * base;
+    exp -= 1;
+  }
+
   return result;
 }
 

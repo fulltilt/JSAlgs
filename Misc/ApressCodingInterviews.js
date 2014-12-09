@@ -105,5 +105,5 @@ function matchCore(str, pattern, strIndex, patternIndex) {
 
 module.exports = Apress;
 
-/* SKIPPED: 13, 18 (next node in binary tree with pointers to parents), 
+/* SKIPPED: 13, 18 (next node in binary tree with pointers to parents), 34 (no test cases), 39, 40
 */

@@ -88,6 +88,11 @@ describe("Arrays", function() {
       expect(gfg.reverseArray([1, 12, 15, 26, 38, 13, 17, 30, 4], 0, 8)).toEqual([4,30,17,13,38,26,15,12,1]);         // odd
     });
 
+    it('tests addition', function() {
+      expect(gfg.addition(33, 44)).toEqual(77);
+      expect(gfg.addition(88, 99)).toEqual(187);
+      expect(gfg.addition(187, 80)).toEqual(267);
+    });
     it('tests rotateArray', function() {
       expect(gfg.rotateArray([1,2,3,4,5,6,7], 2)).toEqual([3,4,5,6,7,1,2]);
     });

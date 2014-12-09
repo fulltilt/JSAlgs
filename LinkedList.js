@@ -47,6 +47,7 @@ function LinkedList() {
 	this.splitCircularListInTwo = splitCircularListInTwo;
 	this.swapPairwise = swapPairwise;
 	this.deleteAlternating = deleteAlternating;
+	this.deleteDuplicates = deleteDuplicates;
 	this.alternateSplit = alternateSplit;
 	this.reverseInKGroups = reverseInKGroups;
 	this.deleteNodesWithGreaterValueOnRight = deleteNodesWithGreaterValueOnRight;
@@ -631,6 +632,11 @@ function deleteAlternating() {
 			current = current.next;
 		}
 	}
+}
+
+// Apress #
+function deleteDuplicates() {
+
 }
 
 // http://www.geeksforgeeks.org/alternating-split-of-a-given-singly-linked-list/

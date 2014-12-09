@@ -11,6 +11,7 @@ function Strings() {
   this.printInterleavingsRecur = printInterleavingsRecur;
   this.removeFromString = removeFromString;
   this.findExcelColumnName = findExcelColumnName;
+  this.print1ToMaxOfNDigits = print1ToMaxOfNDigits;
   this.printAnagramsTogether = printAnagramsTogether;
   this.sameCharsNDistanceAway = sameCharsNDistanceAway;
   this.inPlaceStringTransform = inPlaceStringTransform;
@@ -293,6 +294,50 @@ function findExcelColumnName(num) {
     }
   }
   return result;
+}
+
+/* Apress #41: Given a number n, please print all numbers from 1 to the maximum ndigit number in order. For 
+   example, if the input is 3, it prints 1, 2, 3, …,999, which is the maximum number with three digits. 
+*/
+/* simple but can't handle huge numbers. Instead we must use arrays or strings to represent the number
+function print1ToMaxOfNDigits(n) {
+  var max = Math.pow(10, n);
+
+  for (var i = 1; i < max; i++) 
+    console.log(i);
+}
+*/
+
+// use string permutations to print results
+function print1ToMaxOfNDigits(n) {
+  if (n <= 0) {
+    return;
+  }
+
+  var num = [];
+  print1ToMaxOfNDigitsUtil(num, n, -1);
+}
+
+function print1ToMaxOfNDigitsUtil(number, length, index) {
+  if (index === (length - 1)) {
+    printNumber(number.join(''));
+    return;
+  }
+
+  for (var i = 0; i < 10; i++) {
+    number[index + 1] = i;
+    print1ToMaxOfNDigitsUtil(number, length, index + 1);
+  }
+}
+
+// helper fxn for print1ToMaxOfNDigits(). Takes in a string with leading zeroes and prints everything to the right of the leading zeroes
+function printNumber(num) {
+  var i = 0;
+  while (num[i] === '0') {
+    i += 1;
+  }
+
+  console.log(num.substring(i));
 }
 
 // http://www.geeksforgeeks.org/find-possible-words-phone-digits/ (see link for keypad diagram)

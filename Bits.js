@@ -81,8 +81,8 @@ function numberOccurringOnce(arr) {
 // Apress #38: in an array of numbers, get the 2 numbers that occurs only once
 function numbersOccurringOnce(arr) {
   var length = arr.length,
-      XORresult = arr[0];
-  for (var i = 1; i < length; i++) {
+      XORresult = 0;
+  for (var i = 0; i < length; i++) {
     XORresult = XORresult ^ arr[i];
   }
   
@@ -92,10 +92,18 @@ function numbersOccurringOnce(arr) {
   // on the XORresult bit where the 1 is set. Using this info, 'partition' array where the 1 bit is set and where it isn't set
   var isSet = 0, 
       notSet = 0;
-
+  for (i = 0; i < length; i++) {
+    if (isIthBitSet(arr[i], indexOf1)) {
+      isSet = isSet ^ arr[i];
+    } else {
+      notSet = notSet ^ arr[i];
+    }
+  }
+  
+  return [isSet, notSet];
 }
 
-// return index of least significant (rightmost) set bit
+// return zero-based index of least significant (rightmost) set bit
 function getLSBIndex(num) {
   var index = 0;
   while (((num & 1) === 0) && (index < 32)) {
@@ -108,7 +116,7 @@ function getLSBIndex(num) {
 
 // check whether ith bit is set
 function isIthBitSet(num, i) {
-  return (num >> i) === 1;
+  return ((num >> i) & 1) === 1;
 }
 
 module.exports = Bits;

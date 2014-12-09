@@ -24,6 +24,7 @@ function Arrays() {
   this.findPivotInRotatedArray = findPivotInRotatedArray;
   this.findMedianOfTwoSortedArrays = findMedianOfTwoSortedArrays;
   this.reverseArray = reverseArray;
+  this.addition = addition;
   this.rotateArray = rotateArray;
   this.leadersInAnArray = leadersInAnArray;
   this.replaceWithNextGreatest = replaceWithNextGreatest;
@@ -505,6 +506,50 @@ function reverseArray(arr, start, end) {
   }
 
   return arr; 
+}
+
+// Apress #42
+function addition(num1, num2) {
+  var arr1 = (num1 + '').split(''),
+      arr2 = (num2 + '').split(''),
+      length1 = arr1.length,
+      length2 = arr2.length;
+
+  reverseArray(arr1, 0, length1 - 1);
+  reverseArray(arr2, 0, length2 - 1);
+
+  var result = [],
+      carry = 0,
+      ptr1 = 0,
+      ptr2 = 0, 
+      sum, temp1, temp2;
+
+  while (ptr1 !== length1 || ptr2 !== length2) {    // **way easier to use '||' as if you use '&&' you have to deal with overflow outside the loop
+    temp1 = (ptr1 !== length1) ? parseInt(arr1[ptr1]) : 0;
+    temp2 = (ptr2 !== length2) ? parseInt(arr2[ptr2]) : 0;
+    sum = temp1 + temp2 + carry;
+
+    if (sum > 9) {
+      carry = Math.floor(sum / 10);
+      sum = sum % 10;
+    } else {
+      carry = 0;
+    }
+
+    result.push(sum);
+    if (ptr1 !== length1) {
+      ptr1 += 1;
+    }
+    if (ptr2 !== length2) {
+      ptr2 += 1;
+    }
+  }
+
+  if (carry > 0) {
+    result.push(carry);
+  }
+
+  return parseInt(result.reverse().join(''));
 }
 
 // http://www.geeksforgeeks.org/program-for-array-rotation-continued-reversal-algorithm/

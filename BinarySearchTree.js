@@ -354,23 +354,77 @@ function mirror(node1, node2) {
 }
 
 // http://www.geeksforgeeks.org/check-if-a-binary-tree-is-subtree-of-another-binary-tree/
-// check if tree2 is a subtree of tree1
+// Check if tree2 is a subtree of tree1. Algo is O(n*m) where n is the size of the source tree and m is the size of the subtree
+// Algorithm: do a preorder traversal and if node1 equals node2, do a subtree comparison
 function isSubTree(node1, node2) {
-  // base cases
-  if (node2 === null) {
-    return true;
-  }
   if (node1 === null) {
     return false;
   }
 
-  // check the tree with root as current node
-  if (this.areTreesIdentical(node1, node2)) {
+  if (node1.data === node2.data) {
+    return isSubTreeUtil(node1, node2);
+  } 
+
+  return isSubTree(node1.left, node2) || isSubTree(node1.right, node2);
+}
+
+// helper fxn for isSubTree. Similar to areTreesIdentical but for this algorithm, it's valid for node1 (source tree) to not be null but for node2 to be null
+function isSubTreeUtil(node1, node2) {
+  if (node2 === null) { // if potential subtree node is null return true
     return true;
   }
+  if (node1 === null) { // if we got here, this means that potential subtree is not null but source tree is null so return false
+    return false;
+  }
 
-  // if the tree with root as current node doesn't match then try left and right subtrees one by one
-  return this.isSubTree(node1.left, node2) || this.isSubTree(node1.right, node2);
+  if (node1.data === node2.data) {
+    return isSubTreeUtil(node1.left, node2.left) && isSubTreeUtil(node1.right, node2.right);
+  } else {
+    return false;
+  }
+}
+
+// http://www.geeksforgeeks.org/check-binary-tree-subtree-another-binary-tree-set-2/ O(n) solution for isSubTree (requires extra space but more efficient than previous)
+// note: check if tree1 is a subtree of tree2
+// algorithm: get in-order and pre-order traversals for both trees and convert into strings. If tree1's traversals are substrings of tree2's respective traversals, tree1 is a subtree of tree2
+function isSubTree2(tree1, tree2) {
+  var inOrder1 = [],
+      preOrder1 = [],
+      inOrder2 = [],
+      preOrder2 = [];
+
+  // get respective in-order and pre-order traversal arrays
+  this.getInOrder(tree1, inOrder1);
+  this.getPreOrder(tree1, preOrder1);
+  this.getInOrder(tree2, inOrder2);
+  this.getPreOrder(tree2, preOrder2);
+
+  // create a trie for the in-order traversal and pre-order traversal of tree2 (the bigger tree)
+  var inOrderTrie = new Trie(),
+      inOrder2 = inOrder2.join(''),
+      length = inOrder2.length, i;
+  for (i = 0; i < length; i++) {
+    for (var j = i; j < length; j++) {
+      inOrderTrie.addWord(inOrder2.substring(i));
+    }
+  }
+
+  if (!inOrderTrie.isWord(inOrder1.join(''))) {
+    return false;
+  }
+  /*  
+    In-order: c,a,x,b
+    Pre-order: x,a,c,b
+    
+    In-order: a,c,x,b,z,e,k
+    Pre-order: z,x,a,c,b,e,k
+
+[ 'a', 'c', 'x', 'b' ]
+[ 'x', 'a', 'c', 'b' ]
+[ 'a', 'c', 'x', 'b', 'z', 'e', 'k' ]
+[ 'z', 'x', 'a', 'c', 'b', 'e', 'k' ]
+  */
+  return true;
 }
 
 function treeToDoublyLinkedList(root) {
@@ -1900,46 +1954,6 @@ function iterativePostOrder() {
 // http://www.geeksforgeeks.org/segment-tree-set-1-range-minimum-query/
 function segmentTree() {
 
-}
-
-// http://www.geeksforgeeks.org/check-binary-tree-subtree-another-binary-tree-set-2/ O(n) solution for isSubTree
-// note: check if tree1 is a subtree of tree2
-function isSubTree2(tree1, tree2) {
-  var inOrder1 = [],
-      preOrder1 = [],
-      inOrder2 = [],
-      preOrder2 = [];
-
-  // get respective in-order and pre-order traversal arrays
-  this.getInOrder(tree1, inOrder1);
-  this.getPreOrder(tree1, preOrder1);
-  this.getInOrder(tree2, inOrder2);
-  this.getPreOrder(tree2, preOrder2);
-
-  // create a trie for the in-order traversal and pre-order traversal of tree2 (the bigger tree)
-  var inOrderTrie = new Trie(),
-      inOrder2 = inOrder2.join(''),
-      length = inOrder2.length, i;
-  for (i = 0; i < length; i++) {
-    for (var j = i; j < length; j++) {
-      inOrderTrie.addWord(inOrder2.slice(i));
-    }
-  }
-  if (!inOrderTrie.isWord(inOrder1.join(''))) {
-    return false;
-  }
-  /*  c,a,x,b
-    x,a,c,b
-
-    c,a,x,b,d
-    x,a,c,b,d
-
-[ 'a', 'c', 'x', 'b' ]
-[ 'x', 'a', 'c', 'b' ]
-[ 'a', 'c', 'x', 'b', 'z', 'e', 'k' ]
-[ 'z', 'x', 'a', 'c', 'b', 'e', 'k' ]
-  */
-  return true;
 }
 
 // Note: BSTToArray just puts the data into an Array not the actual Node. To be correct, BSTToArray variation should add the Node itself

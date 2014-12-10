@@ -40,6 +40,7 @@ function LinkedList() {
 	this.getNthFromEnd = getNthFromEnd;
 	this.reverse = reverse;
 	this._reverse = _reverse;
+	this.iterativeReverse = iterativeReverse;
 	this.printReverse = printReverse;
 	this.reverseFromNode = reverseFromNode;
 	this.isPalindrome = isPalindrome;
@@ -402,6 +403,18 @@ function _reverse(previous, node) {
 	node.next = previous;
 }
 
+function iterativeReverse() {
+	var previous = null,
+			current = this.head, next;
+	while (current !== null) {
+		next = current.next;
+		current.next = previous;
+		previous = current;
+		current = next;
+	}
+	this.head = previous;
+}
+
 function printReverse(node) {
 	if (node === null) {
 		return;
@@ -634,8 +647,44 @@ function deleteAlternating() {
 	}
 }
 
-// Apress #
+// Apress #44: Given a sorted linked list, please delete all duplicated numbers and leave only distinct numbers from the original list
 function deleteDuplicates() {
+	var current,
+			dummyHead = new Node(-1),	// node that points to head in case we nead to delete the head node
+			next1, next2;
+
+	dummyHead.next = this.head;
+	current = dummyHead;
+	while (current !== null) {
+		if (current.next === null) {
+			break;
+		} else {
+			next1 = current.next;
+		}
+
+		if (current.next.next === null) {
+			break;
+		} else {
+			next2 = current.next.next;
+		}
+
+		if (next1.data === next2.data) {
+			// keep advancing next2 until next2 is null or next2.data doesn't equal next1.data
+			while (next2 !== null && next1.data === next2.data) {
+				next2 = next2.next;
+			}
+
+			if (current.next === this.head) {	// special corner case when head is duplicated
+				this.head = next2;
+			}
+
+			current.next = next2;
+
+			continue;	// don't advance as the next encountered set of numbers can be duplicates
+		}
+
+		current = current.next;
+	}
 
 }
 
@@ -664,32 +713,36 @@ function alternateSplit() {
 }
 
 // http://www.geeksforgeeks.org/reverse-a-list-in-groups-of-given-size/
-// NOTE: I tried to do this iteratively but was way complicated. The recursive solution is so much easier since you don't have to worry about all those pointers
+// NOTE: I tried to do this iteratively but was way complicated. The recursive solution is so much easier since you don't have to worry about all those pointers.
+//       Really helps to draw it out as there still are is a lot of pointer craziness
 function reverseInKGroups(head, k) {
 	var current = head,
 			next = null,
 			previous = null,
 			count = 0;
 
-	// reverse first k nodes of the list
+	// reverse first k nodes of the sublist
 	while (current !== null && count < k) {
 		next = current.next;
 		current.next = previous;
 		previous = current;
 		current = next;
 		count += 1;
+
+		if (current === null) {	// base case; we reached the end of the list (works even when list.length % k === 0)
+			return previous;
+		}
 	}
 
-	// next is now a pointer to the (k + 1)th Node. Recursively call for the list starting from current
-	// and make rest of the list as next of first node
-	if (next !== null) {
-		head.next = this.reverseInKGroups(next, k);
-	}
+	// next is now a pointer to the (k + 1)th Node. Recursively call for the list starting from current and make rest of the list as next of first node
+	// NOTE: draw an example out and walk through the algorithm to see why we pass 'next'
+	head.next = this.reverseInKGroups(next, k);
 
 	// condition to change the head pointer for printing purposes
 	if (head === this.head) {
 		this.head = previous;
 	}
+	
 	// previous is new head of the input list
 	return previous;
 }
@@ -1045,4 +1098,4 @@ module.exports = LinkedList;
 	current = next;
 */
 
-// PRACTICE: reverseInKGroups, reverseAlternateAndAppendAtEnd, reverse, 
+// PRACTICE: reverseInKGroups, reverseAlternateAndAppendAtEnd

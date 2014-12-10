@@ -15,6 +15,7 @@ function Arrays() {
   this.findNthValue = findNthValue;
   this.findMedian = findMedian;
   this.partition = partition;
+  this.customPartition = customPartition;
 
   // Arrays
   this.isSubArray = isSubArray;
@@ -265,6 +266,29 @@ function partition(arr, lo, hi) {
   arr[lo] = temp;
 
   return j;
+}
+
+// generalized partition fxn that takes in a criterion function for comparisons
+function customPartition(arr, criterionFxn) {
+  var length = arr.length,
+      lo = 0,
+      hi = length - 1;
+
+  while (lo < hi) {
+    while (lo < hi && !criterionFxn(arr[lo])) {
+      lo += 1;
+    }
+
+    while (lo < hi && criterionFxn(arr[hi])) {
+      hi -= 1;
+    }
+
+    if (lo < hi) {
+      var temp = arr[lo];
+      arr[lo] = arr[hi];
+      arr[hi] = temp;
+    }
+  }
 }
 
 // http://www.geeksforgeeks.org/find-whether-an-array-is-subset-of-another-array-set-1/

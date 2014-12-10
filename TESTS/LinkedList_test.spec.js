@@ -154,6 +154,11 @@ describe("LinkedList", function() {
     expect(ll.print()).toEqual('2 7 8 6 9 5');
   });
 
+  it('tests iterativeReverse', function() {
+    ll.iterativeReverse();
+    expect(ll.print()).toEqual('2 7 8 6 9 5');
+  });
+
   it('tests reverse from a Node', function() {
     var node1 = ll.find(8)
         node2 = ll.find(2);
@@ -273,6 +278,31 @@ describe("LinkedList", function() {
     swp.clear();
   });
 
+  it('tests deleteDuplicates', function() {
+    var da = new LinkedList();
+    da.insertHead(5);
+    da.insertHead(4);
+    da.insertHead(4);
+    da.insertHead(3);
+    da.insertHead(3);
+    da.insertHead(2);
+    da.insertHead(1);
+    da.deleteDuplicates();
+    expect(da.print()).toEqual('1 2 5');
+    
+    da.insertHead(1);
+    da.deleteDuplicates();
+    expect(da.print()).toEqual('2 5');
+
+    da.insertHead(2);
+    da.deleteDuplicates();
+    expect(da.print()).toEqual('5');
+
+    da.insertHead(5);
+    da.deleteDuplicates();
+    expect(da.print()).toEqual('');
+  });
+
   it('tests alternateSplit', function() {
     var as = new LinkedList();
     // test even length;
@@ -310,6 +340,11 @@ describe("LinkedList", function() {
     rikg.insertHead(1);
     rikg.reverseInKGroups(rikg.head, 3);
     expect(rikg.print()).toEqual('3 2 1 6 5 4 8 7');
+    rikg.reverseInKGroups(rikg.head, 3);
+    expect(rikg.print()).toEqual('1 2 3 4 5 6 7 8');
+    rikg.insertHead(0);
+    rikg.reverseInKGroups(rikg.head, 3);
+    expect(rikg.print()).toEqual('2 1 0 5 4 3 8 7 6');
 
     rikg.clear();
     rikg.insertHead(8);

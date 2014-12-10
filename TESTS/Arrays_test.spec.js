@@ -50,6 +50,19 @@ describe("Arrays", function() {
     expect(gfg.partition(arr, 0 , arr.length - 1, Math.floor(arr.length / 2))).toEqual(2);
   });
 
+  it('tests customPartition', function() {
+    var arr = [1,2,3,4,5,6,7],
+        isEven = function(a) { return a % 2 === 0; },
+        isOne = function(a) { return a === 1; };
+
+    gfg.customPartition(arr, isEven); // sort odds before evens
+    expect(arr).toEqual([1,7,3,5,4,6,2]);
+
+    arr = [0, 1, 0, 1, 0, 0, 1, 1, 1, 0];
+    gfg.customPartition(arr, isOne);
+    expect(arr).toEqual([0, 0, 0, 0, 0, 1, 1, 1, 1, 1]);
+  });
+
   describe('Arrays', function() {
     it('tests isSubArray', function() {
       expect(gfg.isSubArray([11, 1, 13, 21, 3, 7], [11, 3, 7, 1])).toEqual(true);

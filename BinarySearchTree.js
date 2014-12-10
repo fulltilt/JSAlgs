@@ -41,6 +41,7 @@ function BST() {
   this.getLargestBSTSubTreeSize = getLargestBSTSubTreeSize;
   this.areTreesIdentical = areTreesIdentical;
   this.mirror = mirror;
+  this.getMirror = getMirror;
   this.printAllPaths = printAllPaths;
   this.lowestCommonAncestorBST = lowestCommonAncestorBST;
   this.lowestCommonAncestorBT = lowestCommonAncestorBT;
@@ -336,6 +337,7 @@ function areTreesIdentical(node1, node2) {
   }
 }
 
+// check whether or not 2 trees are mirrors of each other
 function mirror(node1, node2) {
   // 1. both empty
   if (node1 === null && node2 === null) {
@@ -351,6 +353,20 @@ function mirror(node1, node2) {
 
   // 3. one empty but other one isn't
   return false;
+}
+
+// modify tree to be its mirror image
+function getMirror(source) {
+  if (source === null) {
+    return null;
+  }
+
+  var temp = source.left;
+  source.left = source.right;
+  source.right = temp;
+
+  getMirror(source.left);
+  getMirror(source.right);
 }
 
 // http://www.geeksforgeeks.org/check-if-a-binary-tree-is-subtree-of-another-binary-tree/
@@ -385,8 +401,8 @@ function isSubTreeUtil(node1, node2) {
 }
 
 // http://www.geeksforgeeks.org/check-binary-tree-subtree-another-binary-tree-set-2/ O(n) solution for isSubTree (requires extra space but more efficient than previous)
-// note: check if tree1 is a subtree of tree2
-// algorithm: get in-order and pre-order traversals for both trees and convert into strings. If tree1's traversals are substrings of tree2's respective traversals, tree1 is a subtree of tree2
+// note: check if tree2 is a subtree of tree1
+// algorithm: get in-order and pre-order traversals for both trees and convert into strings. If tree2's traversals are substrings of tree1's respective traversals, tree2 is a subtree of tree1
 function isSubTree2(tree1, tree2) {
   var inOrder1 = [],
       preOrder1 = [],
@@ -399,30 +415,28 @@ function isSubTree2(tree1, tree2) {
   this.getInOrder(tree2, inOrder2);
   this.getPreOrder(tree2, preOrder2);
 
-  // create a trie for the in-order traversal and pre-order traversal of tree2 (the bigger tree)
-  var inOrderTrie = new Trie(),
-      inOrder2 = inOrder2.join(''),
-      length = inOrder2.length, i;
-  for (i = 0; i < length; i++) {
-    for (var j = i; j < length; j++) {
-      inOrderTrie.addWord(inOrder2.substring(i));
-    }
-  }
-
-  if (!inOrderTrie.isWord(inOrder1.join(''))) {
+  // create a trie for the in-order traversal and pre-order traversal of tree2 (the potential subtree tree)
+  if (inOrder1.join('').indexOf(inOrder2.join('')) === -1) {
     return false;
   }
+  
+  if (preOrder1.join('').indexOf(preOrder2.join('')) === -1) {
+    return false;
+  }
+
   /*  
-    In-order: c,a,x,b
-    Pre-order: x,a,c,b
-    
+    Tree 1
     In-order: a,c,x,b,z,e,k
     Pre-order: z,x,a,c,b,e,k
 
-[ 'a', 'c', 'x', 'b' ]
-[ 'x', 'a', 'c', 'b' ]
-[ 'a', 'c', 'x', 'b', 'z', 'e', 'k' ]
-[ 'z', 'x', 'a', 'c', 'b', 'e', 'k' ]
+    Tree 2
+    In-order: c,a,x,b
+    Pre-order: x,a,c,b
+
+    [ 'a', 'c', 'x', 'b', 'z', 'e', 'k' ]
+    [ 'z', 'x', 'a', 'c', 'b', 'e', 'k' ]
+    [ 'a', 'c', 'x', 'b' ]
+    [ 'x', 'a', 'c', 'b' ]
   */
   return true;
 }

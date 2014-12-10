@@ -148,15 +148,22 @@ describe("BST", function() {
 
     expect(bst.mirror(root, root2)).toEqual(true);
     expect(bst.mirror(root, bst.root)).toEqual(false);
+
+    // Tests getMirror()
+    //bst.printByLevel(root);
+    //bst.getMirror(root);
+    //bst.printByLevel(root);
   });
 
   // NOTE: careful on the input order. The first argument is the source tree and the second argument is the potential subtree
   it('tests isSubTree', function() {
     expect(bst.isSubTree(bt3.root, bt2.root)).toEqual(true);
+    expect(bst.isSubTree(bt2.root, bt3.root)).toEqual(false);
   });
 
   it('tests isSubTree2', function() {
     expect(bst.isSubTree2(bt3.root, bt2.root)).toEqual(true);
+    expect(bst.isSubTree2(bt2.root, bt3.root)).toEqual(false);
   });
 
   it('tests treeToCircularDoublyLinkedList', function() {

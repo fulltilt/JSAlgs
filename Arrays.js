@@ -2221,7 +2221,7 @@ function longestMonotonicallyIncreasingLogN(arr) {
 // DIDN'T COMPLETELY UNDERSTAND: nextGreaterElement, findSmallestMissingNumber, countNumberOfOccurrences,
 // maxLengthBitonicSubArray, compare findSubArrayWithGivenSum with findTwoNumsThatSumToN, findSortedSubSequenceOfThree,
 // biggestNumCompare, findSmallestValueNotReppedBySubArraySum, maxContiguousCircularSum, maxProductSubArray
-// Recursion practice: printInterleavingsRecur removeAdjacentDuplicates
+// Recursion practice: printInterleavingsRecur, removeAdjacentDuplicates
 
 // MATHY: findRepeatingAndMissing
 module.exports = Arrays;

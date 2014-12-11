@@ -388,7 +388,7 @@ function getNthFromEnd(n) {
 
 	return slow.data;
 }
-
+	
 function reverse() {
 	this._reverse(null, this.head);
 }
@@ -489,6 +489,7 @@ function isPalindrome(head) {
 }
 
 // http://www.geeksforgeeks.org/a-linked-list-with-next-and-arbit-pointer/
+// NOTE: using a doubly-linked list for this as I didn't feel like creating a new List structure. Reusing 'previous' field for the arbitrary pointer
 function copyLinkedListWithArbitraryPtr(head) {
 	var current = head;
 

@@ -322,7 +322,7 @@ function getLargestBSTSubTreeSize(node) {
 }
 
 // http://www.geeksforgeeks.org/write-c-code-to-determine-if-two-trees-are-identical/
-// NOTE: this is O(n^2)
+// NOTE: this is O(n * m) where n is the length of tree1 and m is the length of tree2
 function areTreesIdentical(node1, node2) {
   if (node1 === null && node2 === null) {
     return true;
@@ -345,7 +345,7 @@ function mirror(node1, node2) {
   }
 
   // 2. both non-empty
-  if (node1 !== null || node2 !== null) {
+  if (node1 !== null && node2 !== null) {
     return node1.data === node2.data &&
            this.mirror(node1.left, node2.right) &&
            this.mirror(node1.right, node2.left);
@@ -891,18 +891,22 @@ function doubleTree(node) {
 }
 
 // http://www.geeksforgeeks.org/foldable-binary-trees/
-function canFold(node1, node2) {
+// can also be called isSymmetrical()
+function canFold(node1, node2) {  
   if (node1 === null && node2 === null) {
     return true;
   }
 
-  if (((node1.left && node2.right) || (!node1.left && !node2.right)) &&
-      this.canFold(node1.left, node2.right) &&
-      this.canFold(node1.right, node2.left)) {
-    return true;
+  if (node1 === null || node2 === null) {
+    return false;
   }
 
-  return false;
+  /* add this clause if the node data should be the same after folding
+  if (node1.data !== node2.data) {
+    return false;
+  }*/
+
+  return canFold(node1.left, node2.right) && canFold(node1.right, node2.left);
 }
 
 // http://www.geeksforgeeks.org/print-nodes-at-k-distance-from-root/

@@ -4,8 +4,12 @@ function Stack() {
 	this.push = push;
 	this.pop = pop;
 	this.peek = peek;
-	this.length = length;
+	this.size = size;
 	this.clear = clear;
+	this.isPalindrome = isPalindrome;
+	this.isParenthesesBalanced = isParenthesesBalanced;
+	this.infixToPostfix = infixToPostfix;
+	this.isStackSequence = isStackSequence;
 }
 
 function push(element) {
@@ -21,85 +25,138 @@ function peek() {
 	return this.dataStore[this.top - 1];
 }
 
-function length() {
-	return this.top;
+function size() {
+	return this.dataStore.length;
 }
 
 function clear() {
 	this.top = 0;
+	this.dataStore = [];
 }
 
-// Test #1
-var s = new Stack();
-s.push("David");
-s.push("Raymond");
-s.push("Bryan");
-console.log("length: " + s.length());
-console.log(s.peek());
-var popped = s.pop();
-console.log("The popped element is: " + popped);
-console.log(s.peek());
-s.push("Cynthia");
-console.log(s.peek());
-s.clear();
-console.log("length: " + s.length());
-console.log(s.peek());
-s.push("Clayton");
-console.log(s.peek());
-
-
 // Palindrome tester
-var isPalindrome = function(word) {
+function isPalindrome(word) {
 	if (typeof word === 'number')
 		word = word.toString();
 
-	var stack = new Stack();
 	for (var i = 0; i < word.length; i++)
-		stack.push(word.charAt(i));
+		this.dataStore.push(word.charAt(i));
 
   for (i = 0; i < word.length; i++)
-		if (word[i] !== stack.pop())
+		if (word[i] !== this.dataStore.pop())
 			return false;
 
 	return true;
 };
 
-console.log(isPalindrome('hello'));
-console.log(isPalindrome('racecar'));
-console.log(isPalindrome(1001));
-
-
 // Balanced parentheses
-var isParenthesesBalanced = function(expression) {
-	var stack = new Stack();
+function isParenthesesBalanced(expression) {
 	for (var i = 0; i < expression.length; i++) {
 		if (expression[i] === ')') {
-			if (stack.length() === 0)
-				return i;
+			if (this.size() === 0)
+				return false;
 			else
-				stack.pop();
+				this.dataStore.pop();
 		} else if (expression[i] === '(') {
-			stack.push(i);
+			this.dataStore.push(i);
 		}
 	}
 
-	if (stack.length() === 0)
-		return true;
-	else
-		return stack.pop();
+	var result = this.size() === 0;
+	this.dataStore = [];
+	return result;
 };
 
-console.log(isParenthesesBalanced('('));
-console.log(isParenthesesBalanced('()'));
-console.log(isParenthesesBalanced('()()'));
-console.log(isParenthesesBalanced('(()'));
-console.log(isParenthesesBalanced(')'));
-console.log(isParenthesesBalanced('((()))'));
-console.log(isParenthesesBalanced('2.3 + 23 / 12 + (3.14159* .24)'));
-console.log(isParenthesesBalanced('2.3 + 23 / 12 + (3.14159* .24'));
-
 // Infix to postfix	
-// .....
+function infixToPostfix(str) {
+
+}
+
+// Apress #56: You are given two integer arrays, one of which is a sequence of numbers pushed into a stack 
+// (supposing all numbers are unique). Please check whether the other array is a corresponding sequence popped from the stack
+function isStackSequence(arr) {
+
+}
+
+// Apress #55: Define a stack in which we can get its minimum number with a function min. The time complexity of min, push, and pop on such stacks are all O(1)
+function StackWithMin1() {
+	this.stack = [],
+	this.aux = [];
+}
+
+StackWithMin1.prototype = {
+	push: function(val) {
+		this.stack.push(val);
+		if (this.aux.length === 0 || (this.aux.length > 0 && val < this.aux[this.aux.length - 1])) {
+			this.aux.push(val);
+		} else {
+			this.aux.push(this.aux[this.aux.length - 1]);
+		}
+	},
+
+	pop: function() {
+		if (this.stack.length === 0) {
+			throw new Error('Empty stack!');
+		}
+
+		var result = this.stack[this.stack.length - 1];
+		this.stack.pop();
+		this.aux.pop();
+		
+		return result;
+	},
+
+	getMin: function() {
+		if (this.stack.length === 0) {
+			throw new Error('Empty stack!');
+		}
+
+		return this.aux[this.aux.length - 1];
+	}
+}
+
+function StackWithMin2() {
+	this.stack = [],
+	this.min;
+}
+
+StackWithMin2.prototype = {
+	push: function(val) {
+		if (this.stack.length === 0) {
+			this.stack.push(val);
+			this.min = val;
+		} else if (val >= this.min) {
+			this.stack.push(val);
+		} else {
+			this.stack.push(2 * val - this.min);
+			this.min = val;
+		}
+	},
+
+	pop: function() {
+		if (this.stack.length === 0) {
+			throw new Error('Empty stack!');
+		}
+
+		var top = this.stack[this.stack.length - 1],
+				tempMin = this.min;
+		// if top number is less than this.min, this isn't the real value. Recalculate 
+		if (top < this.min) {
+			this.min = 2 * this.min - this.stack[this.stack.length - 1];
+		}
+
+		this.stack.pop();
+		return tempMin;
+	},
+
+	getMin: function() {
+		if (this.stack.length === 0) {
+			throw new Error('Empty stack!');
+		}
+
+		return this.min;		
+	}
+}
 
 // http://www.geeksforgeeks.org/implement-two-stacks-in-an-array/
 // Implementing two stacks using a single array. Starting indices for each stack are at opposite ends of the array and the stacks grow in opposite directions
@@ -146,4 +203,13 @@ if (this.top2 !== this.size) {
 	}	
 }
 
-module.exports = TwoStacks;
+var Stack = function() {
+  return {
+    Stack: Stack,
+    TwoStacks: TwoStacks,
+    StackWithMin1: StackWithMin1,
+    StackWithMin2: StackWithMin2
+  }
+}();
+
+module.exports = Stack;

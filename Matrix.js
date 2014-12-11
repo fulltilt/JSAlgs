@@ -146,8 +146,8 @@ function booleanMatrix(matrix) {
 }
 
 // http://www.geeksforgeeks.org/print-a-given-matrix-in-spiral-form/
-// note: marking right and bottom with the ' - 1' makes the code easier as without 
-//  it you'll have to put that logic in specific places in the code which is easy to mess up
+// note: marking right and bottom with the ' - 1' makes the code easier as without it you'll have to put that 
+//       logic in specific places in the code which is easy to mess up
 function printSpiral(matrix) {
   var left = 0;
       right = matrix[0].length - 1,
@@ -156,7 +156,7 @@ function printSpiral(matrix) {
       i = 0;
 
   while (true) {
-    if (left > right || top > bottom) {
+    if (left > right || top > bottom) { // break out of loop after any of these conditions are met; have this check after every print loop
       break;
     }
 

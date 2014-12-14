@@ -101,6 +101,8 @@ function BST() {
   this.findMaxPathSumBetweenTwoLeaves = findMaxPathSumBetweenTwoLeaves;
   this.areNodesCousins = areNodesCousins;
   this.mergeTwoTrees = mergeTwoTrees;
+  this.serialize = serialize;
+  this.deserialize = deserialize;
   this.recreateFromInOrderAndPreOrder = recreateFromInOrderAndPreOrder;
   this.recreateFromPreOrderAndPostOrder = recreateFromPreOrderAndPostOrder;
   this.recreateFromInOrderAndLevelOrder = recreateFromInOrderAndLevelOrder;
@@ -863,12 +865,14 @@ function _getMaxWidth(node, count, level) {
 }
 
 // http://www.geeksforgeeks.org/root-to-leaf-path-sum-equal-to-a-given-number/
+// Algorithm: subtract the node value from the sum when recurring down and check to see if the sum is 0 when you run out of tree
 function existsPathSum(node, sum) {
-  if (node === null) {
+  if (node === null) {  // does doesn' seem necessary
     return sum === 0;
   }
 
   sum -= node.data;
+
   var result = false;
 
   if (node.left === null && node.right === null && sum === 0) {
@@ -876,14 +880,27 @@ function existsPathSum(node, sum) {
   }
 
   if (node.left !== null) {
-    result = result || existsPathSum(node.left, path, sum);
+    result = result || existsPathSum(node.left, sum);
   }
   if (node.right !== null) {
-    result = result || existsPathSum(node.right, path, sum);
+    result = result || existsPathSum(node.right, sum);
   }
 
   return result;  
 }
+
+/* original which I thought was incorrect but may be correct
+function existsPathSum(node, sum, n) {
+  if (node === null) {
+    return false;
+  }
+
+  if (node.left === null && node.right === null) {
+    return node.data + sum === n;
+  } else {
+    return this.existsPathSum(node.left, node.data + sum, n) || this.existsPathSum(node.right, node.data + sum, n);
+  }
+}*/
 
 // http://www.geeksforgeeks.org/double-tree/
 function doubleTree(node) {
@@ -2021,6 +2038,34 @@ function mergeTwoConvertedLists(list1, list2) {
   return dummyHead.right;  
 }
 
+// http://www.geeksforgeeks.org/serialize-deserialize-binary-tree/ or Apress #62
+// note: to serialize, do a preorder traversal
+function serialize(result, node) {
+  if (node === null) {
+    result.str += '$,';
+    return;
+  }
+
+  result.str += node.data + ',';
+  serialize(result, node.left);
+  serialize(result, node.right);
+}
+
+function deserialize(str) {
+  if (str.str.length === 0 || str.str[0] === '$') {
+    return null;
+  }
+
+  var node = new Node(parseInt(str.str[0]));
+
+  str.str = str.str.substring(1);
+  node.left = deserialize(str);
+  str.str = str.str.substring(1);
+  node.right = deserialize(str);
+
+  return node;
+}
+
 // *** http://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
 // naive: a simple method is to store inorder traversal of the input tree in an auxiliary array. Sort the auxiliary array. Finally, insert the 
 //  auxiilary array elements back to the BST, keeping the structure of the BST same. Time complexity of this method is O(nLogn) and auxiliary space needed is O(n).
@@ -2141,7 +2186,6 @@ module.exports = BinarySearchTree;
 // http://www.geeksforgeeks.org/tournament-tree-and-binary-heap/
 // http://www.geeksforgeeks.org/find-all-possible-interpretations/
 // http://www.geeksforgeeks.org/clone-binary-tree-random-pointers/
-// http://www.geeksforgeeks.org/serialize-deserialize-binary-tree/
 
 /* NOTES:
 - return this.BTFind(node.left, data) || this.BTFind(node.right, data); // apparently doing null || Object will return the Object

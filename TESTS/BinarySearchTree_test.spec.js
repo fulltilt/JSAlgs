@@ -835,6 +835,30 @@ describe("BST", function() {
     //bst.iterativeInOrder(root);
   });
 
+  it('tests serialize', function() {
+    var root = new BST.Node(1);
+    root.left = new BST.Node(2);
+    root.left.left = new BST.Node(4);
+    root.right = new BST.Node(3);
+    root.right.left = new BST.Node(5);
+    root.right.right = new BST.Node(6);
+
+    var result = { str: '' };
+    bst.serialize(result, root);
+    result.str = result.str.substring(0, result.str.length - 1);  // cut off trailing ','
+
+    expect(result.str).toEqual('1,2,4,$,$,$,3,5,$,$,6,$,$');
+  });
+
+  it('tests deserialize', function() {
+    var str = { str: '1,2,4,$,$,$,3,5,$,$,6,$,$'.split(',').join('') };
+    var root = bst.deserialize(str);
+    
+    var result = [];
+    bst.getInOrder(root, result);
+    expect(result).toEqual([4,2,1,5,3,6]);
+  });
+
   it('tests removeNodesWhosePathLessThanK', function() {
     var root = new BST.Node(1);
     root.left = new BST.Node(2);

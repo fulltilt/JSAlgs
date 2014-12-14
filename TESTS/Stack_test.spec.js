@@ -57,5 +57,11 @@ describe("Stack", function() {
     expect(swm2.getMin()).toEqual(3);
     expect(swm2.pop()).toEqual(3);   // 3 // this.min = 2 * 3 - 2 = 4
     expect(swm2.getMin()).toEqual(4);
-  });  
+  });
+
+  it('tests isStackSequence', function() {
+    s.clear();
+    expect(s.isStackSequence([1,2,3,4,5], [4,5,3,2,1])).toEqual(true);
+    expect(s.isStackSequence([1,2,3,4,5], [4,3,5,1,2])).toEqual(false);
+  });
 });

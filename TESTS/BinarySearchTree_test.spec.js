@@ -279,7 +279,7 @@ describe("BST", function() {
 
   it('tests getMaxWidth', function() {
     expect(bst.getMaxWidth(bst.root)).toEqual(4);
--    expect(bt.getMaxWidth(bt.root)).toEqual(3);
+    expect(bt.getMaxWidth(bt.root)).toEqual(3);
   });
 
   it('tests isTreeBalanced', function() {
@@ -288,10 +288,10 @@ describe("BST", function() {
   });
 
   it('tests existsPathSum', function() {
-    expect(bt.existsPathSum(bt.root, 0, 28)).toEqual(true);
-    expect(bt.existsPathSum(bt.root, 0, 21)).toEqual(true);
-    expect(bt.existsPathSum(bt.root, 0, 100)).toEqual(false);
-    expect(bt.existsPathSum(bt.root, 0, 12)).toEqual(true);
+    expect(bt.existsPathSum(bt.root, 28)).toEqual(true);
+    expect(bt.existsPathSum(bt.root, 21)).toEqual(true);
+    expect(bt.existsPathSum(bt.root, 100)).toEqual(false);
+    expect(bt.existsPathSum(bt.root, 12)).toEqual(true);
   });
 
   it('tests doubleTree', function() {

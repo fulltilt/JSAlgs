@@ -863,16 +863,26 @@ function _getMaxWidth(node, count, level) {
 }
 
 // http://www.geeksforgeeks.org/root-to-leaf-path-sum-equal-to-a-given-number/
-function existsPathSum(node, sum, n) {
+function existsPathSum(node, sum) {
   if (node === null) {
-    return false;
+    return sum === 0;
   }
 
-  if (node.left === null && node.right === null) {
-    return node.data + sum === n;
-  } else {
-    return this.existsPathSum(node.left, node.data + sum, n) || this.existsPathSum(node.right, node.data + sum, n);
+  sum -= node.data;
+  var result = false;
+
+  if (node.left === null && node.right === null && sum === 0) {
+    return true;
   }
+
+  if (node.left !== null) {
+    result = result || existsPathSum(node.left, path, sum);
+  }
+  if (node.right !== null) {
+    result = result || existsPathSum(node.right, path, sum);
+  }
+
+  return result;  
 }
 
 // http://www.geeksforgeeks.org/double-tree/
@@ -2149,6 +2159,6 @@ THINGS TO TRY WHEN STUMPED:
 -create and pass object that holds state as you traverse the tree
 
 REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth. kDistanceFromLeaf, *kDistanceFromNode, getLargestBSTSubTreeSize (efficient version. Alternate soln in Apress #20)
-        getPredecessorAndSuccessor, verticalSum, iterativeInOrder, ceiling, _remove, removeNodesOutsideRange,
+        getPredecessorAndSuccessor, verticalSum, iterativeInOrder, ceiling, _remove, removeNodesOutsideRange, existsPathSum
         areTreesIsomorphic, removeNodesWhosePathLessThanK, findMaxPathSumBetweenTwoLeaves, doesEachNodeHaveOnlyOneChild
 */

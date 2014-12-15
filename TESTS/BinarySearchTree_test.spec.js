@@ -767,6 +767,11 @@ describe("BST", function() {
     //bst.printByLevel(root);
   });
 
+  it('tests canRecreateFromPostOrder', function() {
+    expect(bst.canRecreateFromPostOrder([5, 7, 6, 9, 11, 10, 8])).toEqual(true);
+    expect(bst.canRecreateFromPostOrder([7, 4, 6, 5])).toEqual(false);
+  });
+
   it('tests postOrderFromInOrderAndPreOrder', function() {
     var inOrder = [4, 2, 5, 1, 3, 6],
         preOrder = [1, 2, 4, 5, 3, 6],

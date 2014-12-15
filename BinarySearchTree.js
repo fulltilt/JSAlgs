@@ -108,6 +108,7 @@ function BST() {
   this.recreateFromInOrderAndLevelOrder = recreateFromInOrderAndLevelOrder;
   this.recreateFromInOrder = recreateFromInOrder;
   this.recreateFromPreOrder = recreateFromPreOrder;
+  this.canRecreateFromPostOrder = canRecreateFromPostOrder;
   this.postOrderFromInOrderAndPreOrder = postOrderFromInOrderAndPreOrder;
 
   this.segmentTree = segmentTree;
@@ -1924,6 +1925,34 @@ function recreateFromPreOrder(preOrder, lo, hi) {
   root.right = this.recreateFromPreOrder(preOrder, temp, hi);
 
   return root;
+}
+
+// Apress #63
+function canRecreateFromPostOrder(arr) {
+  if (arr.length === 0) {
+    return true;
+  }
+
+  var root = arr[arr.length - 1], // since this is a post-order array, root is always right-most element
+      i = 0;
+
+  // starting from the beginning of the array, keep iterating until you hit an element that is greater than the root element
+  while (arr[i] < root) {
+    i += 1;
+  }
+
+  var leftSubtree = arr.slice(0, i),
+      rightSubTree = arr.slice(i, arr.length - 1);  // '- 1' as we don't want the last element which is the root
+  
+  // check to see if any #'s in the right subtree are less than root
+  var length = rightSubTree.length;
+  for (i = 0; i < length; i++) {
+    if (rightSubTree[i] < root) {
+      return false;
+    }
+  }
+
+  return canRecreateFromPostOrder(leftSubtree) && canRecreateFromPostOrder(rightSubTree);
 }
 
 // http://www.geeksforgeeks.org/print-postorder-from-given-inorder-and-preorder-traversals/

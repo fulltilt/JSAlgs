@@ -59,6 +59,10 @@ describe("BackTracking", function() {
     //console.log(board);
   });
 
+  it('tests eightQueens', function() {
+    expect(bt.eightQueens()).toEqual(92);
+  });
+
   it('tests stairs', function() {
     var count = { count: 0 };
     bt.stairs(1, count);

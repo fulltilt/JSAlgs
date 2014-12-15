@@ -439,4 +439,5 @@ module.exports = Matrix;
 
 /* NOTES
 REVIEW: matrix multiplication
+-representing matrices using a 1-dimensional array: searchIncreasinglySorted, eightQueens in BackTracking.js
 */

@@ -794,6 +794,25 @@ describe("BST", function() {
 
   });
 
+  it('tests treeToDoublyLinkedList', function() {
+    var root = new BST.Node(8);
+    root.left = new BST.Node(6);
+    root.left.left = new BST.Node(5);
+    root.left.right = new BST.Node(7);
+    root.right = new BST.Node(10);
+    root.right.left = new BST.Node(9);
+    root.right.right = new BST.Node(11);
+    var ll = bst.treeToDoublyLinkedList(root);
+
+    expect(ll.data).toEqual(5);
+    expect(ll.right.data).toEqual(6);
+    expect(ll.right.right.data).toEqual(7);
+    expect(ll.right.right.right.data).toEqual(8);
+    expect(ll.right.right.right.right.data).toEqual(9);
+    expect(ll.right.right.right.right.right.data).toEqual(10);
+    expect(ll.right.right.right.right.right.right.data).toEqual(11);
+  });
+
   it('tests mergeTwoTrees', function() {
     var root1 = new BST.Node(3);
     root1.left = new BST.Node(1);

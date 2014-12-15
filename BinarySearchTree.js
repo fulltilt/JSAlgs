@@ -444,18 +444,50 @@ function isSubTree2(tree1, tree2) {
   return true;
 }
 
+// Apress #64
+// http://www.geeksforgeeks.org/in-place-convert-a-given-binary-tree-to-doubly-linked-list/
+// http://www.geeksforgeeks.org/convert-a-given-binary-tree-to-doubly-linked-list-set-2/
 function treeToDoublyLinkedList(root) {
+  var root = treeToDoublyLinkedListUtil(root);
+
+  // traverse to head of newly created doubly linked list
+  while (root.left !== null) {
+    root = root.left;
+  }
+
+  return root;
+}
+
+// Helper fxn for treeToDoublyLinkedList
+// NOTE: this fxn returns root node. 
+function treeToDoublyLinkedListUtil(root) {
   // base case
   if (root === null) {
     return root;
   }
-  
-  // convert to DLL using treeToCircularDoublyLinkedListUtil()
-  this.treeToCircularDoublyLinkedListUtil(root);
 
-  // treeToCircularDoublyLinkedListUtil returns root node of the converted DLL. Go to the leftmost node to get the head of the newly created list
-  while (root.left !== null) {
-    root = root.left;
+  var leftNode = root.left,
+      rightNode = root.right;
+
+  treeToDoublyLinkedListUtil(leftNode);
+  treeToDoublyLinkedListUtil(rightNode);
+
+  if (leftNode !== null) {
+    while (leftNode.right !== null) {
+      leftNode = leftNode.right;
+    }
+
+    root.left = leftNode;
+    leftNode.right = root;
+  }
+
+  if (rightNode !== null) {
+    while (rightNode.left !== null) {
+      rightNode = rightNode.left;
+    }
+
+    root.right = rightNode;
+    rightNode.left = root;
   }
 
   return root;

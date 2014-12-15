@@ -20,6 +20,11 @@ describe("BackTracking", function() {
     bt.printAllPermutationsWithRepetitions('ABC');
   });
 
+  it('tests permuteNArrays', function() {
+    var result = [];
+    bt.permuteNArrays([[1,2], [3,4], [5,6]], result);
+  });
+
   it('tests knightsTour', function() {
     //bt.knightsTour();
   });

@@ -1,6 +1,7 @@
 function BackTracking() {
   this.printAllPermutations = printAllPermutations;
   this.printAllPermutationsWithRepetitions = printAllPermutationsWithRepetitions;
+  this.permuteNArrays = permuteNArrays;
   this.knightsTour = knightsTour;
   this.mazePuzzle = mazePuzzle;
   this.doesPathExist = doesPathExist;
@@ -69,6 +70,20 @@ function swap(str, x, y) {
   var temp = str[x];
   str[x] = str[y];
   str[y] = temp;
+}
+
+function permuteNArrays(arrs, result) {
+  if (arrs.length === result.length) {
+    console.log(result);
+    return;
+  }
+
+  var arr = arrs[result.length];
+  for (var i = 0; i < arr.length; i++) {
+    result.push(arr[i]);
+    permuteNArrays(arrs, result);
+    result.pop();
+  }
 }
 
 // http://www.geeksforgeeks.org/backtracking-set-1-the-knights-tour-problem/

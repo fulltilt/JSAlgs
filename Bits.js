@@ -9,6 +9,7 @@ function Bits() {
   this.countModifiedBits = countModifiedBits;
   this.numToGrayCode = numToGrayCode;
   this.numbersOccurringOnce = numbersOccurringOnce;
+  this.bitVectorSort = bitVectorSort;
 }
 
 function swap(a, b) {
@@ -119,6 +120,29 @@ function isIthBitSet(num, i) {
   return ((num >> i) & 1) === 1;
 }
 
+// Programming Pearls p.4: sort a disk file with up to n^7 non-duplicate numbers with a limited amount of memory. I believe merge and quicksort can't be used
+function bitVectorSort(arr) {
+  var length = arr.length, 
+      bit = [], 
+      bitVectorLength = Math.pow(10, 7), i;
+  
+  // initialize bit vector to all zeroes
+  for (i = 0; i < bitVectorLength; i++) {
+    bit[i] = 0;
+  }
+
+  // go through array and set appropriate bits
+  for (i = 0; i < length; i++) {
+    bit[arr[i]] = 1;
+  }
+
+  // output set bits to file in order
+  for (i = 0; i < bitVectorLength; i++) {
+    if (bit[i] === 1) {
+      console.log(i)
+    }
+  }
+}
 module.exports = Bits;
 
 /* NOTES

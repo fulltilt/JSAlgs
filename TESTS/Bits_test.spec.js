@@ -73,4 +73,8 @@ describe("Bits", function() {
   it('tests bitVectorSort', function() {
     //b.bitVectorSort([50,6,2,1,8,10,30]);
   });
+
+  it('tests bitVectorSort2', function() {
+    b.bitVectorSort2([50,6,2,1,8,10,30]);
+  });
 });

@@ -10,6 +10,7 @@ function Bits() {
   this.numToGrayCode = numToGrayCode;
   this.numbersOccurringOnce = numbersOccurringOnce;
   this.bitVectorSort = bitVectorSort;
+  this.bitVectorSort2 = bitVectorSort2;
 }
 
 function swap(a, b) {
@@ -143,6 +144,43 @@ function bitVectorSort(arr) {
     }
   }
 }
+
+// version of bitVectorSort that uses bitwise operators
+function bitVectorSort2(arr) {
+  var BITSPERWORD = 32,
+      SHIFT = 5,
+      MASK = 0x1F, // 31 or (1 * 16^1) + (15 * 16^0)
+      N = 10000000,
+      a = [], 
+      length = arr.length, i;
+
+  function set(i) {
+    a[i >> SHIFT] |= (1 << (i & MASK));
+  }
+
+  function clr(i) {
+    a[i >> SHIFT] &= ~(1 << (i & MASK));
+  }
+
+  function test(i) {
+    return a[i >> SHIFT] & (1 << (i & MASK));
+  }
+
+  for (i = 0; i < N; i++) {
+    clr(i);
+  }
+
+  for (i = 0; i < length; i++) {
+    set(arr[i]);
+  }
+
+  for (i = 0; i < N; i++) {
+    if (test(i)) {
+      console.log(i);
+    }
+  }
+}
+
 module.exports = Bits;
 
 /* NOTES

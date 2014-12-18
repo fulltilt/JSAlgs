@@ -77,7 +77,8 @@ function Arrays() {
   this.maxContiguousCircularSum = maxContiguousCircularSum;
   this.findNextGreaterNum = findNextGreaterNum;
   this.firstNonRepeatingCharInStream = firstNonRepeatingCharInStream;
-  this.medianInStream = medianInStream
+  this.medianInStream = medianInStream;
+  this.subArrayClosestToN = subArrayClosestToN;
 
   // Mathematical Properties
   this.findExpPairs = findExpPairs;
@@ -2109,6 +2110,11 @@ function getMedian(element, median, left, right) {
 
     return (left.contents[0] + right.contents[0]) / 2;
   }
+}
+
+// Programming Pearls
+function subArrayClosestToN(arr, n) {
+
 }
 
 // http://www.geeksforgeeks.org/maximum-product-subarray/

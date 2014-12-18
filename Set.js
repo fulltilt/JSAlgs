@@ -205,3 +205,10 @@ function printFirstKIncSequenceFromNNumbers(n, k, index, arr) {
 }
 
 module.exports = Set;
+
+/*
+Q: Given a set of n real numbers, a real number t and an integer t, how quickly can you determine whether there exists a k-element subset of the set 
+   that sums to at most t?
+-Insight for this problem is that some k-element subset sums to at most t iff the subset consisting of the k smallest elements does. That subset can be found 
+ in time proportional to n log n by sorting the original set or in time proportional to n using a selection algorithm
+*/

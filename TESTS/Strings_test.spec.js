@@ -68,6 +68,12 @@ describe("Strings", function() {
     //s.printAnagramsTogether(["cat", "dog", "tac", "god", "act"]);
   });
 
+  it('tests permutations', function() {
+    var str = 'abc',
+        result = [];
+    s.permutations(str.split(''), result);  
+  });
+
   it('tests sameCharsNDistanceAway', function() {
     // note: there are more than one possible correct answer
     expect(s.sameCharsNDistanceAway('abb', 2)).toEqual('bab');

@@ -14,6 +14,7 @@ function Strings() {
   this.print1ToMaxOfNDigits = print1ToMaxOfNDigits;
   this.printAnagramsTogether = printAnagramsTogether;
   this.sameCharsNDistanceAway = sameCharsNDistanceAway;
+  this.permutations = permutations;
   this.inPlaceStringTransform = inPlaceStringTransform;
   this.removeAdjacentDuplicates = removeAdjacentDuplicates;
 }
@@ -447,6 +448,27 @@ function swap(arr, x, y) {
   var temp = arr[x];
   arr[x] = arr[y];
   arr[y] = temp;
+}
+
+// Apress #65: print permutations of a string
+// NOTE: see Backtracking.js where I got a lot of ideas for this
+function permutations(str, res) {
+  if (str.length === 0) {
+    console.log(res);
+    return;
+  }
+
+  var length = str.length, ch, i;
+  
+  for (i = 0; i < length; i++) {
+    var ch = str.splice(i, 1)[0];
+    res.push(ch);
+    
+    permutations(str, res);
+
+    str.splice(i, 0, ch);
+    res.pop();
+  }
 }
 
 // http://www.geeksforgeeks.org/recursively-remove-adjacent-duplicates-given-string/

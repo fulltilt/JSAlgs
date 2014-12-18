@@ -279,7 +279,7 @@ describe("BST", function() {
 
   it('tests getMaxWidth', function() {
     expect(bst.getMaxWidth(bst.root)).toEqual(4);
--    expect(bt.getMaxWidth(bt.root)).toEqual(3);
+    expect(bt.getMaxWidth(bt.root)).toEqual(3);
   });
 
   it('tests isTreeBalanced', function() {
@@ -288,10 +288,10 @@ describe("BST", function() {
   });
 
   it('tests existsPathSum', function() {
-    expect(bt.existsPathSum(bt.root, 0, 28)).toEqual(true);
-    expect(bt.existsPathSum(bt.root, 0, 21)).toEqual(true);
-    expect(bt.existsPathSum(bt.root, 0, 100)).toEqual(false);
-    expect(bt.existsPathSum(bt.root, 0, 12)).toEqual(true);
+    expect(bt.existsPathSum(bt.root, 28)).toEqual(true);
+    expect(bt.existsPathSum(bt.root, 21)).toEqual(true);
+    expect(bt.existsPathSum(bt.root, 100)).toEqual(false);
+    expect(bt.existsPathSum(bt.root, 12)).toEqual(true);
   });
 
   it('tests doubleTree', function() {
@@ -767,6 +767,11 @@ describe("BST", function() {
     //bst.printByLevel(root);
   });
 
+  it('tests canRecreateFromPostOrder', function() {
+    expect(bst.canRecreateFromPostOrder([5, 7, 6, 9, 11, 10, 8])).toEqual(true);
+    expect(bst.canRecreateFromPostOrder([7, 4, 6, 5])).toEqual(false);
+  });
+
   it('tests postOrderFromInOrderAndPreOrder', function() {
     var inOrder = [4, 2, 5, 1, 3, 6],
         preOrder = [1, 2, 4, 5, 3, 6],
@@ -787,6 +792,25 @@ describe("BST", function() {
 
   it('tests morrisTraversal', function() {
 
+  });
+
+  it('tests treeToDoublyLinkedList', function() {
+    var root = new BST.Node(8);
+    root.left = new BST.Node(6);
+    root.left.left = new BST.Node(5);
+    root.left.right = new BST.Node(7);
+    root.right = new BST.Node(10);
+    root.right.left = new BST.Node(9);
+    root.right.right = new BST.Node(11);
+    var ll = bst.treeToDoublyLinkedList(root);
+
+    expect(ll.data).toEqual(5);
+    expect(ll.right.data).toEqual(6);
+    expect(ll.right.right.data).toEqual(7);
+    expect(ll.right.right.right.data).toEqual(8);
+    expect(ll.right.right.right.right.data).toEqual(9);
+    expect(ll.right.right.right.right.right.data).toEqual(10);
+    expect(ll.right.right.right.right.right.right.data).toEqual(11);
   });
 
   it('tests mergeTwoTrees', function() {
@@ -833,6 +857,30 @@ describe("BST", function() {
     //bst.iterativeInOrder(root);    
     bst.fixBSTAfterSwap(root);
     //bst.iterativeInOrder(root);
+  });
+
+  it('tests serialize', function() {
+    var root = new BST.Node(1);
+    root.left = new BST.Node(2);
+    root.left.left = new BST.Node(4);
+    root.right = new BST.Node(3);
+    root.right.left = new BST.Node(5);
+    root.right.right = new BST.Node(6);
+
+    var result = { str: '' };
+    bst.serialize(result, root);
+    result.str = result.str.substring(0, result.str.length - 1);  // cut off trailing ','
+
+    expect(result.str).toEqual('1,2,4,$,$,$,3,5,$,$,6,$,$');
+  });
+
+  it('tests deserialize', function() {
+    var str = { str: '1,2,4,$,$,$,3,5,$,$,6,$,$'.split(',').join('') };
+    var root = bst.deserialize(str);
+    
+    var result = [];
+    bst.getInOrder(root, result);
+    expect(result).toEqual([4,2,1,5,3,6]);
   });
 
   it('tests removeNodesWhosePathLessThanK', function() {

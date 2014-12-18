@@ -101,11 +101,14 @@ function BST() {
   this.findMaxPathSumBetweenTwoLeaves = findMaxPathSumBetweenTwoLeaves;
   this.areNodesCousins = areNodesCousins;
   this.mergeTwoTrees = mergeTwoTrees;
+  this.serialize = serialize;
+  this.deserialize = deserialize;
   this.recreateFromInOrderAndPreOrder = recreateFromInOrderAndPreOrder;
   this.recreateFromPreOrderAndPostOrder = recreateFromPreOrderAndPostOrder;
   this.recreateFromInOrderAndLevelOrder = recreateFromInOrderAndLevelOrder;
   this.recreateFromInOrder = recreateFromInOrder;
   this.recreateFromPreOrder = recreateFromPreOrder;
+  this.canRecreateFromPostOrder = canRecreateFromPostOrder;
   this.postOrderFromInOrderAndPreOrder = postOrderFromInOrderAndPreOrder;
 
   this.segmentTree = segmentTree;
@@ -441,18 +444,50 @@ function isSubTree2(tree1, tree2) {
   return true;
 }
 
+// Apress #64
+// http://www.geeksforgeeks.org/in-place-convert-a-given-binary-tree-to-doubly-linked-list/
+// http://www.geeksforgeeks.org/convert-a-given-binary-tree-to-doubly-linked-list-set-2/
 function treeToDoublyLinkedList(root) {
+  var root = treeToDoublyLinkedListUtil(root);
+
+  // traverse to head of newly created doubly linked list
+  while (root.left !== null) {
+    root = root.left;
+  }
+
+  return root;
+}
+
+// Helper fxn for treeToDoublyLinkedList
+// NOTE: this fxn returns root node. 
+function treeToDoublyLinkedListUtil(root) {
   // base case
   if (root === null) {
     return root;
   }
-  
-  // convert to DLL using treeToCircularDoublyLinkedListUtil()
-  this.treeToCircularDoublyLinkedListUtil(root);
 
-  // treeToCircularDoublyLinkedListUtil returns root node of the converted DLL. Go to the leftmost node to get the head of the newly created list
-  while (root.left !== null) {
-    root = root.left;
+  var leftNode = root.left,
+      rightNode = root.right;
+
+  treeToDoublyLinkedListUtil(leftNode);
+  treeToDoublyLinkedListUtil(rightNode);
+
+  if (leftNode !== null) {
+    while (leftNode.right !== null) {
+      leftNode = leftNode.right;
+    }
+
+    root.left = leftNode;
+    leftNode.right = root;
+  }
+
+  if (rightNode !== null) {
+    while (rightNode.left !== null) {
+      rightNode = rightNode.left;
+    }
+
+    root.right = rightNode;
+    rightNode.left = root;
   }
 
   return root;
@@ -863,6 +898,31 @@ function _getMaxWidth(node, count, level) {
 }
 
 // http://www.geeksforgeeks.org/root-to-leaf-path-sum-equal-to-a-given-number/
+// Algorithm: subtract the node value from the sum when recurring down and check to see if the sum is 0 when you run out of tree
+function existsPathSum(node, sum) {
+  if (node === null) {  // does doesn' seem necessary
+    return sum === 0;
+  }
+
+  sum -= node.data;
+
+  var result = false;
+
+  if (node.left === null && node.right === null && sum === 0) {
+    return true;
+  }
+
+  if (node.left !== null) {
+    result = result || existsPathSum(node.left, sum);
+  }
+  if (node.right !== null) {
+    result = result || existsPathSum(node.right, sum);
+  }
+
+  return result;  
+}
+
+/* original which I thought was incorrect but may be correct
 function existsPathSum(node, sum, n) {
   if (node === null) {
     return false;
@@ -873,7 +933,7 @@ function existsPathSum(node, sum, n) {
   } else {
     return this.existsPathSum(node.left, node.data + sum, n) || this.existsPathSum(node.right, node.data + sum, n);
   }
-}
+}*/
 
 // http://www.geeksforgeeks.org/double-tree/
 function doubleTree(node) {
@@ -1899,6 +1959,34 @@ function recreateFromPreOrder(preOrder, lo, hi) {
   return root;
 }
 
+// Apress #63
+function canRecreateFromPostOrder(arr) {
+  if (arr.length === 0) {
+    return true;
+  }
+
+  var root = arr[arr.length - 1], // since this is a post-order array, root is always right-most element
+      i = 0;
+
+  // starting from the beginning of the array, keep iterating until you hit an element that is greater than the root element
+  while (arr[i] < root) {
+    i += 1;
+  }
+
+  var leftSubtree = arr.slice(0, i),
+      rightSubTree = arr.slice(i, arr.length - 1);  // '- 1' as we don't want the last element which is the root
+  
+  // check to see if any #'s in the right subtree are less than root
+  var length = rightSubTree.length;
+  for (i = 0; i < length; i++) {
+    if (rightSubTree[i] < root) {
+      return false;
+    }
+  }
+
+  return canRecreateFromPostOrder(leftSubtree) && canRecreateFromPostOrder(rightSubTree);
+}
+
 // http://www.geeksforgeeks.org/print-postorder-from-given-inorder-and-preorder-traversals/
 function postOrderFromInOrderAndPreOrder(inOrder, preOrder, lo, hi, preOrderIndex, result) {
   if (hi < lo) {
@@ -2009,6 +2097,34 @@ function mergeTwoConvertedLists(list1, list2) {
   current.right = (list1 !== null) ? list1 : list2;
   
   return dummyHead.right;  
+}
+
+// http://www.geeksforgeeks.org/serialize-deserialize-binary-tree/ or Apress #62
+// note: to serialize, do a preorder traversal
+function serialize(result, node) {
+  if (node === null) {
+    result.str += '$,';
+    return;
+  }
+
+  result.str += node.data + ',';
+  serialize(result, node.left);
+  serialize(result, node.right);
+}
+
+function deserialize(str) {
+  if (str.str.length === 0 || str.str[0] === '$') {
+    return null;
+  }
+
+  var node = new Node(parseInt(str.str[0]));
+
+  str.str = str.str.substring(1);
+  node.left = deserialize(str);
+  str.str = str.str.substring(1);
+  node.right = deserialize(str);
+
+  return node;
 }
 
 // *** http://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
@@ -2131,7 +2247,6 @@ module.exports = BinarySearchTree;
 // http://www.geeksforgeeks.org/tournament-tree-and-binary-heap/
 // http://www.geeksforgeeks.org/find-all-possible-interpretations/
 // http://www.geeksforgeeks.org/clone-binary-tree-random-pointers/
-// http://www.geeksforgeeks.org/serialize-deserialize-binary-tree/
 
 /* NOTES:
 - return this.BTFind(node.left, data) || this.BTFind(node.right, data); // apparently doing null || Object will return the Object
@@ -2149,6 +2264,6 @@ THINGS TO TRY WHEN STUMPED:
 -create and pass object that holds state as you traverse the tree
 
 REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth. kDistanceFromLeaf, *kDistanceFromNode, getLargestBSTSubTreeSize (efficient version. Alternate soln in Apress #20)
-        getPredecessorAndSuccessor, verticalSum, iterativeInOrder, ceiling, _remove, removeNodesOutsideRange,
+        getPredecessorAndSuccessor, verticalSum, iterativeInOrder, ceiling, _remove, removeNodesOutsideRange, existsPathSum
         areTreesIsomorphic, removeNodesWhosePathLessThanK, findMaxPathSumBetweenTwoLeaves, doesEachNodeHaveOnlyOneChild
 */

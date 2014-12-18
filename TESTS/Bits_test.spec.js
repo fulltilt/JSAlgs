@@ -69,4 +69,12 @@ describe("Bits", function() {
   it('tests numbersOccurringOnce', function() {
     expect(b.numbersOccurringOnce([2, 4, 3, 6, 3, 2, 5, 5])).toEqual([6,4]);  // note: order matters
   });
+
+  it('tests bitVectorSort', function() {
+    //b.bitVectorSort([50,6,2,1,8,10,30]);
+  });
+
+  it('tests bitVectorSort2', function() {
+    b.bitVectorSort2([50,6,2,1,8,10,30]);
+  });
 });

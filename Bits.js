@@ -9,6 +9,8 @@ function Bits() {
   this.countModifiedBits = countModifiedBits;
   this.numToGrayCode = numToGrayCode;
   this.numbersOccurringOnce = numbersOccurringOnce;
+  this.bitVectorSort = bitVectorSort;
+  this.bitVectorSort2 = bitVectorSort2;
 }
 
 function swap(a, b) {
@@ -117,6 +119,66 @@ function getLSBIndex(num) {
 // check whether ith bit is set
 function isIthBitSet(num, i) {
   return ((num >> i) & 1) === 1;
+}
+
+// Programming Pearls p.4: sort a disk file with up to n^7 non-duplicate numbers with a limited amount of memory. I believe merge and quicksort can't be used
+function bitVectorSort(arr) {
+  var length = arr.length, 
+      bit = [], 
+      bitVectorLength = Math.pow(10, 7), i;
+  
+  // initialize bit vector to all zeroes
+  for (i = 0; i < bitVectorLength; i++) {
+    bit[i] = 0;
+  }
+
+  // go through array and set appropriate bits
+  for (i = 0; i < length; i++) {
+    bit[arr[i]] = 1;
+  }
+
+  // output set bits to file in order
+  for (i = 0; i < bitVectorLength; i++) {
+    if (bit[i] === 1) {
+      console.log(i)
+    }
+  }
+}
+
+// version of bitVectorSort that uses bitwise operators
+function bitVectorSort2(arr) {
+  var BITSPERWORD = 32,
+      SHIFT = 5,
+      MASK = 0x1F, // 31 or (1 * 16^1) + (15 * 16^0)
+      N = 10000000,
+      a = [], 
+      length = arr.length, i;
+
+  function set(i) {
+    a[i >> SHIFT] |= (1 << (i & MASK));
+  }
+
+  function clr(i) {
+    a[i >> SHIFT] &= ~(1 << (i & MASK));
+  }
+
+  function test(i) {
+    return a[i >> SHIFT] & (1 << (i & MASK));
+  }
+
+  for (i = 0; i < N; i++) {
+    clr(i);
+  }
+
+  for (i = 0; i < length; i++) {
+    set(arr[i]);
+  }
+
+  for (i = 0; i < N; i++) {
+    if (test(i)) {
+      console.log(i);
+    }
+  }
 }
 
 module.exports = Bits;

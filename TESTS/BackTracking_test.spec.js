@@ -20,6 +20,11 @@ describe("BackTracking", function() {
     bt.printAllPermutationsWithRepetitions('ABC');
   });
 
+  it('tests permuteNArrays', function() {
+    var result = [];
+    bt.permuteNArrays([[1,2], [3,4], [5,6]], result);
+  });
+
   it('tests knightsTour', function() {
     //bt.knightsTour();
   });
@@ -57,6 +62,10 @@ describe("BackTracking", function() {
                  [0,0,0,0,0,0,0,0]];
     bt.nQueen(board, 0);
     //console.log(board);
+  });
+
+  it('tests eightQueens', function() {
+    expect(bt.eightQueens()).toEqual(92);
   });
 
   it('tests stairs', function() {

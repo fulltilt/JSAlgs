@@ -1,11 +1,13 @@
 function BackTracking() {
   this.printAllPermutations = printAllPermutations;
   this.printAllPermutationsWithRepetitions = printAllPermutationsWithRepetitions;
+  this.permuteNArrays = permuteNArrays;
   this.knightsTour = knightsTour;
   this.mazePuzzle = mazePuzzle;
   this.doesPathExist = doesPathExist;
   this.robotMove = robotMove;
   this.nQueen = nQueen;
+  this.eightQueens = eightQueens;
   this.subsetSum = subsetSum;
   this.stairs = stairs;
   this.sudoku = sudoku;
@@ -16,6 +18,7 @@ function BackTracking() {
 // http://stackoverflow.com/questions/9960908/permutations-in-javascript or http://www.geeksforgeeks.org/print-all-permutations-with-repetition-of-characters/
 // assumptions: input is in array form
 // NOTE: to print lexicographically (http://www.geeksforgeeks.org/lexicographic-permutations-of-string/) I think all we need to do is to sort the string in order before running the algorithm
+// NOTE2: see eightQueensPermutations() for another way to get permutations without having to use splice
 function printAllPermutations(arr, permArr, usedChars) {
   var i, ch;
   for (i = 0; i < arr.length; i++) {
@@ -28,7 +31,7 @@ function printAllPermutations(arr, permArr, usedChars) {
     }
 
     // recurse using a different starting point
-    this.printAllPermutations(arr, permArr, usedChars);
+    printAllPermutations(arr, permArr, usedChars);
     
     // put array back to its original state and remove the char from usedChars. This is so every index becomes the starting index before the first recursion
     arr.splice(i, 0, ch);
@@ -67,6 +70,20 @@ function swap(str, x, y) {
   var temp = str[x];
   str[x] = str[y];
   str[y] = temp;
+}
+
+function permuteNArrays(arrs, result) {
+  if (arrs.length === result.length) {
+    console.log(result);
+    return;
+  }
+
+  var arr = arrs[result.length];
+  for (var i = 0; i < arr.length; i++) {
+    result.push(arr[i]);
+    permuteNArrays(arrs, result);
+    result.pop();
+  }
 }
 
 // http://www.geeksforgeeks.org/backtracking-set-1-the-knights-tour-problem/
@@ -332,6 +349,56 @@ function isQueenSafe(board, row, column) {
   for (i = row, j = column; i < N && j >= 0; i++, j--) {
     if (board[i][j] === 1) {
       return false;
+    }
+  }
+
+  return true;
+}
+
+/* Apress #66: How many distinct ways are available to place eight queens on a chessboard, where there are no two queens that can attack each other?
+ NOTE: uses permutations and uses a single array of length 8 where each index represents a column in a matrix and it is assumed that each column contains a 
+       queen so no need to check for a queen vertically. A number in the array represents a row a queen is in and since we are permuting different arrangements
+       we don't have to do horizontal checks either. All we have to do is check diagonals */
+function eightQueens() {
+  var columns = [1,2,3,4,5,6,7,8],
+      count = { count: 0 },
+      index = 0;
+
+      eightQueensPermutations(columns, index, count);
+
+  return count.count;
+}
+
+function eightQueensPermutations(columns, index, count) {
+  var length = columns.length, i, temp;
+
+  if (index === length) {
+    if (isQueenSafe2(columns)) {
+      count.count += 1;
+      return;
+    }
+  }
+
+  for (i = index; i < length; i++) {
+    temp = columns[i];
+    columns[i] = columns[index];
+    columns[index] = temp;
+
+    eightQueensPermutations(columns, index + 1, count);
+
+    temp = columns[index];
+    columns[index] = columns[i];
+    columns[i] = temp;
+  }
+}
+
+function isQueenSafe2(permutation) {
+  var length = permutation.length, i, j;
+  for (i = 0; i < length; i++) {
+    for (j = i + 1; j < length; j++) {
+      if ((i - j === permutation[i] - permutation[j]) || (j - i === permutation[i] - permutation[j])) {
+        return false;
+      }
     }
   }
 

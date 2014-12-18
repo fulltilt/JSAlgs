@@ -203,6 +203,22 @@ if (this.top2 !== this.size) {
 	}	
 }
 
+function isStackSequence(pushSeq, popSeq) {
+	var aux = [],
+			popPtr = 0, 
+			length = pushSeq.length, i;
+
+	for (i = 0; i < length; i++) {
+		aux.push(pushSeq[i]);
+		while (aux[aux.length - 1] === popSeq[popPtr] && popPtr < length) { // NOTE: [] === (array index out of bounds) is true hence the 2nd conditional
+			aux.pop();
+			popPtr += 1;
+		}
+	}
+
+	return aux.length === 0;
+}
+
 var Stack = function() {
   return {
     Stack: Stack,

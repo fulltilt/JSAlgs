@@ -2112,7 +2112,7 @@ function getMedian(element, median, left, right) {
   }
 }
 
-// Programming Pearls
+// Programming Pearls p.217 #10
 function subArrayClosestToN(arr, n) {
 
 }

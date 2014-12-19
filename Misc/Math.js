@@ -103,6 +103,37 @@ function KnuthAlgorithmS(m, n) {
   }
 }
 
+// Shuffle an array of numbers
+function shuffle(arr) {
+  var length = arr.length, i, temp, randomIndex;
+
+  for (i = 0; i < length; i++) {
+    randomIndex = getRandomInt(i, length - 1);
+    temp = arr[i];
+    arr[i] = arr[randomIndex];
+    arr[randomIndex] = temp;
+  }
+}
+
+// add each individual digit in a number and return its sum
+function getDigitSum(number) {
+  var sum = 0;
+  while (number > 0) {
+    sum += number % 10;
+    number = Math.floor(number / 10);
+  }
+
+  return sum;
+}
+
+// Programming Pearls p.220 #12 (not complete)
+function HornersMethod() {
+  y = a[n];
+  for (i = n - 1; i >= 0; i--) {
+    y = x * y + a[i];
+  }
+}
+/*
 console.log(sumOfFirstNSquares(4)); //1 + 4 + 9 + 16 = 30
 console.log(sumOfFirstNSquares(6)); // 30 + 25 + 36 = 91
 console.log(sumOfFirstNCubes(4)); //1 + 8 + 27 + 64 = 100
@@ -113,17 +144,12 @@ console.log(gcm2(16,10));
 
 console.log(power(2, 10));
 
-
-function getDigitSum(number) {
-  var sum = 0;
-  while (number > 0) {
-    sum += number % 10;
-    number = Math.floor(number / 10);
-  }
-
-  return sum;
-}
 console.log(getDigitSum(35));
 console.log(getDigitSum(38));
 
 KnuthAlgorithmS(20,200);
+*/
+
+var arr = [1,2,3,4,5,6,7,8,9,10];
+shuffle(arr);
+console.log(arr);

@@ -515,3 +515,7 @@ function inPlaceStringTransform(str) {
 }
 
 module.exports = Strings;
+
+/* NOTES
+-Generating text using Markov Chains (Programming Pearls p.167)
+*/

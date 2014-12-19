@@ -69,6 +69,40 @@ function gcm2(a, b) {
   return a;
 }
 
+// Returns a random number between 0 (inclusive) and 1 (exclusive)
+function getRandom() {
+  return Math.random();
+}
+
+// Returns a random number between min (inclusive) and max (exclusive)
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+// Returns a random integer between min (included) and max (excluded)
+// Using Math.round() will give you a non-uniform distribution!
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+// Return a large random (usually 30-bit) int (Programming Pearls p.224)
+// NOTE: 32767 is the min value MAX_RAND is in C++. Don't understand why we add the extra Math.random()
+function bigrand() {
+  return (32767 * Math.random() + Math.random()) >> 1;
+}
+
+// Get m random numbers from an array of size n (Programming Pearls p.126-7)
+// Algorithm: visit each int in order so result is guaranteed to be sorted. 
+function KnuthAlgorithmS(m, n) {
+  for (var i = 0; i < n; i++) {
+    // select m of remaining n - i
+    if ((bigrand() % (n - i)) < m) {  // this conditional ensures that each subset is equally likely to be picked
+      console.log(i);
+      m -= 1;
+    }
+  }
+}
+
 console.log(sumOfFirstNSquares(4)); //1 + 4 + 9 + 16 = 30
 console.log(sumOfFirstNSquares(6)); // 30 + 25 + 36 = 91
 console.log(sumOfFirstNCubes(4)); //1 + 8 + 27 + 64 = 100
@@ -91,3 +125,5 @@ function getDigitSum(number) {
 }
 console.log(getDigitSum(35));
 console.log(getDigitSum(38));
+
+KnuthAlgorithmS(20,200);

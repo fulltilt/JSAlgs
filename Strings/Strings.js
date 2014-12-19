@@ -471,6 +471,26 @@ function permutations(str, res) {
   }
 }
 
+/* alternate way to get permutations without using splice. Make sure you convert the string to an array before passing into this fxn
+function permute(str, index) {
+  if (str.length === index) {
+    console.log(str);
+    return;
+  }
+
+  for (var i = index; i < str.length; i++) {
+    var temp = str[i];
+    str[i] = str[index];
+    str[index] = temp;
+
+    permute(str, index + 1);
+
+    temp = str[index];
+    str[index] = str[i];
+    str[i] = temp;
+  }
+} */
+
 // http://www.geeksforgeeks.org/recursively-remove-adjacent-duplicates-given-string/
 // NOTE: fails some test cases
 function removeAdjacentDuplicates(str, index, previous) {

@@ -217,3 +217,33 @@ var result = [],
     count = { count: Infinity };
 console.log(dynamicCoinChange(15, [1,3,9,10], 0, result, count));
 console.log(count.count); */
+
+function generateAllCombos(str) {
+  var result = [],
+      length = str.length, i;
+  for (i = 1; i <= length; i++) {
+    generateAllCombosUtil(str, 0, i, result);
+  }
+}
+
+function generateAllCombosUtil(str, index, number, result) {
+  if (number === 0) {
+    console.log(result);
+    return;
+  }
+
+  if (index === str.length) {
+    return;
+  }
+
+  // select the character str[index]
+  result.push(str[index]);
+  generateAllCombosUtil(str, index + 1, number - 1, result);
+  result.pop();
+
+  // ignore the character str[index]
+  generateAllCombosUtil(str, index + 1, number, result);
+}
+
+generateAllCombos('abc');
+  

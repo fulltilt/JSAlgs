@@ -66,12 +66,36 @@ function printAllPermutationsWithRepetitionsUtil(strArr, arr, last, index) {
   }
 }
 
+/* alternate printAllPermutationsWithRepetitions which is similar to permute
+function permute(str, index, res) {
+  if (str.length === res.length) {
+    console.log(res);
+    return;
+  }
+
+  for (var i = 0; i < str.length; i++) {
+    var temp = str[index];
+    str[index] = str[i];
+    str[i] = temp;
+
+    res.push(str[i]);
+    permute(str, index + 1, res);
+
+    temp = str[i];
+    str[i] = str[index];
+    str[index] = temp;
+    res.pop();
+  }
+}
+*/
+
 function swap(str, x, y) {
   var temp = str[x];
   str[x] = str[y];
   str[y] = temp;
 }
 
+// Apres #67
 function permuteNArrays(arrs, result) {
   if (arrs.length === result.length) {
     console.log(result);
@@ -85,6 +109,70 @@ function permuteNArrays(arrs, result) {
     result.pop();
   }
 }
+
+/* alternate permuteNArrays passing in an index instead of using result.length
+function permuteNArrays(arrs, index, res) {
+  if (res.length === arrs.length) {
+    console.log(res);
+    return;
+  }
+
+  var arr = arrs[index];
+  for (var i = 0; i < arr.length; i++) {
+    res.push(arr[i]);
+    permuteNArrays(arrs, index + 1, res);
+    res.pop();
+  }
+} */
+
+// Apress #68:  Please generate all combinations of a given string. For example, combinations of a given string “abc” are “a”, “b”, “c”, “ab”, “ac”, “bc”, and “abc”
+function generateAllCombos(str) {
+  var result = [],
+      length = str.length, i;
+  for (i = 1; i <= length; i++) {
+    generateAllCombosUtil(str, 0, i, result);
+  }
+}
+
+function generateAllCombosUtil(str, index, number, result) {
+  if (number === 0) {
+    console.log(result);
+    return;
+  }
+
+  if (index === str.length) {
+    return;
+  }
+
+  // select the character str[index]
+  result.push(str[index]);
+  generateAllCombosUtil(str, index + 1, number - 1, result);
+  result.pop();
+
+  // ignore the character str[index]
+  generateAllCombosUtil(str, index + 1, number, result);
+}
+
+/*
+function generateAllCombos(str, bits) {
+  if (bits.length === str.length) {
+    var output = '';
+    for (var i = 0; i < bits.length; i++) {
+      if (bits[i] === 1) {
+        output += str[i];
+      }
+    }
+    console.log(output);
+    return;
+  }
+
+  // only valid inputs are 0 or 1
+  for (var i = 0; i <= 1; i++) {
+    bits.push(i);
+    permute(str, bits);
+    bits.pop();
+  }
+} */
 
 // http://www.geeksforgeeks.org/backtracking-set-1-the-knights-tour-problem/
 function knightsTour() {

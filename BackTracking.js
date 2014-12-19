@@ -129,17 +129,21 @@ function permuteNArrays(arrs, index, res) {
 function generateAllCombos(str) {
   var result = [],
       length = str.length, i;
-  for (i = 1; i <= length; i++) {
+
+  // Since a combination may contain one characters, two characters, ..., or n characters for a given string with length n, there is a loop    
+  for (i = 1; i <= length; i++) { // i represents the desired size of the combo
     generateAllCombosUtil(str, 0, i, result);
   }
 }
 
 function generateAllCombosUtil(str, index, number, result) {
+  // we reached the desired length of the combo. Log the result and then return
   if (number === 0) {
     console.log(result);
     return;
   }
 
+  // we are past the str length return
   if (index === str.length) {
     return;
   }
@@ -149,7 +153,7 @@ function generateAllCombosUtil(str, index, number, result) {
   generateAllCombosUtil(str, index + 1, number - 1, result);
   result.pop();
 
-  // ignore the character str[index]
+  // ignore the character str[index] (notice how we pass 'number' by itself while previously we did 'number - 1' when we pushed the index to the result)
   generateAllCombosUtil(str, index + 1, number, result);
 }
 

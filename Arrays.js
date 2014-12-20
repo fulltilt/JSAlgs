@@ -16,6 +16,7 @@ function Arrays() {
   this.findMedian = findMedian;
   this.partition = partition;
   this.customPartition = customPartition;
+  this.smallestK = smallestK;
 
   // Arrays
   this.isSubArray = isSubArray;
@@ -231,6 +232,18 @@ function findNthValue(arr, lo, hi, n) {
     return this.findNthValue(arr, 0, k - 1, n);
   } else {            // pivot is greater than the nth value so search the right subarray
     return this.findNthValue(arr, k + 1, arr.length - 1, n);
+  }
+}
+
+// Apress #70: return the smallest k values in an unsorted array
+function smallestK(arr, lo, hi, k) {
+  var pivot = partition(arr, lo, hi);
+  if (pivot === k) { 
+    return arr.slice(0, pivot);
+  } else if (pivot < k) {
+    return smallestK(arr, pivot + 1, hi, k);
+  } else {
+    return smallestK(arr, lo, pivot - 1, k);
   }
 }
 
@@ -2078,6 +2091,7 @@ function medianInStream(arr) {
 }
 
 // helper fxn for medianInStream
+// the trick is that the difference between both heaps should never be more than 1
 function getMedian(element, median, left, right) {
   if (left.size() > right.size()) { // more elements in left (max) heap
     if (element < median) { // current element fits in left (max) heap
@@ -2111,6 +2125,50 @@ function getMedian(element, median, left, right) {
     return (left.contents[0] + right.contents[0]) / 2;
   }
 }
+
+/* without helper fxn
+var Heap = require('../Heaps.js');  
+function medianInStream(arr) {
+  var minHeap = new Heap.MinHeap(function(a) { return a; }),
+      maxHeap = new Heap.MaxHeap(function(a) { return a; }),
+      median = arr[0];
+
+  minHeap.push(median);
+  console.log(minHeap.contents[0]);
+
+  for (var i = 1; i < arr.length; i++) {
+    var maxLength = maxHeap.size(),
+        minLength = minHeap.size();
+
+    if (minLength === maxLength) {
+      if (arr[i] < median) {
+        maxHeap.push(arr[i]);
+        median = maxHeap.contents[0];
+        console.log(median);
+      } else {
+        minHeap.push(arr[i]);
+        median = minHeap.contents[0];
+        console.log(median);
+      }
+    } else if (arr[i] < median) {
+      if ((maxLength - minLength) === 1) {
+        minHeap.push(maxHeap.pop());
+      }
+
+      maxHeap.push(arr[i]);
+      median = (maxHeap.contents[0] + minHeap.contents[0]) / 2;
+      console.log(median);
+    } else if (arr[i] >= median) {
+      if ((minLength - maxLength) === 1) {
+        maxHeap.push(minHeap.pop());
+      }
+
+      minHeap.push(arr[i]);
+      median = (maxHeap.contents[0] + minHeap.contents[0]) / 2;
+      console.log(median);
+    }
+  }
+}*/
 
 // Programming Pearls p.217 #10
 function subArrayClosestToN(arr, n) {

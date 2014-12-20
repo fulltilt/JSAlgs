@@ -45,6 +45,12 @@ describe("Arrays", function() {
     expect(gfg.findMedian([3,8,2,5,1,4,7,6])).toEqual(5);
   });
 
+  it('tests smallestK', function() {
+    var arr = [4, 5, 1, 6, 2, 7, 3, 8],
+        k = 4;
+    expect(gfg.smallestK(arr, 0, arr.length - 1, k)).toEqual([2,3,1,4]);
+  });
+
   it('tests partition', function() {
     var arr = [3,8,2,5,1,4,7,6];
     expect(gfg.partition(arr, 0 , arr.length - 1, Math.floor(arr.length / 2))).toEqual(2);

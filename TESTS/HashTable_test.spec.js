@@ -55,5 +55,19 @@ describe("HashTable", function() {
   it('tests getFirstCharThatAppearsOnceInStream', function() {
     //hTable.getFirstCharThatAppearsOnceInStream('google'.split(''));
     //hTable.getFirstCharThatAppearsOnceInStream(['g','e','e','k','s','f','o','r','g','e','e','k','s','a','n','d','g','e','e','k','s','q','u','i','z','f','o','r',]);
-  })
+  });
+
+  it('tests deleteSecondFromFirst', function() {
+    expect(hTable.deleteSecondFromFirst('We are students.', 'aeiou')).toEqual('W r stdnts.')
+  });
+
+  it('tests deleteDuplicatesButKeepFirstOccurrence', function() {
+    expect(hTable.deleteDuplicatesButKeepFirstOccurrence('google')).toEqual('gole');
+  });
+
+  it('tests isAnagrams', function() {
+    expect(hTable.isAnagrams('silent', 'listen')).toEqual(true);
+    expect(hTable.isAnagrams('silent', 'ahuewi')).toEqual(false);
+
+  });
 });

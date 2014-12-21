@@ -21,6 +21,9 @@ function HashTable() {
 	this.getFirstCharThatAppearsOnce = getFirstCharThatAppearsOnce;
 	this.firstNonRepeatingCharInStream = firstNonRepeatingCharInStream;
 	this.getFirstCharThatAppearsOnceInStream = getFirstCharThatAppearsOnceInStream;
+	this.deleteSecondFromFirst = deleteSecondFromFirst;
+	this.deleteDuplicatesButKeepFirstOccurrence = deleteDuplicatesButKeepFirstOccurrence;
+	this.isAnagrams = isAnagrams;
 }
 
 // First hash fxn
@@ -202,6 +205,77 @@ function getFirstCharThatAppearsOnceInStream(arr) {
 			console.log(uniqueChars[0]);
 		}
 	}
+}
+
+// Apress #78: Given two strings, how do you delete characters contained in the second string from the first string? 
+// For example, if all characters in the string “aeiou” are deleted from the string “We are students.”, the result is “W r stdnts.”
+function deleteSecondFromFirst(str1, str2) {
+	var hashTable = [],
+			length1 = str1.length,
+			length2 = str2.length, 
+			result = '', i;
+
+	for (i = 0; i < length2; i++) {
+		if (!hashTable[str2[i]]) {
+			hashTable[str2[i]] = true;
+		}
+	}
+
+	for (i = 0; i < length1; i++) {
+		if (!hashTable[str1[i]]) {
+			result += str1[i];
+		}
+	}
+
+	return result;
+}
+
+// Apress #79: Please implement a function to delete all duplicated characters in a string and keep only the first occurrence of each character left. 
+// For example, if the input is string “google”, the result after deletion is “gole”
+function deleteDuplicatesButKeepFirstOccurrence(str) {
+	var hashTable = [],
+			length = str.length, 
+			result = '', i;
+
+	for (i = 0; i < length; i++) {
+		if (!hashTable[str[i]]) {
+			hashTable[str[i]] = true;
+			result += str[i];
+		}
+	}
+
+	return result;
+}
+
+// Apress #80: verify if two words are anagrams
+// NOTE: another algorithm is to sort both words and then compare them. This is O(n log n) but requires no extra space
+function isAnagrams(str1, str2) {
+	var length1 = str1.length,
+			length2 = str2.length,
+			hashTable = [], i;
+
+	if (length1 !== length2) {
+		return false;
+	}
+
+	// create hash table for str1
+	for (i = 0; i < length1; i++) {
+		if (!hashTable[str1[i]]) {
+			hashTable[str1[i]] = 1;
+		} else {
+			hashTable[str1[i]] += 1;
+		}
+	}
+
+	for (i = 0; i < length2; i++) {
+		if (!hashTable[str2[i]] || hashTable[str2[i]] === 0) { // if hash table entry doesn't exist or the value is zero, return false
+			return false;
+		} else {
+			hashTable[str2[i]] -= 1;	// decrement count
+		}
+	}
+
+	return true;
 }
 
 module.exports = HashTable;

@@ -21,6 +21,7 @@ function Arrays() {
   this.isSubArray = isSubArray;
   this.findMajoritySorted = findMajoritySorted;
   this.findMajorityUnsorted = findMajorityUnsorted;
+  this.numberOfOccurrences = numberOfOccurrences;
   this.findMissingNumber = findMissingNumber;
   this.findPivotInRotatedArray = findPivotInRotatedArray;
   this.findMedianOfTwoSortedArrays = findMedianOfTwoSortedArrays;
@@ -444,6 +445,45 @@ function findMajoritySorted(arr) {
   } else {
     return null;
   }
+}
+
+// Apress #83: Please implement a function to find how many times a number occurs in a sorted array (similar algorithm to findMajoritySorted())
+// tricky part is using arr[mid] >= n for firstOccurrence and arr[mid] <= n for lastOccurrence
+function numberOfOccurrences(arr, n) {
+  var length = arr.length,
+      firstOccurrence, lastOccurrence, lo, hi, mid;
+
+  // get first occurrence
+  lo = 0;
+  hi = length - 1;
+  while (hi >= lo) {
+    mid = (lo + hi) >> 1;
+    if (arr[mid] === n && ((mid - 1) === 0 || arr[mid - 1] !== n)) {
+      firstOccurrence = mid;
+      break;
+    } else if (arr[mid] >= n) {
+      hi = mid - 1;
+    } else {
+      lo = mid + 1;
+    }
+  }
+
+  // get last occurrence
+  lo = 0;
+  hi = length - 1;
+  while (hi >= lo) {
+    mid = (lo + hi) >> 1;
+    if (arr[mid] === n && ((mid + 1) === length - 1 || arr[mid + 1] !== n)) {
+      lastOccurrence = mid;
+      break;
+    } else if (arr[mid] <= n) {
+      lo = mid + 1;
+    } else {
+      hi = mid - 1;
+    }
+  }
+
+  return lastOccurrence - firstOccurrence + 1;
 }
 
 // http://www.geeksforgeeks.org/find-the-missing-number/

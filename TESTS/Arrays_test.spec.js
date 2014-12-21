@@ -87,6 +87,12 @@ describe("Arrays", function() {
       expect(gfg.findMajoritySorted([1, 1, 2, 4, 4, 4, 6, 6])).toEqual(null);
     });
 
+    it('tests numberOfOccurrences', function() {
+      expect(gfg.numberOfOccurrences([1,2,3,3,3,3,4,5], 3)).toEqual(4);
+      expect(gfg.numberOfOccurrences([1,2,3,3,3,3,4,5], 1)).toEqual(1);
+      expect(gfg.numberOfOccurrences([1,2,3,3,3,3,4,5], 5)).toEqual(1);
+    });
+
     it('tests findMissingNumber', function() {
       expect(gfg.findMissingNumber([1, 2, 4, 6, 3, 7, 8])).toEqual(5);
     });

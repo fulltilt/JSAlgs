@@ -827,6 +827,26 @@ function doChildrenSumUpToNodeValue(node) {
 }
 
 // http://www.geeksforgeeks.org/how-to-determine-if-a-binary-tree-is-balanced/
+// visits every node once but have to keep track of the depth
+function isTreeBalanced(node, nodeDepth) {
+  if (node === null) {
+    return true;
+  }
+
+  var left = { depth: 0 },
+      right = { depth: 0 };
+
+  if (isTreeBalanced(node.left, left) && isTreeBalanced(node.right, right)) {
+    if (Math.abs(left.depth - right.depth) <= 1) {
+      nodeDepth.depth = 1 + (left.depth > right.depth ? left.depth : right.depth);
+      return true;
+    } 
+  }
+
+  return false;
+}
+
+/* easier but O(n^2)
 function isTreeBalanced(node) {
   if (node === null) {
     return true;
@@ -842,7 +862,7 @@ function isTreeBalanced(node) {
   }
 
   return false;
-}
+}*/
 
 /* http://www.geeksforgeeks.org/diameter-of-a-binary-tree/
 -diameter doesn't refer to the width per se but the # of nodes on the longest path between 2 leaves on a tree 

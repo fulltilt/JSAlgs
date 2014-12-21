@@ -283,8 +283,14 @@ describe("BST", function() {
   });
 
   it('tests isTreeBalanced', function() {
+    var nodeDepth = { depth: 0 };
+    expect(bst.isTreeBalanced(bst.root, nodeDepth)).toEqual(true);
+    nodeDepth.depth = 0;
+    expect(bt.isTreeBalanced(bt.root, nodeDepth)).toEqual(false);
+
+    /* for easier isTreeBalanced
     expect(bst.isTreeBalanced(bst.root)).toEqual(true);
-    expect(bt.isTreeBalanced(bt.root)).toEqual(false);
+    expect(bt.isTreeBalanced(bt.root)).toEqual(false); */
   });
 
   it('tests existsPathSum', function() {

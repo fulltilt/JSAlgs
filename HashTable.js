@@ -1,9 +1,13 @@
+var DLL = require('./DoublyLinkedList.js'); // for firstNonRepeatingCharInStream
+
 function HashTable() {
 	this.table = new Array(131);  // Array size should be a prime #
 	this.simpleHash = simpleHash;
 	this.betterHash = betterHash;
 	this.showDistro = showDistro;
 	this.get = get;
+	this.getBucket = getBucket
+	this.clear = clear;
 
 	// no collision handling
 	this.put1 = put1;
@@ -13,9 +17,10 @@ function HashTable() {
 
 	// linear probing
 	this.put3 = put3;
-	this.getBucket = getBucket
 
-	this.clear = clear;
+	this.getFirstCharThatAppearsOnce = getFirstCharThatAppearsOnce;
+	this.firstNonRepeatingCharInStream = firstNonRepeatingCharInStream;
+	this.getFirstCharThatAppearsOnceInStream = getFirstCharThatAppearsOnceInStream;
 }
 
 // First hash fxn
@@ -104,6 +109,97 @@ function getBucket(key) {
 		++bucket;
 		if (bucket === this.table.length) {
 			bucket = 0;
+		}
+	}
+}
+
+// http://www.geeksforgeeks.org/find-first-non-repeating-character-stream-characters/
+// NOTE: I had to access a lot of private variables in DoublyLinkedList to get this to work
+function firstNonRepeatingCharInStream(arr) {
+  var dll = new DLL.DoublyLinkedList(),   // doubly linked list as we can delete in constant time
+      hash = [],
+      length = arr.length,
+      i;
+
+  for (i = 0; i < length; i++) {
+    firstNonRepeatingCharInStreamUtil(arr[i], dll, hash);
+  }
+}
+
+// helper fxn for firstNonRepeatingCharInStream
+function firstNonRepeatingCharInStreamUtil(element, dll, hash) {
+  console.log('Reading', element, 'from stream');
+  if (hash[element]) {
+    if (hash[element].node !== null) {
+      dll.deleteNode(hash[element].node);
+      hash[element].node = null;
+    }
+  } else {
+    if (dll.size === 0) {
+      dll.insertHead(element);
+      hash[element] = { node : dll.head };
+    } else {
+      var newNode = new DLL.Node(element),
+          tail = dll.getTail();
+          tail.next = newNode;
+          newNode.previous = tail;
+      dll.tail = newNode;
+      dll.size += 1;
+
+      hash[element] = { node: newNode };
+    }
+  }
+
+  console.log('First non-repeating character so far is', dll.head.data);
+}
+
+// Apress #76: Implement a function to find the first character in a string that only appears once. For example, the output is the character ‘l’ when the input is “google”
+// NOTE: simpler version of above as I used JavaScript arrays to simulate the hash table and doubly linked list
+function getFirstCharThatAppearsOnce(str) {
+	var hashTable = [],
+			length = str.length, i;
+
+	// add each individual char into a hash table
+	for (i = 0; i < length; i++) {
+		if (hashTable[str[i]]) {
+			hashTable[str[i]] += 1;
+		} else {
+			hashTable[str[i]] = 1;
+		}
+	}
+
+	// return the first char that appears only once
+	for (i = 0; i < length; i++) {
+		if (hashTable[str[i]] === 1) {
+			return str[i];
+		}
+	}
+
+	return '';
+}
+
+// Apress #77: Implement a function to find the first character in a stream that only appears once at any time while reading the stream.
+function getFirstCharThatAppearsOnceInStream(arr) {
+	var hashTable = [],
+			uniqueChars = [],
+			length = arr.length, i;
+
+	for (i = 0; i < length; i++) {
+		if (!hashTable[arr[i]]) {
+			hashTable[arr[i]] = 1;
+			uniqueChars.push(arr[i]);
+		} else {
+			hashTable[arr[i]] += 1;
+		}
+
+		while (hashTable[uniqueChars[0]] > 1) {
+			uniqueChars.shift();
+		}
+
+		if (uniqueChars.length === 0) {
+			console.log('');
+		} else {
+			console.log(uniqueChars[0]);
 		}
 	}
 }

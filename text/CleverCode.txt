@@ -40,3 +40,14 @@ boolean find(int matrix[][], int value) {
   }
   return false;
 }
+
+// custom string compare fxn
+function biggestNumCompare(x, y) {
+  x = (x).toString();
+  y = (y).toString();
+
+  var XY = x.concat(y),
+      YX = y.concat(x);
+
+  return parseInt(YX) - parseInt(XY);   // returns biggest num. To get the smallest num: parseInt(XY) - parseInt(YX);
+}

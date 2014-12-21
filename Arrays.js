@@ -2,7 +2,6 @@ var Queue = require('./Queue.js'); // used for maxOfAllSubArrays()
 var BST = require('./BinarySearchTree.js');  // for binarySearchTreeToArray
 var AVLTree = require('./Trees/AVLTree.js');  // for countSmallerElementsOnRight;
 var Heap = require('./Heaps.js'); // used for mergeKSortedArrays
-var DLL = require('./DoublyLinkedList.js'); // for firstNonRepeatingCharInStream
 
 function Arrays() {
   this.getMedianValue = getMedianValue;
@@ -65,6 +64,7 @@ function Arrays() {
   this.mergeKSortedArrays = mergeKSortedArrays;
   this.smallestSubArrayWhoseSumIsGreaterThanN = smallestSubArrayWhoseSumIsGreaterThanN;
   this.findKClosestElementsToN = findKClosestElementsToN;
+  this.subArrayClosestToN = subArrayClosestToN;
   this.maxSumPathBetweenTwoArrays = maxSumPathBetweenTwoArrays;
   this.sortDefinedBySecondArray = sortDefinedBySecondArray;
   this.rearrangePositiveAndNegative = rearrangePositiveAndNegative;
@@ -77,9 +77,8 @@ function Arrays() {
   this.largestSumContiguousSubarray = largestSumContiguousSubarray;
   this.maxContiguousCircularSum = maxContiguousCircularSum;
   this.findNextGreaterNum = findNextGreaterNum;
-  this.firstNonRepeatingCharInStream = firstNonRepeatingCharInStream;
   this.medianInStream = medianInStream;
-  this.subArrayClosestToN = subArrayClosestToN;
+  this.intersectionOfSortedArrays = intersectionOfSortedArrays;
 
   // Mathematical Properties
   this.findExpPairs = findExpPairs;
@@ -1559,7 +1558,7 @@ function formBiggestNumber(arr) {
     output += arr[i];
   }
 
-  return output;
+  return arr.join('');
 }
 
 // helper fxn for formBiggestNumber()
@@ -1570,7 +1569,7 @@ function biggestNumCompare(x, y) {
   var XY = x.concat(y),
       YX = y.concat(x);
 
-  return parseInt(YX) - parseInt(XY);   
+  return parseInt(YX) - parseInt(XY);   // returns biggest num. To get the smallest num: parseInt(XY) - parseInt(YX);
 }
 
 // http://www.geeksforgeeks.org/merge-k-sorted-arrays/
@@ -2036,46 +2035,6 @@ function reverseSubArray(arr, lo, hi) {
   }
 }
 
-// http://www.geeksforgeeks.org/find-first-non-repeating-character-stream-characters/
-// NOTE: I had to access a lot of private variables in DoublyLinkedList to get this to work
-function firstNonRepeatingCharInStream(arr) {
-  var dll = new DLL.DoublyLinkedList(),   // doubly linked list as we can delete in constant time
-      hash = [],
-      length = arr.length,
-      i;
-
-  for (i = 0; i < length; i++) {
-    firstNonRepeatingCharInStreamUtil(arr[i], dll, hash);
-  }
-}
-
-// helper fxn for firstNonRepeatingCharInStream
-function firstNonRepeatingCharInStreamUtil(element, dll, hash) {
-  console.log('Reading', element, 'from stream');
-  if (hash[element]) {
-    if (hash[element].node !== null) {
-      dll.deleteNode(hash[element].node);
-      hash[element].node = null;
-    }
-  } else {
-    if (dll.size === 0) {
-      dll.insertHead(element);
-      hash[element] = { node : dll.head };
-    } else {
-      var newNode = new DLL.Node(element),
-          tail = dll.getTail();
-          tail.next = newNode;
-          newNode.previous = tail;
-      dll.tail = newNode;
-      dll.size += 1;
-
-      hash[element] = { node: newNode };
-    }
-  }
-
-  console.log('First non-repeating character so far is', dll.head.data);
-}
-
 // http://www.geeksforgeeks.org/median-of-stream-of-integers-running-integers/
 function medianInStream(arr) {
   var median = 0,   // effective median
@@ -2220,6 +2179,34 @@ function maxProductSubArray(arr) {
   }
 
   return maxSoFar;
+}
+
+// Apress #71: Please implement a function that finds the intersection of two sorted arrays. Assume numbers in each array are unique.
+function intersectionOfSortedArrays(arr1, arr2) {
+  var length1 = arr1.length,
+      length2 = arr2.length,
+      result = [],
+      lo, hi, mid, i;
+
+  // iterate through each element in arr1 and apply binary search on arr2
+  for (i = 0; i < length1; i++) {
+    lo = 0;
+    hi = length2 - 1;
+
+    while (hi >= lo) {
+      mid = (hi + lo) >> 1;
+      if (arr1[i] === arr2[mid]) {
+        result.push(arr1[i]);
+        break;
+      } else if (arr1[i] < arr2[mid]) {
+        hi = mid - 1;
+      } else {
+        lo = mid + 1;
+      }
+    }
+  }
+
+  return result;
 }
 
 // http://www.geeksforgeeks.org/count-smaller-elements-on-right-side/

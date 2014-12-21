@@ -41,5 +41,19 @@ describe("HashTable", function() {
 
     // Second, assert that the bucket numbers are different
     expect(hTable.getBucket('Clayton')).toNotEqual(hTable.getBucket('Hilda'));
-  });  
+  });
+
+  it('tests getFirstCharThatAppearsOnce', function() {
+    expect(hTable.getFirstCharThatAppearsOnce('google')).toEqual('l');
+    expect(hTable.getFirstCharThatAppearsOnce('legoogle')).toEqual('');
+  });
+
+  it('tests firstNonRepeatingCharInStream', function() {
+    //hTable.firstNonRepeatingCharInStream(['g','e','e','k','s','f','o','r','g','e','e','k','s','a','n','d','g','e','e','k','s','q','u','i','z','f','o','r',]);
+  });
+
+  it('tests getFirstCharThatAppearsOnceInStream', function() {
+    //hTable.getFirstCharThatAppearsOnceInStream('google'.split(''));
+    //hTable.getFirstCharThatAppearsOnceInStream(['g','e','e','k','s','f','o','r','g','e','e','k','s','a','n','d','g','e','e','k','s','q','u','i','z','f','o','r',]);
+  })
 });

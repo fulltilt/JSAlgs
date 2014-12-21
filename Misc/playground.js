@@ -247,47 +247,22 @@ function generateAllCombosUtil(str, index, number, result) {
 
 //generateAllCombos('abc');
 
-function smallestK(arr, lo, hi, k) {
-  var pivot = partition(arr, lo, hi);
-  if (pivot === k) { 
-    return arr.slice(0, pivot);
-  } else if (pivot < k) {
-    return smallestK(arr, pivot + 1, hi, k);
+function compareNums(a, b) {
+  var aString = a.toString(),
+      bString = b.toString(),
+      string1 = aString + bString,
+      string2 = bString + aString;
+
+  if (string1 === string2) {
+    return 0;
   } else {
-    return smallestK(arr, lo, pivot - 1, k);
+    return string1 > string2;
   }
 }
 
-function partition(arr, lo, hi) {
-  if (hi < lo) {
-    return;
-  }
-
-  var i = lo,
-      j = hi + 1,
-      pivot = arr[0];
-
-  while (j > i) {
-    while (arr[++i] < pivot && j > i) 
-      ;
-
-    while (arr[--j] > pivot && j > i)
-      ;
-
-    if (j > i) {
-      var temp = arr[i];
-      arr[i] = arr[j];
-      arr[j] = temp;
-    }
-  }
-
-  temp = arr[lo];
-  arr[lo] = arr[j];
-  arr[j] = temp;
-
-  return j;
+function getMinNumber(arr) {
+  arr = arr.sort(compareNums);
+  console.log(arr.join(''));
 }
 
-var arr = [4, 5, 1, 6, 2, 7, 3, 8];
-console.log(smallestK(arr, 0, arr.length - 1, 4));
-console.log(arr);
+getMinNumber([3,32,321]);

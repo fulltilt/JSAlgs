@@ -369,10 +369,6 @@ describe("Arrays", function() {
       //gfg.medianInStream([5, 15, 1, 3, 2, 8, 7, 9, 10, 6, 11, 4]);
     });
 
-    it('tests firstNonRepeatingCharInStream', function() {
-      //gfg.firstNonRepeatingCharInStream(['g','e','e','k','s','f','o','r','g','e','e','k','s','a','n','d','g','e','e','k','s','q','u','i','z','f','o','r',]);
-    });
-
     it('tests largestSumContiguousSubarray', function() {
       expect(gfg.largestSumContiguousSubarray([-2, -3, 4, -1, -2, 1, 5, -3])).toEqual(7);
     });
@@ -389,6 +385,10 @@ describe("Arrays", function() {
       expect(gfg.findNextGreaterNum(4321)).toEqual(4321);
       expect(gfg.findNextGreaterNum(534976)).toEqual(536479);
       expect(gfg.findNextGreaterNum(5231)).toEqual(5312);
+    });
+
+    it('tests intersectionOfSortedArrays', function() {
+      expect(gfg.intersectionOfSortedArrays([1,4,7,10,13], [1,3,5,7,9])).toEqual([1,7]);
     });
 
     xit('tests alternatePositiveAndNegative', function() {

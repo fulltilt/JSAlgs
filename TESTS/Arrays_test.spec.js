@@ -113,6 +113,10 @@ describe("Arrays", function() {
       expect(gfg.reverseArray([1, 12, 15, 26, 38, 13, 17, 30, 4], 0, 8)).toEqual([4,30,17,13,38,26,15,12,1]);         // odd
     });
 
+    it('tests reverseWords', function() {
+      gfg.reverseWords('I am a student.'.split(''));
+    });
+
     it('tests addition', function() {
       expect(gfg.addition(33, 44)).toEqual(77);
       expect(gfg.addition(88, 99)).toEqual(187);
@@ -419,6 +423,10 @@ describe("Arrays", function() {
       expect(gfg.maxProductSubArray([6, -3, -10, 0, 2])).toEqual(180);
       expect(gfg.maxProductSubArray([-1, -3, -10, 0, 60])).toEqual(60);
       expect(gfg.maxProductSubArray([-2, -3, 0, -2, -40])).toEqual(80);
+    });
+
+    it('tests printContinuousSequences', function() {
+      //gfg.printContinuousSequences(15);
     });
 
     /**/xit('tests countSmallerElementsOnRight', function() {

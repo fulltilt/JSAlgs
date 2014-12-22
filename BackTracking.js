@@ -150,6 +150,7 @@ function permuteNArrays(arrs, index, res) {
 } */
 
 // Apress #89: Given an array, please check whether it contains a subset of numbers (with one number at least) whose sum equals 0
+// Algo: this is actually a brute force method that tries out every permutation until it hits a match. Don't know if there's a more efficient way to do this
 function hasSubsetWithSumZero(arr) {
   var perms = [],
       length = arr.length, i;

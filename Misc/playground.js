@@ -268,25 +268,42 @@ function hasSubsetWithSumZero(arr) {
   return null;
 }
 
-function getBitSetPermutations(length, res, perms) {
-  if (res.length === length) {
-    perms.push(res.slice(0));
-    return;
-  }
+// Apress #91: How do you reverse the order of words in a sentence, but keep words themselves unchanged? Words in a sentence are separated by blanks. 
+//             For instance, the reversed output should be “student. a am I” when the input is “I am a student.”.
+function reverseWords(arr) {
+  var lo = 0,
+      length = arr.length,
+      hi = length - 1, i;
 
-  for (var i = 0; i <= 1; i++) {
-    res.push(i);
-    getBitSetPermutations(length, res, perms);
-    res.pop();
+  reverse(arr, 0, length - 1);  
+
+  lo = 0;
+  hi = lo + 1;
+
+  while (lo < length && hi < length) {
+    while (arr[hi] !== ' ' && hi < length) {
+      hi += 1;
+    }
+
+    reverse(arr, lo, hi - 1);
+    lo = hi + 1;
+    while (arr[lo] === ' ' && lo < length) {
+      lo += 1;
+    }
+    hi = lo + 1;
+  }
+  
+  return arr.join('');
+}
+
+function reverse(arr, lo, hi) {
+  while (hi > lo) {
+    var temp = arr[lo];
+    arr[lo] = arr[hi];
+    arr[hi] = temp;
+    lo += 1;
+    hi -= 1;
   }
 }
 
-var perms = [];
-console.log(hasSubsetWithSumZero([1,5,2,7,-3,28,-5,9,1,23]));
-
-
-//generateAllCombos('abc');
-function hasTripleWithSumZero(arr) {
-  var allPermutations = getPerms(arr);
-  console.log(allPermutations)
-}
+console.log(reverseWords('I am a student.'.split('')));

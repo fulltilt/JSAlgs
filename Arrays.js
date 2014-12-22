@@ -22,6 +22,7 @@ function Arrays() {
   this.findMajoritySorted = findMajoritySorted;
   this.findMajorityUnsorted = findMajorityUnsorted;
   this.numberOfOccurrences = numberOfOccurrences;
+  this.countNumberOfOccurrences = countNumberOfOccurrences;
   this.findMissingNumber = findMissingNumber;
   this.findPivotInRotatedArray = findPivotInRotatedArray;
   this.findMedianOfTwoSortedArrays = findMedianOfTwoSortedArrays;
@@ -44,9 +45,8 @@ function Arrays() {
   this.nextGreaterElement = nextGreaterElement;
   this.areAllElementsConsecutive = areAllElementsConsecutive;
   this.findSmallestMissingNumber = findSmallestMissingNumber;
-  this.countNumberOfOccurrences = countNumberOfOccurrences;
   this.countInversions = countInversions;
-  this.maxOfAllSubArrays = maxOfAllSubArrays; 
+  this.maxOfAllSubArrays = maxOfAllSubArrays;   // sliding window problem
   this.minDistanceBetweenTwoNums = minDistanceBetweenTwoNums;
   this.findRepeatingAndMissing = findRepeatingAndMissing;
   this.fixedPointInArray = fixedPointInArray;
@@ -80,6 +80,7 @@ function Arrays() {
   this.findNextGreaterNum = findNextGreaterNum;
   this.medianInStream = medianInStream;
   this.intersectionOfSortedArrays = intersectionOfSortedArrays;
+  this.printContinuousSequences = printContinuousSequences;
 
   // Mathematical Properties
   this.findExpPairs = findExpPairs;
@@ -585,7 +586,7 @@ function reverseArray(arr, start, end) {
   return arr; 
 }
 
-// Apress #42
+// Apress #42: Add 2 arrays
 function addition(num1, num2) {
   var arr1 = (num1 + '').split(''),
       arr2 = (num2 + '').split(''),
@@ -2247,6 +2248,29 @@ function intersectionOfSortedArrays(arr1, arr2) {
   }
 
   return result;
+}
+
+// Apress #90: Given a positive value s, print all sequences with continuous numbers (with two numbers at least) whose sum is s.
+//             Take the input s=15 as an example. Because 1+2+3+4+5=4+5+6=7+8=15, three continuous sequences should be printed: 1~5, 4~6, and 7~8.
+// Algorithm: have 2 pointers (hi & lo). If sum < s, increase hi by 1. If sum > s, increase lo by 1. If s === sum, print result and increase hi. Update sum at each step
+function printContinuousSequences(s) {
+  var lo = 1,
+      hi = 2;
+      sum = 3;
+
+  while (lo < s) {
+    if (sum === s) {
+      console.log(lo, '~', hi);
+      hi += 1;
+      sum += hi;
+    } else if (sum > s) {
+      sum -= lo;
+      lo += 1;
+    } else {
+      hi += 1;
+      sum += hi;
+    }
+  }
 }
 
 // http://www.geeksforgeeks.org/count-smaller-elements-on-right-side/

@@ -291,3 +291,5 @@ function partition(arr, lo, hi) {
 var arr = [4, 5, 1, 6, 2, 7, 3, 8];
 console.log(smallestK(arr, 0, arr.length - 1, 4));
 console.log(arr);
+0 1 0 3 13 9 16 18 13
+max(0, arr[n], arr[n - 1] + arr[n])

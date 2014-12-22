@@ -245,24 +245,48 @@ function generateAllCombosUtil(str, index, number, result) {
   generateAllCombosUtil(str, index + 1, number, result);
 }
 
-//generateAllCombos('abc');
+function hasSubsetWithSumZero(arr) {
+  var perms = [],
+      length = arr.length, i;
 
-function compareNums(a, b) {
-  var aString = a.toString(),
-      bString = b.toString(),
-      string1 = aString + bString,
-      string2 = bString + aString;
+  getBitSetPermutations(arr.length, [], perms); // get all permutations of arr with repetitions
+  
+  var length2 = perms.length;
+  for (i = 1; i < length2; i++) {
+    sum = 0;
+    for (var j = 0; j < length; j++) {
+      if (perms[i][j] === 1) {
+        sum += arr[j];
+      }
+    }
 
-  if (string1 === string2) {
-    return 0;
-  } else {
-    return string1 > string2;
+    if (sum === 0) {
+      return perms[i];
+    }
+  }
+
+  return null;
+}
+
+function getBitSetPermutations(length, res, perms) {
+  if (res.length === length) {
+    perms.push(res.slice(0));
+    return;
+  }
+
+  for (var i = 0; i <= 1; i++) {
+    res.push(i);
+    getBitSetPermutations(length, res, perms);
+    res.pop();
   }
 }
 
-function getMinNumber(arr) {
-  arr = arr.sort(compareNums);
-  console.log(arr.join(''));
-}
+var perms = [];
+console.log(hasSubsetWithSumZero([1,5,2,7,-3,28,-5,9,1,23]));
 
-getMinNumber([3,32,321]);
+
+//generateAllCombos('abc');
+function hasTripleWithSumZero(arr) {
+  var allPermutations = getPerms(arr);
+  console.log(allPermutations)
+}

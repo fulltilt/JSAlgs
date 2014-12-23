@@ -2,7 +2,6 @@ var Queue = require('./Queue.js'); // used for maxOfAllSubArrays()
 var BST = require('./BinarySearchTree.js');  // for binarySearchTreeToArray
 var AVLTree = require('./Trees/AVLTree.js');  // for countSmallerElementsOnRight;
 var Heap = require('./Heaps.js'); // used for mergeKSortedArrays
-var DLL = require('./DoublyLinkedList.js'); // for firstNonRepeatingCharInStream
 
 function Arrays() {
   this.getMedianValue = getMedianValue;
@@ -22,6 +21,8 @@ function Arrays() {
   this.isSubArray = isSubArray;
   this.findMajoritySorted = findMajoritySorted;
   this.findMajorityUnsorted = findMajorityUnsorted;
+  this.numberOfOccurrences = numberOfOccurrences;
+  this.countNumberOfOccurrences = countNumberOfOccurrences;
   this.findMissingNumber = findMissingNumber;
   this.findPivotInRotatedArray = findPivotInRotatedArray;
   this.findMedianOfTwoSortedArrays = findMedianOfTwoSortedArrays;
@@ -44,9 +45,8 @@ function Arrays() {
   this.nextGreaterElement = nextGreaterElement;
   this.areAllElementsConsecutive = areAllElementsConsecutive;
   this.findSmallestMissingNumber = findSmallestMissingNumber;
-  this.countNumberOfOccurrences = countNumberOfOccurrences;
   this.countInversions = countInversions;
-  this.maxOfAllSubArrays = maxOfAllSubArrays; 
+  this.maxOfAllSubArrays = maxOfAllSubArrays;   // sliding window problem
   this.minDistanceBetweenTwoNums = minDistanceBetweenTwoNums;
   this.findRepeatingAndMissing = findRepeatingAndMissing;
   this.fixedPointInArray = fixedPointInArray;
@@ -65,6 +65,7 @@ function Arrays() {
   this.mergeKSortedArrays = mergeKSortedArrays;
   this.smallestSubArrayWhoseSumIsGreaterThanN = smallestSubArrayWhoseSumIsGreaterThanN;
   this.findKClosestElementsToN = findKClosestElementsToN;
+  this.subArrayClosestToN = subArrayClosestToN;
   this.maxSumPathBetweenTwoArrays = maxSumPathBetweenTwoArrays;
   this.sortDefinedBySecondArray = sortDefinedBySecondArray;
   this.rearrangePositiveAndNegative = rearrangePositiveAndNegative;
@@ -77,9 +78,9 @@ function Arrays() {
   this.largestSumContiguousSubarray = largestSumContiguousSubarray;
   this.maxContiguousCircularSum = maxContiguousCircularSum;
   this.findNextGreaterNum = findNextGreaterNum;
-  this.firstNonRepeatingCharInStream = firstNonRepeatingCharInStream;
   this.medianInStream = medianInStream;
-  this.subArrayClosestToN = subArrayClosestToN;
+  this.intersectionOfSortedArrays = intersectionOfSortedArrays;
+  this.printContinuousSequences = printContinuousSequences;
 
   // Mathematical Properties
   this.findExpPairs = findExpPairs;
@@ -447,6 +448,45 @@ function findMajoritySorted(arr) {
   }
 }
 
+// Apress #83: Please implement a function to find how many times a number occurs in a sorted array (similar algorithm to findMajoritySorted())
+// tricky part is using arr[mid] >= n for firstOccurrence and arr[mid] <= n for lastOccurrence
+function numberOfOccurrences(arr, n) {
+  var length = arr.length,
+      firstOccurrence, lastOccurrence, lo, hi, mid;
+
+  // get first occurrence
+  lo = 0;
+  hi = length - 1;
+  while (hi >= lo) {
+    mid = (lo + hi) >> 1;
+    if (arr[mid] === n && ((mid - 1) === 0 || arr[mid - 1] !== n)) {
+      firstOccurrence = mid;
+      break;
+    } else if (arr[mid] >= n) {
+      hi = mid - 1;
+    } else {
+      lo = mid + 1;
+    }
+  }
+
+  // get last occurrence
+  lo = 0;
+  hi = length - 1;
+  while (hi >= lo) {
+    mid = (lo + hi) >> 1;
+    if (arr[mid] === n && ((mid + 1) === length - 1 || arr[mid + 1] !== n)) {
+      lastOccurrence = mid;
+      break;
+    } else if (arr[mid] <= n) {
+      lo = mid + 1;
+    } else {
+      hi = mid - 1;
+    }
+  }
+
+  return lastOccurrence - firstOccurrence + 1;
+}
+
 // http://www.geeksforgeeks.org/find-the-missing-number/
 function findMissingNumber(arr) {
   var subArrLength = arr.length;
@@ -546,7 +586,7 @@ function reverseArray(arr, start, end) {
   return arr; 
 }
 
-// Apress #42
+// Apress #42: Add 2 arrays
 function addition(num1, num2) {
   var arr1 = (num1 + '').split(''),
       arr2 = (num2 + '').split(''),
@@ -1565,7 +1605,7 @@ function formBiggestNumber(arr) {
     output += arr[i];
   }
 
-  return output;
+  return arr.join('');
 }
 
 // helper fxn for formBiggestNumber()
@@ -1576,7 +1616,7 @@ function biggestNumCompare(x, y) {
   var XY = x.concat(y),
       YX = y.concat(x);
 
-  return parseInt(YX) - parseInt(XY);   
+  return parseInt(YX) - parseInt(XY);   // returns biggest num. To get the smallest num: parseInt(XY) - parseInt(YX);
 }
 
 // http://www.geeksforgeeks.org/merge-k-sorted-arrays/
@@ -2042,46 +2082,6 @@ function reverseSubArray(arr, lo, hi) {
   }
 }
 
-// http://www.geeksforgeeks.org/find-first-non-repeating-character-stream-characters/
-// NOTE: I had to access a lot of private variables in DoublyLinkedList to get this to work
-function firstNonRepeatingCharInStream(arr) {
-  var dll = new DLL.DoublyLinkedList(),   // doubly linked list as we can delete in constant time
-      hash = [],
-      length = arr.length,
-      i;
-
-  for (i = 0; i < length; i++) {
-    firstNonRepeatingCharInStreamUtil(arr[i], dll, hash);
-  }
-}
-
-// helper fxn for firstNonRepeatingCharInStream
-function firstNonRepeatingCharInStreamUtil(element, dll, hash) {
-  console.log('Reading', element, 'from stream');
-  if (hash[element]) {
-    if (hash[element].node !== null) {
-      dll.deleteNode(hash[element].node);
-      hash[element].node = null;
-    }
-  } else {
-    if (dll.size === 0) {
-      dll.insertHead(element);
-      hash[element] = { node : dll.head };
-    } else {
-      var newNode = new DLL.Node(element),
-          tail = dll.getTail();
-          tail.next = newNode;
-          newNode.previous = tail;
-      dll.tail = newNode;
-      dll.size += 1;
-
-      hash[element] = { node: newNode };
-    }
-  }
-
-  console.log('First non-repeating character so far is', dll.head.data);
-}
-
 // http://www.geeksforgeeks.org/median-of-stream-of-integers-running-integers/
 function medianInStream(arr) {
   var median = 0,   // effective median
@@ -2226,6 +2226,57 @@ function maxProductSubArray(arr) {
   }
 
   return maxSoFar;
+}
+
+// Apress #71: Please implement a function that finds the intersection of two sorted arrays. Assume numbers in each array are unique.
+function intersectionOfSortedArrays(arr1, arr2) {
+  var length1 = arr1.length,
+      length2 = arr2.length,
+      result = [],
+      lo, hi, mid, i;
+
+  // iterate through each element in arr1 and apply binary search on arr2
+  for (i = 0; i < length1; i++) {
+    lo = 0;
+    hi = length2 - 1;
+
+    while (hi >= lo) {
+      mid = (hi + lo) >> 1;
+      if (arr1[i] === arr2[mid]) {
+        result.push(arr1[i]);
+        break;
+      } else if (arr1[i] < arr2[mid]) {
+        hi = mid - 1;
+      } else {
+        lo = mid + 1;
+      }
+    }
+  }
+
+  return result;
+}
+
+// Apress #90: Given a positive value s, print all sequences with continuous numbers (with two numbers at least) whose sum is s.
+//             Take the input s=15 as an example. Because 1+2+3+4+5=4+5+6=7+8=15, three continuous sequences should be printed: 1~5, 4~6, and 7~8.
+// Algorithm: have 2 pointers (hi & lo). If sum < s, increase hi by 1. If sum > s, increase lo by 1. If s === sum, print result and increase hi. Update sum at each step
+function printContinuousSequences(s) {
+  var lo = 1,
+      hi = 2;
+      sum = 3;
+
+  while (lo < s) {
+    if (sum === s) {
+      console.log(lo, '~', hi);
+      hi += 1;
+      sum += hi;
+    } else if (sum > s) {
+      sum -= lo;
+      lo += 1;
+    } else {
+      hi += 1;
+      sum += hi;
+    }
+  }
 }
 
 // http://www.geeksforgeeks.org/count-smaller-elements-on-right-side/

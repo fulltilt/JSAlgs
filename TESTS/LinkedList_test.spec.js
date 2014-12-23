@@ -635,6 +635,23 @@ describe("LinkedList", function() {
     raa = null;
   });
 
+  it('tests intersectionOfTwoLists', function() {
+    var iotl1 = new LinkedList(),
+        iotl2 = new LinkedList();
+
+    iotl1.insertHead(7);
+    iotl1.insertHead(6);
+    iotl1.insertHead(3);
+    iotl1.insertHead(2);
+    iotl1.insertHead(1);
+
+    iotl2.insertHead(7);
+    iotl2.insertHead(6);
+    iotl2.head.next.next = iotl1.head.next.next.next;
+
+    expect(ll.intersectionOfTwoLists(iotl1, iotl2).data).toEqual(6);
+  });
+
   it('tests LRUCache', function() {
     expect(true).toEqual(false);
   });

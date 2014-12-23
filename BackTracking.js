@@ -2,6 +2,7 @@ function BackTracking() {
   this.printAllPermutations = printAllPermutations;
   this.printAllPermutationsWithRepetitions = printAllPermutationsWithRepetitions;
   this.permuteNArrays = permuteNArrays;
+  this.hasSubsetWithSumZero = hasSubsetWithSumZero;
   this.knightsTour = knightsTour;
   this.mazePuzzle = mazePuzzle;
   this.doesPathExist = doesPathExist;
@@ -87,6 +88,29 @@ function permute(str, index, res) {
     res.pop();
   }
 }
+
+Update 12/21/14: 
+// this fxn gets all permutations without repetitions. To get all permutations with repetitions, in the for loop, change 'var i = 0' to 'var i = index'
+function getPerms(arr, index, res) {
+  if (arr.length === index) {
+    console.log(res);
+    return;
+  }
+
+  for (var i = 0; i < arr.length; i++) { 
+    var temp = arr[i];
+    arr[i] = arr[index];
+    arr[index] = temp;
+
+    res.push(arr[index]);
+    getPerms(arr, index + 1, res);
+
+    temp = arr[index];
+    arr[index] = arr[i];
+    arr[i] = temp;
+    res.pop();
+  }
+}
 */
 
 function swap(str, x, y) {
@@ -95,7 +119,7 @@ function swap(str, x, y) {
   str[y] = temp;
 }
 
-// Apres #67
+// Apress #67
 function permuteNArrays(arrs, result) {
   if (arrs.length === result.length) {
     console.log(result);
@@ -124,6 +148,45 @@ function permuteNArrays(arrs, index, res) {
     res.pop();
   }
 } */
+
+// Apress #89: Given an array, please check whether it contains a subset of numbers (with one number at least) whose sum equals 0
+// Algo: this is actually a brute force method that tries out every permutation until it hits a match. Don't know if there's a more efficient way to do this
+function hasSubsetWithSumZero(arr) {
+  var perms = [],
+      length = arr.length, i;
+
+  getBitSetPermutations(arr.length, [], perms); // get all permutations of 0's and 1's with repetitions
+  
+  var length2 = perms.length;
+  for (i = 1; i < length2; i++) { // first permutation is all zeroes so exclude that permutation
+    sum = 0;
+    for (var j = 0; j < length; j++) {
+      if (perms[i][j] === 1) {
+        sum += arr[j];
+      }
+    }
+
+    if (sum === 0) {
+      return perms[i];
+    }
+  }
+
+  return null;
+}
+
+// helper fxn for hasSubsetWithSumZero() that returns all permutations of 0's and 1's of a certain length
+function getBitSetPermutations(length, res, perms) {
+  if (res.length === length) {
+    perms.push(res.slice(0));
+    return;
+  }
+
+  for (var i = 0; i <= 1; i++) {
+    res.push(i);
+    getBitSetPermutations(length, res, perms);
+    res.pop();
+  }
+}
 
 // Apress #68:  Please generate all combinations of a given string. For example, combinations of a given string “abc” are “a”, “b”, “c”, “ab”, “ac”, “bc”, and “abc”
 function generateAllCombos(str) {

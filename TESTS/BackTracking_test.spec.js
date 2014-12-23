@@ -25,6 +25,10 @@ describe("BackTracking", function() {
     bt.permuteNArrays([[1,2], [3,4], [5,6]], result);
   });
 
+  it('tests hasSubsetWithSumZero', function() {
+    expect(bt.hasSubsetWithSumZero([1,5,2,7,-3,28,-5,9,1,23])).toEqual([ 0, 0, 0, 1, 1, 0, 1, 0, 1, 0 ]);
+  });
+
   it('tests knightsTour', function() {
     //bt.knightsTour();
   });

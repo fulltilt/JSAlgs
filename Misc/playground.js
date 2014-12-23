@@ -245,51 +245,63 @@ function generateAllCombosUtil(str, index, number, result) {
   generateAllCombosUtil(str, index + 1, number, result);
 }
 
-//generateAllCombos('abc');
+function hasSubsetWithSumZero(arr) {
+  var perms = [],
+      length = arr.length, i;
 
-function smallestK(arr, lo, hi, k) {
-  var pivot = partition(arr, lo, hi);
-  if (pivot === k) { 
-    return arr.slice(0, pivot);
-  } else if (pivot < k) {
-    return smallestK(arr, pivot + 1, hi, k);
-  } else {
-    return smallestK(arr, lo, pivot - 1, k);
-  }
-}
+  getBitSetPermutations(arr.length, [], perms); // get all permutations of arr with repetitions
+  
+  var length2 = perms.length;
+  for (i = 1; i < length2; i++) {
+    sum = 0;
+    for (var j = 0; j < length; j++) {
+      if (perms[i][j] === 1) {
+        sum += arr[j];
+      }
+    }
 
-function partition(arr, lo, hi) {
-  if (hi < lo) {
-    return;
-  }
-
-  var i = lo,
-      j = hi + 1,
-      pivot = arr[0];
-
-  while (j > i) {
-    while (arr[++i] < pivot && j > i) 
-      ;
-
-    while (arr[--j] > pivot && j > i)
-      ;
-
-    if (j > i) {
-      var temp = arr[i];
-      arr[i] = arr[j];
-      arr[j] = temp;
+    if (sum === 0) {
+      return perms[i];
     }
   }
 
-  temp = arr[lo];
-  arr[lo] = arr[j];
-  arr[j] = temp;
-
-  return j;
+  return null;
 }
 
-var arr = [4, 5, 1, 6, 2, 7, 3, 8];
-console.log(smallestK(arr, 0, arr.length - 1, 4));
-console.log(arr);
-0 1 0 3 13 9 16 18 13
-max(0, arr[n], arr[n - 1] + arr[n])
+// Apress #91: How do you reverse the order of words in a sentence, but keep words themselves unchanged? Words in a sentence are separated by blanks. 
+//             For instance, the reversed output should be “student. a am I” when the input is “I am a student.”.
+function reverseWords(arr) {
+  var lo = 0,
+      length = arr.length,
+      hi = length - 1, i;
+
+  reverse(arr, 0, length - 1);  
+
+  lo = 0;
+  hi = lo + 1;
+
+  while (lo < length && hi < length) {
+    while (arr[hi] !== ' ' && hi < length) {
+      hi += 1;
+    }
+
+    reverse(arr, lo, hi - 1);
+    lo = hi + 1;
+    while (arr[lo] === ' ' && lo < length) {
+      lo += 1;
+    }
+    hi = lo + 1;
+  }
+  
+  return arr.join('');
+}
+
+function reverse(arr, lo, hi) {
+  while (hi > lo) {
+    var temp = arr[lo];
+    arr[lo] = arr[hi];
+    arr[hi] = temp;
+    lo += 1;
+    hi -= 1;
+  }
+}

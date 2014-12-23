@@ -87,6 +87,12 @@ describe("Arrays", function() {
       expect(gfg.findMajoritySorted([1, 1, 2, 4, 4, 4, 6, 6])).toEqual(null);
     });
 
+    it('tests numberOfOccurrences', function() {
+      expect(gfg.numberOfOccurrences([1,2,3,3,3,3,4,5], 3)).toEqual(4);
+      expect(gfg.numberOfOccurrences([1,2,3,3,3,3,4,5], 1)).toEqual(1);
+      expect(gfg.numberOfOccurrences([1,2,3,3,3,3,4,5], 5)).toEqual(1);
+    });
+
     it('tests findMissingNumber', function() {
       expect(gfg.findMissingNumber([1, 2, 4, 6, 3, 7, 8])).toEqual(5);
     });
@@ -105,6 +111,10 @@ describe("Arrays", function() {
     it('tests reverseArray', function() {
       expect(gfg.reverseArray([1, 12, 15, 26, 38, 2, 13, 17, 30, 45], 0, 9)).toEqual([45,30,17,13,2,38,26,15,12,1]);  // even
       expect(gfg.reverseArray([1, 12, 15, 26, 38, 13, 17, 30, 4], 0, 8)).toEqual([4,30,17,13,38,26,15,12,1]);         // odd
+    });
+
+    it('tests reverseWords', function() {
+      gfg.reverseWords('I am a student.'.split(''));
     });
 
     it('tests addition', function() {
@@ -369,10 +379,6 @@ describe("Arrays", function() {
       //gfg.medianInStream([5, 15, 1, 3, 2, 8, 7, 9, 10, 6, 11, 4]);
     });
 
-    it('tests firstNonRepeatingCharInStream', function() {
-      //gfg.firstNonRepeatingCharInStream(['g','e','e','k','s','f','o','r','g','e','e','k','s','a','n','d','g','e','e','k','s','q','u','i','z','f','o','r',]);
-    });
-
     it('tests largestSumContiguousSubarray', function() {
       expect(gfg.largestSumContiguousSubarray([-2, -3, 4, -1, -2, 1, 5, -3])).toEqual(7);
     });
@@ -389,6 +395,10 @@ describe("Arrays", function() {
       expect(gfg.findNextGreaterNum(4321)).toEqual(4321);
       expect(gfg.findNextGreaterNum(534976)).toEqual(536479);
       expect(gfg.findNextGreaterNum(5231)).toEqual(5312);
+    });
+
+    it('tests intersectionOfSortedArrays', function() {
+      expect(gfg.intersectionOfSortedArrays([1,4,7,10,13], [1,3,5,7,9])).toEqual([1,7]);
     });
 
     xit('tests alternatePositiveAndNegative', function() {
@@ -413,6 +423,10 @@ describe("Arrays", function() {
       expect(gfg.maxProductSubArray([6, -3, -10, 0, 2])).toEqual(180);
       expect(gfg.maxProductSubArray([-1, -3, -10, 0, 60])).toEqual(60);
       expect(gfg.maxProductSubArray([-2, -3, 0, -2, -40])).toEqual(80);
+    });
+
+    it('tests printContinuousSequences', function() {
+      //gfg.printContinuousSequences(15);
     });
 
     /**/xit('tests countSmallerElementsOnRight', function() {

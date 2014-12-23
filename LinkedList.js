@@ -26,6 +26,7 @@ function LinkedList() {
 	this.removeHead = removeHead;
 	this.clear = clear;
 	this.print = print;
+	this.getSize = getSize;
 
 	this.insertionSortWithoutSwappingNodes = insertionSortWithoutSwappingNodes;
 	this.insertionSortWithSwappingNodes = insertionSortWithSwappingNodes;
@@ -61,6 +62,7 @@ function LinkedList() {
 	this.deleteNNodesAfterMNodes = deleteNNodesAfterMNodes;
 	this.reverseAlternateAndAppendAtEnd = reverseAlternateAndAppendAtEnd;
 	this.sortedLLToBalancedBST = sortedLLToBalancedBST;
+	this.intersectionOfTwoLists = intersectionOfTwoLists;
 }
 
 function find(item) {
@@ -148,6 +150,18 @@ function print() {
 	}
 //console.log(output);
 	return output.trim();
+}
+
+function getSize() {
+	var current = this.head,
+			size = 0;
+
+	while (current !== null) {
+		size += 1;
+		current = current.next;
+	}
+
+	return size;
 }
 
 // swapping data elements only. No swapping of nodes
@@ -1072,6 +1086,38 @@ function sortedLLToBalancedBST(list, lo, hi, tree) {
 	tree.insert(current.data);
 	this.sortedLLToBalancedBST(list, lo, mid - 1, tree);
 	this.sortedLLToBalancedBST(list, mid + 1, hi, tree);
+}
+
+// Apress #82: find first common node of 2 single-linked lists
+// NOTE: this algorithm assumes that there are 2 lists that intersect at a node that isn't a head node
+function intersectionOfTwoLists(list1, list2) {
+	var current1 = list1.head,
+			current2 = list2.head,
+			size1 = list1.getSize(),
+			size2 = list2.getSize(),
+			diff = size1 - size2;
+
+	if (diff > 0) {	// list1 is bigger
+		while (diff > 0) {
+			current1 = current1.next;
+			diff -= 1;
+		} 
+	} else {
+		diff *= -1;
+		while (diff > 0) {
+			current2 = current2.next;
+			diff -= 1;
+		}
+	}
+
+	while (true) {
+		if (current1 === current2) {
+			return current1;
+		} else {
+			current1 = current1.next;
+			current2 = current2.next;
+		}
+	}
 }
 
 // http://www.geeksforgeeks.org/implement-lru-cache/

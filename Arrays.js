@@ -1146,6 +1146,7 @@ function merge(arr1, arr2, count) {
 }
 
 // http://www.geeksforgeeks.org/maximum-of-all-subarrays-of-size-k/
+// NOTE: the commented out sections are when this fxn was initially written using ConstantQueue
 function maxOfAllSubArrays(arr, k) {
   if (arr === null) {
     throw new Error('null array');
@@ -1153,20 +1154,25 @@ function maxOfAllSubArrays(arr, k) {
     throw new Error('k cannot be bigger than the size of the array');
   }
 
-  var queue = new Queue(),
+  var queue = new Queue.ConstantQueueSimple(),
       length = arr.length,
       results = [];
 
   // initialize the queue with the first k elements in the array
   for (var i = 0; i < k; i++) {
-    queue.maxEnqueue(arr[i]);
+    //queue.maxEnqueue(arr[i]);
+    queue.push(arr[i]);
   }
+  //results.push(queue.getMax());
   results.push(queue.getMax());
 
   // continue with the rest of the array, windows of k size at a time
   for (; i < length; i++) {
-    queue.maxDequeue();
-    queue.maxEnqueue(arr[i]);
+    //queue.maxDequeue();
+    //queue.maxEnqueue(arr[i]);
+    //results.push(queue.getMax());
+    queue.pop();
+    queue.push(arr[i]);
     results.push(queue.getMax());
   }
 

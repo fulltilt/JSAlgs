@@ -177,7 +177,63 @@ function toString() {
 	return this.pushStack;
 }
 
-module.exports = ConstantQueue;
+/***************************************/
+
+// NOTE: arrays will simulate Dequeue's
+// NOTE2: this implementation has a constant max function (to make it have a constant min function, in push, change instances of '<' to '>')
+function ConstantQueueSimple() {
+	this.queue = [];
+	this.max = [];
+}
+
+ConstantQueueSimple.prototype = {
+	push: function(data) {
+		this.queue.push(data);
+
+		if (this.max.length !== 0 && data > this.max[this.max.length - 1]) {
+			while (data > this.max[this.max.length - 1]) {
+				this.max.pop();
+			}
+		}
+
+		this.max.push(data);
+	},
+
+	pop: function() {
+		if (this.queue.length === 0) {
+			throw new Error('Queue is empty!');
+		}
+
+		var result = this.queue.shift();
+		if (result === this.max[0]) {
+			this.max.shift();
+		}
+
+		return result;
+	},
+
+	getMax: function() {
+		if (this.queue.length === 0) {
+			throw new Error('Queue is empty!');
+		}
+
+		return this.max[0];
+	},
+
+	size: function() {
+		return this.queue.length;
+	}
+}
+
+var Queue = function() {
+  return {
+    Queue: Queue,
+    ConstantQueue: ConstantQueue,
+    ConstantQueueSimple: ConstantQueueSimple
+  }
+}();
+
+module.exports = Queue;
 
 /*
 NOTES:

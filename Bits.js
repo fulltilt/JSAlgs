@@ -11,6 +11,10 @@ function Bits() {
   this.numbersOccurringOnce = numbersOccurringOnce;
   this.bitVectorSort = bitVectorSort;
   this.bitVectorSort2 = bitVectorSort2;
+  this.add = add;
+  this.subtract = subtract;
+  this.multiply = multiply;
+  this.divide = divide;
 }
 
 function swap(a, b) {
@@ -181,6 +185,87 @@ function bitVectorSort2(arr) {
   }
 }
 
+// Apress #100-103: implement basic math operations using only bits
+function add(num1, num2) {
+  var sum, carry;
+
+  do {
+    sum = num1 ^ num2;
+    carry = (num1 & num2) << 1;
+    num1 = sum;
+    num2 = carry;
+  } while (num2 !== 0);
+
+  return num1;
+}
+
+function subtract(num1, num2) {
+  num2 = this.add(~num2, 1);
+  return add(num1, num2);
+}
+
+function multiply(num1, num2) {
+  var minus = false;
+  if ((num1 < 0 && num2 > 0) || (num1 > 0 && num2 < 0)) {
+    minus = true;
+  }
+
+  if (num1 < 0) {
+    num1 = this.add(~num1, 1);
+  }
+  if (num2 < 0) {
+    num2 = this.add(~num2, 1); 
+  }
+
+  var result = 0;
+  while (num1 > 0) {
+    if ((num1 & 0x1) !== 0) { // could have replaced '0x1' with '1'
+      result = this.add(result, num2);
+    }
+
+    num2 = num2 << 1;
+    num1 = num1 >> 1;
+  }
+
+  if (minus) {
+    result = this.add(~result, 1);
+  }
+
+  return result;
+}
+
+function divide(num1, num2) {
+  if (num2 === 0) {
+    throw new Error('num2 is zero.')
+  }
+
+  var minus = false;
+  if ((num1 < 0 && num2 > 0) || (num1 > 0 && num2 < 0)) {
+    minus = true;
+  }
+
+  if (num1 < 0) {
+    num1 = this.add(~num1, 1);
+  }
+  if (num2 < 0) {
+    num2 = this.add(~num2, 1); 
+  }
+
+  var result = 0;
+  for (var i = 0; i < 32; i = this.add(i, 1)) {
+    result = result << 1;
+    if ((num1 >> (31 - i)) >= num2) {
+      num1 = this.subtract(num1, num2 << (31 - i));
+      result = this.add(result, 1);
+    }
+  }
+
+  if (minus) {
+    result = add(~result, 1);
+  }
+
+  return result;
+}
 module.exports = Bits;
 
 /* NOTES

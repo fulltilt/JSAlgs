@@ -77,4 +77,20 @@ describe("Bits", function() {
   it('tests bitVectorSort2', function() {
     b.bitVectorSort2([50,6,2,1,8,10,30]);
   });
+
+  it('tests add', function() {
+    expect(b.add(15, 5)).toEqual(20);
+  });
+
+  it('tests subtract', function() {
+    expect(b.subtract(15, 5)).toEqual(10);
+  });
+
+  it('tests multiply', function() {
+    expect(b.multiply(15, 5)).toEqual(75);
+  });
+
+  it('tests divide', function() {
+    expect(b.divide(15, 5)).toEqual(3);
+  });
 });

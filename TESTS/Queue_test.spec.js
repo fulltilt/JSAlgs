@@ -1,8 +1,9 @@
 var Queue = require('../Queue.js');
 
 describe("Queue", function() {
-  var minQueue = new Queue(),
-      maxQueue = new Queue();
+  var minQueue = new Queue.ConstantQueue(),
+      maxQueue = new Queue.ConstantQueue(),
+      maxQueueSimple = new Queue.ConstantQueueSimple();
 
   beforeEach(function() {
     minQueue.clear();
@@ -56,5 +57,20 @@ describe("Queue", function() {
     maxQueue.maxDequeue();
     console.log(maxQueue.popStack);
     expect(maxQueue.getMax()).toEqual(5);
+  });
+
+  it('tests ConstantQueueSimple', function() {
+    var arr = [12,5,10,7,11,19];
+    maxQueueSimple.push(19);
+    maxQueueSimple.push(16);
+    expect(maxQueueSimple.getMax()).toEqual(19);
+    maxQueueSimple.push(6);
+    maxQueueSimple.pop();
+    expect(maxQueueSimple.getMax()).toEqual(16);
+    maxQueueSimple.push(15);
+    expect(maxQueueSimple.getMax()).toEqual(16);
+    maxQueueSimple.pop();
+    maxQueueSimple.push(20);
+    expect(maxQueueSimple.getMax()).toEqual(20);
   });
 });

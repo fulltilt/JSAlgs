@@ -21,6 +21,26 @@ describe("Bits", function() {
     expect(b.turnOnAllBitsOfSizeN(11)).toEqual(2047);
   });
 
+  it('tests turnOnLastZero', function() {
+    expect(b.turnOnLastZero(41)).toEqual(43);
+  });
+
+  it('tests turnOffLastConsecutiveRunOfOnes', function() {
+    expect(b.turnOffLastConsecutiveRunOfOnes(39)).toEqual(32);
+  });
+
+  it('tests turnOnLastConsecutiveRunOfZeroes', function() {
+    expect(b.turnOnLastConsecutiveRunOfZeroes(36)).toEqual(39);
+  });
+
+  it('tests getRemainder', function() {
+    expect(b.getRemainder(7, 4)).toEqual(3);
+    expect(b.getRemainder(6, 4)).toEqual(2);
+    expect(b.getRemainder(5, 4)).toEqual(1);
+    expect(b.getRemainder(4, 4)).toEqual(0);
+    expect(b.getRemainder(4, 0)).toEqual(4);
+  });
+
   it('tests swap', function() {
     expect(b.swap(23, 65)).toEqual(65);
   });

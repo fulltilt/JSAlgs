@@ -3,9 +3,13 @@ function Bits() {
   this.setNthBit = setNthBit;
   this.clearNthBit = clearNthBit;
   this.toggleNthBit = toggleNthBit;
+  this.getRemainder = getRemainder;
   this.swap = swap;
   this.parity = parity;
   this.clearLSB = clearLSB;
+  this.turnOnLastZero = turnOnLastZero;
+  this.turnOnLastConsecutiveRunOfZeroes = turnOnLastConsecutiveRunOfZeroes;
+  this.turnOffLastConsecutiveRunOfOnes = turnOffLastConsecutiveRunOfOnes;
   this.isPowerOf2 = isPowerOf2;
   this.getLSBIndex = getLSBIndex;
   this.isIthBitSet = isIthBitSet;
@@ -47,6 +51,11 @@ function toggleNthBit(num, n) {
   return num ^ (1 << n);
 }
 
+// assumption: n is a power of 2
+function getRemainder(num, n) {
+  return num & ~n;
+}
+
 function swap(a, b) {
   a = a ^ b;
   b = a ^ b;
@@ -80,13 +89,60 @@ function clearLSB(num) {
   ----
   1000 */ 
 
+function turnOnLastZero(num) {
+  return (num | (num + 1));
+  /*var temp = num, 
+      i = 0;
+  while (num > 0) {
+    num = num >> i;
+    if ((num & 1) === 0) {
+      break;
+    } 
+    i += 1;
+  }
+
+  return temp | (1 << i);*/
+}
+/* ex. 43
+  101001
++      1
+  ------
+  101010
+| 101001  // might be hard to see the '|' operator on the far left
+  ------
+  101011 */ 
+
+function turnOffLastConsecutiveRunOfOnes(num) {
+  return (num & (num + 1));
+}
+/* ex. 39
+  100111
++      1
+  ------
+  101000
+& 100111
+  ------
+  100000 */
+
+function turnOnLastConsecutiveRunOfZeroes(num) {
+  return (num | (num - 1));
+}
+/* ex. 36
+  100100
+-      1
+  ------
+  100011
+| 100111  // might be hard to see the '|' operator on the far left
+  ------
+  100111 */
+
 // ex. for n = 3:   8: 1000; 8 - 1 = 7: 111
 function turnOnAllBitsOfSizeN(n) {
   return (1 << n) - 1;
 }
 
 // Apress #36: determine whether a number is a power of 2
-// note: numbers that are a power of 2 only have one 1 bit set (ex. 4 = 100, 8 = 1000, etc.). Uses this fact and applies clearLSB algo
+// note: numbers that are a power of 2 only have one 1 bit set (ex. 4 = 100, 8 = 1000, etc.). Uses this fact and applies clearLSB algorithm
 function isPowerOf2(num) {
   return ((num !== 0) && ((num & (num - 1)) === 0));
 }

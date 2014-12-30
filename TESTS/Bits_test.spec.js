@@ -3,6 +3,24 @@ var Bit = require('../Bits.js');
 describe("Bits", function() {
   var b = new Bit();
 
+  it('tests decimalToBinary', function() {
+    expect(b.decimalToBinary(34)).toEqual('100010'); // 34 = 100010
+  });
+
+  it('tests setNthBit', function() {
+    expect(b.setNthBit(34, 3)).toEqual(42); // 34 = 100010; 42 = 101010
+  });
+
+  it('tests toggleNthBit', function() {
+    expect(b.toggleNthBit(40, 2)).toEqual(44);
+    expect(b.toggleNthBit(44, 2)).toEqual(40);
+  });
+
+  it('tests turnOnAllBitsOfSizeN', function() {
+    expect(b.turnOnAllBitsOfSizeN(3)).toEqual(7);
+    expect(b.turnOnAllBitsOfSizeN(11)).toEqual(2047);
+  });
+
   it('tests swap', function() {
     expect(b.swap(23, 65)).toEqual(65);
   });
@@ -12,6 +30,10 @@ describe("Bits", function() {
     expect(b.parity(1)).toEqual(1);
     expect(b.parity(3)).toEqual(2);
     expect(b.parity(15)).toEqual(4);
+  });
+
+  it('tests clearNthBit', function() {
+    expect(b.clearNthBit(42, 1)).toEqual(40); // 42 = 101010; 40 = 101000
   });
 
   it('tests clearLSB', function() {

@@ -1,10 +1,15 @@
 function Bits() {
+  this.decimalToBinary = decimalToBinary;
+  this.setNthBit = setNthBit;
+  this.clearNthBit = clearNthBit;
+  this.toggleNthBit = toggleNthBit;
   this.swap = swap;
   this.parity = parity;
   this.clearLSB = clearLSB;
   this.isPowerOf2 = isPowerOf2;
   this.getLSBIndex = getLSBIndex;
   this.isIthBitSet = isIthBitSet;
+  this.turnOnAllBitsOfSizeN = turnOnAllBitsOfSizeN;
   this.extractLowestSetBit = extractLowestSetBit;
   this.countModifiedBits = countModifiedBits;
   this.numToGrayCode = numToGrayCode;
@@ -15,6 +20,31 @@ function Bits() {
   this.subtract = subtract;
   this.multiply = multiply;
   this.divide = divide;
+}
+
+function decimalToBinary(n) {
+  var stack = [];
+
+  while (n > 0) {
+    stack.push(n % 2);
+    n = n >> 1;
+  }
+
+  return stack.reverse().join('');
+}
+
+function setNthBit(num, n) {
+  num = num | (1 << n);
+  return num;
+}
+
+// ex. 42: 101010; 1 << 1: 000010; ~(1 << 1): 111101; 42 & ~(1 << 1) = 101000
+function clearNthBit(num, n) {
+  return num & ~(1 << n);
+}
+
+function toggleNthBit(num, n) {
+  return num ^ (1 << n);
 }
 
 function swap(a, b) {
@@ -37,6 +67,9 @@ function parity(num) {
   return count;
 }
 
+function clearLSB(num) {
+  return num & (num - 1);
+}
 // clear least-significant (rightmost) bit (see explanation in Apress p.103)
 /* ex. 
   1100
@@ -46,9 +79,10 @@ function parity(num) {
 & 1100
   ----
   1000 */ 
-function clearLSB(num) {
-  return num & (num - 1);
-  // or return num & ~1;
+
+// ex. for n = 3:   8: 1000; 8 - 1 = 7: 111
+function turnOnAllBitsOfSizeN(n) {
+  return (1 << n) - 1;
 }
 
 // Apress #36: determine whether a number is a power of 2
@@ -123,6 +157,7 @@ function getLSBIndex(num) {
 // check whether ith bit is set
 function isIthBitSet(num, i) {
   return ((num >> i) & 1) === 1;
+  // can do: return num & (1 << i);   but the caller what have to test whether or not the returned value was 0 or not
 }
 
 // Programming Pearls p.4: sort a disk file with up to n^7 non-duplicate numbers with a limited amount of memory. I believe merge and quicksort can't be used

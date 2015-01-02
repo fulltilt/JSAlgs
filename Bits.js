@@ -366,4 +366,12 @@ module.exports = Bits;
 -signed shift operator: >>
 -unsigned shift operator: >>>
 
+-Twos complement
+ex. -35 
+1. Find positive binary representation: 35 = 100011 in binary but add leading zero which will represent the negative #: 0100011
+2. Flip bits: 1011100
+3. Add one to #: 1011100
+                 +     1
+                 -------
+                 1011101  = -64 + 16 + 8 + 4 + 1 = -35
 */

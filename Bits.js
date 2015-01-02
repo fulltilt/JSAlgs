@@ -357,6 +357,38 @@ function divide(num1, num2) {
 
   return result;
 }
+
+/* UVa 725: find and display all pairs of 5-digit #'s that collectively use the digits 0 through 9 once each such that the first # divided by the 2nd is equal to an interger N
+*/
+function divisionUsingAllInts() {
+  var N = 62;
+
+  for (var fghij = 1234; fghij <= 98765 / N; fghij++) {
+    var abcde = fghij * N,     // this way abcde and fghij are at most 5 digits
+        tmp, used = 0;
+
+    if (fghij < 10000) { // if digit f=0, then we have to flag the 0th bit   
+      used = 1; // set used to 1 which essentially sets the 0th bit
+    }
+
+    tmp = abcde;
+    while (tmp > 0) {
+      used |= 1 << (tmp % 10);
+      tmp /= 10;
+    }
+
+    tmp = fghij;
+    while (tmp > 0) {
+      used |= 1 << (tmp % 10);
+      tmp /= 10;
+    }
+
+    if (used === (1 << 10) - 1) {  // 1023 = 1111111111 (bits 0-9 are set)  (note: uses trick from turnOnAllBitsOfSizeN())
+      console.log(fghij + " / " + abcde + " = " + N);
+    }
+  }
+}
+
 module.exports = Bits;
 
 /* NOTES

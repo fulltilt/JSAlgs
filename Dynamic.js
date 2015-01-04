@@ -190,7 +190,7 @@ function dynamicKnapsack(capacity, size, value, n) {
 } */
 
 /*
-Notes: 
+Notes for dynamicKnapsack: 
  -just like in least common substring problem, top row and far left row stay all zeroes
  -each row represents having the first n items available i.e. row 0 has no items available, row 1 only has the first item available, etc.
  -each column represents the total capacity i.e. the capacity is 0 in column 0, the capacity is 1 in column 1, etc.
@@ -236,6 +236,7 @@ var result = [],
 console.log(dynamicCoinChange(15, [1,3,9,10], 0, result, count));
 console.log(count.count); */
 
+/*
 function dynamicCoinChange(sum, values) {
   var table = [];
   table[0] = 0
@@ -258,6 +259,7 @@ function dynamicCoinChange(sum, values) {
 
   return table[sum];
 }
+*/
 
 /* same as above but keeps track of which coins are used */
 function dynamicCoinChange2(sum, values) {
@@ -286,6 +288,24 @@ function dynamicCoinChange2(sum, values) {
     console.log(i[2]);
   }
   return table[sum][0];
+}
+
+// Refactored dynamicCoinChange() using backtracking and memoization table
+function dynamicCoinChange(sum, values, n, table) {
+  if (n === values.length || sum === 0) {
+    return 0;
+  }
+
+  if (table[sum][n]) {
+    return table[sum][n];
+  }
+
+  if (values[n] > sum) {
+    return table[sum][n] = dynamicCoinChange(sum, values, n + 1, table);
+  } else {
+    return table[sum][n] = Math.max(1 + dynamicCoinChange(sum - values[n], values, n + 1, table),
+                                        dynamicCoinChange(sum, values, n + 1, table));
+  }
 }
 
 // 
@@ -703,5 +723,6 @@ Common themes with dynamic programming solutions:
   -update: you should be able to deduce the 'path' from the table making the code bloat unnecessary (https://class.coursera.org/algo2-003/lecture/221)
 
 -http://www.quora.com/Are-there-any-good-resources-or-tutorials-for-dynamic-programming-besides-the-TopCoder-tutorial
--top-down DP onl visits the required states whereas bottom-up DP visits all distinct states 
+-top-down DP only visits the required states whereas bottom-up DP visits all distinct states 
+-top-down is recursive backtracking with a memoization table. bottom-up is iterative with a memoization table
 */

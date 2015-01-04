@@ -31,14 +31,36 @@ describe("Dynamic", function() {
     }
 
     expect(d.dynamicKnapsack(capacity, size, value, 0, table)).toEqual(23);
-    console.log(table);
+    //console.log(table);
   });
 
   it('tests dynamicCoinChange', function() {
-    var sum = 11;
-    var values = [1, 3, 5];
-    expect(d.dynamicCoinChange(sum, values)).toEqual(3);
-    expect(d.dynamicCoinChange(15, [1,3,9,10])).toEqual(3);
+    var sum = 11,
+        values = [1, 3, 5],
+        table = [], i, j;
+    //expect(d.dynamicCoinChange(sum, values)).toEqual(3);
+    //expect(d.dynamicCoinChange(15, [1,3,9,10])).toEqual(3);
+    
+    for (i = 0; i <= sum; ++i) {
+      table[i] = [];
+      for (j = 0; j < values.length; j++) {
+        table[i][j] = 0;
+      }
+    }
+
+    expect(d.dynamicCoinChange(sum, values, 0, table)).toEqual(3);
+
+    sum = 15;
+    values = [1,3,9,10];
+    table = [];
+
+    for (i = 0; i <= sum; ++i) {
+      table[i] = [];
+      for (j = 0; j < values.length; j++) {
+        table[i][j] = 0;
+      }
+    }
+    expect(d.dynamicCoinChange(sum, values, 0, table)).toEqual(3);    
   });
 
   it('tests longestIncreasingSequence', function() {

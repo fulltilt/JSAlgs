@@ -404,13 +404,96 @@ function findSubSquares(matrix, k) {
 // http://www.geeksforgeeks.org/dynamic-programming-set-27-max-sum-rectangle-in-a-2d-matrix/
 function maxSumRectangle(matrix) {
   var rows = matrix.length,
-      columns = matrix[0].length;
+      columns = matrix[0].length, 
+
+      // variables to store the final output
+      maxSum = -Infinity, 
+      finalLeft, finalRight, finalTop, finalBottom,
+
+      // temp variables
+      left, right, i,
+      temp = [], sum, 
+      start = { start: 0 }, 
+      finish = { finish: 0 };
+
+  // set the left column
+  for (left = 0; left < columns; ++left) {
+    for (i = 0; i < columns; i++) { //initialize all elements of temp to zero
+      temp[i] = 0;
+    }
+
+    // Set the right column for the left column set by outer loop
+    for (right = left; right < columns; ++right) {
+      // Calculate sum between current left and right for every row 'i' (note: still trying to get how this works out how we calculate each row)
+      for (i = 0; i < rows; ++i) {
+        temp[i] += matrix[i][right];
+      }
+//console.log(temp);
+      // Find the max sum subarray in temp[]. The kadane() fxn also sets values of start and finish. So 'sum' is sum of
+      // rectangle between (start, left) and (finish, right) which is the max sum with boundary columns strictly as left and right
+      sum = kadane(temp, start, finish, rows);
+//console.log(sum);
+      // Compare sum with max sum so far. If sum is more, then update maxSum and other output values
+      if (sum > maxSum) {
+        maxSum = sum;
+        finalLeft = left;
+        finalRight = right;
+        finalTop = start.start;
+        finalBottom = finish.finish;
+      }
+    }
+  }
+
+  console.log("(Top, Left) ", finalTop, " ", finalLeft);
+  console.log("(Bottom, Right) ", finalBottom, " ", finalRight);
+  console.log("Max sum is: ", maxSum);
+
+  return maxSum;
+}
+
+// Implementation of Kadane's algorithm for 1D array. The fxn returns the max sum and stores starting and ending indices of the
+// max sum subarray at addresses pointed by start and finish pointers respectively
+// NOTE: took out logic to account for when the array is all negatives for simplicity
+function kadane(arr, start, finish, n) {
+  var sum = 0, 
+      maxSum = -Infinity, i;
+
+  //finish.finish = -1;   // initial value to check for all negative values case
+
+  var localStart = 0; // local variable
+
+  for (i = 0; i < n; ++i) {
+    sum += arr[i];
+    
+    if (sum < 0) {
+      sum = 0;
+      localStart = i + 1;
+    } else if (sum > maxSum) {
+      maxSum = sum;
+      start.start = localStart;
+      finish.finish = i;
+    }
+  }
+
+  // There is at least one non-negative #
+  if (finish.finish !== -1) {
+    return maxSum;
+  }
+
+  // Special Case: when all #'s in arr[] are negative
+  for (i = 1; i < n; i++) {
+    if (arr[i] > maxSum) {
+      maxSum = arr[i];
+      start.start = finish.finish = i;
+    }
+  }
+
+  return maxSum;
 }
 
 // http://www.geeksforgeeks.org/inplace-m-x-n-size-matrix-transpose/
 function inPlaceTranspose(matrix) {
-  var rows = matrix.length,
-      columns = matrix[0].length;
+  
 }
 
 // http://www.geeksforgeeks.org/print-matrix-diagonally/

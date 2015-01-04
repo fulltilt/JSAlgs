@@ -16,8 +16,22 @@ describe("Dynamic", function() {
     var size = [3,4,7,8,9];
     var capacity = 16;
     var n = 5;
-    expect(d.recursiveKnapsack(capacity, size, value, n)).toEqual(23);
-    expect(d.dynamicKnapsack(capacity, size, value, n)).toEqual(23);
+    //expect(d.recursiveKnapsack(capacity, size, value, n)).toEqual(23);
+    //expect(d.dynamicKnapsack(capacity, size, value, n)).toEqual(23);
+    expect(d.recursiveKnapsack(capacity, size, value, 0)).toEqual(23);
+
+    var table = [],
+        length = size.length, i, j;
+
+    for (i = 0; i <= capacity; i++) {
+      table[i] = [];
+      for (j = 0; j < length; j++) {
+        table[i][j] = -1;
+      }
+    }
+
+    expect(d.dynamicKnapsack(capacity, size, value, 0, table)).toEqual(23);
+    console.log(table);
   });
 
   it('tests dynamicCoinChange', function() {
@@ -36,6 +50,7 @@ describe("Dynamic", function() {
 
   it('tests longestIncreasingSubsequence', function() {
     expect(d.longestIncreasingSubsequence([10, 22, 9, 33, 21, 50, 41, 60, 80])).toEqual(6);
+    expect(d.longestIncreasingSubsequence([-7.10,9,2,3,3,8,8,1])).toEqual(4);
   });
 
   it('tests word break', function() {

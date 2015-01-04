@@ -51,3 +51,17 @@ function biggestNumCompare(x, y) {
 
   return parseInt(YX) - parseInt(XY);   // returns biggest num. To get the smallest num: parseInt(XY) - parseInt(YX);
 }
+
+// how to recursively try and not try every element in an array without having to splice (note: inefficient as there's a lot of repeated operations)
+function recursiveKnapsack(capacity, size, value, n) {
+  if (capacity === 0 || n === size.length) {
+    return 0;
+  }
+
+  if (size[n] > capacity) {
+    return recursiveKnapsack(capacity, size, value, n + 1);
+  } else {
+    return Math.max(value[n] + recursiveKnapsack(capacity - size[n], size, value, n + 1),
+                    recursiveKnapsack(capacity, size, value, n + 1));
+  }
+}

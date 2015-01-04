@@ -119,6 +119,38 @@ function max(a, b) {
 
 // inefficient as many subproblems are repeated
 function recursiveKnapsack(capacity, size, value, n) {
+  if (capacity === 0 || n === size.length) {
+    return 0;
+  }
+
+  if (size[n] > capacity) {
+    return recursiveKnapsack(capacity, size, value, n + 1);
+  } else {
+    return Math.max(value[n] + recursiveKnapsack(capacity - size[n], size, value, n + 1),
+                    recursiveKnapsack(capacity, size, value, n + 1));
+  }
+}
+
+// same as above but added a memoization table
+function dynamicKnapsack(capacity, size, value, n, table) {
+  if (capacity === 0 || n === size.length) {
+    return 0;
+  }
+
+  if (table[capacity][n] !== -1) {
+    return table[capacity][n];
+  }
+
+  if (size[n] > capacity) {
+    return table[capacity][n] = dynamicKnapsack(capacity, size, value, n + 1, table);
+  } else {
+    return table[capacity][n] = Math.max(value[n] + dynamicKnapsack(capacity - size[n], size, value, n + 1,table),
+                    dynamicKnapsack(capacity, size, value, n + 1, table));
+  }
+}
+
+/* original implemntations where fxns are initially called with n = length of size (rewrote as going right to left was harder for me to reason out)
+function recursiveKnapsack(capacity, size, value, n) {
   if (n == 0 || capacity == 0) {
     return 0; 
   }
@@ -155,7 +187,7 @@ function dynamicKnapsack(capacity, size, value, n) {
   }
 
   return K[n][capacity];
-}
+} */
 
 /*
 Notes: 
@@ -256,7 +288,7 @@ function dynamicCoinChange2(sum, values) {
   return table[sum][0];
 }
 
-// http://www.geeksforgeeks.org/dynamic-programming-set-3-longest-increasing-subsequence/
+// 
 function longestIncreasingSequence(arr) {
   var length = arr.length;
   if (length === 0) {
@@ -314,13 +346,17 @@ function lis(arr) {
 }
 */
 
-// http://www.geeksforgeeks.org/dynamic-programming-set-3-longest-increasing-subsequence/
+/* http://www.geeksforgeeks.org/dynamic-programming-set-3-longest-increasing-subsequence/
+-Recurrence: LIS(0) = 1
+             LIS(i) = max(LIS(j) + 1, For all j from 0 through i - 1 and A[j] < A[i] (recursive case))
+*/
 function longestIncreasingSubsequence(arr) {
   var lis = [], i, j, max = 0, length = arr.length;
 
   // initialize lis values for all indexes
-  for (i = 0; i < length; i++) {
-    lis[i] = 1;
+  lis[0] = 1; // by definition, index 0 is a lis of length 1
+  for (i = 1; i < length; i++) {
+    lis[i] = 0;
   }
 
   // compute optimized lis values in bottom up manner
@@ -328,16 +364,24 @@ function longestIncreasingSubsequence(arr) {
     for (j = 0; j < i; j++) {
       if (arr[i] > arr[j] && lis[i] < lis[j] + 1) {
         lis[i] = lis[j] + 1;
+
+        if (max < lis[i]) { // check for max lis length
+          max = lis[i];
+        }
       }
     }
   }
 
-  // pick maximum of all lis values
-  for (i = 0; i < length; i++) {
-    if (max < lis[i]) {
-      max = lis[i];
-    }
-  }
+/* 
+[ 1, 0, 0, 0, 0, 0, 0, 0 ]
+note: this is lis state after each iteration of the outer for loop
+[ 1, 2, 0, 0, 0, 0, 0, 0 ]
+[ 1, 2, 2, 0, 0, 0, 0, 0 ]
+[ 1, 2, 2, 3, 0, 0, 0, 0 ]
+[ 1, 2, 2, 3, 3, 0, 0, 0 ]
+[ 1, 2, 2, 3, 3, 4, 0, 0 ]
+[ 1, 2, 2, 3, 3, 4, 4, 0 ]
+[ 1, 2, 2, 3, 3, 4, 4, 2 ] */
 
   return max;
 }
@@ -659,5 +703,5 @@ Common themes with dynamic programming solutions:
   -update: you should be able to deduce the 'path' from the table making the code bloat unnecessary (https://class.coursera.org/algo2-003/lecture/221)
 
 -http://www.quora.com/Are-there-any-good-resources-or-tutorials-for-dynamic-programming-besides-the-TopCoder-tutorial
-
+-top-down DP onl visits the required states whereas bottom-up DP visits all distinct states 
 */

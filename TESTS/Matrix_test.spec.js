@@ -126,6 +126,15 @@ describe('Matrix', function() {
 
   });
 
+  it('tests maxSumRectangle', function() {
+    var matrix = [[ 0, -2, -7,  0],
+                  [ 9,  2, -6,  2],
+                  [-4,  1, -4,  1],
+                  [-1,  8,  0, -2]
+                 ];
+    expect(m.maxSumRectangle(matrix)).toEqual(15);
+  });
+  
   it('tests printMatrixDiagonally', function() {
     var matrix = [[1, 2, 3, 4],
                   [5, 6, 7, 8],

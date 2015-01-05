@@ -1,5 +1,6 @@
 function Dynamic() {
-  this.nthFibonacci = nthFibonacci;
+  this.nthFibonacciRecursive = nthFibonacciRecursive;
+  this.nthFibonacciIterative = nthFibonacciIterative;
   this.longestCommonSubsequence = longestCommonSubsequence;
   this.recursiveKnapsack = recursiveKnapsack;
   this.dynamicKnapsack = dynamicKnapsack;
@@ -45,8 +46,28 @@ function Dynamic() {
 }
 
 // http://www.geeksforgeeks.org/program-for-nth-fibonacci-number/
-function nthFibonacci() {
+function nthFibonacciRecursive(n, table) {
+  if (n === 0 || n === 1) {
+    return 1;
+  }
 
+  if (table[n]) {
+    return table[n];
+  }
+
+  return table[n] = nthFibonacciRecursive(n - 1, table) + nthFibonacciRecursive(n - 2, table);
+}
+
+function nthFibonacciIterative(n) {
+  var table = [], i;
+  table[0] = 1;
+  table[1] = 1;
+  
+  for (i = 2; i <= n; i++) {
+    table[i] = table[i - 1] + table[i - 2];
+  }
+
+  return table[n];
 }
 
 // http://www.geeksforgeeks.org/dynamic-programming-set-4-longest-common-subsequence/

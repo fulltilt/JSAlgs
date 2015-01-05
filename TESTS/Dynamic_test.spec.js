@@ -3,6 +3,11 @@ var Dynamic = require('../Dynamic.js');
 describe("Dynamic", function() {
   var d = new Dynamic();
 
+  it('tests nthFibonacci', function() {
+    expect(d.nthFibonacciIterative(45)).toEqual(1836311903);
+    expect(d.nthFibonacciRecursive(45, [])).toEqual(1836311903);
+  });
+  
   it("tests longest common substring", function() {
     expect(d.longestCommonSubsequence('back', 'cace')).toEqual('ac');
     expect(d.longestCommonSubsequence('abbcc', 'dbbcc')).toEqual('bbcc');

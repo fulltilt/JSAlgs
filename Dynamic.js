@@ -1,17 +1,17 @@
 function Dynamic() {
   this.nthFibonacciRecursive = nthFibonacciRecursive;
   this.nthFibonacciIterative = nthFibonacciIterative;
-  this.longestCommonSubsequence = longestCommonSubsequence;
   this.recursiveKnapsack = recursiveKnapsack;
   this.dynamicKnapsack = dynamicKnapsack;
   this.dynamicCoinChange = dynamicCoinChange;
+  this.maxWines = maxWines;
+  this.largestContiguousSumSubarray = largestContiguousSumSubarray;
+  this.longestCommonSubsequence = longestCommonSubsequence;
   this.longestIncreasingSequence = longestIncreasingSequence;
   this.longestIncreasingSubsequence = longestIncreasingSubsequence;
   this.wordBreak = wordBreak;
-  this.maxWines = maxWines;
   this.editDistance = editDistance;
   this.minCostPath = minCostPath;
-  this.largestContiguousSumSubarray = largestContiguousSumSubarray;
   this.maxSumOfNonAdjacentElements = maxSumOfNonAdjacentElements;
   this.minNumOfJumpsToEnd = minNumOfJumpsToEnd;
   this.countAllPossiblePaths = countAllPossiblePaths;
@@ -68,74 +68,6 @@ function nthFibonacciIterative(n) {
   }
 
   return table[n];
-}
-
-// http://www.geeksforgeeks.org/dynamic-programming-set-4-longest-common-subsequence/
-function longestCommonSubsequence(string1, string2) {
-  var lcsLength = 0;  // init max lcs length
-
-  // initialize 2D array with all zeroes. The dimensions will be (string1.length + 1) X (string2.length + 1)
-  // Each row represents the incrementing starting index of the first string. Because of this, the lower left half 'triangle' remain all zeroes
-  var table = [];
-      len1 = string1.length,
-      len2 = string2.length;
-  for (var row = 0; row <= len1; row++) {
-    table[row] = [];
-    for(var col = 0; col <= len2; col++) {
-      table[row][col] = 0;
-    }
-  }
-
-  // fill table
-  var lcsEndIndex = 0;  // index in second string where the lcs ends. Used to return the actual lcs
-  for (var i = 0; i < len1; i++) {
-    for (var j = 0; j < len2; j++) {
-      if(string1[i] === string2[j]) {
-        table[i + 1][j + 1] = table[i][j] + 1;  // if string indices match, increment index that is one to the right and one below using the current index as a reference
-
-        if(table[i + 1][j + 1] > lcsLength) {   // if updated index is greater than lcsLength, update lcsLength and update lcsEndIndex on the 2nd string
-          lcsLength = table[i + 1][j + 1];
-          lcsEndIndex = j + 1;
-        }
-      } else {  
-        table[i + 1][j + 1] = 0;  // if no match, set the index that is one to the right and one below to zero
-      }
-    }
-  }
-
-  // splice the lcs out of the second string using lcsLength and lcsEndIndex
-  var lcs = ''; 
-  if (lcsLength === 0) {
-    return ''; 
-  } else {
-    var startIndex = lcsEndIndex - lcsLength;
-    for (i = startIndex; i < startIndex + lcsLength; ++i) {
-      lcs += string2[i];
-    }
-  }
-    return lcs;
-}
-
-/* 
-Notes: 
- -the far left column and top column don't get touched but is used for the calculations
- -based on: http://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Longest_common_substring#JavaScript
- -each row represents the starting position in the first string and each column represents the corresponding index in the 2nd string (assuming 
-  the first row and first column were omitted)
- -for the line: 'table[i + 1][j + 1] = table[i][j] + 1', I stripped out if/else statement as it seemed redundant. Check if there's errors later
-
- ex.('abbcc', 'dbbccc')
-
-[ [ 0, 0, 0, 0, 0, 0, 0 ],
-  [ 0, 0, 0, 0, 0, 0, 0 ],
-  [ 0, 0, 1, 1, 0, 0, 0 ],
-  [ 0, 0, 1, 2, 0, 0, 0 ],
-  [ 0, 0, 0, 0, 3, 1, 1 ],
-  [ 0, 0, 0, 0, 1, 4, 2 ] ]
-*/
-
-function max(a, b) {
-  return (a > b) ? a : b;
 }
 
 // inefficient as many subproblems are repeated
@@ -304,9 +236,9 @@ function dynamicCoinChange2(sum, values) {
       }
     }
   }
-  console.log(table);
+  //console.log(table);
   for (i = table[sum]; i[2] !== 0; i = table[i[1]]) {
-    console.log(i[2]);
+    //console.log(i[2]);
   }
   return table[sum][0];
 }
@@ -328,6 +260,168 @@ function dynamicCoinChange(sum, values, n, table) {
                                         dynamicCoinChange(sum, values, n + 1, table));
   }
 }
+
+// http://www.quora.com/Are-there-any-good-resources-or-tutorials-for-dynamic-programming-besides-the-TopCoder-tutorial
+/* backtrack
+function maxWines(arr, lo, hi) {
+  if (lo > hi) {
+    return 0;
+  }
+
+  // (hi - lo + 1) is the # of unsold wines
+  var year = arr.length - (hi - lo + 1) + 1;
+  return Math.max(maxWines(arr, lo + 1, hi) + arr[lo] * year,
+                  maxWines(arr, lo, hi - 1) + arr[hi] * year);
+}
+*/
+
+function maxWines(arr, cache, lo, hi) {
+  if (lo > hi) {
+    return 0;
+  }
+
+  if (cache[lo][hi] !== -1) {
+    return cache[lo][hi];
+  }
+
+  // (hi - lo + 1) is the # of unsold wines
+  var year = arr.length - (hi - lo + 1) + 1;
+
+  return cache[lo][hi] = Math.max(maxWines(arr, cache, lo + 1, hi) + arr[lo] * year,
+                                  maxWines(arr, cache, lo, hi - 1) + arr[hi] * year);
+}
+
+// http://www.geeksforgeeks.org/largest-sum-contiguous-subarray/, http://www.geeksforgeeks.org/dynamic-programming-set-14-maximum-sum-increasing-subsequence/
+function largestContiguousSumSubarray(arr) {
+  var currentSum = arr[0],
+      max = arr[0],
+      i;
+
+  for (i = 1; i < arr.length; i++) {
+    currentSum = Math.max(arr[i], currentSum + arr[i]);
+    max = Math.max(currentSum, max);
+  }
+
+  return max;
+}
+
+// http://www.geeksforgeeks.org/dynamic-programming-set-4-longest-common-subsequence/
+/* Backtracking
+function longestCommonSubsequence(string1, string2) {
+  if (string1.length === 0 || string2.length === 0) {
+    return 0;
+  }
+
+  if (string1[0] === string2[0]) {
+    return 1 + longestCommonSubsequence(string1.substring(1), string2.substring(1));
+  } else {
+    return Math.max(longestCommonSubsequence(string1, string2.substring(1)),
+                    longestCommonSubsequence(string1.substring(1), string2));
+  }
+} */
+
+function longestCommonSubsequence(string1, string2) {
+  var length1 = string1.length,
+      length2 = string2.length,
+      cache = [], i, j;
+
+  for (i = 0; i < length1; i++) {
+    cache[i] = [];
+    for (j = 0; j < length2; j++) {
+      cache[i][j] = -1;
+    }
+  }
+
+  return longestCommonSubsequenceHelper(string1, string2, 0, 0, cache);  
+/* for first test case ABCDGH and AEDFHR
+[ [ 3, -1, -1, -1, -1, -1 ],
+  [ -1, 2, 2, 1, 1, 0 ],
+  [ -1, 2, 2, 1, 1, 0 ],
+  [ -1, 2, 2, 1, 1, 0 ],
+  [ -1, 1, 1, 1, 1, 0 ],
+  [ -1, 1, 1, 1, 1, 0 ] ] */
+}
+
+function longestCommonSubsequenceHelper(string1, string2, n, m, cache) {
+  if (n === string1.length || m === string2.length) {
+    return 0;
+  }
+
+  if (cache[n][m] !== -1) {
+    return cache[n][m];
+  }
+
+  if (string1[n] === string2[m]) {
+    return cache[n][m] = 1 + longestCommonSubsequenceHelper(string1, string2, n + 1, m + 1, cache);
+  } else {
+    return cache[n][m] = Math.max(longestCommonSubsequenceHelper(string1, string2, n, m + 1, cache),
+                    longestCommonSubsequenceHelper(string1, string2, n + 1, m, cache));
+  }
+}
+
+// http://www.geeksforgeeks.org/longest-common-substring/
+function longestCommonSubstring(string1, string2) {
+  var lcsLength = 0;  // init max lcs length
+
+  // initialize 2D array with all zeroes. The dimensions will be (string1.length + 1) X (string2.length + 1)
+  // Each row represents the incrementing starting index of the first string. Because of this, the lower left half 'triangle' remain all zeroes
+  var table = [];
+      len1 = string1.length,
+      len2 = string2.length;
+  for (var row = 0; row <= len1; row++) {
+    table[row] = [];
+    for(var col = 0; col <= len2; col++) {
+      table[row][col] = 0;
+    }
+  }
+
+  // fill table
+  var lcsEndIndex = 0;  // index in second string where the lcs ends. Used to return the actual lcs
+  for (var i = 0; i < len1; i++) {
+    for (var j = 0; j < len2; j++) {
+      if(string1[i] === string2[j]) {
+        table[i + 1][j + 1] = table[i][j] + 1;  // if string indices match, increment index that is one to the right and one below using the current index as a reference
+
+        if(table[i + 1][j + 1] > lcsLength) {   // if updated index is greater than lcsLength, update lcsLength and update lcsEndIndex on the 2nd string
+          lcsLength = table[i + 1][j + 1];
+          lcsEndIndex = j + 1;
+        }
+      } else {  
+        table[i + 1][j + 1] = 0;  // if no match, set the index that is one to the right and one below to zero
+      }
+    }
+  }
+
+  // splice the lcs out of the second string using lcsLength and lcsEndIndex
+  var lcs = ''; 
+  if (lcsLength === 0) {
+    return ''; 
+  } else {
+    var startIndex = lcsEndIndex - lcsLength;
+    for (i = startIndex; i < startIndex + lcsLength; ++i) {
+      lcs += string2[i];
+    }
+  }
+    return lcs;
+}
+
+/* 
+Notes: 
+ -the far left column and top column don't get touched but is used for the calculations
+ -based on: http://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Longest_common_substring#JavaScript
+ -each row represents the starting position in the first string and each column represents the corresponding index in the 2nd string (assuming 
+  the first row and first column were omitted)
+ -for the line: 'table[i + 1][j + 1] = table[i][j] + 1', I stripped out if/else statement as it seemed redundant. Check if there's errors later
+
+ ex.('abbcc', 'dbbccc')
+
+[ [ 0, 0, 0, 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0, 0, 0, 0 ],
+  [ 0, 0, 1, 1, 0, 0, 0 ],
+  [ 0, 0, 1, 2, 0, 0, 0 ],
+  [ 0, 0, 0, 0, 3, 1, 1 ],
+  [ 0, 0, 0, 0, 1, 4, 2 ] ]
+*/
 
 // 
 function longestIncreasingSequence(arr) {
@@ -437,7 +531,7 @@ function wordBreak(words, input) {
   var length = input.length;
 
   for (var i = 1; i <= length; i++) {
-console.log(input.substr(0, i) + ' ' + input.substr(i, length - 1)); // interesting to see the algorithms progression
+//console.log(input.substr(0, i) + ' ' + input.substr(i, length - 1)); // interesting to see the algorithms progression
     if ((words.indexOf(input.substr(0, i)) !== -1) &&
          this.wordBreak(words, input.substr(i, length - i))) {
 //console.log(input.substr(0, i)); // prints out words in reverse order if success
@@ -447,36 +541,6 @@ console.log(input.substr(0, i) + ' ' + input.substr(i, length - 1)); // interest
 
   return false;
 }
-
-// http://www.quora.com/Are-there-any-good-resources-or-tutorials-for-dynamic-programming-besides-the-TopCoder-tutorial
-/* backtrack
-function maxWines(arr, lo, hi) {
-  if (lo > hi) {
-    return 0;
-  }
-
-  // (hi - lo + 1) is the # of unsold wines
-  var year = arr.length - (hi - lo + 1) + 1;
-  return Math.max(maxWines(arr, lo + 1, hi) + arr[lo] * year,
-                  maxWines(arr, lo, hi - 1) + arr[hi] * year);
-}
-*/
-function maxWines(arr, cache, lo, hi) {
-  if (lo > hi) {
-    return 0;
-  }
-
-  if (cache[lo][hi] !== -1) {
-    return cache[lo][hi];
-  }
-
-  // (hi - lo + 1) is the # of unsold wines
-  var year = arr.length - (hi - lo + 1) + 1;
-
-  return cache[lo][hi] = Math.max(maxWines(arr, cache, lo + 1, hi) + arr[lo] * year,
-                                  maxWines(arr, cache, lo, hi - 1) + arr[hi] * year);
-}
-
 
 // http://www.geeksforgeeks.org/dynamic-programming-set-5-edit-distance/
 function editDistance(str1, str2) {
@@ -544,20 +608,6 @@ Y    [ 6, 5, 4, 4, 5, 5, 5, 4, 3 ] ]
 // http://www.geeksforgeeks.org/dynamic-programming-set-6-min-cost-path/
 function minCostPath() {
 
-}
-
-// http://www.geeksforgeeks.org/largest-sum-contiguous-subarray/, http://www.geeksforgeeks.org/dynamic-programming-set-14-maximum-sum-increasing-subsequence/
-function largestContiguousSumSubarray(arr) {
-  var currentSum = arr[0],
-      max = arr[0],
-      i;
-
-  for (i = 1; i < arr.length; i++) {
-    currentSum = Math.max(arr[i], currentSum + arr[i]);
-    max = Math.max(currentSum, max);
-  }
-
-  return max;
 }
 
 // http://www.geeksforgeeks.org/maximum-sum-such-that-no-two-elements-are-adjacent/
@@ -673,11 +723,6 @@ function largestIndependentSet() {
 
 // http://www.geeksforgeeks.org/dynamic-programming-set-28-minimum-insertions-to-form-a-palindrome/
 function minInsertionsToFormPalindrome() {
-
-}
-
-// http://www.geeksforgeeks.org/longest-common-substring/
-function longestCommonSubstring() {
 
 }
 

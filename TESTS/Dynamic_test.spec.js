@@ -7,14 +7,6 @@ describe("Dynamic", function() {
     expect(d.nthFibonacciIterative(45)).toEqual(1836311903);
     expect(d.nthFibonacciRecursive(45, [])).toEqual(1836311903);
   });
-  
-  it("tests longest common substring", function() {
-    expect(d.longestCommonSubsequence('back', 'cace')).toEqual('ac');
-    expect(d.longestCommonSubsequence('abbcc', 'dbbcc')).toEqual('bbcc');
-    expect(d.longestCommonSubsequence('abbcc', 'dbbccc')).toEqual('bbcc');
-    expect(d.longestCommonSubsequence('aafweajfiewajofij309afweajfiewajofij309u90sduf3j32oi22u90sduf3j32oi22bbcc', '2gdfgsf23afweaafweajfiewajofij309u90sduf3j32oi22jfiewajofij309u90sduf3j32oi22mbnmm3454354')).toEqual('afweajfiewajofij309u90sduf3j32oi22');
-    expect(d.longestCommonSubsequence('abbcc', 'vsz')).toEqual('');
-  });
 
   it('tests both knapsack problem versions', function() {
     var value = [4,5,10,11,13];
@@ -78,6 +70,19 @@ describe("Dynamic", function() {
   it('tests longestIncreasingSubsequence', function() {
     expect(d.longestIncreasingSubsequence([10, 22, 9, 33, 21, 50, 41, 60, 80])).toEqual(6);
     expect(d.longestIncreasingSubsequence([-7.10,9,2,3,3,8,8,1])).toEqual(4);
+  });
+
+  it('tests longest common subsequence', function() {
+    expect(d.longestCommonSubsequence('ABCDGH', 'AEDFHR')).toEqual(3);
+    expect(d.longestCommonSubsequence('AGGTAB', 'GXTXAYB')).toEqual(4);
+  });
+
+  it("tests longest common substring", function() {
+    expect(d.longestCommonSubstring('back', 'cace')).toEqual('ac');
+    expect(d.longestCommonSubstring('abbcc', 'dbbcc')).toEqual('bbcc');
+    expect(d.longestCommonSubstring('abbcc', 'dbbccc')).toEqual('bbcc');
+    expect(d.longestCommonSubstring('aafweajfiewajofij309afweajfiewajofij309u90sduf3j32oi22u90sduf3j32oi22bbcc', '2gdfgsf23afweaafweajfiewajofij309u90sduf3j32oi22jfiewajofij309u90sduf3j32oi22mbnmm3454354')).toEqual('afweajfiewajofij309u90sduf3j32oi22');
+    expect(d.longestCommonSubstring('abbcc', 'vsz')).toEqual('');
   });
 
   it('tests word break', function() {

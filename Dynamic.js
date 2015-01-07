@@ -9,6 +9,8 @@ function Dynamic() {
   this.longestCommonSubsequence = longestCommonSubsequence;
   this.longestIncreasingSequence = longestIncreasingSequence;
   this.longestIncreasingSubsequence = longestIncreasingSubsequence;
+  this.longestCommonSubstring = longestCommonSubstring;
+  this.longestCommonSubstring2 = longestCommonSubstring2;
   this.wordBreak = wordBreak;
   this.editDistance = editDistance;
   this.minCostPath = minCostPath;
@@ -32,7 +34,6 @@ function Dynamic() {
   this.subsetSum = subsetSum;
   this.largestIndependentSet = largestIndependentSet;
   this.minInsertionsToFormPalindrome = minInsertionsToFormPalindrome;
-  this.longestCommonSubstring = longestCommonSubstring;
   this.diceThrow = diceThrow;
   this.toyGameStrategy = toyGameStrategy;
   this.areStringsInterleaving = areStringsInterleaving;
@@ -359,6 +360,9 @@ function longestCommonSubsequenceHelper(string1, string2, n, m, cache) {
   }
 }
 
+// http://www.geeksforgeeks.org/longest-common-substring/
+// Another recurrence relation: http://www.codeproject.com/Articles/11537/The-Longest-Common-Substring-with-Maximal-Consecut
+// NOTE: this doesn't calculate the actual common substring but just returns the maximal length
 function longestCommonSubstring(string1, string2) {
   var length1 = string1.length,
       length2 = string2.length,
@@ -372,13 +376,12 @@ function longestCommonSubstring(string1, string2) {
   }
 
   var answ =  longestCommonSubstringHelper(string1, string2, 0, 0, cache);
-  console.log(cache);
+  //var answ =  longestCommonSubstringHelper(string1, string2, length1 - 1, length2 - 1, cache);
+  //console.log(cache);
   return answ;
 }
 
-// note: order of n and m should be interchanged
-/*function longestCommonSubstringHelper(string1, string2, i, j, cache) {
-  console.log(i, ' ', j);
+function longestCommonSubstringHelper(string1, string2, i, j, cache) {
   if (i === string1.length || j === string2.length) {
     return 0;
   }
@@ -388,71 +391,34 @@ function longestCommonSubstring(string1, string2) {
   }
 
   if (string1[i] === string2[j]) {
-    // add to count if previous index for both strings are equal else restart the count at 1 (corner case of starting count when n and/or m are zero)
-    if (i > 0 && j > 0 && string1[i - 1] === string2[j - 1]) {
-      //console.log('==',i, ' ', j);
-      //console.log(cache);
-      return cache[i][j] = cache[i - 1][j - 1] + longestCommonSubstringHelper(string1, string2, i + 1, j + 1, cache);
-    } else {
-      return cache[i][j] = 1 + longestCommonSubstringHelper(string1, string2, i + 1, j + 1, cache);
-    }
+    return cache[i][j] = 1 + longestCommonSubstringHelper(string1, string2, i + 1, j + 1, cache);
   } else {
     return cache[i][j] = Math.max(longestCommonSubstringHelper(string1, string2, i, j + 1, cache),
                     longestCommonSubstringHelper(string1, string2, i + 1, j, cache));
   }
-}*/
+}
 
+/* same as above but in reverse order
+-don't know why but this fails for: expect(d.longestCommonSubstring('helohelhello', 'hello')).toEqual(5);
 function longestCommonSubstringHelper(string1, string2, i, j, cache) {
-//  console.log(i, ' ', j);
-  if (i === string1.length || j === string2.length) {
+  if (i === 0 || j === 0) {
     return 0;
   }
 
-  if (string1[i] === string2[j]) {
-    console.log(i, ' ', j)
-    // add to count if previous index for both strings are equal else restart the count at 1 (corner case of starting count when n and/or m are zero)
-    if ((i > 0 && j > 0 && string1[i - 1] === string2[j - 1])) {//console.log('==',i, ' ', j);
-      //console.log(cache);
-      return 1 + longestCommonSubstringHelper(string1, string2, i + 1, j + 1, cache);
-    } else if (i === 0 || j === 0) {//console.log('!=',i, ' ', j);
-      return longestCommonSubstringHelper(string1, string2, i + 1, j + 1, cache);
-    }
-  } else {
-    return Math.max(longestCommonSubstringHelper(string1, string2, i, j + 1, cache),
-                    longestCommonSubstringHelper(string1, string2, i + 1, j, cache));
+  if (cache[i][j] !== -1) {
+    return cache[i][j];
   }
-}
 
-/*
-1. 0 ' ' 0
-2. 0 ' ' 1
-3. 0 ' ' 2
-4. 0 ' ' 3
-5. 0 ' ' 4
-6. 1 ' ' 3
-7. 1 ' ' 4
-8. 2 ' ' 3
-9. 2 ' ' 4
-10.3 ' ' 3
-11.3 ' ' 4
-12.4 ' ' 3
-13.1 ' ' 2
-14.1 ' ' 3 (hits cache)
-15.2 ' ' 2
-16.3 ' ' 3
-17.1 ' ' 1
-18.2 ' ' 2
-19.3 ' ' 3
-20.1 ' ' 0
-21.1 ' ' 1 (hits cache)
-22.2 ' ' 0
-23.3 ' ' 1
-24.3 ' ' 2
-25.3 ' ' 3
-4 ' ' 2
-4 ' ' 1
-*/
+  if (string1[i] === string2[j]) {
+    return cache[i][j] = 1 + longestCommonSubstringHelper(string1, string2, i - 1, j - 1, cache);
+  } else {
+    return cache[i][j] = Math.max(longestCommonSubstringHelper(string1, string2, i, j - 1, cache),
+                                  longestCommonSubstringHelper(string1, string2, i - 1, j, cache));
+  }
+}*/
+
 // http://www.geeksforgeeks.org/longest-common-substring/
+// NOTE: This returns the common substring
 function longestCommonSubstring2(string1, string2) {
   var lcsLength = 0;  // init max lcs length
 
@@ -884,4 +850,6 @@ Common themes with dynamic programming solutions:
 -http://www.quora.com/Are-there-any-good-resources-or-tutorials-for-dynamic-programming-besides-the-TopCoder-tutorial
 -top-down DP only visits the required states whereas bottom-up DP visits all distinct states 
 -top-down is recursive backtracking with a memoization table. bottom-up is iterative with a memoization table
+-it seems that top-down is good for getting a single value but bottom-up is easier to get the actual data itself (i.e. for lcs, top-down can easily return the
+ length of the longest common substring but getting the substring is hard whereas with bottom-up it's easier)
 */

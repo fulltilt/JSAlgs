@@ -332,7 +332,7 @@ function longestCommonSubsequence(string1, string2) {
     }
   }
 
-  return longestCommonSubsequenceHelper(string1, string2, 0, 0, cache);  
+  return longestCommonSubsequenceHelper(string1, string2, 0, 0, cache);
 /* for first test case ABCDGH and AEDFHR
 [ [ 3, -1, -1, -1, -1, -1 ],
   [ -1, 2, 2, 1, 1, 0 ],
@@ -359,8 +359,101 @@ function longestCommonSubsequenceHelper(string1, string2, n, m, cache) {
   }
 }
 
-// http://www.geeksforgeeks.org/longest-common-substring/
 function longestCommonSubstring(string1, string2) {
+  var length1 = string1.length,
+      length2 = string2.length,
+      cache = [], i, j;
+
+  for (i = 0; i < length1; i++) {
+    cache[i] = [];
+    for (j = 0; j < length2; j++) {
+      cache[i][j] = -1;
+    }
+  }
+
+  var answ =  longestCommonSubstringHelper(string1, string2, 0, 0, cache);
+  console.log(cache);
+  return answ;
+}
+
+// note: order of n and m should be interchanged
+/*function longestCommonSubstringHelper(string1, string2, i, j, cache) {
+  console.log(i, ' ', j);
+  if (i === string1.length || j === string2.length) {
+    return 0;
+  }
+
+  if (cache[i][j] !== -1) {
+    return cache[i][j];
+  }
+
+  if (string1[i] === string2[j]) {
+    // add to count if previous index for both strings are equal else restart the count at 1 (corner case of starting count when n and/or m are zero)
+    if (i > 0 && j > 0 && string1[i - 1] === string2[j - 1]) {
+      //console.log('==',i, ' ', j);
+      //console.log(cache);
+      return cache[i][j] = cache[i - 1][j - 1] + longestCommonSubstringHelper(string1, string2, i + 1, j + 1, cache);
+    } else {
+      return cache[i][j] = 1 + longestCommonSubstringHelper(string1, string2, i + 1, j + 1, cache);
+    }
+  } else {
+    return cache[i][j] = Math.max(longestCommonSubstringHelper(string1, string2, i, j + 1, cache),
+                    longestCommonSubstringHelper(string1, string2, i + 1, j, cache));
+  }
+}*/
+
+function longestCommonSubstringHelper(string1, string2, i, j, cache) {
+//  console.log(i, ' ', j);
+  if (i === string1.length || j === string2.length) {
+    return 0;
+  }
+
+  if (string1[i] === string2[j]) {
+    console.log(i, ' ', j)
+    // add to count if previous index for both strings are equal else restart the count at 1 (corner case of starting count when n and/or m are zero)
+    if ((i > 0 && j > 0 && string1[i - 1] === string2[j - 1])) {//console.log('==',i, ' ', j);
+      //console.log(cache);
+      return 1 + longestCommonSubstringHelper(string1, string2, i + 1, j + 1, cache);
+    } else if (i === 0 || j === 0) {//console.log('!=',i, ' ', j);
+      return longestCommonSubstringHelper(string1, string2, i + 1, j + 1, cache);
+    }
+  } else {
+    return Math.max(longestCommonSubstringHelper(string1, string2, i, j + 1, cache),
+                    longestCommonSubstringHelper(string1, string2, i + 1, j, cache));
+  }
+}
+
+/*
+1. 0 ' ' 0
+2. 0 ' ' 1
+3. 0 ' ' 2
+4. 0 ' ' 3
+5. 0 ' ' 4
+6. 1 ' ' 3
+7. 1 ' ' 4
+8. 2 ' ' 3
+9. 2 ' ' 4
+10.3 ' ' 3
+11.3 ' ' 4
+12.4 ' ' 3
+13.1 ' ' 2
+14.1 ' ' 3 (hits cache)
+15.2 ' ' 2
+16.3 ' ' 3
+17.1 ' ' 1
+18.2 ' ' 2
+19.3 ' ' 3
+20.1 ' ' 0
+21.1 ' ' 1 (hits cache)
+22.2 ' ' 0
+23.3 ' ' 1
+24.3 ' ' 2
+25.3 ' ' 3
+4 ' ' 2
+4 ' ' 1
+*/
+// http://www.geeksforgeeks.org/longest-common-substring/
+function longestCommonSubstring2(string1, string2) {
   var lcsLength = 0;  // init max lcs length
 
   // initialize 2D array with all zeroes. The dimensions will be (string1.length + 1) X (string2.length + 1)

@@ -52,6 +52,65 @@ Graph.prototype = {
 				this.dfsHelper(neighborVertex);
 			}
 		}
+	},
+
+	bfs: function(v) {
+		var level = 0,
+				currentLevel = [],
+				nextLevel = [],
+				neighbors = [], i, j;
+
+		currentLevel.push(v);
+		while (currentLevel.length > 0) {
+			console.log('Level', level++, ':');
+
+			// get neighbors
+			for (i = 0; i < currentLevel.length; i++) {
+				var currentVertex = currentLevel[i];
+				
+				if (this.visited[currentVertex] === this.UNVISITED) {
+					this.visited[currentVertex] = this.VISITED;
+					console.log('visit', currentVertex);
+
+					// add neighbors of currentVertex to nextLevel
+					neighbors = this.adjacencyList[currentVertex];
+					for (j = 0; j < neighbors.length; j++) {
+						if (this.visited[neighbors[j].id] === this.UNVISITED) {
+							nextLevel.push(neighbors[j].id);
+						}
+					}
+				}
+			}
+
+			currentLevel = nextLevel;
+			nextLevel = [];
+		}
+	},
+
+	floodFill: function() {
+		var color = 0;
+
+		for (var i = 0; i < this.vertices; i++) {
+			if (this.visited[i] === this.UNVISITED) {
+				this.floodFillHelper(i, ++color);
+			}
+		}
+
+		for (i = 0; i < this.vertices; i++) {
+			console.log('Vertex', i, 'has color', this.visited[i]);
+		}
+	},
+
+	floodFillHelper: function(v, color) {
+		this.visited[v] = color;
+		var neighbors = this.adjacencyList[v],
+				length = neighbors.length, i;
+		for (i = 0; i < length; ++i) {
+			currentVertex = neighbors[i].id;
+			if (this.visited[currentVertex] === this.UNVISITED) {
+				this.floodFillHelper(currentVertex, color);
+			}
+		}
 	}
 };
 

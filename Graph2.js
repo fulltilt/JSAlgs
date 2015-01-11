@@ -6,17 +6,16 @@ function IntegerPair(i, w) {
 function Graph(v) {
 	this.vertices = v;
   this.adjacencyList = [];
+  this.ts = [];  // store the topological sort in reverse order
 
   // initialize adjacency list
   for (var i = 0; i < this.vertices; i++) {
   	this.adjacencyList[i] = [];
   }
 
-  /*this.DFS_WHITE = -1; // normal DFS
-  this.DFS_BLACK = 1;
-  this.DFS_GRAY = 2;*/
   this.UNVISITED = -1;
   this.VISITED = 1;
+  this.EXPLORED = 2;  // for graphCheck
   this.visited = [];
 
   // initialize visited list
@@ -114,16 +113,124 @@ Graph.prototype = {
 				this.floodFillHelper(currentVertex, color);
 			}
 		}
-	}
+	},
+
+  // NOTE: every DAG has at least one and possibly more topological sort(s)
+  // Algorithm: just like dfs but add an extra line
+  topologicalSort: function() {
+    for (var i = 0; i < this.vertices; ++i) {
+      if (this.visited[i] === this.UNVISITED) {
+        this.topologicalSortHelper(i)
+      }
+    }
+
+    console.log(this.ts.reverse());
+  },
+
+  topologicalSortHelper: function(vertex) {
+    this.visited[vertex] = this.VISITED;
+    var neighbors = this.adjacencyList[vertex], 
+        length = neighbors.length, i;
+    for (i = 0; i < length; ++i) {
+      var currentVertex = neighbors[i].id;
+      if (this.visited[currentVertex] === this.UNVISITED) {
+        this.topologicalSortHelper(currentVertex);
+      }
+    }
+
+    this.ts.push(vertex); // additional line compared to vanilla dfs
+  },
+
+  // check if a graph is bipartite (or 2/bi-colorable)
+  // Algo: use BFS . Inititalize source vertex (layer 1) with value 0, color the diret neighbors (later 2) with value 1, color those neighbors
+  //       (layer 3) with value 0, etc. If we encounter any violations alongs the way (an edge with 2 endpoints having the same color), then we
+  //       can conclude that the given graph is not bipartite
+  // NOTE: this.visited is multipurpose but if it helps visualize better, image 'this.visited' is 'this.color'
+  isBipartite: function() {
+    var currentLevel = [],
+        neighbors = [],
+        nextLevel = [], i;
+
+    currentLevel.push(0); // we can start at any vertex
+    this.visited[0] = 0;
+    while (currentLevel.length > 0) {
+      // iterate through every vertex on the current level
+      for (i = 0; i < currentLevel.length; ++i) {
+        var currentVertex = currentLevel[i];
+
+        // iterate through each neighbor of currentVertex
+        neighbors = this.adjacencyList[currentVertex];
+        for (j = 0; j < neighbors.length; ++j) {
+          var neighborVertex = neighbors[j].id;
+          if (this.visited[neighborVertex] === this.UNVISITED) {
+            this.visited[neighborVertex] = this.visited[currentVertex] ^ 1; // use XOR to set neighbor vertex color to be opposite of current vertex (could have also done: 1 - this.visited[currentVertex])
+            nextLevel.push(neighborVertex);
+          } else if (this.visited[neighborVertex] === this.visited[currentVertex]) {
+            return false;
+          }
+        }
+      }
+
+      currentLevel = nextLevel;
+      nextLevel = [];
+    }
+
+    return true;
+  },
+
+  /* Running DFS on a connected graph generates a DFS spanning tree (or spanning forest if the graph is disconnected). With the help of one more vertex state: EXPLORED = 2 
+     (visited but not yet completed) on top of VISITED (visited and completed) we can use this DFS spanning tree (or forest) to classify graph edges into 3 types:
+     1. Tree edge: the edge traversed by DFS, i.e. and edge from a vertex currently with state: EXPLORED to a vertex with state: UNVISITED
+     2. Back edge: edge that is part of a ccle, i.e. an edge from a vertex currently with state: EXPLORED to a vertex with state: EXPLORED too. This is an important application
+        of this algorithm. Note that we usually do not count bi-directional edges as having a 'cycle'
+     3. Forward/Cross edges from vertex with state: EXPLORED to vertex with state: VISITED. These 2 types of edges aren't typically tested in programming contest problems
+  */
+  graphCheck: function() {
+
+  }
 };
 
 // trick to explore an implicit 2D grid. Simulate each permutation of a direction (2^3). Each index for both arrays are used in tandem. 
 // i.e. for index 0, add 1 to row and 0 to column; for index 3 add -1 to row and 1 to column.
-var dr = [1,1,0,-1,-1,-1,0,1];
-var dc = [0,1,1,1,0,-1,-1,-1];
+var dr = [1,1,0,-1,-1,-1,0,1],
+    dc = [0,1,1,1,0,-1,-1,-1];
 
-function wetlands() {
+function wetlands(row, column) {
+  var grid = 
+  [['L','L','L','L','L','L','L','L','L'],
+   ['L','L','W','W','L','L','W','L','L'],
+   ['L','W','W','L','L','L','L','L','L'],
+   ['L','W','W','W','L','W','W','L','L'],
+   ['L','L','L','W','W','W','L','L','L'],
+   ['L','L','L','L','L','L','L','L','L'],
+   ['L','L','L','W','W','L','L','W','L'],
+   ['L','L','W','L','W','L','L','L','L'],
+   ['L','L','L','L','L','L','L','L','L']]
+  return wetlandsHelper(grid, row, column, 'W', '.');
+}
 
+function wetlandsHelper(grid, row, column, c1, c2) {
+  var rows = grid.length,
+      columns = grid[0].length;
+
+  // check to make sure current index is within the grid
+  if (row < 0 || row >= rows || column < 0 || column >= columns) {
+    return 0;
+  }
+
+  // check to see if the current index has color c1
+  if (grid[row][column] !== c1) {
+    return 0;
+  }
+
+  grid[row][column] = c2;  // recolor vertex to avoid cycling
+  var moves = 8, 
+      answer = 1, // set answer to 1 because vertex(r, c) has c1 as its color 
+      i;
+  for (i = 0; i < moves; ++i) {
+    answer += wetlandsHelper(grid, row + dr[i], column + dc[i], c1, c2);
+  }
+  return answer;
 }
 
 var Graph = function() {

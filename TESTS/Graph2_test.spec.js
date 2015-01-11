@@ -80,5 +80,38 @@ describe("Graph2", function() {
     g.adjacencyList[7].push(new Graph.IntegerPair(6, 0));
     g.adjacencyList[8].push(new Graph.IntegerPair(6, 0));
     g.floodFill();
+    
+    var row = 2,
+        column = 1;
+    expect(g.wetlands(row, column)).toEqual(12);
 	});
+
+  it('tests topologicalSort', function() {
+    console.log('\n==================================');
+    console.log('Topological Sort (the input graph must be DAG)');
+    console.log('==================================');
+    var g = new Graph.Graph(8);
+    g.adjacencyList[0].push(new Graph.IntegerPair(1, 0));
+    g.adjacencyList[0].push(new Graph.IntegerPair(2, 0));
+    g.adjacencyList[1].push(new Graph.IntegerPair(2, 0));
+    g.adjacencyList[1].push(new Graph.IntegerPair(3, 0));
+    g.adjacencyList[2].push(new Graph.IntegerPair(3, 0));
+    g.adjacencyList[2].push(new Graph.IntegerPair(5, 0));
+    g.adjacencyList[3].push(new Graph.IntegerPair(4, 0));
+    g.adjacencyList[7].push(new Graph.IntegerPair(6, 0));
+    g.topologicalSort();  // not sure if this is correct
+  });
+
+  it('tests isBipartite', function() {
+    var g = new Graph.Graph(4);
+    g.adjacencyList[0].push(new Graph.IntegerPair(1, 0));
+    g.adjacencyList[0].push(new Graph.IntegerPair(3, 0));
+    g.adjacencyList[1].push(new Graph.IntegerPair(0, 0));
+    g.adjacencyList[1].push(new Graph.IntegerPair(2, 0));
+    g.adjacencyList[2].push(new Graph.IntegerPair(1, 0));
+    g.adjacencyList[2].push(new Graph.IntegerPair(3, 0));
+    g.adjacencyList[3].push(new Graph.IntegerPair(0, 0));
+    g.adjacencyList[3].push(new Graph.IntegerPair(2, 0));
+    expect(g.isBipartite()).toEqual(true);
+  });
 });

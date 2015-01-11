@@ -79,10 +79,12 @@ describe("Dynamic", function() {
 
   it("tests longest common substring", function() {
     expect(d.longestCommonSubstring('back', 'cace')).toEqual(2);
-    expect(d.longestCommonSubstring('abbcc', 'dbbcc')).toEqual(4);
-    expect(d.longestCommonSubstring('abbcc', 'dbbccc')).toEqual(4);
-    expect(d.longestCommonSubstring('abbcc', 'vsz')).toEqual(0);
-    expect(d.longestCommonSubstring('helohelhello', 'hello')).toEqual(5);
+    //expect(d.longestCommonSubstring('abbcc', 'dbbcc')).toEqual(4);
+    //expect(d.longestCommonSubstring('abbcc', 'dbbccc')).toEqual(4);
+    //expect(d.longestCommonSubstring('abbcc', 'vsz')).toEqual(0);
+    //expect(d.longestCommonSubstring('helohelhello', 'hello')).toEqual(5);
+    //expect(d.longestCommonSubstring('aafweajfiewajofij309afweajfiewajofij309u90sduf3j32oi22u90sduf3j32oi22bbcc', '2gdfgsf23afweaafweajfiewajofij309u90sduf3j32oi22jfiewajofij309u90sduf3j32oi22mbnmm3454354')).toEqual('afweajfiewajofij309u90sduf3j32oi22');
+    //expect(d.longestCommonSubstring('helohelhelo', 'hello')).toEqual('hello');
 
     expect(d.longestCommonSubstring2('back', 'cace')).toEqual('ac');
     expect(d.longestCommonSubstring2('abbcc', 'dbbcc')).toEqual('bbcc');

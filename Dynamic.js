@@ -371,13 +371,13 @@ function longestCommonSubstring(string1, string2) {
   for (i = 0; i < length1; i++) {
     cache[i] = [];
     for (j = 0; j < length2; j++) {
-      cache[i][j] = -1;
+      cache[i][j] = 0;
     }
   }
 
   var answ =  longestCommonSubstringHelper(string1, string2, 0, 0, cache);
   //var answ =  longestCommonSubstringHelper(string1, string2, length1 - 1, length2 - 1, cache);
-  //console.log(cache);
+  console.log(cache);
   return answ;
 }
 
@@ -386,7 +386,7 @@ function longestCommonSubstringHelper(string1, string2, i, j, cache) {
     return 0;
   }
 
-  if (cache[i][j] !== -1) {
+  if (cache[i][j] !== 0) {
     return cache[i][j];
   }
 
@@ -473,13 +473,13 @@ Notes:
  -for the line: 'table[i + 1][j + 1] = table[i][j] + 1', I stripped out if/else statement as it seemed redundant. Check if there's errors later
 
  ex.('abbcc', 'dbbccc')
-
-[ [ 0, 0, 0, 0, 0, 0, 0 ],
-  [ 0, 0, 0, 0, 0, 0, 0 ],
-  [ 0, 0, 1, 1, 0, 0, 0 ],
-  [ 0, 0, 1, 2, 0, 0, 0 ],
-  [ 0, 0, 0, 0, 3, 1, 1 ],
-  [ 0, 0, 0, 0, 1, 4, 2 ] ]
+        d  b  b  c  c  c
+[  [ 0, 0, 0, 0, 0, 0, 0 ],
+  a[ 0, 0, 0, 0, 0, 0, 0 ],
+  b[ 0, 0, 1, 1, 0, 0, 0 ],
+  b[ 0, 0, 1, 2, 0, 0, 0 ],
+  c[ 0, 0, 0, 0, 3, 1, 1 ],
+  c[ 0, 0, 0, 0, 1, 4, 2 ] ]
 */
 
 // 

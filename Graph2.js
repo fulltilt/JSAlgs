@@ -23,6 +23,8 @@ function Graph(v) {
   for (i = 0; i < this.vertices; i++) {
   	this.visited[i] = this.UNVISITED;
   }
+
+  this.wetlands = wetlands; 	// flood fill demo (note: has nothing to do with the flood fill in the prototype)
 }
 
 Graph.prototype = {
@@ -87,6 +89,7 @@ Graph.prototype = {
 		}
 	},
 
+	// NOTE: got this example off of the Java companion code for the book which looks like a slighlty modified version of DFS and differs greatly from what the book does
 	floodFill: function() {
 		var color = 0;
 
@@ -113,6 +116,15 @@ Graph.prototype = {
 		}
 	}
 };
+
+// trick to explore an implicit 2D grid. Simulate each permutation of a direction (2^3). Each index for both arrays are used in tandem. 
+// i.e. for index 0, add 1 to row and 0 to column; for index 3 add -1 to row and 1 to column.
+var dr = [1,1,0,-1,-1,-1,0,1];
+var dc = [0,1,1,1,0,-1,-1,-1];
+
+function wetlands() {
+
+}
 
 var Graph = function() {
   return {

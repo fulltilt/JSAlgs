@@ -114,4 +114,26 @@ describe("Graph2", function() {
     g.adjacencyList[3].push(new Graph.IntegerPair(2, 0));
     expect(g.isBipartite()).toEqual(true);
   });
+
+  it('tests graphCheck', function() {
+    console.log('\n==================================');
+    console.log('Graph Check');
+    console.log('==================================');
+    var g = new Graph.Graph(9);
+    g.adjacencyList[0].push(new Graph.IntegerPair(1, 0));
+    g.adjacencyList[1].push(new Graph.IntegerPair(0, 0));
+    g.adjacencyList[1].push(new Graph.IntegerPair(2, 0));
+    g.adjacencyList[1].push(new Graph.IntegerPair(3, 0));
+    g.adjacencyList[2].push(new Graph.IntegerPair(1, 0));
+    g.adjacencyList[2].push(new Graph.IntegerPair(3, 0));
+    g.adjacencyList[3].push(new Graph.IntegerPair(1, 0));
+    g.adjacencyList[3].push(new Graph.IntegerPair(2, 0));
+    g.adjacencyList[3].push(new Graph.IntegerPair(4, 0));
+    g.adjacencyList[4].push(new Graph.IntegerPair(3, 0));
+    g.adjacencyList[6].push(new Graph.IntegerPair(7, 0));
+    g.adjacencyList[6].push(new Graph.IntegerPair(8, 0));
+    g.adjacencyList[7].push(new Graph.IntegerPair(6, 0));
+    g.adjacencyList[8].push(new Graph.IntegerPair(6, 0));
+    g.graphCheck();
+  });
 });

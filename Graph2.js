@@ -6,7 +6,8 @@ function IntegerPair(i, w) {
 function Graph(v) {
 	this.vertices = v;
   this.adjacencyList = [];
-  this.ts = [];  // store the topological sort in reverse order
+  this.ts = [],     // store the topological sort in reverse order
+  this.parent = []; // for graphCheck
 
   // initialize adjacency list
   for (var i = 0; i < this.vertices; i++) {
@@ -186,7 +187,39 @@ Graph.prototype = {
      3. Forward/Cross edges from vertex with state: EXPLORED to vertex with state: VISITED. These 2 types of edges aren't typically tested in programming contest problems
   */
   graphCheck: function() {
+    var numComponent = 0, i;
+    for (var i = 0; i < this.vertices; ++i) {
+      if (this.visited[i] === this.UNVISITED) {
+        console.log('Component', ++numComponent, ':');
+        this.graphCheckHelper(i);
+      }
+    }
+  },
 
+  graphCheckHelper: function(vertex) {
+    this.visited[vertex] = this.EXPLORED; // color vertex as EXPLORED instead of VISITED
+    var neighbors = this.adjacencyList[vertex], 
+        length = neighbors.length, i;
+
+    for (i = 0; i < length; ++i) {
+      var currentNeighbor = neighbors[i].id;
+
+      if (this.visited[currentNeighbor] === this.UNVISITED) {         // tree edge, EXPLORED -> UNVISITED
+        this.parent[currentNeighbor] = vertex;
+        this.graphCheckHelper(currentNeighbor);
+      } else if (this.visited[currentNeighbor] === this.EXPLORED) {   // back or bi-directional edge: EXPLORED -> EXPLORED
+        if (currentNeighbor === this.parent[vertex]) {  // bi-directional edge
+          console.log('Two ways (', vertex, ',', currentNeighbor, ') - (', currentNeighbor, ',', vertex, ')');
+        } else {  // back edge
+
+          console.log('Back edge (', vertex, ',', currentNeighbor, ') (Cycle)');
+        }
+      } else if (this.visited[currentNeighbor] === this.VISITED) {    // EXPLORED->VISITED
+        console.log('Forward/Cross edge (', vertex, ',', currentNeighbor, ')');
+      }
+    }
+
+    this.visited[vertex] = this.VISITED;  // after recursion, color vertex as VISITED (DONE)
   }
 };
 

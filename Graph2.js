@@ -7,7 +7,13 @@ function Graph(v) {
 	this.vertices = v;
   this.adjacencyList = [];
   this.ts = [],     // store the topological sort in reverse order
-  this.parent = []; // for graphCheck
+  this.parent = []; // for graphCheck and articulationPointAndBridge
+  
+  // variables for articulationPointAndBridge
+  this.dfsLow = [];
+  this.dfsNumberCounter = 0;
+  this.rootChildren = 0;
+  this.articulationVertex = [];
 
   // initialize adjacency list
   for (var i = 0; i < this.vertices; i++) {
@@ -220,6 +226,64 @@ Graph.prototype = {
     }
 
     this.visited[vertex] = this.VISITED;  // after recursion, color vertex as VISITED (DONE)
+  },
+
+  articulationPointsAndBridges: function() {
+  	for (var i = 0; i < this.vertices; ++i) {
+  		this.dfsLow[i] = 0;
+  		this.parent[i] = 0;
+  		this.articulationVertex[i] = false;
+  	}
+
+  	console.log('Bridges:');
+	  for (i = 0; i < this.vertices; i++) {
+      if (this.visited[i] === this.UNVISITED) {
+        this.dfsRoot = i; 
+        this.rootChildren = 0;
+        this.articulationPointsAndBridgeHelper(i);
+        this.articulationVertex[this.dfsRoot] = (this.rootChildren > 1); // special case
+      }
+    }
+
+    console.log('Articulation Points:');
+    for (i = 0; i < this.vertices; i++) {
+      if (this.articulationVertex[i]) {
+        console.log('Vertex ', i);
+      }
+    }
+  },
+
+  articulationPointsAndBridgeHelper: function(vertex) {
+  	this.visited[vertex] = this.dfsLow[vertex] = this.dfsNumberCounter++;	// dfsLow[vertex] <= visited[vertex]
+  	var neighbors = this.adjacencyList[vertex],
+  			length = neighbors.length, i;
+
+  	for (var i = 0; i < length; ++i) {
+  		var currentNeighbor = neighbors[i].id;
+  		if (this.visited[currentNeighbor] === this.UNVISITED) {	// a tree edge
+  			this.parent[currentNeighbor] = vertex;
+
+  			if (vertex === this.dfsRoot) {	// special case if vertex is a root
+  				this.rootChildren += 1;
+  			}
+
+  			this.articulationPointsAndBridgeHelper(currentNeighbor);
+
+  			// for articulation point
+  			if (this.dfsLow[currentNeighbor] >= this.visited[vertex]) {
+  				this.articulationVertex[vertex] = true;	// store this information first
+  			}
+
+  			// for bridge
+  			if (this.dfsLow[currentNeighbor] > this.visited[vertex]) {
+  				console.log('Edge (', vertex, ',', currentNeighbor, ') is a bridge');
+  			}
+
+  			this.dfsLow[vertex] = Math.min(this.dfsLow[vertex], this.visited[currentNeighbor]);	// update dfsLow[vertex]
+  		} else if (currentNeighbor !== this.parent[vertex]) {		// a back edge and not direct cycle
+  			this.dfsLow[vertex] = Math.min(this.dfsLow[vertex], this.visited[currentNeighbor]);	// update dfsLow[vertex]
+  		}
+  	}
   }
 };
 

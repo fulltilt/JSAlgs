@@ -214,10 +214,9 @@ Graph.prototype = {
         this.parent[currentNeighbor] = vertex;
         this.graphCheckHelper(currentNeighbor);
       } else if (this.visited[currentNeighbor] === this.EXPLORED) {   // back or bi-directional edge: EXPLORED -> EXPLORED
-        if (currentNeighbor === this.parent[vertex]) {  // bi-directional edge
+        if (currentNeighbor === this.parent[vertex]) {  // bi-directional edge (as the neighbor equals the parent). This isn't considered to be a cycle
           console.log('Two ways (', vertex, ',', currentNeighbor, ') - (', currentNeighbor, ',', vertex, ')');
-        } else {  // back edge
-
+        } else {  // back edge. Most frequent application: check if the graph is cyclic
           console.log('Back edge (', vertex, ',', currentNeighbor, ') (Cycle)');
         }
       } else if (this.visited[currentNeighbor] === this.VISITED) {    // EXPLORED->VISITED

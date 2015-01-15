@@ -81,8 +81,9 @@ PatternSearch.prototype = {
       }
     }
   },
-// 'SEVENTY SEV ' j = 11, length = 13; backTable[j] = 3;
-  // another KMP implementation from Competitive Programming 3 (after implementing it with for-loops, book code seems easier but for harder for me to understand at the moment)
+
+  // -another KMP implementation from Competitive Programming 3 (after implementing it with for-loops, book code seems easier but for harder for me to understand at the moment)
+  // -KMP is basically an optimized version of the naive substring search algorithm. It's optimized by preprocessing the pattern string which is used to avoid recomputing operations
   KMP2: function(text, pattern) {
     var i = 0, j = 0,
         textLength = text.length,
@@ -137,7 +138,6 @@ PatternSearch.prototype = {
 
     return backTable;
   },
-    
   /*     S  E  V  E  N  T  Y     S  E  V  E  N 
    [ -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5 ]
    -observe i = 8, 9, 10, 11, 12 with j = 0, 1, 2, 3, 4
@@ -308,7 +308,4 @@ PatternSearch.prototype = {
   }
 }
  
-var ps = new PatternSearch();
-ps.KMP2('I DO NOT LIKE SEVENTY SEV BUT SEVENTY SEVENTY SEVEN', 'SEVENTY SEVEN');
-ps.KMP2('AABAACAADAABAAABAA', 'AABA');
 module.exports = PatternSearch;

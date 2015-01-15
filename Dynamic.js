@@ -13,6 +13,7 @@ function Dynamic() {
   this.longestCommonSubstring2 = longestCommonSubstring2;
   this.wordBreak = wordBreak;
   this.editDistance = editDistance;
+  this.editDistance2 = editDistance2;
   this.minCostPath = minCostPath;
   this.maxSumOfNonAdjacentElements = maxSumOfNonAdjacentElements;
   this.minNumOfJumpsToEnd = minNumOfJumpsToEnd;
@@ -377,7 +378,7 @@ function longestCommonSubstring(string1, string2) {
 
   var answ =  longestCommonSubstringHelper(string1, string2, 0, 0, cache);
   //var answ =  longestCommonSubstringHelper(string1, string2, length1 - 1, length2 - 1, cache);
-  console.log(cache);
+  //console.log(cache);
   return answ;
 }
 
@@ -644,9 +645,7 @@ function editDistanceHelper(str1, str2, length1, length2, cache) {
   //console.log(cache);
   return cache[length2][length1];
 }
-
-/*
-          S  A  T  U  R  D  A  Y  
+/*        S  A  T  U  R  D  A  Y  
    [ [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ],
 S    [ 1, 0, 1, 2, 3, 4, 5, 6, 7 ],
 U    [ 2, 1, 1, 2, 2, 3, 4, 5, 6 ],
@@ -664,6 +663,43 @@ Y    [ 6, 5, 4, 4, 5, 5, 5, 4, 3 ] ]
  [6][8]: 'SATURDAY' -> 'SUNDAY'
 */
 
+// another version of editDistance from Competitive Programming 3 (Needleman-Wunsch algorithm (bottom-up))
+// I might have to stick to the previous implementation of editDistance as this is given oddly similar but different results. Haven't figured out why this is yet
+function editDistance2(str1, str2) {
+    var length1 = str1.length,
+      length2 = str2.length,
+      cache = [], i, j;
+
+  // initialize cache
+  for (i = 0; i <= length1; i++) {
+    cache[i] = [];
+    for (j = 0; j <= length2; j++) {
+      cache[i][j] = 0;
+    }
+  }
+
+  for (i = 0; i <= length1; i++) {
+    cache[i][0] = i * -1;
+  }
+  for (i = 0; i <= length2; i++) {
+    cache[0][i] = i * -1;
+  }
+
+  for (i = 1; i <= length1; i++) {
+    for (j = 1; j <= length2; j++) {
+      // match = 2 points, mismatch = -1 point
+      cache[i][j] = cache[i - 1][j - 1] + (str1[i - 1] === str2[j - 1] ? 2 : -1); // cost for match or mismatch
+      // insert/delete = -1 point
+      cache[i][j] = Math.max(cache[i][j], cache[i - 1][j] - 1); // delete
+      cache[i][j] = Math.max(cache[i][j], cache[i][j - 1] - 1); // insert
+    }
+  }console.log(cache)
+
+  return cache[i - 1][j - 1];
+}
+
+var d = new Dynamic();
+d.editDistance2('ACAATCC', 'AGCATGC');
 // http://www.geeksforgeeks.org/dynamic-programming-set-6-min-cost-path/
 function minCostPath() {
 

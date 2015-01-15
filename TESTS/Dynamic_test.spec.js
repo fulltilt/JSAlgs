@@ -118,6 +118,12 @@ describe("Dynamic", function() {
 
   it('tests editDistance', function() {
     expect(d.editDistance('SATURDAY', 'SUNDAY')).toEqual(3);
+    expect(d.editDistance('ACAATCC', 'AGCATGC')).toEqual(3);
+  });
+
+  it('tests editDistance2', function() {
+    expect(d.editDistance2('SATURDAY', 'SUNDAY')).toEqual(7);
+    expect(d.editDistance2('ACAATCC', 'AGCATGC')).toEqual(7);
   });
 
   it('tests largestContiguousSumSubarray', function() {

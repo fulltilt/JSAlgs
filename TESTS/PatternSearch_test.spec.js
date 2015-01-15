@@ -13,6 +13,7 @@ describe("PatternSearch", function() {
 
   it('tests KMP', function() {
     expect(ps.KMP('AABA', 'AABAACAADAABAAABAA')).toEqual([0,9,13]);
+    expect(ps.KMP('SEVENTY SEVEN', 'I DO NOT LIKE SEVENTY SEV BUT SEVENTY SEVENTY SEVEN')).toEqual([30,38]);
   });
 
   it('tests RabinKarp', function() {

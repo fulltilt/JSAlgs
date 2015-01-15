@@ -81,6 +81,67 @@ PatternSearch.prototype = {
       }
     }
   },
+// 'SEVENTY SEV ' j = 11, length = 13; backTable[j] = 3;
+  // another KMP implementation from Competitive Programming 3 (after implementing it with for-loops, book code seems easier but for harder for me to understand at the moment)
+  KMP2: function(text, pattern) {
+    var i = 0, j = 0,
+        textLength = text.length,
+        backTable = this.kmpPreprocess(pattern);
+
+    for (i = 0; i < textLength; i++) {
+      if (text[i] === pattern[0]) {
+        for (j = 0; j < pattern.length && (i + j) < textLength; j++) {
+          if (pattern[j] !== text[i + j]) { // if we're in match mode and encounter a mismatch, update i and use backTable to update j if suffix is similar to prefix            
+            j = backTable[j];
+            if (j === 0) {  // get out of match mode as KMP optimization no longer applies
+              break;
+            }
+            i = i + j;  // update i only if j !== 0
+          }
+        }
+        if (j === pattern.length) {
+          console.log(i);
+        }
+      }
+    } 
+/*  original book code
+    while (i < textLength) {
+      while (j >= 0 && text[i] !== pattern[j]) {
+        j = backTable[j]; // if different, reset j using backTable
+      }
+
+      i++; j++; // if same, advance both pointers
+      if (j === pattern.length) { // a match found when j == patternLength
+        console.log('P is found at index', i - j, 'in T');
+        j = backTable[j]; // prepare j for the next possible match
+      }
+    } */
+  },
+
+  kmpPreprocess: function(pattern) {
+    var i = 0, 
+        j = -1,
+        length = pattern.length,
+        backTable = [];
+    
+    backTable[0] = -1;  // set to -1 as this is used to reset j back to zero (it gets incremented after the 2nd while)
+    
+    while (i < length) { // pre-process the pattern string P
+      while (j >= 0 && pattern[i] !== pattern[j]) {
+        j = backTable[j]; // if different, reset j using b
+      }
+
+      i++; j++; // if same, advance both pointers
+      backTable[i] = j;
+    }
+
+    return backTable;
+  },
+    
+  /*     S  E  V  E  N  T  Y     S  E  V  E  N 
+   [ -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5 ]
+   -observe i = 8, 9, 10, 11, 12 with j = 0, 1, 2, 3, 4
+  */
 
   // http://www.geeksforgeeks.org/pattern-searching-set-7-boyer-moore-algorithm-bad-character-heuristic/
   BoyerMoore: function(pattern, source) {
@@ -246,5 +307,8 @@ PatternSearch.prototype = {
     return result;
   }
 }
-
+ 
+var ps = new PatternSearch();
+ps.KMP2('I DO NOT LIKE SEVENTY SEV BUT SEVENTY SEVENTY SEVEN', 'SEVENTY SEVEN');
+ps.KMP2('AABAACAADAABAAABAA', 'AABA');
 module.exports = PatternSearch;

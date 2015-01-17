@@ -1,9 +1,9 @@
-// http://www.geeksforgeeks.org/suffix-array-set-1-introduction/
 function Suffix(index, suff) {
   this.index = index;
   this.suff = suff;
 }
 
+// http://www.geeksforgeeks.org/suffix-array-set-1-introduction/
 // main fxn that takes a string and builds and returns the suffix array for the given string (naive method: O(n^2 log n))
 function buildSuffixArray1(str) {
   var suffixes = [];    // array to store suffixes and their indices
@@ -55,6 +55,7 @@ function compare2(a, b) {
   return 0;
 }
 
+// http://www.geeksforgeeks.org/suffix-array-set-2-a-nlognlogn-algorithm/ (O(n log^2 n))
 function buildSuffixArray2(str) {
   var suffixes = [],
       length = str.length, i,
@@ -141,6 +142,14 @@ console.log(count, result);
   return false;
 }
 
+// O(n log n) implementation (from Competitive Programming 3)
+function Suffix2() {
+  this.index = 0;
+  this.rank = [];
+}
+
+
+
 /*console.log(strncmp('hello', 'goodbye', 2));
 console.log(strncmp('hello', 'qw', 2));
 console.log(strncmp('hello', 'heodbye', 2));*/
@@ -149,3 +158,8 @@ console.log(search('ana', 'banana hello banana', sa));
 //var sa = buildSuffixArray1('banana');
 //console.log(search('nan', 'banana', sa));
 //console.log(buildSuffixArray2('banana'));
+
+/* Suffix Arrays are simpler to construct than Suffix Trees and for competitive programming contests, are preferably because of this simplicitly although Suffix Trees
+   are faster (O(n) for suffix trees vs. O(n log n) for suffix arrays)
+   
+*/   

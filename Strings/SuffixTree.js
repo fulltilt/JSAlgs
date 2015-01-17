@@ -4,3 +4,8 @@
 function SuffixTree() {
 
 }
+
+/*
+-can be use for string matching (O(m + # of occurrences) where m is length of pattern), longest repeated substring (O(n)) by finding the deepest internal vertex x, longest
+ common substring (combine suffix tree of both strings and get the deepest internal vertex that both strings share)
+*/

@@ -305,3 +305,30 @@ function reverse(arr, lo, hi) {
     hi -= 1;
   }
 }
+
+function Suffix(i, str) {
+  this.index = i;
+  this.str = str;
+}
+
+function naiveSuffixArray(str) {
+  var suffixes = [];
+  for (var i = 0; i < str.length; ++i) {
+    suffixes.push(new Suffix(i, str.substring(i)));
+  }
+
+  console.log(suffixes);
+  console.log(suffixes.sort(compare));
+}
+
+function compare(suff1, suff2) {
+  if (suff1.str === suff2.str) {
+    return 0;
+  } else if (suff1.str < suff2.str) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+
+naiveSuffixArray('GATAGACA$')

@@ -13,7 +13,7 @@ function Dynamic() {
   this.longestCommonSubstring2 = longestCommonSubstring2;
   this.wordBreak = wordBreak;
   this.editDistance = editDistance;
-  this.editDistance2 = editDistance2;
+  this.stringAlignment = stringAlignment;
   this.minCostPath = minCostPath;
   this.maxSumOfNonAdjacentElements = maxSumOfNonAdjacentElements;
   this.minNumOfJumpsToEnd = minNumOfJumpsToEnd;
@@ -603,6 +603,8 @@ function wordBreak(words, input) {
 }
 
 // http://www.geeksforgeeks.org/dynamic-programming-set-5-edit-distance/
+// http://codercareer.blogspot.com/2011/12/no-25-edit-distance.html
+// http://en.wikipedia.org/wiki/Levenshtein_distance
 function editDistance(str1, str2) {
   var length1 = str1.length,
       length2 = str2.length,
@@ -629,6 +631,7 @@ function editDistance(str1, str2) {
 function editDistanceHelper(str1, str2, length1, length2, cache) {
   var i, j, deletion, insertion, substitution;
 
+  // fill out table row by row. Solution will be last index of last column of last row
   for (i = 1; i <= length2; i++) {
     for (j = 1; j <= length1; j++) {
       if (str1[j - 1] === str2[i - 1]) {
@@ -642,7 +645,7 @@ function editDistanceHelper(str1, str2, length1, length2, cache) {
       }
     }
   }
-  //console.log(cache);
+  
   return cache[length2][length1];
 }
 /*        S  A  T  U  R  D  A  Y  
@@ -663,13 +666,14 @@ Y    [ 6, 5, 4, 4, 5, 5, 5, 4, 3 ] ]
  [6][8]: 'SATURDAY' -> 'SUNDAY'
 */
 
-// another version of editDistance from Competitive Programming 3 (Needleman-Wunsch algorithm (bottom-up))
-// I might have to stick to the previous implementation of editDistance as this is given oddly similar but different results. Haven't figured out why this is yet
-function editDistance2(str1, str2) {
+// From Competitive Programming 3 (Needleman-Wunsch algorithm (bottom-up)) 
+// -I guess there's a difference between 'Edit Distance' and 'String Alignment' (http://mynixworld.info/2012/09/24/how-to-measure-the-similarity-between-two-words/)
+// -I might have to stick to the previous implementation of editDistance as this is given oddly similar but different results. Haven't figured out why this is yet
+function stringAlignment(str1, str2) {
     var length1 = str1.length,
       length2 = str2.length,
       cache = [], i, j;
-
+/* original code. I switched the word positions so that it's similar to editDistance
   // initialize cache
   for (i = 0; i <= length1; i++) {
     cache[i] = [];
@@ -693,13 +697,44 @@ function editDistance2(str1, str2) {
       cache[i][j] = Math.max(cache[i][j], cache[i - 1][j] - 1); // delete
       cache[i][j] = Math.max(cache[i][j], cache[i][j - 1] - 1); // insert
     }
-  }console.log(cache)
+  } */
+  // initialize cache
+  for (i = 0; i <= length2; i++) {
+    cache[i] = [];
+    for (j = 0; j <= length1; j++) {
+      cache[i][j] = 0;
+    }
+  }
 
-  return cache[i - 1][j - 1];
+  for (i = 0; i <= length1; i++) {
+    cache[0][i] = i;
+  }
+  for (i = 0; i <= length2; i++) {
+    cache[i][0] = i;
+  }
+
+  for (i = 1; i <= length2; i++) {
+    for (j = 1; j <= length1; j++) {
+      // match = 2 points, mismatch = -1 point
+      cache[i][j] = cache[i - 1][j - 1] + (str1[i - 1] === str2[j - 1] ? 2 : -1); // cost for match or mismatch
+      // insert/delete = -1 point
+      cache[i][j] = Math.max(cache[i][j], cache[i - 1][j] - 1); // insert?
+      cache[i][j] = Math.max(cache[i][j], cache[i][j - 1] - 1); // delete?
+    }
+  }
+
+  return cache[i - 1][j - 1]; // or cache[length1][length2]
 }
+/*         A   G   C   A   T   G   C
+  [ [  0, -1, -2, -3, -4, -5, -6, -7 ],
+A   [ -1,  2,  1,  0, -1, -2, -3, -4 ],
+C   [ -2,  1,  1,  3,  2,  1,  0, -1 ],
+A   [ -3,  0,  0,  2,  5,  4,  3,  2 ],
+A   [ -4, -1, -1,  1,  4,  4,  3,  2 ],
+T   [ -5, -2, -2,  0,  3,  6,  5,  4 ],
+C   [ -6, -3, -3,  0,  2,  5,  5,  7 ],
+C   [ -7, -4, -4, -1,  1,  4,  4,  7 ] ] */
 
-var d = new Dynamic();
-d.editDistance2('ACAATCC', 'AGCATGC');
 // http://www.geeksforgeeks.org/dynamic-programming-set-6-min-cost-path/
 function minCostPath() {
 

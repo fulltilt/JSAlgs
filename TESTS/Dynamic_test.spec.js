@@ -121,9 +121,9 @@ describe("Dynamic", function() {
     expect(d.editDistance('ACAATCC', 'AGCATGC')).toEqual(3);
   });
 
-  it('tests editDistance2', function() {
-    expect(d.editDistance2('SATURDAY', 'SUNDAY')).toEqual(7);
-    expect(d.editDistance2('ACAATCC', 'AGCATGC')).toEqual(7);
+  it('tests stringAlignment', function() {
+    expect(d.stringAlignment('SATURDAY', 'SUNDAY')).toEqual(7);
+    expect(d.stringAlignment('ACAATCC', 'AGCATGC')).toEqual(7);
   });
 
   it('tests largestContiguousSumSubarray', function() {

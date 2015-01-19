@@ -65,3 +65,42 @@ function recursiveKnapsack(capacity, size, value, n) {
                     recursiveKnapsack(capacity, size, value, n + 1));
   }
 }
+
+https://github.com/begriffs/immutube
+https://vimeo.com/97575933
+jsbin.com/yoyip
+-Rambda (http://ramdajs.com/docs/) 
+ -<script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.8.0/ramda.min.js"></script>
+
+CURRYING
+http://jsbin.com/romun (change 'rambda' in line 1 to 'R'. You'll also probably have to update the CDN for Ramda)
+ -http://jsbin.com/rewotekago/1/edit?html,js,console,output
+
+var split2 = _.split(' '); // function (n){return r.apply(this,arguments)}
+console.log(split2('once upon a time')); // ['once','upon','a','time']
+
+var size2 = _.size(); // function (n){return n.length}
+var map2 = _.map(_.size); // function (n){return r(t,n)}
+
+console.log(_.get); 
+function (r,t) {
+  switch(arguments.length) { 
+    case 0: throw n();
+    case 1: return function(n) {
+              return n[r]
+            }
+  }
+  return t[r]
+}
+
+COMPOSE
+http://jsbin.com/jevag
+ -http://jsbin.com/pifafosego/1/edit
+
+var lengths = _.compose(
+  _.map(_.size), _.split(' ')
+);
+console.log(lengths('once upon a time')); // [4,4,1,4]
+/* compose is right associative so compose(f, g) can be interpreted as f(g(x)) 
+   -length takes in a single argument that is first split() by ' '. The 2nd fxn is map() which takes in the first argument which is size(). The 2nd argument is the results of split()?
+*/

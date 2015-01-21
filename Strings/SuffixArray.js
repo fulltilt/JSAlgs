@@ -14,7 +14,7 @@ function buildSuffixArray1(str) {
     suffixes[i] = new Suffix(i, str.substring(i));
   }
 console.log(suffixes);
-  suffixes = suffixes.sort(compare);   // sort the suffixes
+  suffixes = suffixes.sort(compare);   // sort the suffixes (this is where the bottleneck is in the algorithm)
 console.log(suffixes);  
   // store indexes of all sorted suffixes in the suffix array
   var suffixArray = [];
@@ -115,7 +115,7 @@ function search(pattern, src, suffixArray) {
 
     if (result === 0) {
 
-// O(n) modification to return all occurrences of pattern in source
+// O(n) modification to return all occurrences of pattern in source by checking all indices before and after the current index
 var count = 1,
     result = [],
     temp = mid;
@@ -142,8 +142,36 @@ console.log(count, result);
   return false;
 }
 
+function longestCommonPrefix(text, suffixArray) {
+  var i, L, phi = [], PLCP = [], LCP = [], n = text.length;
+  phi[suffixArray[0]] = -1; // default value
+  for (i = 0; i < n; i++) { // compute phi[] in O(n)
+    phi[suffixArray[i]] = suffixArray[i - 1];   // remember which sufix is behind this suffix
+  }
+
+  for (i = L = 0; i < n; i++) { // compute permuted longest-common-prefix in O(n)
+    if (phi[i] === -1) {  // special case
+      PLCP[i] = 0;
+      continue;
+    }
+
+    while (text[i + L] === text[phi[i] + L]) {  // L increased max n times
+      L += 1;
+    }
+    PLCP[i] = L;
+    L = Math.max(L - 1, 0); // L decreased max n times
+  }
+
+  for (i = 0; i < n; i++) { // compute LCP in O(n)
+    LCP[i] = PLCP[suffixArray[i]];  // put the permuted LCP to the correct position
+  }
+  console.log(PLCP);
+  console.log(LCP);
+}
+
 // O(n log n) implementation (from Competitive Programming 3)
-function Suffix2() {
+// http://www.comp.nus.edu.sg/~stevenha/visualization/suffixarray.html
+function Suffix3() {
   this.index = 0;
   this.rank = [];
 }
@@ -153,13 +181,18 @@ function Suffix2() {
 /*console.log(strncmp('hello', 'goodbye', 2));
 console.log(strncmp('hello', 'qw', 2));
 console.log(strncmp('hello', 'heodbye', 2));*/
-var sa = buildSuffixArray1('banana hello banana');
-console.log(search('ana', 'banana hello banana', sa));
+//var sa = buildSuffixArray1('banana hello banana');
+//console.log(search('ana', 'banana hello banana', sa));
 //var sa = buildSuffixArray1('banana');
 //console.log(search('nan', 'banana', sa));
 //console.log(buildSuffixArray2('banana'));
-
+var text = 'GATAGACA$';
+var sa = buildSuffixArray1(text);
+longestCommonPrefix(text, sa);
 /* Suffix Arrays are simpler to construct than Suffix Trees and for competitive programming contests, are preferably because of this simplicitly although Suffix Trees
    are faster (O(n) for suffix trees vs. O(n log n) for suffix arrays)
    
+   (see. Competitive Programming 3 p.254 for diagram). Suffix Trees and Suffix Arrays are closely related. The tree traversal of a Suffix Tree visits the terminating vertices
+   (the leaves) in Suffix Array order. An internal vertex of a Suffix Tree corresponds to a range in Suffix Array (a collection of sorted suffixes that share a common prefix).
+   A terminating vertex (always at leaf due to the usage of a terminating character) in Suffix Tree corresponds to an individual index in Suffix Array (a single suffix). 
 */   

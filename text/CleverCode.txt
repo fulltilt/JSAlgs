@@ -81,6 +81,7 @@ console.log(split2('once upon a time')); // ['once','upon','a','time']
 
 var size2 = _.size(); // function (n){return n.length}
 var map2 = _.map(_.size); // function (n){return r(t,n)}
+ -map takes in 2 args: 1st arg is the callback to apply to each element of the array and the 2nd arg is the array itself
 
 console.log(_.get); 
 function (r,t) {
@@ -95,7 +96,7 @@ function (r,t) {
 
 COMPOSE
 http://jsbin.com/jevag
- -http://jsbin.com/pifafosego/1/edit
+ -http://jsbin.com/tefatixubu/1/edit?html,js,console,output
 
 var lengths = _.compose(
   _.map(_.size), _.split(' ')
@@ -104,3 +105,31 @@ console.log(lengths('once upon a time')); // [4,4,1,4]
 /* compose is right associative so compose(f, g) can be interpreted as f(g(x)) 
    -length takes in a single argument that is first split() by ' '. The 2nd fxn is map() which takes in the first argument which is size(). The 2nd argument is the results of split()?
 */
+
+FUNCTOR - an object or data structure that you can map over (you can call them 'mappables')
+-ex: http://jsbin.com/durakeyajo/1/edit
+-sol: http://jsbin.com/xiwofojura
+
+EITHER/IO
+-ex: http://jsbin.com/zegat/7/edit
+-sol: http://jsbin.com/nagedowiro/1/edit?js,console,output
+
+OTHER FUNCTORS
+-ex: jsbin.com/yikoqi/3/edit
+-sol: http://jsbin.com/jucezajigu/1/edit
+
+MONADS:
+-ex: http://jsbin.com/woweg/edit?html,js,output
+-sol: http://jsbin.com/qilohivogu/1/edit?js,console,output
+
+-Monads allow you to nest computations. They are a pointed functor that adds mjoin and chain functions to combine other functors.
+
+APPLICATIVE FUNCTORS AND MONOIDS: http://vimeo.com/97575933
+
+MONOIDS
+-ex: http://jsbin.com/cedezeqayi
+-sol: http://jsbin.com/gujapijoji/1/edit
+
+EXTRA/MISC (may be duplicates):
+http://jsbin.com/gujapijoji/1/edit?js,console,output
+http://jsbin.com/perutuyijo

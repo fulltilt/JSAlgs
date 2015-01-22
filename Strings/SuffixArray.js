@@ -142,12 +142,26 @@ console.log(count, result);
   return false;
 }
 
+/* O(n)
+  Uses permuted longest-common-prefix (PLCP). The isea is that it's easier to compute the LCP in the original position order of the suffixes instead
+  of the lexicographic order of the suffixes
+  -note: not quite understanding this
+*/
 function longestCommonPrefix(text, suffixArray) {
-  var i, L, phi = [], PLCP = [], LCP = [], n = text.length;
-  phi[suffixArray[0]] = -1; // default value
-  for (i = 0; i < n; i++) { // compute phi[] in O(n)
-    phi[suffixArray[i]] = suffixArray[i - 1];   // remember which sufix is behind this suffix
+  var L, 
+      phi = [], // stores the suffix index of the previous suffix of the suffix array in suffix array order
+      PLCP = [], 
+      LCP = [], 
+      n = text.length, i;
+
+  // compute phi[] in O(n)
+  phi[suffixArray[0]] = -1; // by definition since there's no suffix before the very first suffix, set this value to -1
+  for (i = 0; i < n; i++) {
+    phi[suffixArray[i]] = suffixArray[i - 1];   // remember which suffix is behind this suffix
   }
+
+// SA =  [8,7,5,3,1,6,4,0,2]
+// phi = [4,3,0,5,6,7,1,8,-1]
 
   for (i = L = 0; i < n; i++) { // compute permuted longest-common-prefix in O(n)
     if (phi[i] === -1) {  // special case
@@ -159,7 +173,7 @@ function longestCommonPrefix(text, suffixArray) {
       L += 1;
     }
     PLCP[i] = L;
-    L = Math.max(L - 1, 0); // L decreased max n times
+    L = Math.max(L - 1, 0); // L decreased max n times (note: don't know why it's 'L - 1')
   }
 
   for (i = 0; i < n; i++) { // compute LCP in O(n)
@@ -189,10 +203,14 @@ console.log(strncmp('hello', 'heodbye', 2));*/
 var text = 'GATAGACA$';
 var sa = buildSuffixArray1(text);
 longestCommonPrefix(text, sa);
+//PLCP: [ 2, 1, 0, 1, 0, 1, 0, 0, 0 ]
+//LCP: [ 0, 0, 1, 1, 1, 0, 0, 2, 0 ]
 /* Suffix Arrays are simpler to construct than Suffix Trees and for competitive programming contests, are preferably because of this simplicitly although Suffix Trees
    are faster (O(n) for suffix trees vs. O(n log n) for suffix arrays)
    
    (see. Competitive Programming 3 p.254 for diagram). Suffix Trees and Suffix Arrays are closely related. The tree traversal of a Suffix Tree visits the terminating vertices
    (the leaves) in Suffix Array order. An internal vertex of a Suffix Tree corresponds to a range in Suffix Array (a collection of sorted suffixes that share a common prefix).
    A terminating vertex (always at leaf due to the usage of a terminating character) in Suffix Tree corresponds to an individual index in Suffix Array (a single suffix). 
+
+exercises: create phi in longestCommonPrefix
 */   

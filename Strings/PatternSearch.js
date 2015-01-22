@@ -309,3 +309,5 @@ PatternSearch.prototype = {
 }
  
 module.exports = PatternSearch;
+
+// exercises: preprocess KMP

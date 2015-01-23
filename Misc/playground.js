@@ -331,4 +331,21 @@ function compare(suff1, suff2) {
   }
 }
 
-naiveSuffixArray('GATAGACA$')
+//naiveSuffixArray('GATAGACA$');
+
+function perm(arr, currentIndex, str) {
+  
+  if (currentIndex === arr.length) {
+    console.log(str);
+    return;
+  }
+
+  for (var i = 0; i < arr.length; i++) {
+    str = str + '' + arr[i];
+    perm(arr, currentIndex + 1, str);
+    str = str.substring(0, str.length - 1);
+  }
+}
+
+perm(['c','b','a'], 0, '');
+

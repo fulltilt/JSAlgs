@@ -602,6 +602,24 @@ function sudoku() {
 
 }
 
+function balancedParentheses(pos, n, open, close, str) {
+  if (close === n) {
+    console.log(str.join(''));
+    return;
+  } else {
+    if (open > close) {
+      str[pos] = ')';
+      balancedParentheses(pos + 1, n, open, close + 1, str);
+    }
+
+    if (open < n) {
+      str[pos] = '(';
+        balancedParentheses(pos + 1, n, open + 1, close, str);
+    }
+  }
+}
+
+balancedParentheses(0, 4, 0, 0, []);
 module.exports = BackTracking;
 
 /* NOTES

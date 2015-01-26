@@ -90,7 +90,7 @@ function permute(str, index, res) {
 }
 
 Update 12/21/14: 
-// this fxn gets all permutations without repetitions. To get all permutations with repetitions, in the for loop, change 'var i = 0' to 'var i = index'
+// this fxn gets all permutations with repetitions. To get all permutations without repetitions, in the for loop, change 'var i = 0' to 'var i = index'
 function getPerms(arr, index, res) {
   if (arr.length === index) {
     console.log(res);

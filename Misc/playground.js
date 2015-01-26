@@ -349,3 +349,24 @@ function perm(arr, currentIndex, str) {
 
 perm(['c','b','a'], 0, '');
 
+function getPerms(arr, index, res) {
+  if (arr.length === index) {
+    console.log(res);
+    return;
+  }
+
+  for (var i = 0; i < arr.length; i++) { 
+    var temp = arr[i];
+    arr[i] = arr[index];
+    arr[index] = temp;
+
+    res.push(arr[index]);
+    getPerms(arr, index + 1, res);
+
+    temp = arr[index];
+    arr[index] = arr[i];
+    arr[i] = temp;
+    res.pop();
+  }
+}
+getPerms(['c','b','a'], 0, []);

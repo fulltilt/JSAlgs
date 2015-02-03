@@ -98,9 +98,10 @@ function getPerms(arr, index, res) {
   }
 
   for (var i = 0; i < arr.length; i++) { 
+    // NOTE: order matters
     var temp = arr[i];
     arr[i] = arr[index];
-    arr[index] = temp;
+    arr[index] = temp;  
 
     res.push(arr[index]);
     getPerms(arr, index + 1, res);

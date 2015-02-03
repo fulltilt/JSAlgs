@@ -347,7 +347,9 @@ function perm(arr, currentIndex, str) {
   }
 }
 
-perm(['c','b','a'], 0, '');
+
+
+//perm(['c','b','a'], 0, '');
 
 function getPerms(arr, index, res) {
   if (arr.length === index) {
@@ -355,7 +357,7 @@ function getPerms(arr, index, res) {
     return;
   }
 
-  for (var i = 0; i < arr.length; i++) { 
+  for (var i = index; i < arr.length; i++) { 
     var temp = arr[i];
     arr[i] = arr[index];
     arr[index] = temp;
@@ -369,4 +371,54 @@ function getPerms(arr, index, res) {
     res.pop();
   }
 }
-getPerms(['c','b','a'], 0, []);
+//getPerms(['c','b','a'], 0, []);
+
+/* LVL1
+index = 0
+i = 0
+temp = arr[i] = 'c'
+arr[i] = arr[index] = 'c'
+arr[index] = temp = 'c'
+arr = 'cba'
+res = 'c'
+recurse
+arr = 'cba'
+res = ''
+
+i = 1
+temp = arr[i] = 'b'
+arr[i] = arr[index] = 'c'
+arr[index] = temp = 'b'
+arr = 'bca'
+res = 'b'
+recurse
+arr = 'cba'
+res = ''
+
+// LVL2
+index = 1
+i = 1
+temp = 'b'
+arr[i] = arr[1] = 'b'
+arr[index] = temp = 'b'
+arr = 'cba'
+res = 'cb'
+recurse
+
+// LVL 3
+index = 2
+i = 2
+temp = 'a'
+arr[i] = arr[2] = 'a'
+arr[index] = temp = 'a'
+arr = 'cba'
+res = 'cba'
+recurse
+temp = arr[index] = 'a'
+arr[index] = arr[2] = 'a'
+arr[i] = temp;
+res = 'cb'
+
+// LVL 4
+print 'cba'
+*/

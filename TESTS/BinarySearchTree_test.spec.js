@@ -245,6 +245,22 @@ describe("BST", function() {
     expect(dboe.differenceBetweenOddAndEvenLevelSums2(dboe.root)).toEqual(-9);
   });
 
+  it('tests sumOfAllLeftLeaves', function() {
+    var soall = new BST.BinarySearchTree();
+    soall.insert(20);
+    soall.insert(9);
+    soall.insert(49);
+    soall.insert(5);
+    soall.insert(12);
+    soall.insert(15);
+    soall.insert(23);
+    soall.insert(52);
+    soall.insert(50);
+    var sum = { sum: 0 };
+    soall.sumOfAllLeftLeaves(soall.root, sum)
+    expect(sum.sum).toEqual(78);
+  });
+
   it('tests getLevelOfNode', function() {
     expect(bst.getLevelOfNode(bst.root, 23, 0)).toEqual(1);
     expect(bst.getLevelOfNode(bst.root, 22, 0)).toEqual(3);

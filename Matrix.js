@@ -89,6 +89,7 @@ function maxSquareSubMatrix(matrix) {
 }
 
 // http://www.geeksforgeeks.org/turn-an-image-by-90-degree/
+// algo: Transform each row of source matrix into required column of final image. We will use an auxiliary buffer to transform the image.
 function rotateImage(image) {
   var rows = image.length,
       columns = image[0].length,
@@ -98,7 +99,7 @@ function rotateImage(image) {
     rotatedImage[i] = [];
   }
 
-  for (var i = 0; i < rows; i++) {
+  for (i = 0; i < rows; i++) {
     for (var j = 0; j < columns; j++) {
       //0,0 -> 0,3 
       //1,0 -> 0,2 (column affected by row)
@@ -106,6 +107,18 @@ function rotateImage(image) {
       rotatedImage[j][rows - i - 1] = image[i][j];
     }
   }
+
+  /* alternate to snippet above
+  var destRow = image.length - 1;
+  for (i = 0; i < image.length; i++) {
+    var row = arr[i];
+    for (var j = 0; j < image[0].length; j++) {
+      buffer[j][destRow] = row[j];
+    }
+
+    destRow -= 1;
+  } */
+
   return rotatedImage;
 }
 

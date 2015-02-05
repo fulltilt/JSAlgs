@@ -404,7 +404,7 @@ function printAnagramsTogether(list) {
                     index: i };
   }
 
-  // sort each individual word in wordsAux by individual character
+  // sort each individual word in wordsAux by individual character (could combine this step in for loop above but split it up initially for understandability)
   for (i = 0; i < length; i++) {
     wordsAux[i].word = wordsAux[i].word.split('').sort().join('');
   }
@@ -429,6 +429,12 @@ function compare(a, b) {
   }
   return 0;
 }
+
+/* alternate way to compare strings
+function(a, b) { 
+  return a.localeCompare(b); 
+}
+*/
 
 // http://www.geeksforgeeks.org/rearrange-a-string-so-that-all-same-characters-become-at-least-d-distance-away/
 function sameCharsNDistanceAway(str, n) {

@@ -11,6 +11,7 @@ function BackTracking() {
   this.eightQueens = eightQueens;
   this.subsetSum = subsetSum;
   this.stairs = stairs;
+  this.wordsFromPhoneDigits = wordsFromPhoneDigits;
   this.sudoku = sudoku;
   this.tugOfWar = tugOfWar;
 }
@@ -591,6 +592,10 @@ function subsetSum(weights, targetSum) {
 
 function subsetSumUtil(weights, set, currentSum, targetSum) {
   
+}
+
+function wordsFromPhoneDigits(num) {
+  var table = ["", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"];
 }
 
 // http://www.geeksforgeeks.org/tug-of-war/

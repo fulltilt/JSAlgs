@@ -422,3 +422,67 @@ res = 'cb'
 // LVL 4
 print 'cba'
 */
+
+/*
+1 2 3
+4 5 6
+
+
+4 1
+5 2
+6 3
+
+0,0 -> 0,2
+0,1 -> 1,2
+0,2 -> 2,2
+1,0 -> 0,1
+1,1 -> 1,1
+1,2 -> 2,1
+2,0 -> 0,0
+2,1 -> 1,0 
+2,2 -> 2,0
+*/
+
+var table = ["", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"];
+for (var i = 0; i < table.length; i++) {
+  table[i] = table[i].split('');
+}
+//console.log(table)
+function p(num) {
+  var tLength = table.length;
+  for (var i = 0; i < tLength; i++) {
+
+  }
+}
+
+//678
+
+//Given an array filled up with 1 to n^2 in randomized order. Fill it in a square matrix of size n.
+// algo: don't know how it works but this sorts the randomized array in order
+var arr = [3,4,9,8,1,6,7,2,5];
+var buff = [[],[],[]];
+var n = Math.sqrt(arr.length);
+
+for (var i = 0; i < arr.length; i++) {
+  var row = Math.floor((arr[i] - 1) / n);
+  var col = (arr[i] - 1) % n;
+  buff[row][col] = arr[i];
+}
+//console.log(buff)
+
+function nextGreater(arr) {
+  var res = [];
+  for (var i = 0; i < arr.length; i++) {
+    res[i] = -1;
+    for (var j = i + 1; j < arr.length; j++) {
+      if (arr[j] > arr[i]) {
+        res[i] = arr[j];
+        break;
+      }
+    }
+  }
+  console.log(res)
+}
+
+nextGreater([4, 5, 2, 25]);
+nextGreater([13, 7, 6, 12]);

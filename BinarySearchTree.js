@@ -51,6 +51,7 @@ function BST() {
   this.printSpiral = printSpiral;
   this.countLeafNodes = countLeafNodes;
   this.doChildrenSumUpToNodeValue = doChildrenSumUpToNodeValue;
+  this.sumOfAllLeftLeaves = sumOfAllLeftLeaves;
   this.getTreeDiameter = getTreeDiameter;
   this.getMaxWidth = getMaxWidth;
   this._getMaxWidth = _getMaxWidth;
@@ -730,6 +731,20 @@ function differenceBetweenOddAndEvenLevelSums2(node) {
   }
     
   return node.data - this.differenceBetweenOddAndEvenLevelSums2(node.left) - this.differenceBetweenOddAndEvenLevelSums2(node.right);
+}
+
+// http://www.geeksforgeeks.org/find-sum-left-leaves-given-binary-tree/
+function sumOfAllLeftLeaves(node, sum) {
+  if (node === null) {
+    return;
+  }
+
+  if (isLeaf(node.left)) {
+    sum.sum += node.left.data;
+  } else {
+    sumOfAllLeftLeaves(node.left, sum);
+  }
+  sumOfAllLeftLeaves(node.right, sum);
 }
 
 // http://www.geeksforgeeks.org/get-level-of-a-node-in-a-binary-tree/

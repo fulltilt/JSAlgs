@@ -1019,7 +1019,7 @@ function findDuplicates(arr) {
 // naive solution using an inner for-loop is O(n^2) if array is in decreasing order. Something to consider as the 
 // O(n) solution below is kind of tricky
 function nextGreaterElement(arr) {
-  var stack = [],   // JavaScript array can mimic a stack
+  var stack = [],
       results = {}; // use object literal as the algorithm doesn't set the values in order  
   
   // initially push the first element onto the stack

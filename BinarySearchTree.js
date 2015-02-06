@@ -54,7 +54,6 @@ function BST() {
   this.sumOfAllLeftLeaves = sumOfAllLeftLeaves;
   this.getTreeDiameter = getTreeDiameter;
   this.getMaxWidth = getMaxWidth;
-  this._getMaxWidth = _getMaxWidth;
   this.isTreeBalanced = isTreeBalanced;
   this.existsPathSum = existsPathSum;
   this.doubleTree = doubleTree;
@@ -904,31 +903,18 @@ function getTreeDiameter(node) {
 }
 
 // http://www.geeksforgeeks.org/maximum-width-of-a-binary-tree/
-function getMaxWidth(root) {
-  var width,
-      height = this._getHeight(root),
-      count = [],
-      level = 0;
-
-  // initialize count array to zeroes
-  for (var i = 0; i < height; i++) {
-    count[i] = 0;
+function getMaxWidth(root, currentLevel, widthByLevel) {
+  if (root === null) {
+    return 0;
   }
 
-  // fill the count array using preorder traversal
-  this._getMaxWidth(root, count, level);
-
-  count = count.sort(function(a, b) { return a - b; });
-
-  return count[count.length - 1];
-}
-
-function _getMaxWidth(node, count, level) {
-  if (node) {
-    count[level] += 1;
-    this._getMaxWidth(node.left, count, level + 1);
-    this._getMaxWidth(node.right, count, level + 1);
+  if (widthByLevel[currentLevel]) {
+    widthByLevel[currentLevel] += 1;
+  } else {
+    widthByLevel[currentLevel] = 1;
   }
+  getMaxWidth(root.left, currentLevel + 1, widthByLevel);
+  getMaxWidth(root.right, currentLevel + 1, widthByLevel);
 }
 
 // http://www.geeksforgeeks.org/root-to-leaf-path-sum-equal-to-a-given-number/

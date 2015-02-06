@@ -294,8 +294,16 @@ describe("BST", function() {
   });
 
   it('tests getMaxWidth', function() {
-    expect(bst.getMaxWidth(bst.root)).toEqual(4);
-    expect(bt.getMaxWidth(bt.root)).toEqual(3);
+    var widthByLevel = [],
+        currentLevel = 0;
+    bst.getMaxWidth(bst.root, currentLevel, widthByLevel);
+    var max = Math.max.apply(Math, widthByLevel);
+    expect(max).toEqual(4);
+    
+    widthByLevel = [];
+    bst.getMaxWidth(bt.root, currentLevel, widthByLevel);
+    max = Math.max.apply(Math, widthByLevel);
+    expect(max).toEqual(3);
   });
 
   it('tests isTreeBalanced', function() {

@@ -497,8 +497,10 @@ describe("BST", function() {
     root.right = new BST.Node(3);
     root.right.left = new BST.Node(6);
     root.right.right = new BST.Node(7);
-    var map = {};
-    bst.getVerticalSums(root, map);
+    var map = {},
+        horizontalDistance = 0; // position is determined by distance from root. Since we're passing in root, the horizontal distance is zero
+    
+    bst.getVerticalSums(root, map, horizontalDistance);
     expect(map).toEqual({'-2':4, '-1':2, '0':12, '1':3, '2':7})
   });
 

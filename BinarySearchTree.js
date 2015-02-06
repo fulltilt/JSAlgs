@@ -72,7 +72,6 @@ function BST() {
   this.sortedArrayToBalancedBST = sortedArrayToBalancedBST;
   this.convertToSumTree = convertToSumTree;
   this.getVerticalSums = getVerticalSums;
-  this._getVerticalSums = _getVerticalSums;
   this.findMaxSumPath = findMaxSumPath;
   this.constructSpecialBT = constructSpecialBT;
   this.doesEachNodeHaveOnlyOneChild = doesEachNodeHaveOnlyOneChild;
@@ -1231,31 +1230,19 @@ function sortedArrayToBalancedBST(arr, lo, hi) {
 }
 
 // http://www.geeksforgeeks.org/vertical-sum-in-a-given-binary-tree/
-function getVerticalSums(root, map) {
+function getVerticalSums(root, map, horizontalDistance) {
   if (root === null) {
     return;
   }
 
-  var horizontalDistance = 0;
-  this._getVerticalSums(root, horizontalDistance, map);
-
-  //var sortedKeys = Object.keys(map).sort(function(a, b) { return a - b; });
-}
-
-function _getVerticalSums(root, horizontalDistance, map) {
-  if (root === null) {
-    return;
+  if (map[horizontalDistance]) {
+    map[horizontalDistance] += root.data;
+  } else {
+    map[horizontalDistance] = root.data;
   }
 
-  // store the values in map for left subtree
-  this._getVerticalSums(root.left, horizontalDistance - 1, map);
-
-  // update vertical sum for horizontal distance for this node
-  var previousSum = (!map[horizontalDistance]) ? 0 : map[horizontalDistance];
-  map[horizontalDistance] = previousSum + root.data;
-
-  // store the values in map for right subtree
-  this._getVerticalSums(root.right, horizontalDistance + 1, map);
+  getVerticalSums(root.left, map, horizontalDistance - 1);
+  getVerticalSums(root.right, map, horizontalDistance + 1);
 }
 
 // http://www.geeksforgeeks.org/find-the-maximum-sum-path-in-a-binary-tree/
@@ -2299,6 +2286,6 @@ THINGS TO TRY WHEN STUMPED:
 -create and pass object that holds state as you traverse the tree
 
 REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth. kDistanceFromLeaf, *kDistanceFromNode, getLargestBSTSubTreeSize (efficient version. Alternate soln in Apress #20)
-        getPredecessorAndSuccessor, verticalSum, iterativeInOrder, ceiling, _remove, removeNodesOutsideRange, existsPathSum
+        getPredecessorAndSuccessor, iterativeInOrder, ceiling, _remove, removeNodesOutsideRange, existsPathSum
         areTreesIsomorphic, removeNodesWhosePathLessThanK, findMaxPathSumBetweenTwoLeaves, doesEachNodeHaveOnlyOneChild
 */

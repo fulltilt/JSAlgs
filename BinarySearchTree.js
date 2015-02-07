@@ -885,21 +885,43 @@ The diameter of a tree T is the largest of the following quantities:
 * the longest path between leaves that goes through the root of T (this can be computed from the heights of the subtrees of T) 
 -note: the max diameter does not have to go through root
 */
+/* O(n^2) version: easier to write as you don't have to have a reference to a height object that pertains to each node
 function getTreeDiameter(node) {
   if (node === null) {
     return 0;
   }
 
   // get height of left and right subtrees
-  var leftHeight = this._getHeight(node.left),
-      rightHeight = this._getHeight(node.right);
+  var leftHeight = getHeight(node.left),
+      rightHeight = getHeight(node.right);
 
   // get the diameter of the left and right subtrees
-  var leftDiameter = this.getTreeDiameter(node.left),
-      rightDiameter = this.getTreeDiameter(node.right);
+  var leftDiameter = getTreeDiameter(node.left),
+      rightDiameter = getTreeDiameter(node.right);
 
   // return max of the left diameter, right diameter and height of left and right subtree + 1
   return Math.max(leftHeight + rightHeight + 1, Math.max(leftDiameter, rightDiameter));
+}*/
+
+// O(n) version: optimized by calculating the height in the same recursion rather than calling height() separately
+function getTreeDiameter(node, height) {
+  if (node === null) {
+    height.height = 0;
+    return 0;
+  }
+
+  // get height of left and right subtrees
+  var leftHeight = { height : 0 },
+      rightHeight = { height : 0 };
+
+  // get the diameter of the left and right subtrees
+  var leftDiameter = getTreeDiameter(node.left, leftHeight),
+      rightDiameter = getTreeDiameter(node.right, rightHeight);
+
+  height.height = Math.max(leftHeight.height, rightHeight.height) + 1;
+
+  // return max of the left diameter, right diameter and height of left and right subtree + 1
+  return Math.max(leftHeight.height + rightHeight.height + 1, Math.max(leftDiameter, rightDiameter));
 }
 
 // http://www.geeksforgeeks.org/maximum-width-of-a-binary-tree/
@@ -2271,7 +2293,7 @@ THINGS TO TRY WHEN STUMPED:
 -iterate right first instead of left
 -create and pass object that holds state as you traverse the tree
 
-REVIEW: differenceBetweenOddAndEvenLevelSums2, getTreeDiameter, getMaxWidth. kDistanceFromLeaf, *kDistanceFromNode, getLargestBSTSubTreeSize (efficient version. Alternate soln in Apress #20)
+REVIEW: differenceBetweenOddAndEvenLevelSums2, kDistanceFromLeaf, *kDistanceFromNode, getLargestBSTSubTreeSize (efficient version. Alternate soln in Apress #20)
         getPredecessorAndSuccessor, iterativeInOrder, ceiling, _remove, removeNodesOutsideRange, existsPathSum
         areTreesIsomorphic, removeNodesWhosePathLessThanK, findMaxPathSumBetweenTwoLeaves, doesEachNodeHaveOnlyOneChild
 */

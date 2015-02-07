@@ -288,21 +288,34 @@ describe("BST", function() {
     expect(bst.doChildrenSumUpToNodeValue(bst.root)).toEqual(false);
   });
 
+  // NOTE: currently don't have a test case of when the diameter doesn't go through root
   it('tests getTreeDiameter', function() {
-    expect(bst.getTreeDiameter(bst.root)).toEqual(7);
-    expect(bt.getTreeDiameter(bt.root)).toEqual(8);
+    //expect(bst.getTreeDiameter(bst.root)).toEqual(7);
+    //expect(bt.getTreeDiameter(bt.root)).toEqual(8);
+
+    expect(bst.getTreeDiameter(bst.root, {})).toEqual(7);
+/* # in parentheses represents node's height
+              23(4)
+          /           \
+    16(3)             45(3) (leftHeight: 2, rightHeight: 1)
+    /   \            /     \
+3(2)     22(1)   37(2)      99(1) (leftHeight: 0, rightHeight: 0)
+    \             /
+    10(1)     36(1)  
+*/
+    expect(bt.getTreeDiameter(bt.root, {})).toEqual(8);
   });
 
   it('tests getMaxWidth', function() {
     var widthByLevel = [],
         currentLevel = 0;
     bst.getMaxWidth(bst.root, currentLevel, widthByLevel);
-    var max = Math.max.apply(Math, widthByLevel);
+    var max = Math.max.apply(null, widthByLevel);   // the first arg to apply apparently is irrelevant
     expect(max).toEqual(4);
     
     widthByLevel = [];
     bst.getMaxWidth(bt.root, currentLevel, widthByLevel);
-    max = Math.max.apply(Math, widthByLevel);
+    max = Math.max.apply(null, widthByLevel);
     expect(max).toEqual(3);
   });
 

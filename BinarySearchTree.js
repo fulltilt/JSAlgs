@@ -1020,14 +1020,35 @@ function kDistanceFromRoot(node, k, result) {
   if (k === 0) {
     result.push(node.data);
     return;
-  } else {
-    this.kDistanceFromRoot(node.left, k - 1, result);
-    this.kDistanceFromRoot(node.right, k - 1, result);
   }
+
+  kDistanceFromRoot(node.left, k - 1, result);
+  kDistanceFromRoot(node.right, k - 1, result);
 }
 
 // http://www.geeksforgeeks.org/print-nodes-distance-k-leaf-node/
 function kDistanceFromLeaf(node, path, visited, pathLength, k, results) {
+  if (node === null) {
+    return;
+  }
+
+  path.push(node);
+  if (isLeaf(node)) {
+    var length = path.length;
+    
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/*
   if (node === null) {
     return;
   }
@@ -1050,6 +1071,7 @@ function kDistanceFromLeaf(node, path, visited, pathLength, k, results) {
   }
   path.pop();
 }
+*/
 
 // http://www.geeksforgeeks.org/print-nodes-distance-k-given-node-binary-tree/
 // to get nodes k distance below node we just use this.kDistanceFromRoot(). For the ancestors, we have to go through

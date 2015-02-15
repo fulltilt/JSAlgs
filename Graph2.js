@@ -337,3 +337,8 @@ var Graph = function() {
 }();
 
 module.exports = Graph;
+
+/*
+-Eulerian paths have at least two vertices that have an odd n degree. Eulerian cycles have vertices that all have an even n degree. In that problem provided, we 
+ see that two nodes have 3 edges connecting them. If all the nodes had even edges connecting them, then we would have a Eulerian tour.
+*/

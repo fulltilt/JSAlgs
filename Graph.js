@@ -1001,6 +1001,7 @@ function stronglyConnectedComponents() {
 }
 
 // http://www.geeksforgeeks.org/bridge-in-a-graph/
+// NOTE: this problem is covered in Udacity's Intro to Algorithms course at the end of Unit 3. For whatever reason, the solution is way more drawn out than this one
 function bridges() {
 
 }

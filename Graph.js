@@ -472,6 +472,7 @@ function minDistance(dist, mstSet, vertices) {
 // http://www.geeksforgeeks.org/greedy-algorithms-set-6-dijkstras-shortest-path-algorithm/
 // algorithm is very similar to Prim's minimum spanning tree algorithm
 // Assumptions: no negative edges
+// can be made more efficient by using a heap to find the minimum distance
 function Dijkstra(graph, startVertex) {
   var vertices = graph.length,
       dist = [],    // output array. Dist[i] will hold the shortest distance from startVertex to vertex i
@@ -507,6 +508,25 @@ function Dijkstra(graph, startVertex) {
   for (i = 0; i < vertices; i++)
     console.log(i, '    ', dist[i]);
 }
+
+/* From Udacity CS215:
+def dijkstra(G,v):
+    dist_so_far = {}
+    dist_so_far[v] = 0
+    final_dist = {}
+    while len(final_dist) < len(G):
+        w = shortest_dist_node(dist_so_far)
+        # lock it down!                                                                                                                                                                                     
+        final_dist[w] = dist_so_far[w]
+        del dist_so_far[w]
+        for x in G[w]:
+            if x not in final_dist:
+                if x not in dist_so_far:
+                    dist_so_far[x] = final_dist[w] + G[w][x]
+                elif final_dist[w] + G[w][x] < dist_so_far[x]:
+                    dist_so_far[x] = final_dist[w] + G[w][x]
+    return final_dist
+*/
 
 // http://www.geeksforgeeks.org/dynamic-programming-set-23-bellman-ford-algorithm/
 // Same purpose as Dijkstra's algorithm but graph may contain negative edges. Algorithm is simpler but is less time efficient

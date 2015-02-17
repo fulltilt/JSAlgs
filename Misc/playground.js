@@ -484,5 +484,32 @@ function nextGreater(arr) {
   console.log(res)
 }
 
-nextGreater([4, 5, 2, 25]);
-nextGreater([13, 7, 6, 12]);
+//nextGreater([4, 5, 2, 25]);
+//nextGreater([13, 7, 6, 12]);
+
+// http://www.geeksforgeeks.org/count-number-ways-reach-given-score-game/
+// using backtracking
+function waysToScore(goal, score, path) {
+  // base cases: score === goal and score > goal
+  if (score === goal) {
+    console.log(path);
+    return;
+  }
+
+  if (score > goal) {
+    return;
+  }
+
+  path.push(3);
+  waysToScore(goal, score + 3, path);
+  path.pop();
+
+  path.push(5);
+  waysToScore(goal, score + 5, path);
+  path.pop();
+
+  path.push(10);
+  waysToScore(goal, score + 10, path);
+  path.pop();
+}
+//waysToScore(13, 0, []);

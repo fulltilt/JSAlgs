@@ -624,8 +624,35 @@ function balancedParentheses(pos, n, open, close, str) {
     }
   }
 }
+//balancedParentheses(0, 4, 0, 0, []);
 
-balancedParentheses(0, 4, 0, 0, []);
+// http://www.geeksforgeeks.org/count-number-ways-reach-given-score-game/
+// using backtracking
+function waysToScore(goal, score, path) {
+  // base cases: score === goal and score > goal
+  if (score === goal) {
+    console.log(path);
+    return;
+  }
+
+  if (score > goal) {
+    return;
+  }
+
+  path.push(3);
+  waysToScore(goal, score + 3, path);
+  path.pop();
+
+  path.push(5);
+  waysToScore(goal, score + 5, path);
+  path.pop();
+
+  path.push(10);
+  waysToScore(goal, score + 10, path);
+  path.pop();
+}
+//waysToScore(13, 0, []);
+
 module.exports = BackTracking;
 
 /* NOTES

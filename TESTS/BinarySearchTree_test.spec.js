@@ -404,8 +404,11 @@ describe("BST", function() {
     var visited = [], //Stores true if a node is printed as output. A node may be k distance away from many leaves, we want to print it once
         path = [],
         results = [];
-    bst.kDistanceFromLeaf(root, path, visited, 0, 2, results);
-    expect(results).toEqual([1,3]);
+    //bst.kDistanceFromLeaf(root, path, visited, 0, 2, results);    // original fxn
+    //bst.kDistanceFromLeaf(root, path, visited, 2, results);
+    //expect(results).toEqual([1,3]);
+    bst.kDistanceFromLeaf(root, path, visited, 1, results);
+    expect(results).toEqual([2,6,3]);
   });
 
   it('tests kDistanceFromNode', function() {
@@ -420,6 +423,11 @@ describe("BST", function() {
         result = [];
     bst.kDistanceFromNode(root, target, 2, result);
     expect(result).toEqual([10,14,22]);
+
+    /*target = root.left.right.right;
+    result = [];
+    bst.kDistanceFromNode(root, target, 3, result);
+    expect(result).toEqual([20,4]);*/
   });
 
   it('tests getSuccessor', function() {

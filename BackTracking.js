@@ -627,7 +627,7 @@ function balancedParentheses(pos, n, open, close, str) {
 //balancedParentheses(0, 4, 0, 0, []);
 
 // http://www.geeksforgeeks.org/count-number-ways-reach-given-score-game/
-// using backtracking
+// using backtracking to show each possible permutation to reach goal as opposed to solution in link that prints only the # of non-unique permutations
 function waysToScore(goal, score, path) {
   // base cases: score === goal and score > goal
   if (score === goal) {
@@ -652,6 +652,7 @@ function waysToScore(goal, score, path) {
   path.pop();
 }
 //waysToScore(13, 0, []);
+
 
 module.exports = BackTracking;
 

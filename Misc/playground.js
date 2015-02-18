@@ -513,3 +513,18 @@ function waysToScore(goal, score, path) {
   path.pop();
 }
 //waysToScore(13, 0, []);
+
+function enhancedReverse(arr, startIndex, endIndex) {
+  if (startIndex > endIndex) {
+    return;
+  }
+
+  var temp = arr[startIndex];
+  arr[startIndex] = arr[endIndex];
+  arr[endIndex] = temp;
+  enhancedReverse(arr, startIndex + 1, endIndex - 1);
+}
+
+var str = 'abcdefghijklmnopqrstuvwxyz'.split('');
+enhancedReverse(str, 5, 18);
+console.log(str.join(''));

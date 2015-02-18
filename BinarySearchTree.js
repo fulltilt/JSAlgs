@@ -1027,28 +1027,61 @@ function kDistanceFromRoot(node, k, result) {
 }
 
 // http://www.geeksforgeeks.org/print-nodes-distance-k-leaf-node/
-function kDistanceFromLeaf(node, path, visited, pathLength, k, results) {
+// refactored. I've noticed that my version and the GeeksForGeeks version wouldn't work correctly for nodes with trees with duplicate entries due to how the visited variable works
+function kDistanceFromLeaf(node, path, visited, k, results) {
   if (node === null) {
     return;
   }
 
-  path.push(node);
+  path.push(node.data);
   if (isLeaf(node)) {
-    var length = path.length;
-    
+    var length = path.length,
+        kthNodeFromLeafIndex = length - 1 - k;
+
+    if (k >= 0) {
+      kthNodeFromLeaf = path[kthNodeFromLeafIndex];
+      if (!visited[kthNodeFromLeaf]) {
+        visited[kthNodeFromLeaf] = true;
+        results.push(path[kthNodeFromLeafIndex]);
+      }
+    }
+    path.pop();
+    return;
   }
+  kDistanceFromLeaf(node.left, path, visited, k, results);
+  kDistanceFromLeaf(node.right, path, visited, k, results);
+  path.pop();
 }
 
-
-
-
-
-
-
-
-
-
 /*
+-refactored
+function kDistanceFromLeaf(node, path, visited, k, results) {
+  if (node === null) {
+    return;
+  }
+
+  path.push(node.data);
+  if (isLeaf(node)) {
+    var length = path.length,
+        kthNodeFromLeafIndex = length - 1 - k;
+
+    if (k >= 0) {
+      kthNodeFromLeaf = path[kthNodeFromLeafIndex];
+      if (!visited[kthNodeFromLeaf]) {
+        visited[kthNodeFromLeaf] = true;
+        results.push(path[kthNodeFromLeafIndex]);
+      }
+    }
+    path.pop();
+    return;
+  }
+  kDistanceFromLeaf(node.left, path, visited, k, results);
+  kDistanceFromLeaf(node.right, path, visited, k, results);
+  path.pop();
+}
+
+-original from GeeksForGeeks
+function kDistanceFromLeaf(node, path, visited, k, results) {
   if (node === null) {
     return;
   }
@@ -1075,12 +1108,32 @@ function kDistanceFromLeaf(node, path, visited, pathLength, k, results) {
 
 // http://www.geeksforgeeks.org/print-nodes-distance-k-given-node-binary-tree/
 // to get nodes k distance below node we just use this.kDistanceFromRoot(). For the ancestors, we have to go through
-// all the ancestors and find nodes at k - d distance from ancestor
+// all the ancestors and find nodes at k - d distance from ancestor. The tricky part is how to traverse to another subtree.
+// Note: we can modify kDistanceFromLeaf to handle the tricky part so kDistanceFromNode just becomes a call to kDistanceFromRoot and the modified kDistanceFromLeaf?
 function kDistanceFromNode(root, target, k, result) {
   if (root === null || k < 0) {
     return 0;
   }
+}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
   // if target is same as root. Use this.kDistanceFromRoot() to get all nodes at distance k in subtree rooted with target or root
   if (root === target) {
     this.kDistanceFromRoot(root, k, result);
@@ -1116,8 +1169,9 @@ function kDistanceFromNode(root, target, k, result) {
   }
 
   // If target was neither present in left nor right subtree
-  return -1;
+  return -1; 
 }
+*/
 
 // http://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/
 // this algorithm doesn't need a parent pointer; also, this algorithm only works for binary search trees
@@ -2315,7 +2369,7 @@ THINGS TO TRY WHEN STUMPED:
 -iterate right first instead of left
 -create and pass object that holds state as you traverse the tree
 
-REVIEW: differenceBetweenOddAndEvenLevelSums2, kDistanceFromLeaf, *kDistanceFromNode, getLargestBSTSubTreeSize (efficient version. Alternate soln in Apress #20)
+REVIEW: differenceBetweenOddAndEvenLevelSums2, *kDistanceFromNode, getLargestBSTSubTreeSize (efficient version. Alternate soln in Apress #20)
         getPredecessorAndSuccessor, iterativeInOrder, ceiling, _remove, removeNodesOutsideRange, existsPathSum
         areTreesIsomorphic, removeNodesWhosePathLessThanK, findMaxPathSumBetweenTwoLeaves, doesEachNodeHaveOnlyOneChild
 */

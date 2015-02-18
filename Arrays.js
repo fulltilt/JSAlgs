@@ -2337,6 +2337,18 @@ function longestMonotonicallyIncreasingLogN(arr) {
 
 }
 
+// reverse fxn that allows you to set the start and end index in which to reverse a segment of an array
+function enhancedReverse(arr, startIndex, endIndex) {
+  if (startIndex > endIndex) {
+    return;
+  }
+
+  var temp = arr[startIndex];
+  arr[startIndex] = arr[endIndex];
+  arr[endIndex] = temp;
+  enhancedReverse(arr, startIndex + 1, endIndex - 1);
+}
+
 // PRACTICE - search '***'
 
 // DIDN'T COMPLETELY UNDERSTAND: nextGreaterElement, findSmallestMissingNumber, countNumberOfOccurrences,

@@ -1075,4 +1075,23 @@ describe("BST", function() {
   /**/it('tests checkIdenticalArrayBST', function() {
     
   });
+
+  it('tests populateNextRightPointers', function() {
+    var root = new BST.Node2(23);
+    root.leftChild = new BST.Node2(16);
+    root.leftChild.leftChild = new BST.Node2(3);
+    root.leftChild.rightChild = new BST.Node2(22);
+    root.leftChild.leftChild.rightChild = new BST.Node2(10);
+    root.rightChild = new BST.Node2(45);
+    root.rightChild.leftChild = new BST.Node2(37);
+    root.rightChild.rightChild = new BST.Node2(99);
+    root.rightChild.leftChild.leftChild = new BST.Node2(36);
+    bst.populateNextRightPointers(root);
+
+    expect(root.leftChild.rightSibling.data).toEqual(45);
+    expect(root.leftChild.leftChild.rightSibling.data).toEqual(22);
+    expect(root.leftChild.rightChild.rightSibling.data).toEqual(37);
+    expect(root.rightChild.leftChild.rightSibling.data).toEqual(99);
+    expect(root.leftChild.leftChild.rightChild.rightSibling.data).toEqual(36);
+  });
 });

@@ -109,6 +109,7 @@ function BST() {
   this.recreateFromPreOrder = recreateFromPreOrder;
   this.canRecreateFromPostOrder = canRecreateFromPostOrder;
   this.postOrderFromInOrderAndPreOrder = postOrderFromInOrderAndPreOrder;
+  this.populateNextRightPointers = populateNextRightPointers;
 
   this.segmentTree = segmentTree;
   this.getRandomBSTNode = getRandomBSTNode;
@@ -2340,10 +2341,60 @@ function checkIdenticalArrayBST(arr1, arr2) {
 
 }
 
+// http://leetcode.com/2010/03/first-on-site-technical-interview.html
+// one way you can do it is using breadth-first search but that requires extra space. Solution below can be done with constant space
+function Node2(data) {
+  this.data = data;
+  this.leftChild = null;
+  this.rightChild = null;
+  this.rightSibling = null;
+}
+
+function populateNextRightPointers(node) {
+  if (node === null) {
+    return;
+  }
+
+  if (node.leftChild !== null) {
+    if (node.rightChild !== null) {
+      node.leftChild.rightSibling = node.rightChild;
+    }
+  }
+
+  if (node.rightChild !== null) {
+    /* you only need this clause if we can assume that this is a complete tree
+    if (node.rightSibling !== null) {
+      if (node.rightSibling.leftChild !== null) {
+        node.rightChild.rightSibling = node.rightSibling.leftChild;
+      }
+    }
+    */
+
+    // bottom clause for general trees
+    var rightSib = node.rightSibling;
+    while (rightSib !== null) {
+      if (rightSib.leftChild !== null) {
+        node.rightChild.rightSibling = rightSib.leftChild;
+        break;
+      } else if (rightSib.rightChild !== null) {
+        node.rightChild.rightSibling = rightSib.rightChild;
+        break;
+      }
+
+      rightSib = rightSib.rightSibling;
+    }
+
+  }
+
+  populateNextRightPointers(node.leftChild);
+  populateNextRightPointers(node.rightChild);
+}
+
 var BinarySearchTree = function() {
   return {
     BinarySearchTree: BST,
-    Node: Node
+    Node: Node,
+    Node2: Node2
   }
 }();
 

@@ -17,6 +17,8 @@ function Strings() {
   this.permutations = permutations;
   this.inPlaceStringTransform = inPlaceStringTransform;
   this.removeAdjacentDuplicates = removeAdjacentDuplicates;
+  this.trim = trim;
+  this.countWords = countWords;
 }
 
 // http://www.geeksforgeeks.org/a-program-to-check-if-strings-are-rotations-of-each-other-or-not/
@@ -567,6 +569,56 @@ function inPlaceStringTransform(str) {
 
     //}
   }    
+}
+
+function trim(str) {
+  if (str === null) {
+    return null;
+  }
+
+  var start = 0,
+      end = str.length - 1;
+
+  while (str[start] === ' ') {
+    start += 1;
+  }
+
+  while (str[end] === ' ') {
+    end -= 1;
+  }
+
+  return str.substring(start, end + 1);
+}
+/* from Douglas Crockford:
+String.prototype.trim = function () {
+  return this.replace(/^\s*(\S*(\s+\S+)*)\s*$/, "$1");    // regex reminder: $1 is the outer parentheses and $2 is the inner parentheses
+}; */
+
+// http://leetcode.com/2010/02/c-code-to-count-number-of-words-in.html
+function countWords(str) {
+  if (str === null) {
+    return 0;
+  }
+
+  var count = 0,
+      i = 0;
+
+  str = trim(str);  // trim string
+  var len = str.length;
+
+  // handle the first word
+  if (str.length > 0) { 
+    count = 1;
+  }
+
+  // handle subsequent words by breaking words by spaces
+  for (i = 0; i < len; i++) {
+    if (str[i] === ' ' && str[i - 1] !== ' ') {
+      count += 1;
+    }
+  }
+
+  return count;
 }
 
 module.exports = Strings;

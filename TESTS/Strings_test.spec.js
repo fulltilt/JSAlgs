@@ -96,6 +96,10 @@ describe("Strings", function() {
     //expect(s.removeAdjacentDuplicates('qpaaaaadaaaaadprq'.split(''), 0, null)).toEqual('qrq');
   });
 
+  it('tests countWords', function() {
+    expect(s.countWords('Hello, my   name is John')).toEqual(5);
+  });
+
 /**/xit('tests inPlaceStringTransform', function() {
     expect(s.inPlaceStringTransform('a1b2c3d4e5f6g7h8i9j1k2l3m4')).toEqual('abcdefghijklm1234567891234');
   });  

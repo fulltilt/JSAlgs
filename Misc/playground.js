@@ -528,3 +528,8 @@ function enhancedReverse(arr, startIndex, endIndex) {
 var str = 'abcdefghijklmnopqrstuvwxyz'.split('');
 enhancedReverse(str, 5, 18);
 console.log(str.join(''));
+
+           23
+   16             45
+3     22       37     99
+  10          36          11

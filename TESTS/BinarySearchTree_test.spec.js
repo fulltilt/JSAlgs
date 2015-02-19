@@ -1086,12 +1086,14 @@ describe("BST", function() {
     root.rightChild.leftChild = new BST.Node2(37);
     root.rightChild.rightChild = new BST.Node2(99);
     root.rightChild.leftChild.leftChild = new BST.Node2(36);
+    root.rightChild.rightChild.rightChild = new BST.Node2(11);
     bst.populateNextRightPointers(root);
 
     expect(root.leftChild.rightSibling.data).toEqual(45);
     expect(root.leftChild.leftChild.rightSibling.data).toEqual(22);
     expect(root.leftChild.rightChild.rightSibling.data).toEqual(37);
     expect(root.rightChild.leftChild.rightSibling.data).toEqual(99);
-    expect(root.leftChild.leftChild.rightChild.rightSibling.data).toEqual(36);
+    expect(root.leftChild.leftChild.rightChild.rightSibling.data).toEqual(36);  // test for non-complete tree
+    expect(root.rightChild.leftChild.leftChild.rightSibling.data).toEqual(11);  // test for non-complete tree
   });
 });

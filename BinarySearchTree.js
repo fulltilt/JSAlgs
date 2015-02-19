@@ -2350,7 +2350,8 @@ function Node2(data) {
   this.rightSibling = null;
 }
 
-function populateNextRightPointers(node) {
+// assuming complete trees
+function populateNextRightPointers2(node) {
   if (node === null) {
     return;
   }
@@ -2362,15 +2363,47 @@ function populateNextRightPointers(node) {
   }
 
   if (node.rightChild !== null) {
-    /* you only need this clause if we can assume that this is a complete tree
     if (node.rightSibling !== null) {
       if (node.rightSibling.leftChild !== null) {
         node.rightChild.rightSibling = node.rightSibling.leftChild;
       }
     }
-    */
+  }
 
-    // bottom clause for general trees
+  populateNextRightPointers2(node.leftChild);
+  populateNextRightPointers2(node.rightChild);
+}
+
+// for non-complete trees
+function populateNextRightPointers(node) {
+  if (node === null) {
+    return;
+  }
+
+  if (node.leftChild !== null) {
+    var isRight = false;
+    if (node.rightChild !== null) {
+      node.leftChild.rightSibling = node.rightChild;
+      isRight = true;
+    }
+
+    if (!isRight) {
+      var rightSib = node.rightSibling;
+      while (rightSib !== null) {
+        if (rightSib.leftChild !== null) {
+          node.leftChild.rightSibling = rightSib.leftChild;
+          break;
+        } else if (rightSib.rightChild !== null) {
+          node.leftChild.rightSibling = rightSib.rightChild;
+          break;
+        }
+
+        rightSib = rightSib.rightSibling;
+      }
+    }
+  }
+
+  if (node.rightChild !== null) {
     var rightSib = node.rightSibling;
     while (rightSib !== null) {
       if (rightSib.leftChild !== null) {
@@ -2383,7 +2416,6 @@ function populateNextRightPointers(node) {
 
       rightSib = rightSib.rightSibling;
     }
-
   }
 
   populateNextRightPointers(node.leftChild);

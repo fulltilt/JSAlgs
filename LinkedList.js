@@ -403,6 +403,7 @@ function getNthFromEnd(n) {
 	return slow.data;
 }
 	
+// note: have to use 'this' when calling _reverse since we're making a reference to this.head
 function reverse() {
 	this._reverse(null, this.head);
 }
@@ -419,7 +420,8 @@ function _reverse(previous, node) {
 
 function iterativeReverse() {
 	var previous = null,
-			current = this.head, next;
+		current = this.head, next;
+
 	while (current !== null) {
 		next = current.next;
 		current.next = previous;

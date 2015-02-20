@@ -9,13 +9,14 @@ describe("Dynamic", function() {
   });
 
   it('tests both knapsack problem versions', function() {
-    var value = [4,5,10,11,13];
-    var size = [3,4,7,8,9];
-    var capacity = 16;
-    var n = 5;
+    var value = [4,5,10,11,13],
+        size = [3,4,7,8,9],
+        capacity = 16,
+        n = 5,
+        startIndex = 0;
     //expect(d.recursiveKnapsack(capacity, size, value, n)).toEqual(23);
     //expect(d.dynamicKnapsack(capacity, size, value, n)).toEqual(23);
-    expect(d.recursiveKnapsack(capacity, size, value, 0)).toEqual(23);
+    expect(d.recursiveKnapsack(capacity, size, value, startIndex)).toEqual(23);
 
     var table = [],
         length = size.length, i, j;

@@ -78,9 +78,11 @@ function recursiveKnapsack(capacity, size, value, n) {
     return 0;
   }
 
+  // If weight of the nth item is more than Knapsack capacity W, then this item cannot be included in the optimal solution
   if (size[n] > capacity) {
     return recursiveKnapsack(capacity, size, value, n + 1);
   } else {
+    // Return the maximum of two cases: (1) nth item included (2) not included (note: by adding condition of not included enables us to get permutations such as only last element being added)
     return Math.max(value[n] + recursiveKnapsack(capacity - size[n], size, value, n + 1),
                     recursiveKnapsack(capacity, size, value, n + 1));
   }

@@ -514,22 +514,32 @@ function waysToScore(goal, score, path) {
 }
 //waysToScore(13, 0, []);
 
-function enhancedReverse(arr, startIndex, endIndex) {
-  if (startIndex > endIndex) {
-    return;
+// http://ideone.com/QI4pcj
+function recursiveKnapsack(capacity, size, value, n, cache) {
+  if (capacity === 0 || n === size.length) {
+    return 0;
   }
 
-  var temp = arr[startIndex];
-  arr[startIndex] = arr[endIndex];
-  arr[endIndex] = temp;
-  enhancedReverse(arr, startIndex + 1, endIndex - 1);
+
+  cache[n][] 
+  // If weight of the nth item is more than Knapsack capacity W, then this item cannot be included in the optimal solution
+  if (size[n] > capacity) {
+    return recursiveKnapsack(capacity, size, value, n + 1, cache);
+  } else {
+    // Return the maximum of two cases: (1) nth item included (2) not included (note: by adding condition of not included enables us to get permutations such as only last element being added)
+
+    return Math.max(value[n] + recursiveKnapsack(capacity - size[n], size, value, n + 1, cache),
+                    recursiveKnapsack(capacity, size, value, n + 1, cache));
+  }
 }
 
-var str = 'abcdefghijklmnopqrstuvwxyz'.split('');
-enhancedReverse(str, 5, 18);
-console.log(str.join(''));
+var val = [60, 100, 120],
+    wt = [10, 20, 30],
+    W = 50,
+    cache = [];
 
-           23
-   16             45
-3     22       37     99
-  10          36          11
+for (var i = 0; i < val.length; i++) {
+  cache[i] = [];
+}
+
+console.log(recursiveKnapsack(W, wt, val, 0, cache));

@@ -1092,10 +1092,10 @@ function sortedLLToBalancedBST(list, lo, hi, tree) {
 // NOTE: this algorithm assumes that there are 2 lists that intersect at a node that isn't a head node
 function intersectionOfTwoLists(list1, list2) {
 	var current1 = list1.head,
-			current2 = list2.head,
-			size1 = list1.getSize(),
-			size2 = list2.getSize(),
-			diff = size1 - size2;
+		current2 = list2.head,
+		size1 = list1.getSize(),
+		size2 = list2.getSize(),
+		diff = size1 - size2;
 
 	if (diff > 0) {	// list1 is bigger
 		while (diff > 0) {
@@ -1119,6 +1119,14 @@ function intersectionOfTwoLists(list1, list2) {
 		}
 	}
 }
+/*
+1->2->3->6->7
+         ^
+   10->9-|
+
+5 - 4 = 1
+so iterate through the bigger list first 1 time which will be at Node with value 2. Iterate both lists in step until both pointers are equal
+*/
 
 // http://www.geeksforgeeks.org/implement-lru-cache/
 function LRUCache() {

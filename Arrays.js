@@ -2229,6 +2229,28 @@ function maxProductSubArray(arr) {
 }
 
 // Apress #71: Please implement a function that finds the intersection of two sorted arrays. Assume numbers in each array are unique.
+// note: don't confuse this with intersection of 2 linked lists. For example, the intersection of [1,4,7,10,13] and [1,3,5,7,9] is [1,7]
+// O(n) version which takes advantage of the fact that these arrays are sorted
+function intersectionOfSortedArrays(arr1, arr2) {
+  var length1 = arr1.length,
+      length2 = arr2.length,
+      i = 0, j = 0,
+      result = [];
+
+  while (i !== length1 && j !== length2) {
+    if (arr1[i] === arr2[j]) {
+      result.push(arr1[i]);
+      i += 1;
+      j += 1;
+    } else if (arr1[i] < arr2[j]) {
+      i += 1;
+    } else {
+      j += 1;
+    }
+  }
+}
+
+/*  O(n log n) version
 function intersectionOfSortedArrays(arr1, arr2) {
   var length1 = arr1.length,
       length2 = arr2.length,
@@ -2252,9 +2274,8 @@ function intersectionOfSortedArrays(arr1, arr2) {
       }
     }
   }
-
-  return result;
-}
+  return result;  
+} */
 
 // Apress #90: Given a positive value s, print all sequences with continuous numbers (with two numbers at least) whose sum is s.
 //             Take the input s=15 as an example. Because 1+2+3+4+5=4+5+6=7+8=15, three continuous sequences should be printed: 1~5, 4~6, and 7~8.

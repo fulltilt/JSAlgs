@@ -48,28 +48,28 @@ function Dynamic() {
 }
 
 // http://www.geeksforgeeks.org/program-for-nth-fibonacci-number/
-function nthFibonacciRecursive(n, table) {
+function nthFibonacciRecursive(n, cache) {
   if (n === 0 || n === 1) {
     return 1;
   }
 
-  if (table[n]) {
-    return table[n];
+  if (cache[n]) {
+    return cache[n];
   }
 
-  return table[n] = nthFibonacciRecursive(n - 1, table) + nthFibonacciRecursive(n - 2, table);
+  return cache[n] = nthFibonacciRecursive(n - 1, cache) + nthFibonacciRecursive(n - 2, cache);
 }
 
 function nthFibonacciIterative(n) {
-  var table = [], i;
-  table[0] = 1;
-  table[1] = 1;
+  var cache = [], i;
+  cache[0] = 1;
+  cache[1] = 1;
   
   for (i = 2; i <= n; i++) {
-    table[i] = table[i - 1] + table[i - 2];
+    cache[i] = cache[i - 1] + cache[i - 2];
   }
 
-  return table[n];
+  return cache[n];
 }
 
 // inefficient as many subproblems are repeated

@@ -645,8 +645,8 @@ describe("LinkedList", function() {
     iotl1.insertHead(2);
     iotl1.insertHead(1);
 
-    iotl2.insertHead(7);
-    iotl2.insertHead(6);
+    iotl2.insertHead(9);
+    iotl2.insertHead(10);
     iotl2.head.next.next = iotl1.head.next.next.next;
 
     expect(ll.intersectionOfTwoLists(iotl1, iotl2).data).toEqual(6);

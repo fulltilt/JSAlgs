@@ -520,22 +520,23 @@ function recursiveKnapsack(capacity, size, value, n, cache) {
     return 0;
   }
 
-
-  cache[n][] 
+  if (cache[n][capacity]) {
+    return cache[n][capacity];
+  }
+  
   // If weight of the nth item is more than Knapsack capacity W, then this item cannot be included in the optimal solution
   if (size[n] > capacity) {
-    return recursiveKnapsack(capacity, size, value, n + 1, cache);
+    return cache[n][capacity] = recursiveKnapsack(capacity, size, value, n + 1, cache);
   } else {
     // Return the maximum of two cases: (1) nth item included (2) not included (note: by adding condition of not included enables us to get permutations such as only last element being added)
-
-    return Math.max(value[n] + recursiveKnapsack(capacity - size[n], size, value, n + 1, cache),
+    return cache[n][capacity] = Math.max(value[n] + recursiveKnapsack(capacity - size[n], size, value, n + 1, cache),
                     recursiveKnapsack(capacity, size, value, n + 1, cache));
   }
 }
 
-var val = [60, 100, 120],
-    wt = [10, 20, 30],
-    W = 50,
+var val = [4,5,10,11,13],
+    wt = [3,4,7,8,9],
+    W = 16,
     cache = [];
 
 for (var i = 0; i < val.length; i++) {

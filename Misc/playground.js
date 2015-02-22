@@ -534,13 +534,13 @@ function recursiveKnapsack(capacity, size, value, n, cache) {
   }
 }
 
-var val = [4,5,10,11,13],
-    wt = [3,4,7,8,9],
-    W = 16,
+var val = [8,4,0,5,3],//[4,5,10,11,13],
+    wt = [1,2,3,2,2],//[3,4,7,8,9],
+    W = 4,//16,
     cache = [];
 
 for (var i = 0; i < val.length; i++) {
   cache[i] = [];
 }
-
+//4
 console.log(recursiveKnapsack(W, wt, val, 0, cache));

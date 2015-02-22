@@ -32,6 +32,30 @@ describe("Dynamic", function() {
     //console.log(table);
   });
 
+  it('tests topDown0-1Knapsack', function() {
+    var val = [8,4,0,5,3],
+      wt = [1,2,3,2,2],
+      W = 4,//16,
+      cache = [];
+
+    for (var i = 0; i < val.length; i++) {
+      cache[i] = [];
+    }
+
+    expect(d.topDownKnapsack(W, wt, val, 0, cache)).toEqual(13);
+
+    val = [4,5,10,11,13],
+    wt = [3,4,7,8,9],
+    W = 16,
+    cache = [];
+
+    for (var i = 0; i < val.length; i++) {
+      cache[i] = [];
+    }
+
+    expect(d.topDownKnapsack(W, wt, val, 0, cache)).toEqual(23);    
+  });
+
   it('tests dynamicCoinChange', function() {
     var sum = 11,
         values = [1, 3, 5],

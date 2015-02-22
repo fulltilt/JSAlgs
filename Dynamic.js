@@ -3,6 +3,7 @@ function Dynamic() {
   this.nthFibonacciIterative = nthFibonacciIterative;
   this.recursiveKnapsack = recursiveKnapsack;
   this.dynamicKnapsack = dynamicKnapsack;
+  this.topDownKnapsack = topDownKnapsack;
   this.dynamicCoinChange = dynamicCoinChange;
   this.maxWines = maxWines;
   this.largestContiguousSumSubarray = largestContiguousSumSubarray;
@@ -165,6 +166,26 @@ Notes for dynamicKnapsack:
   [ 0, 0, 0, 4, 5, 5, 5, 10, 11, 11, 14, 15, 16, 16, 19, 21, 21 ],
   [ 0, 0, 0, 4, 5, 5, 5, 10, 11, 13, 14, 15, 17, 18, 19, 21, 23 ] ]    
 */
+
+// note: not 100% sure this is correct but it does go into the if exists in cache statement
+function topDownKnapsack(capacity, size, value, n, cache) {
+  if (capacity === 0 || n === size.length) {
+    return 0;
+  }
+
+  if (cache[n][capacity]) {
+    return cache[n][capacity];
+  }
+  
+  // If weight of the nth item is more than Knapsack capacity W, then this item cannot be included in the optimal solution
+  if (size[n] > capacity) {
+    return cache[n][capacity] = topDownKnapsack(capacity, size, value, n + 1, cache);
+  } else {
+    // Return the maximum of two cases: (1) nth item included (2) not included (note: by adding condition of not included enables us to get permutations such as only last element being added)
+    return cache[n][capacity] = Math.max(value[n] + topDownKnapsack(capacity - size[n], size, value, n + 1, cache),
+                    topDownKnapsack(capacity, size, value, n + 1, cache));
+  }
+}  
 
 // http://www.topcoder.com/tc?d1=tutorials&d2=dynProg&module=Static
 // http://www.geeksforgeeks.org/dynamic-programming-set-7-coin-change/

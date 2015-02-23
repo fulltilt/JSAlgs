@@ -232,6 +232,23 @@ function partition(arr, lo, hi) {
   return j;
 }
 
+/* simpler partition fxn from the Stanford Algorithms course
+function partition(arr, lo, hi) {
+  var pivot = arr[lo],
+      i = lo + 1, j;
+
+  for (j = lo; j <= hi; j++) {
+    if (arr[j] < pivot) {
+      swap(arr, i, j);
+      i += 1;
+    }
+  }
+
+  swap(arr, lo, i - 1);
+  return i - 1;
+}
+*/
+
 function qSort() {
   this.dataStore = this._qSort(this.dataStore);
 }

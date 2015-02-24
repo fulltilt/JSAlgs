@@ -1,74 +1,8 @@
 /* https://class.coursera.org/algo-006/quiz/attempt?quiz_id=52
-3--4-----5--6
-|\/|     |\/|
-|/\|     |/\|
-2--1-----7--8
-1 2 3 4 7
-2 1 3 4
-3 1 2 4
-4 1 2 3 5
-5 4 6 7 8
-6 5 7 8
-7 1 5 6 8
-8 5 6 7
-
-expected result: 2
-cuts are [(1,7), (4,5)]
-
-(randomly permuting the adjacency list, should get same result):
-1 4 2 7 3
-2 4 1 3
-3 1 2 4
-4 5 1 2 3
-5 8 7 6 4
-6 8 5 7
-7 6 8 5 1
-8 7 6 5
-
-expected result: 2
-cuts are [(1,7), (4,5)]
+Test cases: https://class.coursera.org/algo-006/forum/thread?thread_id=209
+The algorithm below never got below 20 after running it hundreds of times. The correct answer is 17. Maybe the fact that I couldn't change the seed in JavaScript had something to do with it?
 */
 var fs = require('fs');
-
-function QuickSort(arr, lo, hi, comps) {
-  if (hi <= lo) {
-    return;
-  }
-
-  comps.comps += hi - lo; // directions says that count should be incremented by m - 1 where m is the length of the subarray. Since the length of the subarray is hi - lo + 1, m - 1 is basically hi - lo
-  var k = partition(arr, lo, hi);
-  QuickSort(arr, lo, k - 1, comps);
-  QuickSort(arr, k + 1, hi, comps);
-}
-
-function partition(arr, lo, hi) {
-  // for Question #2
-  //swap(arr, lo, hi);
-
-  // for Question #3
-  //var middle = (hi + lo) >> 1,  // was making the mistake of using (hi + lo) / 2  which doesn't truncate the decimal
-  //    medianIndex = getMedianOfThreeIndex(arr, lo, middle, hi);  
-  //swap(arr, lo, medianIndex);    
-  
-  var pivot = arr[lo],
-      i = lo + 1, j;
-
-  for (j = lo; j <= hi; j++) {
-    if (arr[j] < pivot) {
-      swap(arr, i, j);
-      i += 1;
-    }
-  }
-
-  swap(arr, lo, i - 1);
-  return i - 1;
-}
-
-function swap(arr, i, j) {
-  var temp = arr[j];
-  arr[j] = arr[i];
-  arr[i] = temp;
-}
 
 var inputFile = process.argv[2],
     text = fs.readFileSync(inputFile, 'utf-8'),
@@ -79,39 +13,20 @@ var inputFile = process.argv[2],
 // note: the input reflects that this is an undirected graph
 var graph = {};
 for (i = 0; i < len; i++) {
-  input[i] = input[i].trim().split('\t');
+  input[i] = input[i].trim().split('\t').map(function(x) { return parseInt(x, 10); });
   graph[i + 1] = input[i].slice(1);
 }
-//console.log(graph)
-
-//console.log(graph[200]);
-//console.log(graph[35]);
-// console.log(Object.keys(graph).length);
-// delete graph[3];
-// console.log(Object.keys(graph).length);
-
-// var graph = {};
-// graph[1] = [2, 3, 4, 7];
-// graph[2] = [1, 3, 4];
-// graph[3] = [1, 2, 4];
-// graph[4] = [1, 2, 3, 5];
-// graph[5] = [4, 6, 7, 8];
-// graph[6] = [5, 7, 8];
-// graph[7] = [1, 5, 6, 8];
-// graph[8] = [5, 6, 7];
-// console.log(graph)
-
 
 //Math.floor((Math.random() * len) + 1) // generate a random number between 1 and the length of the graph inclusive
 function getRandomEdge(graph) {
   var arr = Object.keys(graph),
-      len = arr.length;
+      len = arr.length, x, y;
 
   // keep generating random indices until you get two indices that are in each others adjacency list      
   do {
     x = Math.floor((Math.random() * len));
     y = Math.floor((Math.random() * len));
-  } while (graph[parseInt(arr[x])].indexOf(parseInt(arr[y])) === -1 && (x === y));  // need the x === y check because as graph contracts adjacency lists will have multiple duplicates
+  } while (graph[parseInt(arr[x])].indexOf(parseInt(arr[y])) === -1 || (x === y));  // need the x === y check because as graph contracts adjacency lists will have multiple duplicates
 
   return [parseInt(arr[x]), parseInt(arr[y])];
 }
@@ -143,7 +58,20 @@ while (Object.keys(graph).length > 2) {
   }
 
   graph[cVertex] = graph[cVertex].concat(graph[dVertex]);   // append disappearing vertex adjacency list to consolidated vertex adjacencylist
-  delete graph[dVertex];                            // delete disappearing vertex
+  delete graph[dVertex];                                    // delete disappearing vertex
+
+  // remove self-loops from consolidated vertex's adjacency list
+  var cvList = graph[cVertex].slice(0);
+  i = 0;
+  while (i < cvList.length) {
+    if (cvList[i] === cVertex) {
+      cvList.splice(i, 1);
+      continue;
+    }
+    i += 1;
+  }
+  graph[cVertex] = cvList;
 }
 
-console.log(graph);
+var keys = Object.keys(graph);
+console.log(graph[keys[0]].length)

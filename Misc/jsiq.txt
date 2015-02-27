@@ -1,0 +1,462 @@
+UDACITY OBJECT-ORIENTED JAVASCRIPT
+-Object Decorator pattern: take in an object and augment it
+var carlike = function(obj, loc) {
+	obj.loc = loc;
+	obj.move = function() {
+		obj.loc++;
+	};
+	return obj;
+}
+
+var amy = carlike({}, 1);
+amy.move();
+
+-Functional classes (functional shared pattern): different from a decorator as a class builds the object that it's going to decorate while a decorator takes in an object
+// think of the function as a constructor
+var Car = function(loc) {		// 'Car' is capitalized to notate that it's a class
+	var obj = { loc: loc };		// downside of creating objects like this is that you can't set the prototype like with Object.create()
+	extend(obj, Car.methods);	// extend is an external 3rd-party fxn
+	return obj;
+};
+
+Car.methods = {
+	move: function() {
+		this.loc++;
+	}
+};
+
+var amy = Car(1);	// returns an instance of Car class
+amy.move();
+
+-Prototypal classes
+var Car = function(loc) {
+	var obj = Object.create(Car.methods);	// skips overhead of copying over properties from Car.methods onto Car which 'extends' fxn does. Also lets us set the prototype 
+	obj.loc = loc;
+	return obj;
+}
+
+Car.methods = {
+	move: function() {
+		this.loc++;
+	}
+};
+
+//instead of using 'methods', we can use the built-in 'prototype' object (nothing special or different from the code above aside from changing the word 'method' to 'prototype')
+var Car = function(loc) {
+	var obj = Object.create(Car.prototype);	// skips overhead of copying over properties from Car.methods onto Car which 'extends' fxn does. Also lets us set the prototype 
+	obj.loc = loc;
+	return obj;
+}
+
+Car.prototype = {
+	move: function() {
+		this.loc++;
+	}
+};
+
+// note: every built-in prototype function has a constructor property that points back to the fxn it came attached to
+console.log(Car.prototype.constructor);	// constructor points back to the Car object
+console.log(amy.constructor);			// you can see which constructor fxn was used to build an object
+
+-Pseuodoclassical pattern: thin layer of syntactical convenience over top of prototypal pattern. JavaScript engine adds some optimizations when using this
+// using the 'new' keyword, the commented lines below are added by the interpreter
+var Car = function(loc) {
+	//this = Object.create(Car.prototype);
+	this.loc = loc;
+	//return this;
+}
+
+Car.prototype = {
+	move: function() {
+		this.loc++;
+	}
+};
+
+var amy = new Car(1);
+
+-Superclass and Subclasses (functional style):
+var Car = function(loc) {
+	var obj = {loc: loc};
+	obj.move = function() {
+		obj.loc++;
+	};
+	return obj;
+};
+
+var Van = function(loc) {
+	var obj = Car(loc)
+	obj.grab = function....
+	return obj;
+};
+
+-Psuedoclassical Subclasses:
+var Car = function(loc) {
+	this.loc = loc;
+};
+
+Car.prototype.move = function() {
+	this.loc++;
+};
+
+var Van = function(loc) {
+	Car.call(this, loc);
+};
+
+Van.prototype = Object.create(Car.prototype);	// delegate to Car.prototype. If we were to use 'Car.prototype' by itself, any change from one prototype would affect the other
+Van.prototype.constructor = Van; // must do this as we overwrote the original prototype;
+Van.prototype.grab = function() { ... };
+
+var zed = new Car(3);	// instantiation of superclass
+zed.move();
+
+var amy = new Van(9);	// instantiation of subclass
+amy.move();
+amy.grab();
+
+/* common mistakes
+Van.prototype = new Car();	// this was once accepted practice but if Car takes in arguments, the argument would essentially be hard-coded
+Van.prototype = Object.create(Car);
+Van.prototype = Car.prototype;
+
+-visualization (haven't checked this out yet): http://www.objectplayground.com/
+
+-ways to initialize objects in JavaScript from JavaScript Interview Questions:
+1. Create a singleton/namespace using an object literal
+var app = { 
+	config: {
+	    constants: {
+	        ProviderType: {
+	            TWITTER: 1,
+	            FACEBOOK: 2,
+	            IMAP: 3
+			} 
+		}
+	} 
+};
+alert(JSON.stringify(app));
+
+2. Create a namespace using Object() constructor (same as former but object literal notation is relatively faster and easier to read)
+var app2 = new Object();
+app2.config = new Object();
+app2.config.constants = new Object(); 
+app2.config.constants.ProviderType = new Object(); 
+app2.config.constants.ProviderType.TWITTER = 1; 
+app2.config.constants.ProviderType.FACEBOOK = 2; 
+app2.config.constants.ProviderType.IMAP = 3;
+alert(JSON.stringify(app2));
+
+3. Using "Object.create()" to Create Objects
+var baz = Object.create(Object.prototype, {
+    // 'foo' is a regular "value property"
+	foo: { 
+		writable: true, 
+		configurable: true, 
+		value: "hello" 
+	},
+
+    // 'bar' is a getter-and-setter (accessor) property
+	bar: {
+		configurable: false,
+		get: function() { 
+			return 10; 
+		},
+		set: function(value) { 
+			console.log("Setting 'o.bar' to", value); 
+		}
+	} 
+});
+alert(baz.foo);	// alerts 'hello'
+alert(baz.bar);	// alerts '10'
+
+4. Using "Constructor Functions" to Initialize Objects
+var instanceCount = 0;
+
+function BaseProvider() {
+    instanceCount++;
+}
+
+BaseProvider.prototype.count = function() {
+	return instanceCount; 
+}
+
+function TwitterProvider(username) { 
+	this.username = username;
+	var dummy = 20;
+	
+	function privateMethod() {
+        alert(dummy);
+        dummy--;
+	}
+
+	this.privilegedMethod = function() {
+		privateMethod(); 
+		return dummy > 18;
+	}; 
+}
+
+TwitterProvider.prototype = new BaseProvider(); 
+TwitterProvider.constructor = TwitterProvider;
+
+// ref: https://dev.twitter.com/docs/api/1.1 
+TwitterProvider.prototype.tweet = function(message) {
+	var kApiEndpoint = 'https://api.twitter.com/1.1/statuses/update.json', 
+		data = {
+			url: kApiEndpoint, 
+			status: message
+		};
+    
+    // Assuming we are using a library to do AJAX POST requests.
+    ajax.post(data);
+};
+
+var volkan = new TwitterProvider('@linkibol'); 
+volkan.tweet();
+alert(volkan.privilegedMethod());	// This will alert "true".
+alert(volkan.privilegedMethod());	// This will alert "false".
+
+5. "Constructor Function" returns an "object"
+var Account = function(accountNumber) {
+	var num = accountNumber;
+	
+	return {
+		getAccountNumber: function() {
+			return num; 
+		},
+		setAccountNumber: function(newNumber) {
+            num = newNumber;
+        }
+	} 
+}
+
+var bar = new Account('42'); 
+alert(bar.getAccountNumber());
+
+6. Using Immediately Invoked Function Expressions with the new Operator
+var user1 = (new function(id, name) { 
+	this.id = id;
+	this.name = name; 
+	this.toString = function() {
+		return this.id + ' / ' + this.name; 
+	};
+}('vvic', 'Vector Victor'));
+alert(user1);	// This will alert "vvic / Vector Victor".
+
+function MyLovelyConstructor(argument1, argument2) {
+	this.publicMember1 = argument1; 
+	this.publicMember2 = argument2;
+    
+	var that = this;
+	var privateValue = 42;
+	function privateMethod(newValue) {
+		privateValue = newValue;
+		that.publicMember1++;
+		that.publicMember2++;
+		that.publicMethod();
+	}
+
+￼   //privateMethod(argument2);
+	this.privilegedMethod = function() {
+		alert(privateValue);
+	};
+}
+
+function x() {
+	function y(v) {
+		console.log(v);
+	}
+	y(3);
+}
+
+PRIVATE VARIABLES/METHODS IN JAVASCRIPT
+1. an example of using private members and privileged methods inside a constructor:
+function MyLovelyConstructor(argument1, argument2) {
+	this.publicMember1 = argument1; 
+	this.publicMember2 = argument2;
+    
+    // This is a common pattern to encapsulate self reference
+	var that = this;
+
+	// This is a private member
+	var privateValue = 42;
+
+	// This is a private method (note: using 'that' as if we used 'this', it would refer to the local 'this' of private Method)
+	function privateMethod(newValue) {
+		privateValue = newValue;
+		that.publicMember1++;
+		that.publicMember2++;
+		that.publicMethod();
+	}
+	privateMethod(argument2);
+
+	// This method is public. And it can access to the private 
+	// members of the `MyLovelyConstructor` object.
+	// One disadvantage of “privileged methods” is that they 
+	// have to be assigned whenever the object is constructed.
+	this.privilegedMethod = function() {
+		alert(privateValue);
+	};
+}
+MyLovelyConstructor.prototype.publicMethod = function() {alert('geronimo!');}
+var test = new MyLovelyConstructor(10, 20);
+
+2. exporting a module as a return value of an IIFE
+var app = (function() {
+	var privateValue = 42;
+
+	var exports = {};
+	
+	function privateFunction() {
+		exports.publicMember++;
+		exports.publicMethod();
+	}
+	exports = {
+		publicMember: 42, 
+		publicMethod: function() {
+            alert('hi');
+        },
+		callPrivate: function() {
+            privateFunction();
+        }
+	};
+
+	return exports;
+}());
+// note: eval can get around these function scope privacy (http://peter.michaux.ca/articles/module-pattern-provides-no-privacy-at-least-not-in-javascript-tm)
+
+3. Hyper-private variables (http://michaux.ca/articles/hyper-private-variables-in-javascript)
+function Person(first, age) {
+	// Private methods
+	var getFirstName, setFirstName, getAge, setAge;
+
+	(function() {
+		// '_first' is a hyper-private variable.
+		// '_first' is only visible to getFirstName and setFirstName.
+		var _first;
+
+		getFirstName = function() {
+			// Capitilize the name
+			return _first.charAt(0).toUpperCase() + _first.substr(1);
+		};
+
+		setFirstName = function(v) { 
+			_first = v; 
+		};
+	})();
+
+	(function() {
+		// '_year' is a hyper-private variable.
+		// '_year' is only visible to getAge and setAge.
+		var _year;	// store birth year instead of age so that 'getAge' always returns current age
+
+		getAge = function() { 
+			return (new Date()).getYear() - _year; 
+		};
+
+		setAge = function(v) {
+			if (v < 0) {
+				throw new Error('Negative ages are not allowed!');
+			}
+			_year = (new Date()).getYear() - v;
+		};
+	})();
+
+	// 'sayInfo' is public method. Cannot access '_first' or '_age' directly so we must use the getters.
+	this.sayInfo = function() {
+        alert(getFirstName() + ' ' + getAge());
+    };
+	
+	// Cannot access '_first' or '_age' directly so we must use the setters. 
+	setFirstName(first);
+	setAge(age);
+}
+var gisele = new Person('Gisele', 27); 
+gisele.sayInfo();
+
+4. Using Immediately Invoked Function Expressions to Enclose a Single Method
+var app = {
+	Helper: {
+		generateFoo: (function() {
+			var methodPrivateData = 42;
+
+			return function() {
+				return methodPrivateData * Math.random();
+			}
+		}()),
+
+		executeBar: function() {
+			// do stuff
+		}
+	}
+};
+
+-Aside on not abusing private variables
+-Java-esque example
+var Widget = function() {
+	var borderWidth, width;
+	this.getWidth = function() {return width + borderWidth*2;} 
+	this.setWidth = function(w) {width = w;} 
+	this.getBorderWidth = function() {return borderWidth;} 
+	this.setBorderWidth = function(b) {borderWidth = b;} 
+	this.getRealWidth = function() {return width;}
+};
+var widget = new Widget();
+widget.setWidth(10);
+widget.setBorderWidth(20);
+alert(widget.getWidth());
+
+-simpler JavaScript approach
+var Widget = function(params) { 
+	this.borderWidth = params.borderWidth || 0; 
+	this.width = params.width || 0;
+};
+
+Widget.prototype.getWidth = function() { 
+	return this.width + this.borderWidth * 2;
+};
+
+var widget = new Widget({width: 10, borderWidth: 20}); 
+// Do stuff with 'widget'
+
+-what does the following code do?
+var a = [1, 2, 3, 4]; 
+var b = [3, 4, 5]; 
+var c = [3, 4, 5];
+
+var set = {add: function(item) {this[item] = item;}};
+
+set.add(a);
+set.add(b);
+set.add(c);
+-in JavaScript objects, keys can only be strings so for example, array a is coerced into '1,2,3,4'
+-continuing from above:
+for (var key in set) { 
+	alert(key);
+	alert(typeof key); 
+	alert(set[key]); 
+	alert(set[key] === a); 
+	alert(set[key] === b); 
+	alert(set[key] === c);
+}
+-observe how b and c are different objects. Also notice that as there is only one entry for '1,2,3', this
+ shows how you can easily implements sets in JavaScript
+
+-way to share namespaces between modules:
+this.jsiq = (function(me) {
+	var privates = me.privates = me.privates || {};
+	
+	var lockPrivates = me.lockPrivates || function() { 
+		delete me.privates;
+		delete me.lockPrivates;
+		delete me.unlockPrivates;
+	};
+
+	var unlockPrivates = me.unlockPrivates || function() { 
+		me.privates = privates;
+		me.lockPrivates = lockPrivates;
+		me.unlockPrivates = unlockPrivates;
+	};
+
+	return me; 
+}(this.jsiq || {}));
+
+-p.70 Refactor example

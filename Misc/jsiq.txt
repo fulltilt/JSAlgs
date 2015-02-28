@@ -1,3 +1,5 @@
+TODO: call/apply, binding, currying
+
 UDACITY OBJECT-ORIENTED JAVASCRIPT
 -Object Decorator pattern: take in an object and augment it
 var carlike = function(obj, loc) {
@@ -460,3 +462,147 @@ this.jsiq = (function(me) {
 }(this.jsiq || {}));
 
 -p.70 Refactor example
+
+-closures are formed during function instantiation, not invocation
+-closures references variables, not values
+//Create an array of functions that add 1,2 and 3 respectively 
+var createAdders = function() {
+    var fns = [];
+    for (var i=1; i<4; i++) { 
+        fns[i] = (function(n) {
+            return i+n;
+        });
+    }
+    return fns;
+}
+ 
+var adders = createAdders();
+adders[1](7); //11
+adders[2](7); //11
+adders[3](7); //11
+
+-p.85 super deep thinking in regards to an innocent looking question
+
+-curryin example. The bindArguments function above takes a context, a delegate, then curries a variable number of arguments. So:
+
+bindArguments({factor:4}, calculate, 10)(1, 30, 60); will be equivalent to:
+
+calculate(10, 1, 30, 60);
+
+function bindArguments(context, delegate) {
+	var boundArgs = arguments;
+	// for this example, after call to bindArguments(..) context is { factor: 4 } and delegate is the calculate function
+	// arguments is: [Object, function, 10] or more precisely [{factor: 4}, function calculate..., 10]
+
+	return function() {
+		var args = [], i;
+		for(i=2; i < boundArgs.length; i++) {
+            args.push(boundArgs[i]);
+        }
+		for(i=0; i < arguments.length; i++) {
+            args.push(arguments[i]);
+        }
+
+		return delegate.apply(context, args); 
+	};
+}
+function calculate(a, x, b, c) {return (a*x + b / c) * this.factor; } 
+var bound = bindArguments({factor:4}, calculate, 10);
+res = bound(1, 30, 60);
+-since we now know what the fxn above does, we can improve it. As of JavaScript 1.8.5 (EcmaScript 5th Edition), there is a native alternative to binding a context and arguments to a function: Function.prototype.bind. So the following bindArguments implementation will be faster, since it’s using native methods:
+
+function bindArguments(context, delegate) { 
+	return delegate.bind(
+		context,
+        Array.prototype.slice.call(arguments).splice(2)	// Array.prototype.slice.call converts 'arguments' into an Array
+    );
+}
+-unfortunately Function.prototype.bind isn't supported in all user agents so we'll manually do feature detection:
+var bindArguments = (
+	!!Function.prototype.bind 
+) ?
+function(context, delegate) { 
+	return delegate.bind(context,
+        Array.prototype.slice.call(arguments).splice(2)
+    );
+} :
+function(context, delegate) {
+	var slice = Array.prototype.slice,				// function slice()....
+		args = slice.call(arguments).splice(2);		// [10]
+	
+	return function() {
+		return delegate.apply(context,
+            args.concat(slice.call(arguments))		// slice.call(arguments) = [1,30,60]
+        );
+	}; 
+};
+
+-Factory methods (for whatever reason, not alerting but console statements indicate that it reaches the statement)
+var WarriorFactory = {
+	create: function(name, profession) {
+		var message = "I'm " + name + ", and I am a " + profession + '!';
+		return {
+			shout: function() { alert(message); }, 
+			shoutAsync: function() {
+				setTimeout(function() {alert(message);}, 1000); 
+			}
+		}; 
+	}
+};
+var warrior1 = WarriorFactory.create('Akechi Mitsuhide', 'Samurai');
+var warrior2 = WarriorFactory.create('Kumawakamaru', 'Ninja'); 
+warrior1.shout();
+warrior1.shoutAsync();
+warrior2.shout();
+warrior2.shoutAsync();
+
+-Continuation Passing
+-identity function: always returns its own argument
+// pass in an array an optional iterator and if any of the elements are truthy, return true else return false
+function any(items, iterator) {
+	iterator = iterator ||	function(x) { return x; };	// identity fxn if iterator isn't defined
+	var result = false, 
+		len = items.length, i; 
+	for (i = 0; i < len; i++) {
+		result = !!iterator.call(this, items[i], i); 
+		// note: original source code had 'context' but wasn't defined so I replaced with 'this' to make the code work
+		// also, I don't know what passing 'i' does and what's different from just using: result = iterator(items[i]);
+		if (result) {return true;}
+	}
+	return false; 
+}
+any([false, true, false], function(item){return !!item;}); 
+any([false, true, false]);
+
+var factorial = function(x) { 
+	var fac = 1; 
+	for (var i = x; i > 0; --i) { 
+		fac *= i; 
+	} 
+	return fac; 
+}
+
+-factorial fxn written with continuation passing style
+function factorial(n, accumulate) { 
+	if (n === 0) {
+		accumulate(1); 
+		return;
+	}
+	
+	factorial(n-1, function(k) { 
+		accumulate(n * k); 
+	}); 
+}
+factorial(3, function(n) {
+    console.log(n);
+});
+-stack unwind of above (note: he gave a name to each lexical closure (fn0, fn1, etc.) to make it easier to unwrap stack in his mind):
+factorial (3,	function fn3(k){ log(k) } )
+    factorial (2,	function fn2(k){ fn3(3*k) } )
+		factorial (1,	function fn1(k){ fn2(2*k) } )
+			factorial(0, 	function fn0(k){ fn1(k) } )
+                fn0(1);
+            fn1(1);
+        fn2(2*1);
+    fn3(3*2*1);
+log(3*2*1);

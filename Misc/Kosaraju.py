@@ -22,17 +22,25 @@ def iterative_dfs(graph, vertex, visited, finish, leaders, rank, s):
 
 	open = [vertex]
 	while (len(open) > 0):
-		print 'Visiting:', vertex
 		vertex = open[0]
 		open.pop(0)
+		if vertex in visited:
+			continue
+
+		print 'Visiting:', vertex
 		leaders[vertex] = s
 		visited[vertex] = True
 
 		if vertex in graph:
 			neighbors = graph[vertex]
 			for i in neighbors:
+				done = True
 				if i not in visited:
+					done = False
 					open.append(i)
+				if done:
+					rank['rank'] += 1
+					finish[vertex] = rank['rank']
 
 graph = {}
 for line in file:

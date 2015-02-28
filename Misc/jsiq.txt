@@ -582,10 +582,11 @@ var factorial = function(x) {
 	return fac; 
 }
 
--factorial fxn written with continuation passing style
+-factorial fxn written with continuation passing style (having problems understanding this at the moment p.113-8, 122-3)
 function factorial(n, accumulate) { 
 	if (n === 0) {
-		accumulate(1); 
+		accumulate(1); // this is the final answer
+		
 		return;
 	}
 	
@@ -597,10 +598,10 @@ factorial(3, function(n) {
     console.log(n);
 });
 -stack unwind of above (note: he gave a name to each lexical closure (fn0, fn1, etc.) to make it easier to unwrap stack in his mind):
-factorial (3,	function fn3(k){ log(k) } )
+factorial (3,	function fn3(k){ console.log(k) } )
     factorial (2,	function fn2(k){ fn3(3*k) } )
 		factorial (1,	function fn1(k){ fn2(2*k) } )
-			factorial(0, 	function fn0(k){ fn1(k) } )
+			factorial(0, 	function fn0(k){ fn1(1*k) } )
                 fn0(1);
             fn1(1);
         fn2(2*1);

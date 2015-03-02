@@ -4,16 +4,25 @@ var fs = require('fs');
 var inputFile = process.argv[2],
     text = fs.readFileSync(inputFile, 'utf-8'),
 		input = text.split('\n'),
-    //input = text.split('\r\n'),
     len = input.length, i;
 
 // note: the input reflects that this is an directed graph
-var graph = {}, i;
+var graph = {},
+		largest = -Infinity, i;
 for (i = 0; i < len; i++) {
   var edge = input[i].trim().split(' ');
   if (!(edge[0] in graph)) {
   	graph[edge[0]] = [];
   }
+
+  // these if statements are here for the case when the largest numbered vertex(s) in the original graph don't have outgoing edges
+  if (parseInt(edge[0]) > largest) {
+  	largest = parseInt(edge[0]);
+  }
+  if (parseInt(edge[1]) > largest) {
+  	largest = parseInt(edge[1]);
+  }
+
   graph[edge[0]].push(parseInt(edge[1], 10));
 }
 //console.log(graph)
@@ -30,7 +39,6 @@ for (var vertex in graph) {
 		reversedGraph[neighbors[i]].push(vertex);
 	}
 }
-//console.log(reversedGraph);
 console.log('Reversed graph');
 
 function dfs(graph, vertex) {
@@ -48,7 +56,7 @@ function dfs(graph, vertex) {
 			dfs(graph, neighbors[i]);
 		}
 	}
-	//console.log('Ranking', vertex)
+	
 	rank += 1;
 	finish[vertex] = rank;
 }
@@ -57,16 +65,14 @@ var visited = {},
 		leaders = {},
 		finish = {},
 		rank = 0,
-		vertices = Object.keys(graph).length,
+		vertices = largest,	//Object.keys(graph).length,
 		s;	// used to find the leader of strongly connected components
 
 // 1st DFS-loop
 for (i = vertices; i > 0; --i) {
 	s = i;	// set the leader
 	dfs(reversedGraph, i);
-	//iterativeDFS(reversedGraph, i);
 }
-
 console.log('Completed 1st DFS loop')
 
 // replace original graph vertices with finish #'s
@@ -78,7 +84,9 @@ for (i = 1; i <= vertices; ++i) {
 		// update the neighbors as well
 		var neighbors = graph[i];
 		for (var j = 0; j < neighbors.length; j++) {
-			neighbors[j] = finish[neighbors[j]];
+			if (finish[neighbors[j]]) {
+				neighbors[j] = finish[neighbors[j]];
+			}
 		}
 	}
 }
@@ -92,44 +100,20 @@ for (i = vertices; i > 0; --i) {
 	s = i;	// set the leader
 	dfs(newGraph, i);
 }
- // console.log(newGraph)
- // console.log(leaders);
 console.log('Completed 2nd DFS loop')
 
-/*
-function iterativeDFS(graph, vertex) {
-	if (visited[vertex]) {
-		return;
+var counts = {};
+for (vertex in leaders) {
+	if (!counts[leaders[vertex]]) {
+		counts[leaders[vertex]] = 0;
 	}
-
-	var open = [vertex];
-	while (open.length > 0) {
-		var vertex = open[0]
-		open.shift();
-		if (visited[vertex]) {
-			continue;
-		}
-
-		console.log('Visiting:', vertex);
-		leaders[vertex] = s;
-		visited[vertex] = true;
-
-		if (graph[vertex]) {
-			var neighbors = graph[vertex];
-			for (var i = 0; i < neighbors.length; ++i) {
-				var done = true;				
-				if (visited[neighbors[i]] === undefined) {
-					done = false;
-					open.push(neighbors[i]);
-				}
-
-				if (done) {
-					console.log('Ranking', vertex)
-					rank += 1;
-					finish[vertex] = rank;
-				}
-			}
-		}
-	}
+	counts[leaders[vertex]] += 1;
 }
-*/
+//console.log(counts);
+
+var sortable = [];
+for (vertex in counts) {
+  sortable.push([vertex, counts[vertex]]);
+}
+sortable.sort(function(a, b) { return a[1] - b[1]; });
+console.log(sortable);

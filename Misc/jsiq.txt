@@ -1,4 +1,4 @@
-TODO: call/apply, binding, currying
+TODO: call/apply, binding, currying, promises
 
 UDACITY OBJECT-ORIENTED JAVASCRIPT
 -Object Decorator pattern: take in an object and augment it
@@ -607,3 +607,5 @@ factorial (3,	function fn3(k){ console.log(k) } )
         fn2(2*1);
     fn3(3*2*1);
 log(3*2*1);
+
+-Promises (not getting p.135-141)

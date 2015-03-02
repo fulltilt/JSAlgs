@@ -1,8 +1,9 @@
+// node --max-stack-size 32000 Kosaraju.js input/SCC.txt
 var fs = require('fs');
 
 var inputFile = process.argv[2],
     text = fs.readFileSync(inputFile, 'utf-8'),
-input = text.split('\n'),
+		input = text.split('\n'),
     //input = text.split('\r\n'),
     len = input.length, i;
 
@@ -16,6 +17,7 @@ for (i = 0; i < len; i++) {
   graph[edge[0]].push(parseInt(edge[1], 10));
 }
 //console.log(graph)
+console.log('Graph built')
 
 // reverse graph for 1st DFS pass
 var reversedGraph = {};
@@ -29,13 +31,7 @@ for (var vertex in graph) {
 	}
 }
 //console.log(reversedGraph);
-
-
-var visited = {},
-		leaders = {},
-		finish = {},
-		rank = 0, 
-		s;	// used to find the leader of strongly connected components
+console.log('Reversed graph');
 
 function dfs(graph, vertex) {
 	if (visited[vertex]) {
@@ -52,48 +48,88 @@ function dfs(graph, vertex) {
 			dfs(graph, neighbors[i]);
 		}
 	}
+	//console.log('Ranking', vertex)
 	rank += 1;
 	finish[vertex] = rank;
 }
 
+var visited = {},
+		leaders = {},
+		finish = {},
+		rank = 0,
+		vertices = Object.keys(graph).length,
+		s;	// used to find the leader of strongly connected components
+
 // 1st DFS-loop
-for (i = 13; i > 0; --i) {
+for (i = vertices; i > 0; --i) {
 	s = i;	// set the leader
 	dfs(reversedGraph, i);
+	//iterativeDFS(reversedGraph, i);
 }
 
-//console.log(graph)
-// console.log(leaders);
-// console.log(finish);
+console.log('Completed 1st DFS loop')
 
 // replace original graph vertices with finish #'s
 var newGraph = {};
-for (i = 1; i <= 13; ++i) {
+for (i = 1; i <= vertices; ++i) {
 	if (graph[i]) {
 		newGraph[finish[i]] = graph[i];
+
+		// update the neighbors as well
+		var neighbors = graph[i];
+		for (var j = 0; j < neighbors.length; j++) {
+			neighbors[j] = finish[neighbors[j]];
+		}
 	}
 }
+console.log('Created new graph');
 
-// console.log(graph)
-// console.log(finish)
- console.log(newGraph)
-// 1st DFS-loop
+// 2nd DFS-loop
 rank = 0;
 visited = {};
 leaders = {};
-for (i = 13; i > 0; --i) {
+for (i = vertices; i > 0; --i) {
 	s = i;	// set the leader
 	dfs(newGraph, i);
 }
-
-// console.log(newGraph)
-// console.log(leaders);
-// console.log(finish);
+ // console.log(newGraph)
+ // console.log(leaders);
+console.log('Completed 2nd DFS loop')
 
 /*
-1,3,4,5,6
-10,11,12,13
-7,9
-2
-8
+function iterativeDFS(graph, vertex) {
+	if (visited[vertex]) {
+		return;
+	}
+
+	var open = [vertex];
+	while (open.length > 0) {
+		var vertex = open[0]
+		open.shift();
+		if (visited[vertex]) {
+			continue;
+		}
+
+		console.log('Visiting:', vertex);
+		leaders[vertex] = s;
+		visited[vertex] = true;
+
+		if (graph[vertex]) {
+			var neighbors = graph[vertex];
+			for (var i = 0; i < neighbors.length; ++i) {
+				var done = true;				
+				if (visited[neighbors[i]] === undefined) {
+					done = false;
+					open.push(neighbors[i]);
+				}
+
+				if (done) {
+					console.log('Ranking', vertex)
+					rank += 1;
+					finish[vertex] = rank;
+				}
+			}
+		}
+	}
+}
 */

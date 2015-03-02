@@ -37,9 +37,16 @@ for (i = 2; i <= len; i++) {
 }
 
 var reachable = {};
-console.log(Object.keys(visited).length);
-updateReachable(source);
+do {
+	updateReachable(source);
+	var vertex = getClosestVertex(reachable);
+	console.log(vertex)
+	dist[vertex] = dist[source] + graph[source][vertex]; 
+//console.log(reachable);
+//console.log(getClosestVertex(reachable));
+} while (Object.keys(reachable).length > 0);
 
+console.log(dist)
 /* code used to see what nodes are reachable
 	while (Object.keys(reachable).length > 0) {
 	var neighbors = Object.keys(reachable); 
@@ -72,11 +79,12 @@ function getClosestVertex(arr) {
  			len = Object.keys(arr).length;
 
  	for (var v in arr) {
- 		if (arr[v] < closestLength) {
+ 		if (graph[arr[v]] && arr[v] < closestLength) {
  			closestLength = arr[v];
  			closestVertex = v;
  		}
  	}
 
+ 	delete graph[closestVertex];
  	return closestVertex;
 }

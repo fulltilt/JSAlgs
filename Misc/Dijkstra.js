@@ -6,24 +6,27 @@ var fs = require('fs');
 
 var inputFile = process.argv[2],
     text = fs.readFileSync(inputFile, 'utf-8'),
-    input = text.split('\r\n'),
+    //input = text.split('\r\n'),
+    input = text.split('\n'),
     len = input.length, i;
 
+//[ '1 2,5 3,1', '2 4,10 1,5', '3 4,1 1,1', '4 2,10 3,1' ]
 // note: the input reflects that this is an directed graph
 var graph = [];
 for (i = 0; i < len; i++) {
-  input[i] = input[i].trim().split('\t');
+  //input[i] = input[i].trim().split('\t');
+  input[i] = input[i].trim().split(' ');
   graph[i + 1] = {};
 
   // data format: 15	42,1789	22,3571	....
   var temp = input[i].slice(1).map(function(x) { return x.split(',').map(function(y) { return parseInt(y, 10); }); });
-  
+
   // convert array of arrays into an associative array
   for (var j = 0; j < temp.length; j++) {
   	graph[i + 1][temp[j][0]] = temp[j][1];
   }
 }
-
+console.log(graph)
 var visited = {},
 		dist = [],
 		source = 1, i;
@@ -36,17 +39,17 @@ for (i = 2; i <= len; i++) {
 	dist[i] = 1000000;
 }
 
-var reachable = {};
-do {
-	updateReachable(source);
-	var vertex = getClosestVertex(reachable);
-	console.log(vertex)
-	dist[vertex] = dist[source] + graph[source][vertex]; 
-//console.log(reachable);
-//console.log(getClosestVertex(reachable));
-} while (Object.keys(reachable).length > 0);
+// var reachable = {};
+// do {
+// 	updateReachable(source);
+// 	var vertex = getClosestVertex(reachable);
+// 	console.log(vertex)
+// 	dist[vertex] = dist[source] + graph[source][vertex]; 
+// //console.log(reachable);
+// //console.log(getClosestVertex(reachable));
+// } while (Object.keys(reachable).length > 0);
 
-console.log(dist)
+// console.log(dist)
 /* code used to see what nodes are reachable
 	while (Object.keys(reachable).length > 0) {
 	var neighbors = Object.keys(reachable); 

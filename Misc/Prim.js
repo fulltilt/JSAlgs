@@ -21,18 +21,16 @@ for (i = 0; i < vertices; i++) {
   }
 }
 
-var done = {},					// vertices whose shortest paths has been found
-		currentVertex = 1,  // source vertex. 1 indicates that vertex 1 is the source vertex
-		i;
+var done = {},
+		currentVertex = 1, i;
 
-done[currentVertex] = true;	// source vertex is found by default
+done[currentVertex] = true;
 
-// reachable is array that keeps track of current shortest path length to each vertex
 var reachable = [];
 for (var i = 1; i <= vertices; ++i) {
 	reachable[i] = Infinity;
 }
-reachable[currentVertex] = 0;	// path length to source vertex is 0
+reachable[currentVertex] = 0;
 
 while (Object.keys(done).length < vertices) {
 	updateReachable(currentVertex);
@@ -42,8 +40,23 @@ while (Object.keys(done).length < vertices) {
 }
 console.log(reachable[7],reachable[37],reachable[59],reachable[82],reachable[99],reachable[115],reachable[133],reachable[165],reachable[188],reachable[197])
 
-// each time a new vertex is found, recalculate reachable to see if there are new reachable vertices and if there are shorter paths to previously visited vertices
 function updateReachable(vertex) {
+	// reachableToStrings = reachable.map(function(x) { return x.toString(); });	// hacky and inefficient. 
+	// // Using above to make sure there are no duplicates added to reachable as in JavaScript, indexOf() doesn't work for subarrays but works for strings
+	
+	// for (var k in graph[vertex]) {
+	// 	if (!(k in done)) {
+	// 		var weight = graph[vertex][k],
+	// 				from = vertex,
+	// 				to = k;
+	// 				edge = weight + ',' + from + ',' + to;
+
+	// 		if (reachableToStrings.indexOf(edge) === -1) {
+	// 			reachable.push([weight, from, parseInt(to, 10)]);
+	// 		}
+	// 	}
+	// }
+
 	for (var neighbor in graph[vertex]) {
 		if ((reachable[vertex] + graph[vertex][neighbor]) < reachable[neighbor]) {
 			reachable[neighbor] = reachable[vertex] + graph[vertex][neighbor];
@@ -51,8 +64,20 @@ function updateReachable(vertex) {
 	}
 }
 
-// returns the vertex that is closest using the reachable array
+// note: the order of items in reachable: [weight, from, to]
+// fix: find the edge that minimizes. It isn't necessarily the shortest edge to an adjacent unexplored vertex
 function getClosestVertex(arr) {
+ 	// reachable.sort(function(a, b) { return a[0] - b[0]; });
+
+ 	// // make sure destination vertex isn't already in 'done'
+ 	// do {
+ 	// var shortestEdge = [reachable[0][1], reachable[0][2]],
+ 	// 		to = shortestEdge[1];
+
+ 	// reachable.shift();		
+ 	// } while (to in done);
+
+ 	// return shortestEdge;
  	var shortestEdge = Infinity,
  			closestVertex = -1;
  	for (var i = 1; i <= arr.length; ++i) {
@@ -63,3 +88,12 @@ function getClosestVertex(arr) {
  	}
  	return closestVertex;
 }
+
+// 14 -> 6
+// 14 -> 3: 7
+// 3 -> 1: 4
+// 1 -> 12: 7
+// 3 -> 15: 13
+// 15 -> 8: 9
+// 8 -> 6: 0
+// 0 + 9 + 13 + 7

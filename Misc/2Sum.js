@@ -1,3 +1,4 @@
+// 427 (bottom algo not very efficient)
 var fs = require('fs');
 
 var inputFile = process.argv[2],
@@ -8,8 +9,21 @@ var inputFile = process.argv[2],
 // put input into hash table
 var hash = {};
 for (var i = 0; i < len; i++) {
-	console.log(i, input[i])
-	hash[input[i]] = true;
+	hash[parseInt(input[i], 10)] = true;
 }
 
-var length = 999752;	// Object.keys(hash).length
+var keys = Object.keys(hash),
+    length = keys.length, // 999752  
+  	results = {},
+  	sum,
+ 
+for (var i = 0; i < length; ++i) {
+	for (var j = -10000; j <= 10000; ++j) {
+		sum = j - keys[i];
+		if (sum in hash) {
+			results[j] = true;
+		}
+	}
+}
+
+console.log(Object.keys(results).length)

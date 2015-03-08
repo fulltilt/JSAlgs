@@ -30,8 +30,6 @@ for (i = 0; i < length; i++) {
   graph[to][from] = weight;
 }
 
-//graph.sort(function(a, b) { return a[0] - b[0]; });
-
 var done = {},
 	currentVertex = 1;
 

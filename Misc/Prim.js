@@ -1,4 +1,4 @@
-// 2599,2610,2947,2052,2367,2399,2029,2442,2505,3068
+// -3612829
 var fs = require('fs');
 
 var inputFile = process.argv[2],
@@ -9,97 +9,76 @@ var inputFile = process.argv[2],
     i;
 
 input.shift();
+
+var graph = [];
 var length = input.length;
 
-// note: the input reflects that this is an undirected graph
-var graph = [];
-for (i = 0; i < length; i++) {
-  input[i] = input[i].trim().split(' ').map(function(y) { return parseInt(y, 10); });
-
-  // data format: 1 2 6807 (tail, head, weight)
-  graph.push(input[i]);
+// initialize graph so that each node has an associated dictionary
+for (i = 1; i <= vertices; i++) {
+	graph[i] = {};
 }
 
-graph.sort(function(a, b) { return a[0] - b[0]; });
+// note: the input implies an directed graph but is really an undirected graph
+for (i = 0; i < length; i++) {
+  input[i] = input[i].trim().split(' ').map(function(y) { return parseInt(y, 10); });
+  var from = input[i][0],
+  	  to = input[i][1],
+  	  weight = input[i][2];
 
-// var graph = [];
-// for (i = 0; i < vertices; i++) {
-//   input[i] = input[i].trim().split('\t');
-//   graph[i + 1] = {};
+  // data format: 1 2 6807 (tail, head, weight)
+  graph[from][to] = weight;
+  graph[to][from] = weight;
+}
 
-//   // data format: 15	42,1789	22,3571	....
-//   var temp = input[i].slice(1).map(function(x) { return x.split(',').map(function(y) { return parseInt(y, 10); }); });
+//graph.sort(function(a, b) { return a[0] - b[0]; });
 
-//   // convert array of arrays into an associative array
-//   for (var j = 0; j < temp.length; j++) {
-//   	graph[i + 1][temp[j][0]] = temp[j][1];
-//   }
-// }
-//console.log(graph)
-// var done = {},
-// 		currentVertex = 1, i;
+var done = {},
+	currentVertex = 1;
 
-// done[currentVertex] = true;
+done[currentVertex] = true;
 
-// var reachable = [];
-// for (var i = 1; i <= vertices; ++i) {
-// 	reachable[i] = Infinity;
-// }
-// reachable[currentVertex] = 0;
+var reachable = [];
 
-// while (Object.keys(done).length < vertices) {
-// 	updateReachable(currentVertex);
-// 	closestVertex = getClosestVertex(reachable);
-// 	done[closestVertex] = true;
-// 	currentVertex = closestVertex;
-// }
-// console.log(reachable[7],reachable[37],reachable[59],reachable[82],reachable[99],reachable[115],reachable[133],reachable[165],reachable[188],reachable[197])
+sum = 0;
+while (Object.keys(done).length < vertices) {console.log(currentVertex)
+	updateReachable(currentVertex);
+	var closestVertex = getClosestVertex(reachable, sum);
+	done[closestVertex] = true;
+	currentVertex = closestVertex;
+}
 
-// function updateReachable(vertex) {
-// 	// reachableToStrings = reachable.map(function(x) { return x.toString(); });	// hacky and inefficient. 
-// 	// // Using above to make sure there are no duplicates added to reachable as in JavaScript, indexOf() doesn't work for subarrays but works for strings
+console.log(closestVertex, reachable, done)
+console.log(sum);
+function updateReachable(vertex) {
+	reachableToStrings = reachable.map(function(x) { return x.toString(); });	// hacky and inefficient. 
+	// Using above to make sure there are no duplicates added to reachable as in JavaScript, indexOf() doesn't work for subarrays but works for strings
 	
-// 	// for (var k in graph[vertex]) {
-// 	// 	if (!(k in done)) {
-// 	// 		var weight = graph[vertex][k],
-// 	// 				from = vertex,
-// 	// 				to = k;
-// 	// 				edge = weight + ',' + from + ',' + to;
+	for (var k in graph[vertex]) {
+		if (!(k in done)) {
+			var weight = graph[vertex][k],
+				from = vertex,
+				to = k;
+				edge = weight + ',' + from + ',' + to;
 
-// 	// 		if (reachableToStrings.indexOf(edge) === -1) {
-// 	// 			reachable.push([weight, from, parseInt(to, 10)]);
-// 	// 		}
-// 	// 	}
-// 	// }
+			if (reachableToStrings.indexOf(edge) === -1) {
+				reachable.push([weight, from, parseInt(to, 10)]);
+			}
+		}
+	}
+}
 
-// 	for (var neighbor in graph[vertex]) {
-// 		if ((reachable[vertex] + graph[vertex][neighbor]) < reachable[neighbor]) {
-// 			reachable[neighbor] = reachable[vertex] + graph[vertex][neighbor];
-// 		}
-// 	}
-// }
+// note: the order of items in reachable: [weight, from, to]
+function getClosestVertex(reachable) {
+ 	reachable.sort(function(a, b) { return a[0] - b[0]; });
 
-// // note: the order of items in reachable: [weight, from, to]
-// // fix: find the edge that minimizes. It isn't necessarily the shortest edge to an adjacent unexplored vertex
-// function getClosestVertex(arr) {
-//  	// reachable.sort(function(a, b) { return a[0] - b[0]; });
+ 	// make sure destination vertex isn't already in 'done'
+ 	do {
+	 	var shortestEdge = [reachable[0][0], reachable[0][1], reachable[0][2]],
+	 		to = shortestEdge[2];
 
-//  	// // make sure destination vertex isn't already in 'done'
-//  	// do {
-//  	// var shortestEdge = [reachable[0][1], reachable[0][2]],
-//  	// 		to = shortestEdge[1];
+	 	reachable.shift();		
+ 	} while (to in done);
 
-//  	// reachable.shift();		
-//  	// } while (to in done);
-
-//  	// return shortestEdge;
-//  	var shortestEdge = Infinity,
-//  			closestVertex = -1;
-//  	for (var i = 1; i <= arr.length; ++i) {
-//  		if (arr[i] < shortestEdge && !(i in done)) {
-//  			shortestEdge = arr[i];
-//  			closestVertex = i;
-//  		}
-//  	}
-//  	return closestVertex;
-// }
+ 	sum += shortestEdge[0];
+ 	return shortestEdge[2];
+}

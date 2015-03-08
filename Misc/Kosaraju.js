@@ -1,4 +1,4 @@
-// node --max-stack-size 32000 Kosaraju.js input/SCC.txt
+// node --stack-size=32000 Kosaraju.js input/SCC.txt
 var fs = require('fs');
 
 var inputFile = process.argv[2],

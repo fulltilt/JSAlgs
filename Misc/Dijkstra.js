@@ -22,8 +22,8 @@ for (i = 0; i < vertices; i++) {
 }
 
 var done = {},					// vertices whose shortest paths has been found
-		currentVertex = 1,  // source vertex. 1 indicates that vertex 1 is the source vertex
-		i;
+	currentVertex = 1,  		// source vertex. 1 indicates that vertex 1 is the source vertex
+	i;
 
 done[currentVertex] = true;	// source vertex is found by default
 

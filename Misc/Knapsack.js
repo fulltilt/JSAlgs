@@ -1,5 +1,5 @@
-// 2462812
-// 3264673
+// 2493893
+// 4243395
 var fs = require('fs');
 
 var inputFile = process.argv[2],
@@ -7,7 +7,7 @@ var inputFile = process.argv[2],
     input = text.split('\n').map(function(x) { return x.trim(); }),
     maxSize = parseInt(input[0].split(' ')[0]),
     items = parseInt(input[0].split(' ')[1]), i;
-console.log(maxSize, items)
+
 input.shift();
 
 var values = [],
@@ -23,7 +23,7 @@ for (i = 0; i < len; ++i) {
 	values.push(parseInt(temp[0], 10));
 	weights.push(parseInt(temp[1], 10));
 }
-console.log(values)
+
 var hash = [];
 for (i = 0; i <= items; ++i) {
 	hash[i] = [];
@@ -36,21 +36,21 @@ for (i = 0; i <= maxSize; ++i) {
 }
 
 function knapsack(hash, values, weights, itemIndex, size) {
-	if (itemIndex === -1) {
+	if (itemIndex === weights.length) {
 		return 0;
 	}
 
-	// if (hash[itemIndex][size]) {
-	// 	return hash[itemIndex][size];
-	// }
+	if (hash[itemIndex][size]) {
+		return hash[itemIndex][size];
+	}
 
 	if (size - weights[itemIndex] < 0) {
-		return hash[itemIndex][size] = 0;
+		return hash[itemIndex][size] = knapsack(hash, values, weights, itemIndex + 1, size);
 	} else {
-		return hash[itemIndex][size] = Math.max(knapsack(hash, values, weights, itemIndex - 1, size),
-												knapsack(hash, values, weights, itemIndex - 1, size - weights[itemIndex]) + values[itemIndex]);
+		return hash[itemIndex][size] = Math.max(knapsack(hash, values, weights, itemIndex + 1, size),
+												knapsack(hash, values, weights, itemIndex + 1, size - weights[itemIndex]) + values[itemIndex]);
 	}
 }
 
 // x: size, y: item
-console.log(knapsack(hash, values, weights, items, maxSize))
+console.log(knapsack(hash, values, weights, 1, maxSize))

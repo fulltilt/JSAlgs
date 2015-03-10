@@ -725,7 +725,7 @@ function FFbfs(graph, src, sink, parent) {
 }
 
 // http://www.geeksforgeeks.org/dynamic-programming-set-16-floyd-warshall-algorithm/
-function FloydWarshell(graph) {
+function FloydWarshall(graph) {
   //dist will be theoutput matrix that will have the shortest distances between every pair of vertices
   var vertices = graph.length,
       dist = [];
@@ -1052,5 +1052,17 @@ module.exports = Graph;
 /* NOTES
 -adjacency matrix representations are easier to implement than adjacency lists. However, adjacency lists usage is more efficient
  -comparison: http://www.geeksforgeeks.org/graph-and-its-representations/
+
+Bellman-Ford
+-https://theoryofprogramming.wordpress.com/2015/01/19/graph-theory-bellman-ford-algorithm/
+-O(mn) but works with graphs with negative edges. It also can determine whether or not a graph has negatve cycles
+
+Floyd-Warshall
+-O(n^3)
+-works with grpahs with negative edges and performs similarly in sparse and dense graphs
+
+Dijkstra
+-really fast with sparse graphs but gets quadrative with dense graphs
+-also not always correct if a graph has negative edges
 
 */

@@ -34,32 +34,33 @@ var titleToNumber = function(s) {
 };
 */
 
-/* Excel Sheet Column Title */
+/* Excel Sheet Column Title 
 var convertToTitle = function(n) {
     var title = '';
-    // while (n > 0) {
-    //     var temp = n % 26;
-    //     if (temp === 0) {
-    //         temp = 26;
-    //     }
-    //     title = String.fromCharCode(temp + 64) + title;
-    //     if (n === 26) break;
-    //     n = Math.floor(n / 26);
-    // }
     while (n > 0) {
-        if (n === 1) {
-            title += 'A';
-            break;    
+        if (n % 26 === 0) {
+            title = 'Z' + title;
+            n = Math.floor(n / 26) - 1;
+        } else {
+            title = String.fromCharCode(n % 26 + 64) + title;
+            n = Math.floor(n / 26);
         }
-        n = Math.floor(n / 26);
-        title += String.fromCharCode(n % 26 + 64);
     }
-
+    
     return title;
 };
+
 console.log(convertToTitle(703)) // AAA
 console.log(convertToTitle(26))  // Z
 console.log(convertToTitle(52))  // AZ
+    // nifty C++ version
+    // while (n) {
+    //     n -= 1;
+    //     var tmp = 'A' + n % 26;
+    //     title = tmp + title;
+    //     n = Math.floor(n / 26);
+    // }
+*/
 
 /* FACTORIAL TRAILING ZEROES 
 var trailingZeroes = function(n) {

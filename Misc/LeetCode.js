@@ -1,23 +1,370 @@
-/* REMOVE DUPLICATES */
-var removeDuplicates = function(nums) {
-    var len = nums.length,
-        lo = 0,
-        hi = len - 1;
-        
-    while (lo < hi) {
-        var temp = nums.slice(lo + 1).indexOf(nums[lo]);
-        if (temp !== -1) {
-            var t = nums[hi];
-            nums[hi] = nums[temp];
-            nums[temp] = t;
-            hi -= 1;
+var isValidSudoku = function(board) {
+    var rows = 9,
+        cols = 9,
+        i, j, val, tmp = [];
+
+    // check rows
+    for (i = 0; i < rows; ++i) {
+        tmp = [];
+        for (j = 0; j < cols; ++j) {
+            val = board[i][j];
+            if (val !== '.') {
+                if (tmp.indexOf(val) !== -1) {
+                    return false;
+                } else {
+                    tmp.push(val);
+                }
+            }
         }
-        lo += 1;
     }
-    nums.length = hi;
-    console.log(nums, nums.length)
+
+    // check columns
+    for (j = 0; j < cols; ++j) {
+        tmp = [];
+        for (i = 0; i < rows; ++i) {
+            if ((i === 3 || i === 6) && j === 3)
+            val = board[i][j];
+            if (val !== '.') {
+                if (tmp.indexOf(val) !== -1) {
+                    return false;
+                } else {
+                    tmp.push(val);
+                }
+            }
+        }
+    }
+
+    // check all 9 3x3 grids
+    for (var g = 0; g <= 6; g += 3) {
+        for (var h = 0; h <= 6; h += 3) {
+            // this subsection checks a 3 x 3 grid
+            tmp = [];
+            for (i = 0; i < 3; ++i) {
+                for (j = 0; j < 3; ++j) {
+                    val = board[i + g][j + h];
+                    console.log(i + g, j + h, val);
+                    if (val !== '.') {
+                        if (tmp.indexOf(val) !== -1) {
+                            return false;
+                        } else {
+                            tmp.push(val);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return true;
 };
-removeDuplicates([1,1,2])
+// ....5..1.
+// .4.3.....
+// .....3..1
+// 8......2.
+// ..2.7....
+// .15......
+// .....2...
+// .2.9.....
+// ..4......
+
+// ".87654321",
+// "2........",
+// "3........",
+// "4........",
+// "5........",
+// "6........",
+// "7........",
+// "8........",
+// "9........"
+
+// 0,0 0,3 0,6
+// 3,0 3,3 3,6
+// 6,0 6,3 6,6
+//console.log(isValidSudoku(["..4...63.",".........","5......9.","...56....","4.3.....1","...7.....","...5.....",".........","........."]));
+//console.log(isValidSudoku(["....5..1.",".4.3.....",".....3..1","8......2.","..2.7....",".15......",".....2...",".2.9.....","..4......"]));
+
+//console.log(isValidSudoku([".87654321","2........","3........","4........","5........","6........","7........","8........","9........"]))
+/* Add Binary Strings
+    var addBinary = function(a, b) {
+        var result = '',
+            m = a.length,
+            n = b.length,
+            tmp = 0;
+
+        while (m + n > 0){
+            // start from last char of a and b
+            // notice that left side is int and right side is char
+            // so we need to  minus the decimal value of '0'
+            tmp += m > 0 ? a[--m] - '0': 0;
+            tmp += n > 0 ? b[--n] - '0': 0;
+
+            result = tmp % 2 + result;
+            tmp = Math.floor(tmp / 2);
+        }
+        // the final length of the result depends on the bigger length between a and b, 
+        // (also the value of carry, if carry = 1, add "1" at the head of result, otherwise)
+        return (tmp == 0) ? result: '1' + result;
+    }
+*/
+
+/* Climbing Stairs
+https://leetcode.com/discuss/16866/basically-its-a-fibonacci
+var climbStairs = function(n) {
+    if (n <= 0) return 0;
+    if (n === 1) return 1;
+    if (n === 2) return 2;
+
+    var oneStepBefore = 1,
+        twoStepsBefore = 2,
+        allWays = 0;
+
+    for (var i = 2; i < n; ++i) {
+        allWays = oneStepBefore + twoStepsBefore;
+        oneStepBefore = twoStepsBefore;
+        twoStepsBefore = allWays;
+    }
+
+    return allWays;
+};
+
+/*
+ * Ideas:
+ * Use Dynamic Programming,
+ * for each step, the stair could ether combine with the previous one or as a single step.
+ * Ways to climb to ith stair is W(i) = W(i-1) + W(i-2)
+ * where W(i-1) is when the ith stair is as a single step
+ * and W(i-2) is when the ith stair is paired with the previous one.
+ *
+var climbStairs = function(n) {
+    var table = [];
+
+    if (n < 2) {
+        return 1;
+    }
+
+    table[0] = 1;
+    table[1] = 2;
+    for (var i = 2; i < n; i++) {
+        table[i] = table[i - 1] + table[i - 2];
+    }
+    return table[n - 1];
+}
+*/
+
+function sumTo100() {
+    var arr = [2,3,4,5,6,7,8,9];
+    _sumTo100(arr, 0, ['1'], 100)
+}
+
+function _sumTo100(arr, i, res, sum) {
+    var len = 2;
+    if (i === len) {
+console.log('final:',res, sum)        
+        return;
+    } if ((i === len - 1) && sum === 0) {
+        console.log('solution:', res, sum);
+        return;
+    }
+
+    var resCopy = res.slice(),
+        resLen = res.length, tsum;
+
+    // add
+    if (typeof(res[resLen - 1]) === 'string')
+        sum = sum - parseInt(res[resLen - 1]);
+
+    resCopy.push('+');
+    resCopy.push(arr[i]); 
+    _sumTo100(arr, i + 1, resCopy.slice(), sum - arr[i]);
+
+    // subtract
+    resCopy = res.slice();
+    resCopy.push('-');
+    resCopy.push(arr[i]);
+    _sumTo100(arr, i + 1, resCopy.slice(), sum + arr[i]);
+
+    // combine
+    if (i === 0) {
+        sum = sum + parseInt(res[resLen - 1]);
+    }
+
+    resCopy = res.slice();
+    resCopy[resLen - 1] = res[resLen - 1] + '' + arr[i];
+    _sumTo100(arr, i + 1, resCopy.slice(), sum);
+}
+
+//sumTo100();
+
+/* Implement strStr()
+var strStr = function(haystack, needle) {
+    if ((haystack === '' && needle === '') || needle === '') {
+        return 0;
+    }
+    
+    var hLen = haystack.length,
+        nLen = needle.length, 
+        result = -1, 
+        i = 0;
+        
+    while ((i + nLen) <= hLen) {
+        if (needle[0] === haystack[i]) {
+            var found = true;
+            for (var j = 1; j < nLen; ++j) {
+                if (needle[j] !== haystack[i + j]) {
+                    found = false;
+                    break;
+                }
+            }
+            if (found) {
+                return i;
+            }
+        }
+        i += 1;
+    }    
+    return -1;
+};
+*/
+
+/* Merge Sorted Array in place
+var merge = function(nums1, m, nums2, n) {
+    var gIndex = m + n - 1,
+        i = m - 1,
+        j = n - 1;
+    
+    while (i > -1 && j > -1) {
+        if (nums1[i] > nums2[j]) {
+            nums1[gIndex] = nums1[i];
+            i -= 1;
+        } else {
+            nums1[gIndex] = nums2[j];
+            j -= 1;
+        }
+        gIndex -= 1;
+    }
+    
+    while (i >= 0) {
+        nums1[gIndex--] = nums1[i--];
+    }
+    
+    while (j >= 0) {
+        nums1[gIndex--] = nums2[j--];
+    }
+    console.log(nums1)
+};
+
+merge([1,3,4,5,7], 5, [2,6,10,20], 4)
+*/
+
+/* REMOVE ELEMENT in place
+var removeElement = function(nums, val) {
+    var len = nums.length,
+        hi = len - 1, lo = 0, newLength = 0;
+
+    // make sure hi doesn't point to a value to be deleted so we don't swap an invalid value
+    while (nums[hi] === val && hi >= 0) {
+        hi -= 1;        
+    }    
+    
+    while (hi >= lo) {
+        
+
+        if (nums[lo] === val) {
+            var temp = nums[lo];
+            nums[lo] = nums[hi];
+            nums[hi] = temp;
+            hi -= 1;
+        } 
+        newLength += 1;
+        lo += 1;
+        
+        while (nums[hi] === val && hi >= 0) {
+            hi -= 1;        
+        }
+    }
+
+    return newLength;
+};
+*/
+
+/* ROMAN TO INTEGER
+var romanToInt = function(s) {
+    var table = {
+        'I': 1,
+        'V': 5,
+        'X': 10,
+        'L': 50,
+        'C': 100,
+        'D': 500,
+        'M': 1000
+    }, 
+    len = s.length, 
+    sum = table[s[0]], i;
+    for (i = 1; i < len; ++i) {
+        if (table[s[i]] > table[s[i - 1]]) {
+            sum -= table[s[i - 1]];
+            sum += table[s[i]] - table[s[i - 1]];
+        } else {
+            sum += table[s[i]];
+        }
+    }
+
+    return sum;
+};
+*/
+
+/* COUNT AND SAY
+var countAndSay = function(n) {
+    if (n === 0) {
+        return ''
+    }
+
+    var sequence = '1', i;
+
+    for (i = 0; i < n - 1; ++i) {
+        var len = sequence.length,
+            start = 0,
+            temp = '';
+
+        while (start < len) {
+            count = 1;
+            lead = start + 1;
+            current = sequence[start];
+
+            while (lead < len && (sequence[lead] === current)) {
+                count += 1;
+                lead += 1;
+            }
+            temp = temp + '' + count + '' + current;
+            start = lead;
+            lead += 1;
+        }
+        sequence = temp;
+    }
+
+    return sequence;
+};
+console.log(countAndSay(2));
+console.log(countAndSay(3));
+console.log(countAndSay(4));
+*/
+
+/* REMOVE DUPLICATES IN SORTED ARRAY 
+var removeDuplicates = function(nums) {
+    var count = 0,
+        len = nums.length;
+    for(var i = 1; i < len; i++){
+        if (nums[i] === nums[i - 1]) {
+            count += 1;
+        } else {
+            nums[i - count] = nums[i];
+        }
+    }
+    return len - count;
+};
+removeDuplicates([1,1,2,3,3])
+removeDuplicates([1,1,2,4,4,4,5,5,5,6,7,8,8,8,8])
+*/
+
 /* MIN DEPTH
 var minDepth = function(root) {
     if (root === null) {

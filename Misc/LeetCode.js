@@ -1,89 +1,67 @@
-var isValidSudoku = function(board) {
-    var rows = 9,
-        cols = 9,
-        i, j, val, tmp = [];
+function ListNode(val) {
+    this.val = val;
+    this.next = null;
+}
 
-    // check rows
-    for (i = 0; i < rows; ++i) {
-        tmp = [];
-        for (j = 0; j < cols; ++j) {
-            val = board[i][j];
-            if (val !== '.') {
-                if (tmp.indexOf(val) !== -1) {
-                    return false;
-                } else {
-                    tmp.push(val);
-                }
-            }
+var x1 = new ListNode(1);
+var x2 = new ListNode(2);
+var x3 = new ListNode(3);
+var x4 = new ListNode(4);
+//var x5 = new ListNode(5);
+x1.next = x2;
+x2.next = x3;
+x3.next = x4;
+//x4.next = x5;
+
+/* REORDER LIST (ex. Given {1,2,3,4}, reorder it to {1,4,2,3}) */
+var reorderList = function(head) {
+    if (head === null) {
+        return null;
+    }
+    var current = head,
+        length = 0,
+        evenNodes = [];
+
+    // get length
+    while (current !== null) {
+        length += 1;
+        if ((length % 2) === 0) {
+            evenNodes.unshift(current)
         }
+
+        current = current.next;
     }
 
-    // check columns
-    for (j = 0; j < cols; ++j) {
-        tmp = [];
-        for (i = 0; i < rows; ++i) {
-            if ((i === 3 || i === 6) && j === 3)
-            val = board[i][j];
-            if (val !== '.') {
-                if (tmp.indexOf(val) !== -1) {
-                    return false;
-                } else {
-                    tmp.push(val);
-                }
-            }
-        }
+    if (length === 1) {
+        return head;
     }
 
-    // check all 9 3x3 grids
-    for (var g = 0; g <= 6; g += 3) {
-        for (var h = 0; h <= 6; h += 3) {
-            // this subsection checks a 3 x 3 grid
-            tmp = [];
-            for (i = 0; i < 3; ++i) {
-                for (j = 0; j < 3; ++j) {
-                    val = board[i + g][j + h];
-                    console.log(i + g, j + h, val);
-                    if (val !== '.') {
-                        if (tmp.indexOf(val) !== -1) {
-                            return false;
-                        } else {
-                            tmp.push(val);
-                        }
-                    }
-                }
-            }
+    var steps = length - 1;
+    current = head;
+    while (true) {
+        var tNext = current;
+        for (var i = 0; i < steps; ++i) {
+            tNext = tNext.next;
         }
+        var next = current.next;
+        current.next = tNext;
+        tNext.next = next;
+        current = next;
+        steps -= 2; // 2 because each time we go through the loop we pass through 2 nodes
+
+        if (steps <= 0) {
+            current.next = null;
+            break;
+        }
+        
     }
+}
 
-    return true;
-};
-// ....5..1.
-// .4.3.....
-// .....3..1
-// 8......2.
-// ..2.7....
-// .15......
-// .....2...
-// .2.9.....
-// ..4......
+reorderList(x1)
 
-// ".87654321",
-// "2........",
-// "3........",
-// "4........",
-// "5........",
-// "6........",
-// "7........",
-// "8........",
-// "9........"
 
-// 0,0 0,3 0,6
-// 3,0 3,3 3,6
-// 6,0 6,3 6,6
-//console.log(isValidSudoku(["..4...63.",".........","5......9.","...56....","4.3.....1","...7.....","...5.....",".........","........."]));
-//console.log(isValidSudoku(["....5..1.",".4.3.....",".....3..1","8......2.","..2.7....",".15......",".....2...",".2.9.....","..4......"]));
+/* IS VALID SUDOKU ... */
 
-//console.log(isValidSudoku([".87654321","2........","3........","4........","5........","6........","7........","8........","9........"]))
 /* Add Binary Strings
     var addBinary = function(a, b) {
         var result = '',

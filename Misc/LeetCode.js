@@ -1,63 +1,3 @@
-function ListNode(val) {
-    this.val = val;
-    this.next = null;
-}
-
-var x1 = new ListNode(1);
-var x2 = new ListNode(2);
-var x3 = new ListNode(3);
-var x4 = new ListNode(4);
-//var x5 = new ListNode(5);
-x1.next = x2;
-x2.next = x3;
-x3.next = x4;
-//x4.next = x5;
-
-/* REORDER LIST (ex. Given {1,2,3,4}, reorder it to {1,4,2,3}) */
-var reorderList = function(head) {
-    if (head === null) {
-        return null;
-    }
-    var current = head,
-        length = 0,
-        evenNodes = [];
-
-    // get length
-    while (current !== null) {
-        length += 1;
-        if ((length % 2) === 0) {
-            evenNodes.unshift(current)
-        }
-
-        current = current.next;
-    }
-
-    if (length === 1) {
-        return head;
-    }
-
-    var steps = length - 1;
-    current = head;
-    while (true) {
-        var tNext = current;
-        for (var i = 0; i < steps; ++i) {
-            tNext = tNext.next;
-        }
-        var next = current.next;
-        current.next = tNext;
-        tNext.next = next;
-        current = next;
-        steps -= 2; // 2 because each time we go through the loop we pass through 2 nodes
-
-        if (steps <= 0) {
-            current.next = null;
-            break;
-        }
-        
-    }
-}
-
-reorderList(x1)
 
 
 /* IS VALID SUDOKU ... */
@@ -171,7 +111,104 @@ console.log('final:',res, sum)
     _sumTo100(arr, i + 1, resCopy.slice(), sum);
 }
 
-//sumTo100();
+
+var wordBreak = function(s, wordDict) {
+    var len = s.length, i = 1;
+
+    if (wordDict.size === 0) {
+        return false;
+    }
+    
+    if (s.length === 1) {
+        return wordDict.has(s) === true;
+    }
+    
+    while (i < len) {
+        if (wordDict.has(s.substring(0, i)) === true && wordDict.has(s.substring(i)) === true) {
+            return true;
+        }
+        i += 1;
+    }
+
+    return false; 
+};
+//
+//console.log(wordBreak('aaaaaaa', new Set()))
+
+/* Letter Combinations of a Phone Number 
+var letterCombinations = function(digits) {
+    if (digits === '') {
+        return [];
+    }
+    
+    var results = [];
+    _letterCombinations(digits, 0, '', results);
+    return results;
+};
+
+var _letterCombinations = function(digits, index, perm, results) {
+    if (index === digits.length) {
+        results.push(perm);
+        return;
+    }
+    var table = {
+        0:'',
+        1:'',
+        2:'abc',
+        3:'def',
+        4:'ghi',
+        5:'jkl',
+        6:'mno',
+        7:'pqrs',
+        8:'tuv',
+        9:'wxyz'
+    }
+
+    var set = table[digits[index]];
+    for (var i = 0; i < set.length; ++i) {
+        _letterCombinations(digits, index + 1, perm + set[i], results)
+    }
+};
+*/
+
+/* REORDER LIST 
+(ex. Given {1,2,3,4}, reorder it to {1,4,2,3}) 
+ {1,2,3,4,5} -> {1,5,2,4,3} 
+var reorderList = function(head) {
+    if (head === null) {
+        return;
+    }
+    var current = head,
+        length = 0,
+        nodes = [];
+
+    // get length
+    while (current !== null) {
+        length += 1;
+        nodes.unshift(current)
+        current = current.next;
+    }
+
+    if (length === 1) {
+        return;
+    }
+
+    current = head;
+    var reverseIndex = 0,
+        halfLen = Math.floor(length / 2),
+        i = 0;
+    while (i < halfLen) {
+        var tNext = current.next;
+        current.next = nodes[reverseIndex];
+        nodes[reverseIndex].next = tNext;
+        current = tNext;
+        reverseIndex += 1;
+        
+        i += 1;
+    }
+    current.next = null;
+}
+*/
 
 /* Implement strStr()
 var strStr = function(haystack, needle) {
@@ -261,6 +298,77 @@ var removeElement = function(nums, val) {
     }
 
     return newLength;
+};
+*/
+
+/* INTEGER TO ROMAN (other solutions are prettier yet still ugly)
+var intToRoman = function(num) {
+    var result = '', i;
+
+    var temp = Math.floor(num / 1000);
+    num %= 1000;
+    if (temp > 0) {
+        for (i = 0; i < temp; ++i) {
+            result += 'M'
+        }
+    }
+
+    temp = Math.floor(num / 100);
+    num %= 100;
+    if (temp > 0) {
+        if (temp === 4) {
+            result += 'CD';
+        } else if (temp === 9) {
+            result += 'CM';
+        } else {
+            if ((temp - 5) >= 0) {
+                result += 'D';
+                temp -= 5;
+            }
+
+            for (i = 0; i < temp; ++i) {
+                result += 'C'
+            }
+        }
+    }
+
+    temp = Math.floor(num / 10);
+    num %= 10;
+    if (temp > 0) {
+        if (temp === 4) {
+            result += 'XL';
+        } else if (temp === 9) {
+            result += 'XC';
+        } else {
+            if ((temp - 5) >= 0) {
+                result += 'L';
+                temp -= 5;
+            }
+
+            for (i = 0; i < temp; ++i) {
+                result += 'X'
+            }
+        }
+    }
+
+    if (num > 0) {
+        if (num === 4) {
+            result += 'IV';
+        } else if (num === 9) {
+            result += 'IX';
+        } else {
+            if ((num - 5) >= 0) {
+                result += 'V';
+                num -= 5;
+            }
+
+            for (i = 0; i < num; ++i) {
+                result += 'I'
+            }
+        }
+    }
+
+    return result;
 };
 */
 

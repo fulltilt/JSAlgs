@@ -1,5 +1,44 @@
+function TreeNode(val) {
+      this.val = val;
+      this.left = this.right = null;
+  }
 
+var sumNumbers = function(root) {
+    if (root === null) {
+        return null;
+    }
+    _sumNumbers(root.left, root.val + '')
+    _sumNumbers(root.right, root.val + '')
+    //return _sumNumbers(root.left, root.val + '') + _sumNumbers(root.right, root.val + '');
+};
 
+var _sumNumbers = function(node, temp) {
+    if (noede === null) {
+        //console.log(temp);
+        return;
+        //return parseInt(temp);
+    }
+
+    temp = temp + node.val;
+    var left = _sumNumbers(node.left, temp),
+        right = _sumNumbers(node.right, temp);
+//console.log(left, right)
+    if (left === null && right === null) {
+        console.log(temp)
+        return;
+        //return parseInt(temp);   
+    }
+
+    temp = temp.substring(0, temp.length - 1);
+}
+
+var x = new TreeNode(1),
+    y = new TreeNode(2),
+    z = new TreeNode(3);
+x.left = y;
+x.right = z;
+
+console.log(sumNumbers(x));    
 /* IS VALID SUDOKU ... */
 
 /* Add Binary Strings

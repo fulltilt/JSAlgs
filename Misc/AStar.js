@@ -74,7 +74,8 @@ var BFS2 = function(graph, start) {
 
 	while (frontier.length > 0) {
 		current = frontier.shift();
-		console.log('Visiting:', current);
+
+		//console.log('Visiting:', current);
 		var neighbors = graph.neighbors(current),
 			len = neighbors.length;
 
@@ -90,6 +91,36 @@ var BFS2 = function(graph, start) {
 }
 
 console.log(BFS2(example_graph, 'A'))
+
+// modified BFS that allows us to stop once we hit a goal
+var BFS3 = function(graph, start, goal) {
+	var frontier = [],
+		cameFrom = {},
+		current = null;
+	frontier.push(start);
+	cameFrom[start] = null;
+
+	while (frontier.length > 0) {
+		current = frontier.shift();
+
+		if (current[0] === goal[0] && current[1] === goal[1]) {
+			break;
+		}
+
+		//console.log('Visiting:', current);
+		var neighbors = graph.neighbors(current),
+			len = neighbors.length;
+
+		for (var i = 0; i < len; ++i) {
+			if (cameFrom[neighbors[i]] === undefined) {
+				frontier.push(neighbors[i]);
+				cameFrom[neighbors[i]] = current;
+			}
+		}
+	}
+
+	return cameFrom;
+}
 
 var SquareGrid = function(width, height) {
 	this.width = width;
@@ -136,19 +167,24 @@ var SquareGrid = function(width, height) {
 		}		
 	}
 
-	this.drawWithParents = function(start) {
+	this.drawWithParents = function(start, goal) {
 		var wallObjArr = {};
 		for (var i = 0; i < this.walls.length; ++i) {
 			wallObjArr[g.walls[i]] = true;
 		}
 
-		var parents = BFS2(this, start);
+		var parents = BFS3(this, start, goal);
 
 		for (var y = 0; y < g.height; ++y) {
 			var row = '';
 			for (var x = 0; x < g.width; ++x) {
-				if (wallObjArr[[x,y]] === true) {
+ 				if (x === goal[0] && y === goal[1]) {	// print goal
+					row += 'ZZ';
+				} 
+				else if (wallObjArr[[x,y]] === true) {	// print wall
 					row += '##';
+				} else if (parents[[x,y]] === undefined) {	// print '.' to signify that this was untouched
+					row += '. ';
 				} else {
 					var parent = parents[[x,y]]
 
@@ -203,4 +239,4 @@ g.walls = [
 	[21, 6], [22, 6], [23, 6], [24, 6], [25, 6],
 ];
 g.draw();
-g.drawWithParents([8,7]);
+g.drawWithParents([8,7], [17,2]);

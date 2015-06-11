@@ -280,13 +280,13 @@ function GridWithWeights(squareGrid) {
 		console.log('\n');
 	}
 
-	this.drawWeightedGridWithParents = function(start, goal) {
+	this.drawWeightedGridWithParents = function(start, goal, search) {
 		var wallObjArr = {};
 		for (var i = 0; i < this.squareGrid.walls.length; ++i) {
 			wallObjArr[this.squareGrid.walls[i]] = true;
 		}
 
-		var parents = Dijkstra(this, start, goal)[0];
+		var parents = search(this, start, goal)[0];
 
 		for (var y = 0; y < this.squareGrid.height; ++y) {
 			var row = '';
@@ -319,15 +319,15 @@ function GridWithWeights(squareGrid) {
 		console.log('\n')
 	}		
 
-	this.reconstructPath = function(start, goal) {
+	this.reconstructPath = function(start, goal, search) {
 		var current = goal;
 		var path = [current];		
 		var nodes = {};
 		nodes[current] = 1;
 
-		var cameFrom = Dijkstra(this, start, goal)[0];
+		var cameFrom = search(this, start, goal)[0];
 
-		while (current[0] !== start[0] && current[1] !== start[1]) {
+		while (current[0] !== start[0] || current[1] !== start[1]) {
 			current = cameFrom[current];
 			path.push(current);
 			nodes[current] = 1;
@@ -505,6 +505,46 @@ var reconstructPath = function(cameFrom, start, goal) {
 	return path;
 }
 
+
+var heuristic = function(a, b) {
+	return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
+}
+
+var AStar = function(graph, start, goal) {
+	var frontier = new PriorityQueue(),
+		cameFrom = {},
+		costSoFar = {};
+
+	frontier.put(0, start);
+	cameFrom[start] = null;
+	costSoFar[start] = 0;
+
+	while (!frontier.empty()) {
+		var current = frontier.get()[1];
+
+		if (current[0] === goal[0] && current[1] === goal[1]) {
+			break;
+		}
+
+		var neighbors = graph.squareGrid.neighbors(current),
+			len = neighbors.length;
+
+		for (var i = 0; i < len; ++i) {
+			var newCost = costSoFar[current] + graph.cost(current, neighbors[i]);
+
+			if ((cameFrom[neighbors[i]] === undefined) || newCost < costSoFar[neighbors[i]]) {
+				costSoFar[neighbors[i]] = newCost;
+				priority = newCost + heuristic(goal, neighbors[i]);
+				frontier.put(priority, neighbors[i]);
+				cameFrom[neighbors[i]] = current;
+			}
+		}	
+	}
+
+	return [cameFrom, costSoFar];	
+}
+
+
 var g2 = new SquareGrid(10, 10);
 g2.walls = [[1,7],[1,8],[2,7],[2,8],[3,7],[3,8]];
 var gw = new GridWithWeights(g2);
@@ -526,7 +566,9 @@ gw.weights = {
 	'0,9':6, '1,9':7, '2,9':8, '3,9':9, '4,9':10, '5,9':11, '6,9':12, '7,9':13, '8,9':14, '9,9':15
 };
 gw.drawWeightedGrid();
-gw.drawWeightedGridWithParents([1,4],[7,8])
-var results = Dijkstra(gw, [1,4],[7,8]);
-var path = reconstructPath(results[0],[1,4],[7,8]);
-gw.reconstructPath([1,4],[7,8]);
+gw.drawWeightedGridWithParents([1,4],[7,8], Dijkstra)
+gw.reconstructPath([1,4],[7,8], Dijkstra);
+
+gw.drawWeightedGridWithParents([1,4],[7,8], AStar)
+gw.reconstructPath([1,4],[7,8], AStar);
+

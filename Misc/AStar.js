@@ -1,3 +1,6 @@
+// http://www.redblobgames.com/pathfinding/a-star/introduction.html
+// https://github.com/qiao/PathFinding.js/
+
 all_nodes = [];
 for (var x = 0; x < 20; ++x) {
 	for (var y = 0; y < 20; ++y) {

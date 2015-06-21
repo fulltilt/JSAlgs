@@ -544,25 +544,50 @@ for (var i = 0; i < val.length; i++) {
   cache[i] = [];
 }
 //4
-console.log(recursiveKnapsack(W, wt, val, 0, cache));
+//console.log(recursiveKnapsack(W, wt, val, 0, cache));
 
-{ '1': [ 2, 3, 4, 7 ],
-  '2': [ 1, 3, 4 ],
-  '3': [ 1, 2, 4 ],
-  '4': [ 1, 2, 3, 5 ],
-  '5': [ 4, 6, 7, 8 ],
-  '6': [ 5, 7, 8 ],
-  '7': [ 1, 5, 6, 8 ],
-  '8': [ 5, 6, 7 ] } 
-[2,8]
-{ '1': [ 2, 3, 4, 7 ],
-  '2': [ 1, 3, 4 ],
-  '3': [ 1, 2, 4 ],
-  '4': [ 1, 2, 3, 5 ],
-  '5': [ 4, 6, 7, 8 ],
-  '6': [ 5, 7, 8 ],
-  '7': [ 1, 5, 6, 8 ],
-  '8': [ 5, 6, 7 ] } 
+// { '1': [ 2, 3, 4, 7 ],
+//   '2': [ 1, 3, 4 ],
+//   '3': [ 1, 2, 4 ],
+//   '4': [ 1, 2, 3, 5 ],
+//   '5': [ 4, 6, 7, 8 ],
+//   '6': [ 5, 7, 8 ],
+//   '7': [ 1, 5, 6, 8 ],
+//   '8': [ 5, 6, 7 ] } 
+// [2,8]
+// { '1': [ 2, 3, 4, 7 ],
+//   '2': [ 1, 3, 4 ],
+//   '3': [ 1, 2, 4 ],
+//   '4': [ 1, 2, 3, 5 ],
+//   '5': [ 4, 6, 7, 8 ],
+//   '6': [ 5, 7, 8 ],
+//   '7': [ 1, 5, 6, 8 ],
+//   '8': [ 5, 6, 7 ] } 
 
+// JavaScript lexicographic sort (JavaScript sort uses lexicographic sort by default if no compare function is supplied)
+var x = [1,2,3,4,5,6,7,8,9],
+    y = ['a','b','c','d','e','f','g'];
 
+console.log(x.sort(function(x, y) {
+  return x.toString().localeCompare(y.toString());
+}));
 
+console.log(x.sort())
+/*
+20,2,2 2220
+52,5,3 5352
+lexicographically order numbers (they have to be strings)
+*/
+
+var result = ['1'];
+var nums = [2];
+
+function all(i, nums, result) {
+  if (i === nums.length) {
+    console.log(result);
+  }
+
+  all(i + 1, nums, )
+}
+
+nums(0, nums, result)

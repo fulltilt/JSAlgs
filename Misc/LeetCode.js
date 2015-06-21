@@ -936,3 +936,61 @@ function reverse(nums, start, end) {
         end -= 1;
     }
 }*/
+
+/* EPICCODE
+You are given a function f(x), where f(x) is 1 if the first and last characters of string x are equal; else it is 0. 
+You are given a string S and you have to find the sum of f(x) for all substrings x of given string S.
+
+Note: A substring is a contiguous slice of string S[i:j] such that i≤j. It is a contiguous slice of the original string.
+
+Input Format 
+The first line contains an integer N, length of S. 
+The second line contains a string S. S will contain only lower case characters (a−z).
+
+Sample input:
+7
+ababaca
+
+Output:
+14
+
+Explanation 
+f("a")=1 , f("aba")=1 , f(“abaca”)=1 but f(“ab”)=0 , (“bac”)=0. Hence counting all substrings we get 14 
+The 14 substring are 
+a - 4(times) 
+b - 2 
+c - 1 
+aba - 2 
+bab - 1 
+aca - 1 
+ababa - 1 
+abaca - 1 
+ababaca - 1
+
+
+function processData(input) {
+    input = input.split('\n');
+    var len = parseInt(input[0]),
+        str = input[1],
+        score = 0;
+
+    for (var i = 0; i < len; ++i) {
+        for (var j = i + 1; j < len + 1; ++j) {
+            var sub = str.substring(i, j);
+
+            if (sub[0] === sub[sub.length - 1]) {
+
+                score += 1;
+            }
+        }
+    }
+    
+    console.log(score);
+} 
+
+N boys and N girls
+2nd line = height of boys
+3rd lien = height of girls
+
+
+*/

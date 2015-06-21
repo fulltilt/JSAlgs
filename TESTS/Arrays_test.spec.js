@@ -307,6 +307,18 @@ describe("Arrays", function() {
     });
 
     it('tests formBiggestNumber', function() {
+      arr = [];
+      arr.push('20');
+      arr.push('2');
+      arr.push('2');
+      expect(gfg.formBiggestNumber(arr)).toEqual('2220');
+
+      arr = [];
+      arr.push('52');
+      arr.push('5');
+      arr.push('3');
+      expect(gfg.formBiggestNumber(arr)).toEqual('5523');
+
       var arr = [];
       arr.push('54');
       arr.push('546');

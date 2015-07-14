@@ -348,6 +348,7 @@ the node with value 3.
  come back to the original point all while iterating a count for the length of the cycle. The next part I still don't know why it 
  works but you set 2 pointers to the beginning. One of the pointers traverses the length of the cycle. From here, both pointers 
  move in step and where they finally meet is the entry point of the cycle
+ -http://stackoverflow.com/questions/2936213/explain-how-finding-cycle-start-node-in-cycle-linked-list-work
 */
 function getCycleEntry() {
 	if (!this.hasCycle) {

@@ -526,7 +526,8 @@ function permute(str, index) {
     str[index] = str[i];
     str[i] = temp;
   }
-} */
+} 
+*/
 
 // http://www.geeksforgeeks.org/recursively-remove-adjacent-duplicates-given-string/
 // NOTE: fails some test cases

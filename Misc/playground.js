@@ -1,3 +1,51 @@
+// fs = require('fs')
+// fs.readFile('input/hackrank.txt', 'utf8', function (err,data) {
+//   if (err) {
+//     return console.log(err);
+//   }
+//   processData(data);
+// });
+
+function processData(input) {
+    //Enter your code here
+    input = input.split('\n');
+    var cases = input.shift();
+    for (var i = 0; i < cases; ++i) {
+        // create big and small matrices
+        var bigDimensions = input.shift().split(' ').map(function(x) { return parseInt(x, 10); }),
+            bigRows = bigDimensions[0],
+            bigColumns = bigDimensions[1]
+            bigMatrix = [];
+
+        for (var row = 0; row < bigRows; ++row) {
+          bigMatrix[row] = input.shift();
+        }    
+
+        var smallDimensions = input.shift().split(' ').map(function(x) { return parseInt(x, 10); }),
+            smallRows = smallDimensions[0],
+            smallColumns = smallDimensions[1]
+            smallMatrix = [];
+        for (var row = 0; row < smallRows; ++row) {
+          smallMatrix[row] = input.shift();
+        }    
+
+        // check if smaller is in bigger
+        var xLen = bigColumns - smallColumns,
+            yLen = bigRows - smallRows;
+        for (var y = 0; y <= yLen; ++y) {
+            var x = 0;
+            while (x < xLen) {
+              if (bigMatrix[y].indexOf(smallMatrix[0], x) !== -1) {
+                var found = true;
+
+              }
+            }
+        }
+        //console.log(found);
+    }  
+
+} 
+
 // running a script n times: cmd="node KargerMinCut.js kargerMinCut.txt"; for i in $(seq 100); do $cmd; done
 function Trie() {
   this.wordTree = {};
@@ -579,15 +627,166 @@ console.log(x.sort())
 lexicographically order numbers (they have to be strings)
 */
 
-var result = ['1'];
-var nums = [2];
+//                               abc
 
-function all(i, nums, result) {
-  if (i === nums.length) {
-    console.log(result);
-  }
+//               abc,a                       bac,b   bca,b
 
-  all(i + 1, nums, )
+//      bc,ab            cb,ac 
+
+// c,abc    b,abc     b,acb    b,acb
+var str = ['a', 'b', 'c'];
+
+function perms(str) {
+  permsH(str, '');
 }
 
-nums(0, nums, result)
+function permsH(str, res) {
+  console.log(str)
+  if (str.length === 1) {
+    console.log('*', res + str);
+    return;
+  }
+
+  for (var i = 0; i < str.length; ++i) {
+    var temp = str[0];
+    str[0] = str[i];
+    str[i] = temp;
+
+    permsH(str.slice(1), res + str[0]);
+
+    temp = str[0];
+    str[0] = str[i];
+    str[i] = temp;
+  }
+}
+
+//perms(['a', 'b', 'c']);
+
+/* CtCI 1.4 - Palindrome Permutation
+// check if permutation of string b is equivalent to string s
+function check(b, s) {
+  if (b.length !== s.length) {
+    return false;
+  }
+
+  // create hash table for all letters of b
+  var hash = {};
+  for (var i = 0; i < s.length; ++i) {
+    if (hash[s[i]] === undefined) {
+      hash[s[i]] = 1;
+    } else {
+      hash[s[i]] += 1;
+    }
+  }
+
+  // using hash table check every letter in s to the hash table and decrement matches. Return false, if hash lookup equals 0 or undefined. 
+  // no need to check for leftovers as we check for equivalent lengths at the start of the fxn
+  for (i = 0; i < b.length; ++i) {
+    if (hash[b[i]] === undefined || hash[b[i]] === 0) {
+      return false;
+    } else {
+      hash[b[i]] -= 1;
+    }
+  }
+  return true;
+}
+
+// check if permutations of smaller string b is in bigger string s
+function permsInStr(b, s) {
+  var len = s.length - b.length;
+  for (var i = 0; i < len; ++i) {
+    if (check(b, s.substr(i, b.length))) {
+      console.log(i, s.substr(i, b.length));
+    }
+  }
+}
+
+permsInStr('abbc', 'cbabadcbbabbcbabaabccbabc');
+*/
+
+/* CtCI 1.5 - One Away
+function oneAway(str1, str2) {
+  var len1 = str1.length,
+      len2 = str2.length,
+      threshold = 1 - Math.abs(len1 - len2), i;
+
+  if (threshold < 0) {
+    return false;
+  }
+
+  // initialize hash table for first string
+  var hash = {};
+  for (i = 0; i < len1; ++i) {
+    if (hash[str1[i]] === undefined) {
+      hash[str1[i]] = 1;
+    } else {
+      hash[str1[i]] += 1;
+    }
+  }
+
+  // compare second string to hash table. If letter isn't found or hash value is zero, decrement threshold
+  for (i = 0; i < len2; ++i) {
+    if (hash[str2[i]] === undefined || hash[str2[i]] === 0) {
+      threshold -= 1;
+    } else {
+      hash[str2[i]] -= 1;
+    }
+
+    if (threshold < 0) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+console.log(oneAway('pale', 'ple'));
+console.log(oneAway('pales', 'pale'));
+console.log(oneAway('pale', 'bale'));
+console.log(oneAway('pale', 'bake'));
+*/
+
+/* CtCI 1.5 - String Compression
+function stringCompression(str) {
+  var len = str.length,
+      cStr = '',
+      i = 0;
+
+  while (true) {
+    var curr = str[i],
+        count = 1
+        i += 1;
+
+    while (str[i] === curr && i < len) {
+      ++count;
+      ++i;
+    }    
+    cStr += curr + '' + count;
+    if (i >= len) {
+      break;
+    }
+  }
+
+  return cStr;
+}
+
+console.log(stringCompression('aabcccccaaa'));  //a2b1c5a3
+*/
+
+// function convertFromBase(num, base) {
+//   if (base < 2 || (base > 10 && base !== 16)) {
+//     return false;
+//   }
+
+//   var value = 0;
+//   for (var i = num.length - 1; i >= 0; --i) {
+//     var digit = digitToValue(num.charAt(i));
+//     if (digit < 0 || digit >= base) {
+//       return false;
+//     }
+
+//     var exp = num.length - 1 - i;
+//     value += digit * Math.pow(base, exp);
+//   }
+//   return value;
+// }

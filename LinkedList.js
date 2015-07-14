@@ -346,8 +346,7 @@ the first node in the loop from the head of a list. For instance, the entry node
 the node with value 3.
 -algorithm: first confirm that the list has a cycle. From the point you found the cycle, iterate through the loop until you
  come back to the original point all while iterating a count for the length of the cycle. The next part I still don't know why it 
- works but you set 2 pointers to the beginning. One of the pointers traverses the length of the cycle. From here, both pointers 
- move in step and where they finally meet is the entry point of the cycle
+ works but you set the tortoise to the beginning. From here, both pointers move in step and where they finally meet is the entry point of the cycle
  -http://stackoverflow.com/questions/2936213/explain-how-finding-cycle-start-node-in-cycle-linked-list-work
 */
 function getCycleEntry() {
@@ -372,10 +371,7 @@ function getCycleEntry() {
 		}
 	}
 
-	slow = fast = this.head;
-	for (var i = 0; i < cycleLength; i++) {
-		fast = fast.next;
-	}
+	slow = this.head;
 	while (true) {
 		slow = slow.next;
 		fast = fast.next;

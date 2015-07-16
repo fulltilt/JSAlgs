@@ -656,6 +656,24 @@ describe("LinkedList", function() {
     expect(true).toEqual(false);
   });
 
+  it('tests partitionList', function() {
+    //3 5 8 5 10 2 1   5
+    function Node(data) {
+        this.data = data;
+        this.next = null;
+    }
+    var p = new LinkedList();
+    p.insertHead(3);
+    p.insertHead(5);
+    p.insertHead(8);
+    p.insertHead(5);
+    p.insertHead(10);
+    p.insertHead(2);
+    p.insertHead(1);
+    
+    ll.partitionList(p, 5);
+  });
+
   xit('tests sortedLLToBalancedBST', function() {
     var slbb1 = new LinkedList(),
         slbb2 = new LinkedList(),

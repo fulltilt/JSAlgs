@@ -773,6 +773,57 @@ function stringCompression(str) {
 console.log(stringCompression('aabcccccaaa'));  //a2b1c5a3
 */
 
+
+/* 
+to rotate matrix inplace, we do the following:
+for i = 0 to n:
+  temp = top[i];
+  top[i] = left[i]
+  left[i] = bottom[i]
+  bottom[i] = right[i]
+  right[i] = temp
+  -really helps to draw a picture
+*/
+function rotateMatrix(matrix) {
+  var len = matrix.length;
+
+  // start from outermost layer and work way inwards
+  for (var layer = 0; layer < Math.floor(len / 2); ++layer) {
+    var first = layer,            // reference to the first row of the current layer
+        last = len - 1 - layer;   // reference to the last row of the current layer
+
+    for (var i = first; i < last; ++i) {  // i represents how many indices away from first layer index
+      var offset = i - first;             // offset is used to correctly determine how many indices away from last layer index. 
+                                          // To see why it's 'i - first', when first goes to the 2nd layer (index 1), i is initialized to 1 so i - 1 equals 0 
+
+      // save top
+      var top = matrix[first][i];
+
+      // left -> top
+      matrix[first][i] = matrix[last - offset][first];
+
+      // bottom -> left
+      matrix[last - offset][first] = matrix[last][last - offset];
+
+      // right -> bottom
+      matrix[last][last - offset] = matrix[i][last];
+
+      // top -> right
+      matrix[i][last] = top;
+    }
+  }
+
+  console.log(matrix);
+}
+
+var matrix = [
+  [1,2,3,4],
+  [5,6,7,8],
+  [9,10,11,12],
+  [13,14,15,16]
+];
+
+rotateMatrix(matrix);
 // function convertFromBase(num, base) {
 //   if (base < 2 || (base > 10 && base !== 16)) {
 //     return false;

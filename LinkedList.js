@@ -63,6 +63,7 @@ function LinkedList() {
 	this.reverseAlternateAndAppendAtEnd = reverseAlternateAndAppendAtEnd;
 	this.sortedLLToBalancedBST = sortedLLToBalancedBST;
 	this.intersectionOfTwoLists = intersectionOfTwoLists;
+	this.partitionList = partitionList;
 }
 
 function find(item) {
@@ -1130,6 +1131,42 @@ so iterate through the bigger list first 1 time which will be at Node with value
 // http://www.geeksforgeeks.org/implement-lru-cache/
 function LRUCache() {
 
+}
+
+// CtCI 2.4 - Partition list at a value
+function partitionList(list, value) {
+	if (list === null) {
+		return null;
+	}
+
+	var lo = list.head,
+		hi = list.head;
+
+	while (true) {
+		while (hi !== null && hi.data <= value) {
+			hi = hi.next;
+		}
+
+		if (hi === null) {
+			break;
+		}
+
+		lo = hi.next;
+
+		while (lo !== null && lo.data > value) {
+			lo = lo.next;
+		}
+
+		if (lo === null) {
+			break;
+		}
+
+		var temp = lo.data;
+		lo.data = hi.data;
+		hi.data = temp;
+
+		hi = hi.next;
+	}
 }
 
 module.exports = LinkedList;

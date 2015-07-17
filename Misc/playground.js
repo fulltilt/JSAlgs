@@ -841,3 +841,248 @@ rotateMatrix(matrix);
 //   }
 //   return value;
 // }
+
+// CtCI 4.2 - Minimal Tree
+function printByLevel(root) {
+  var currentLevel = [],
+      children = [];
+
+  currentLevel.push(root);
+  console.log(currentLevel[0].data);
+
+  while (currentLevel.length > 0) {
+    for (var i = 0; i < currentLevel.length; i++) {
+      var currentNode = currentLevel[i];
+      if (currentNode.left) {
+        children.push(currentNode.left);
+      }
+      if (currentNode.right) {
+        children.push(currentNode.right);
+      }
+    }
+
+    var output = '';
+    for (i = 0; i < children.length; i++) {
+      output += children[i].data + ' ';
+    }
+    console.log(output.trim());
+    currentLevel = children.slice(0);
+    children = [];
+  }
+}
+
+/* CtCI 4.2 - Minimal Tree
+// careful for fencepost errors
+
+function Node(data) {
+  this.data = data;
+  this.left = null;
+  this.right = null;
+}
+
+function mht(arr) {console.log(arr)
+  if (arr.length === 0) {
+    return null;
+  } else if (arr.length === 1) {
+    return new Node(arr[0]);
+  }
+
+  var mid = Math.floor(arr.length / 2);
+  var root = new Node(arr[mid]);
+
+  if (mid !== 0) {
+    root.left = mht(arr.slice(0, mid), root);
+  }
+
+  if (mid + 1 !== arr.length) {
+    root.right = mht(arr.slice(mid + 1), root);
+  }
+
+  return root;
+}
+
+printByLevel(mht([1,2,3,4,5,6,7,8,9,10]));
+*/
+
+
+// CtCI Find Successor in BST with parent pointer
+/*                1
+//           2         3
+//       4     5    6     7
+
+// With parent ptr in BST:
+// -if node has a right child:
+//   if right child has no left child, right child is the successor, 
+//   else keep iterating through right childs left children until you hit a leaf node which will be the successor
+// -else if no children if parent ptr isn't null:
+//   if node is parent's left child, node's successor is parent
+//   else if node is parent's right child, node's successor exists only if parent is left child of a node. Keep iterating until this is no longer true and you 
+//   will have your successor
+// -if neither condition above holds, the node has no successor
+
+
+function Node(data) {
+  this.data = data;
+  this.left = null;
+  this.right = null;
+  this.parent = null;
+}
+
+var root = new Node(1);
+root.left = new Node(2);
+root.left.parent = root;
+
+root.right = new Node(3);
+root.right.parent = root;
+
+root.left.left = new Node(4);
+root.left.left.parent = root.left;
+
+root.left.right = new Node(5);
+root.left.right.parent = root.left;
+
+root.right.left = new Node(6);
+root.right.left.parent = root.right;
+
+root.right.right = new Node(7);
+root.right.right.parent = root.right;
+
+
+function getBSTSuccessor(node) {
+  var successor = null;
+
+  // if node has right child
+  if (node.right !== null) {
+    successor = node.right;
+    while (successor.left !== null) {
+      successor = successor.left;
+    }
+
+    return successor.data;
+  }
+
+  // if node has no children but has a parent
+  if (node.parent !== null) {
+    successor = node.parent;
+
+    // if parent's left child is equal to node, parent is the successor
+    if (successor.left === node) {
+      return successor.data;
+    } else {  // if parent's right child is equal to node, successor only exists if parent is the left child of another node
+      if (successor.parent.left !== successor) {
+        return null;
+      }
+
+      while (successor.parent !== null && successor.parent.left === successor) {  // corner case to check if successor.parent is null (put this check first to short-circuit before going to 2nd check)
+        successor = successor.parent;
+      }
+
+      return successor.data;
+    }
+  }
+
+  return null;
+}
+
+console.log(getBSTSuccessor(root)); // 6
+console.log(getBSTSuccessor(root.left));  // 5
+console.log(getBSTSuccessor(root.right)); // 7
+console.log(getBSTSuccessor(root.left.left)); // 2
+console.log(getBSTSuccessor(root.left.right));  // 1
+console.log(getBSTSuccessor(root.right.left));  // 3
+console.log(getBSTSuccessor(root.right.right)); // null
+*/
+
+/* CtCI Linked List palindrome
+// the logic is tricky
+function Node(data) {
+  this.data = data;
+  this.next = null;
+}
+
+function isPalindrome(node, length) {
+console.log(node.data, length)
+
+  // don't know yet why you go to next on the odd base case but not on the even base case
+  if (length === 1) {
+    return [ node.next, true ]
+  } else if (length === 0) {
+    return [node, true]
+  }
+
+  var result = isPalindrome(node.next, length - 2); // minus two since we're 'stripping' off a node on each end
+  if (result[0] === null) {
+    return [null, false];
+  }
+
+console.log('*',result[0].data, length);
+  if (result[0].data !== node.data) {
+    return [null, false]
+  } else {
+    return [result[0].next, true];  // don't know why we return result.next
+  }
+}
+
+var head = new Node(0)
+head.next = new Node(1)
+head.next.next = new Node(2)
+head.next.next.next = new Node(3)
+head.next.next.next.next = new Node(3)
+head.next.next.next.next.next = new Node(2)
+head.next.next.next.next.next.next = new Node(1)
+head.next.next.next.next.next.next.next = new Node(0)
+
+console.log(isPalindrome(head, 8)[1]);  // make sure that the correct length is passed in else this won't work
+*/
+
+// CtCI Lowest common ancestor in a Binary Tree
+function Node(data) {
+  this.data = data;
+  this.left = null;
+  this.right = null;
+}
+
+function isInTree(root, node) {
+  if (root === null) {
+    return false;
+  }
+
+  if (root === node) {
+    return true;
+  } else {
+    return isInTree(root.left, node) || isInTree(root.right, node);
+  }
+}
+
+var root = new Node(3);
+root.left = new Node(7);
+root.left.left = new Node(2);
+root.left.right = new Node(6);
+root.left.right.left = new Node(5);
+root.left.right.right = new Node(11);
+root.left.right.right.left = new Node(1);
+root.right = new Node(5);
+root.right.right = new Node(9);
+root.right.right.left = new Node(4);
+
+// observation is that the lowest common ancestor will have one node on the left branch and the other node on the right branch. If not, keep recursing.
+// algorithm below assumes n1 and n2 are in the same tree
+function lca(root, n1, n2) {
+  if (root === null) {
+    return null;
+  }
+  var leftBranchResults = isInTree(root.left, n1) || isInTree(root.left, n2),
+      rightBranchResults = isInTree(root.right, n1) || isInTree(root.right, n2);
+
+  if (leftBranchResults && rightBranchResults) {
+    return root;
+  } else if (leftBranchResults) {
+    return lca(root.left, n1, n2);
+  } else {
+    return lca(root.right, n1, n2);
+  }
+}
+
+console.log(lca(root, root.left.right.right.left, root.right.right.left).data);
+console.log(lca(root, root.left.left, root.left.right.right).data);
+// console.log(lca(root, root.left.left, new Node(1)).data); // will through error as returned value is null

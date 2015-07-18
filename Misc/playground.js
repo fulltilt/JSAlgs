@@ -1035,7 +1035,7 @@ head.next.next.next.next.next.next.next = new Node(0)
 console.log(isPalindrome(head, 8)[1]);  // make sure that the correct length is passed in else this won't work
 */
 
-// CtCI Lowest common ancestor in a Binary Tree
+/* CtCI Lowest common ancestor in a Binary Tree
 function Node(data) {
   this.data = data;
   this.left = null;
@@ -1086,3 +1086,40 @@ function lca(root, n1, n2) {
 console.log(lca(root, root.left.right.right.left, root.right.right.left).data);
 console.log(lca(root, root.left.left, root.left.right.right).data);
 // console.log(lca(root, root.left.left, new Node(1)).data); // will through error as returned value is null
+*/
+
+// CtCI 4.9 - BST Sequences
+function Node(data) {
+  this.data = data;
+  this.left = null;
+  this.right = null;
+}
+
+var root = new Node(2);
+root.left = new Node(1);
+root.right = new Node(3);
+
+// notes: roots of subtrees must come before all of it's children else you'll have a different tree
+function bstSequences(root, seq) {
+  if (root === null) {
+    return null;
+  }
+
+  seq.push(root.data);
+  var children = [root.left, root.right];
+  
+}
+
+bstSequences(root, [])
+
+root = new Node(23);
+root.right = new Node(45);
+root.left = new Node(16);
+root.right.left = new Node(37);
+root.left.left = new Node(3);
+root.right.right = new Node(99);
+root.left.right = new Node(22);
+root.right.left.left = new Node(36);
+root.left.left.right = new Node(10);
+
+bstSequences(root, [])

@@ -18,6 +18,8 @@ function Bits() {
   this.countModifiedBits = countModifiedBits;
   this.numToGrayCode = numToGrayCode;
   this.numbersOccurringOnce = numbersOccurringOnce;
+  this.clearBitsMSBthroughN = clearBitsMSBthroughN;
+  this.clearBitsNthroughZero = clearBitsNthroughZero;
   this.bitVectorSort = bitVectorSort;
   this.bitVectorSort2 = bitVectorSort2;
   this.add = add;
@@ -214,6 +216,20 @@ function getLSBIndex(num) {
 function isIthBitSet(num, i) {
   return ((num >> i) & 1) === 1;
   // can do: return num & (1 << i);   but the caller what have to test whether or not the returned value was 0 or not
+}
+
+// clear all bits from the MSB through n (inclusive)
+// algo: we create a mask with a 1 at the ith bit (1 << i) then we subtract 1 from it giving us a sequence of zeroe's followed by n 1s.
+// we then AND our # with this mask to leave just the last i bits
+function clearBitsMSBthroughN(num, n) {
+  return num & (1 << ) - 1;
+}
+
+// clear all bits from n through 0 (inclusive)
+// algo: we take a sequence of all 1s (which is -1) and shift it over by 31 - i bits. We want a logical shift (so that we move the sign bit),
+// so we use the >>> operator. This gives us a sequence of 1s followed by i 0 bits
+function clearBitsNthroughZero(num, n) {
+  return num & ~(1 >>> (31 - i));
 }
 
 // Programming Pearls p.4: sort a disk file with up to n^7 non-duplicate numbers with a limited amount of memory. I believe merge and quicksort can't be used

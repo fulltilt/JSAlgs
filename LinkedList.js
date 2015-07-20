@@ -349,6 +349,25 @@ the node with value 3.
  come back to the original point all while iterating a count for the length of the cycle. The next part I still don't know why it 
  works but you set the tortoise to the beginning. From here, both pointers move in step and where they finally meet is the entry point of the cycle
  -http://stackoverflow.com/questions/2936213/explain-how-finding-cycle-start-node-in-cycle-linked-list-work
+-observation: hare never overlaps the tortoise. Suppose hare did hop over tortoise, such that tortoise is at spot i and hare is at spot i + 1. This would mean
+ that tortoise's previous position was i - 1 and hares previous position is i + 1 - 2 which equals to i - 1. If that were true then that means that they
+ were in the same spot and the algorithm would have stopped
+-when do they collide? assume list has a non-looped part of size k. We know that for every p steps slow takes, fast has taken 2p steps. Therefore, when slow 
+ enters the loop portion, fast has taken 2k steps and must be 2k - k or k steps into the loop (draw out a few examples to see that this is the case). Since
+ k might be much larger than the loop length, we could actually write this as k % loop_length which we'll denote as K.
+ Depending on your perspective: 
+   -slow is K steps behind fast or 
+   -fast is loop_length - K steps behind slow
+ If fast is loop_length - K steps behind slow, and fast catches up at a rate of 1 step per turn, then they meet after loop_length - K steps. (book doesn't 
+ say why this is but what I thought of was that, when slow makes loop_length - K steps, the distance that fast traverses is 2 * (loop_length - K) steps. 
+ Since slow was already ahead loop_length - K steps, fast and slow will collide.) At this point they'll be K steps before the entry point of the loop which we'll call the point CollisionPoint
+-How do you find the start of the loop?
+ We now know that CollisionPoint is K nodes before the start of the loop. Because K = loop_length % k (or k = K + M * loop_length for any integer M), it
+ is also correct to say that it's k nodes from the loop start i.e. if node N is 2 nodes into a 5 node loop, it is also correct to say that it is 7, 12, or 
+ even 397 nodes into the loop. Therefore, both CollisionPoint and LinkedListHead are k nodes from the start of the loop. Now, if we keep one pointer at
+ CollisionPoint and move the other one to LinkedListHead, they will each be k nodes from the start of the loop. Moving both pointers one node at a time
+ will cause them to collide again, this time after k steps at which point they'll collide at the loop entry
+
 */
 function getCycleEntry() {
 	if (!this.hasCycle) {

@@ -28,6 +28,8 @@ function Bits() {
   this.divide = divide;
 }
 
+
+
 function decimalToBinary(n) {
   var stack = [];
 
@@ -45,6 +47,7 @@ function setNthBit(num, n) {
 }
 
 // ex. 42: 101010; 1 << 1: 000010; ~(1 << 1): 111101; 42 & ~(1 << 1) = 101000
+// logic is to create a mask with only the ith bit set to one, negate the mask, and then AND it with num
 function clearNthBit(num, n) {
   return num & ~(1 << n);
 }
@@ -214,15 +217,16 @@ function getLSBIndex(num) {
 
 // check whether ith bit is set
 function isIthBitSet(num, i) {
-  return ((num >> i) & 1) === 1;
-  // can do: return num & (1 << i);   but the caller what have to test whether or not the returned value was 0 or not
+  return ((num >> i) & 1) === 1;  // shift number to the right until ith bit in num is the least significant bit and compare it to 1
+  // can do: return num & (1 << i);   but the caller would have to test whether or not the returned value was 0 or not
+  //return (num & (1 << i)) !== 0; // this works as well?
 }
 
 // clear all bits from the MSB through n (inclusive)
-// algo: we create a mask with a 1 at the ith bit (1 << i) then we subtract 1 from it giving us a sequence of zeroe's followed by n 1s.
+// algo: we create a mask with a 1 at the ith bit (1 << i) then we subtract 1 from it giving us a sequence of zeron's followed by n 1s.
 // we then AND our # with this mask to leave just the last i bits
 function clearBitsMSBthroughN(num, n) {
-  return num & (1 << ) - 1;
+  return num & (1 << n) - 1;
 }
 
 // clear all bits from n through 0 (inclusive)
@@ -422,4 +426,20 @@ ex. -35
                  +     1
                  -------
                  1011101  = -64 + 16 + 8 + 4 + 1 = -35
+-aside from 1, every bit sequence where the MSB is 1 and the rest is zero is a power of 2
+2: 10
+4: 100
+8: 1000
+16: 10000
+32: 100000
+etc.
+
+another note is that 1 minus a power of 2, results in a number where all the digits are 1:
+1: 1
+3: 11
+7: 111
+15: 1111
+31: 11111
+
+
 */

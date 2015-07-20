@@ -13,7 +13,7 @@ var sumNumbers = function(root) {
 };
 
 var _sumNumbers = function(node, temp) {
-    if (noede === null) {
+    if (node === null) {
         //console.log(temp);
         return;
         //return parseInt(temp);
@@ -705,6 +705,43 @@ var countPrimes = function(n) {
 
     return count;
 };
+
+FROM CTCI:
+Note on why we only have to check up to Math.sqrt(max):
+If a number n is not a prime, it can be factored into two factors a and b:
+
+n = a * b
+
+If both a and b were greater than the square root of n, a * b would be greater than n. So at least one of those factors must be less or equal to the 
+square root of n, and to check if n is prime, we only need to test for factors less than or equal to the square root.
+function sieveOfEratosthenes(max) {
+    var flags = [],
+        prime = 2;
+
+    flags[0] = false;
+    flags[1] = false;
+    for (var i = 2; i <= max; ++i) {
+        flags[i] = true;
+    }
+
+    while (prime <= Math.sqrt(max)) {
+        // cross off remaining multiples of prime. We can start with prime * prime because if we have a k * prime, where k < prime, this value would
+        // have been crossed off in a prior iteration
+        for (var i = prime * prime; i < flags.length; i += prime) {
+            flags[i] = false;
+        }
+
+        // find next value which is true
+        var next = prime + 1;
+        while (next < flags.length && !flags[next]) {
+            ++next;
+        }
+        prime = next;
+    }
+
+    return flags;
+}
+console.log(sieveOfEratosthenes(100));
 */
 
 /* Majority element

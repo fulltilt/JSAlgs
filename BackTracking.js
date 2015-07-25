@@ -2,6 +2,7 @@ function BackTracking() {
   this.printAllPermutations = printAllPermutations;
   this.printAllPermutationsWithRepetitions = printAllPermutationsWithRepetitions;
   this.permuteNArrays = permuteNArrays;
+  this.allValidParentheses = allValidParentheses
   this.hasSubsetWithSumZero = hasSubsetWithSumZero;
   this.knightsTour = knightsTour;
   this.mazePuzzle = mazePuzzle;
@@ -150,6 +151,45 @@ function permuteNArrays(arrs, index, res) {
     res.pop();
   }
 } */
+
+/* CtCI 8.9 Print all Valid n Parentheses
+*/
+function allValidParentheses(n, open, res) {
+  if (open === 0 && n === 0) {
+    console.log(res);
+    return;
+  }
+
+  if (n > 0) {  // we have the option to start a new parentheses
+    res.push('(');
+    allValidParentheses(n - 1, open + 1, res);
+    res.pop();
+  }
+
+  if (open > 0) { // we have the option to close an existing parentheses
+    res.push(')');
+    allValidParentheses(n, open - 1, res);
+    res.pop();
+  }
+}
+
+//allValidParentheses(3, 0, []);
+
+function printAllSubsets(set, index, results) {
+  if (index === set.length) {
+    console.log(results);
+  }
+
+  // push to subset
+  res.push(set[index]);
+  printAllSubsets(set, index + 1, res);
+  res.pop();
+
+  // don't push to subset
+  printAllSubsets(set, index + 1, res);
+}
+
+
 
 // Apress #89: Given an array, please check whether it contains a subset of numbers (with one number at least) whose sum equals 0
 // Algo: this is actually a brute force method that tries out every permutation until it hits a match. Don't know if there's a more efficient way to do this

@@ -946,4 +946,6 @@ Common themes with dynamic programming solutions:
 -top-down is recursive backtracking with a memoization table. bottom-up is iterative with a memoization table
 -it seems that top-down is good for getting a single value but bottom-up is easier to get the actual data itself (i.e. for lcs, top-down can easily return the
  length of the longest common substring but getting the substring is hard whereas with bottom-up it's easier)
+-some people call top-down dynamic programming 'memoization' (i.e. memoized fibonacci) and only use 'dynamic programming' to refer to bottom-up work (i.e. 
+ iterative fibonacci) 
 */

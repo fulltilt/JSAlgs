@@ -527,6 +527,24 @@ function permute(str, index) {
     str[i] = temp;
   }
 } 
+
+// combo of both above
+function perms(arr, res) {
+  if (arr.length === 0) {
+    console.log(res);
+    return;
+  }
+
+  for (var i = 0; i < arr.length; ++i) {
+    var temp = arr[0];
+    arr[0] = arr[i];
+    arr[i] = temp;
+
+    res.push(arr[0])
+    perms(arr.slice(1), res);
+    res.pop();
+  }
+}
 */
 
 // http://www.geeksforgeeks.org/recursively-remove-adjacent-duplicates-given-string/

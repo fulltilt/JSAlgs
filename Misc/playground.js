@@ -1123,3 +1123,187 @@ root.right.left.left = new Node(36);
 root.left.left.right = new Node(10);
 
 bstSequences(root, [])
+
+
+// 1
+// 4 2
+// 1 2
+// 1 3
+// 1
+
+// 6 6 -1
+
+/*
+function processData(input) {
+    //Enter your code here
+    input = input.split('\n');
+    var tests = parseInt(input.shift(), 10);
+    
+    for (var test = 0; test < tests; ++test) {
+        var nextInput = input.shift().split(' '),
+            nodes = parseInt(nextInput[0]),
+            edges = parseInt(nextInput[1]),
+            distances = [],
+            edgeDict = {};
+        
+        // initialize distances to Infinity
+        for (var i = 0; i <= nodes; ++i) {
+            distances[i] = Infinity;
+        }
+        
+        // set up edge dictionary
+        for (i = 0; i < edges; ++i) {
+            var nextEdge = input.shift().split(' ').map(function(x) { return parseInt(x, 10); }),
+                start = nextEdge[0],
+                end = nextEdge[1];
+            if (edgeDict[start] === undefined) {
+                edgeDict[start] = [end];
+            } else {
+                edgeDict[start].push(end);
+            }
+        }
+        
+        var startNode = parseInt(input.shift(), 10),
+            children = edgeDict[startNode],
+            level = 1;
+        
+        distances[startNode] = 0;
+        //while (children.length > 0) {
+            var temp = [];
+            for (i = 0; i < children.length; ++i) {
+                // buggy here
+                var child = children[i];
+                if (edgeDict[child] === undefined) {
+                    distances[child] = level * 6;
+                    temp = temp.concat(edgeDict[child]);
+                }
+            }
+
+            children = temp.slice();
+            level += 1;
+        //}
+
+        // due to output restrictions, convert Infinity to -1
+        for (var i = 0; i <= nodes; ++i) {
+            if (distances[i] === Infinity) {
+                distances[i] = -1;
+            }
+        }        
+    }
+        
+} 
+*/
+
+function allSequences(root) {
+  var result = [];
+
+  if (root === null) {
+    result.push([]);
+    return result;
+  }
+
+  var prefix = [];
+  prefix.push(root.data);
+
+  // recurse on left and right subtrees
+  var leftSeq = allSequences(root.left),
+      rightSeq = allSequences(root.right);
+
+  // weave together each list from the left and right sides
+  for (var i = 0; i < leftSeq.length; ++i) {
+    for (var j = 0; j < rightSeq.length; ++j) {
+      var weaved = [];
+      weaveLists(leftSeq[i], rightSeq[j], weaved, prefix);
+      result = result.concat(weaved);
+    }
+  }
+
+  return result;
+}
+
+function weaveLists(first, second, results, prefix) {
+//console.log(first, second, results, prefix)
+  // one list is empty. Add remainder to [a cloned] prefix and store result
+  if (first.length === 0 || second.length === 0) {
+    var result = prefix.slice();
+    results = results.concat(first);
+    results = results.concat(second);
+    results = results.concat(result);
+    return;
+  }
+
+  // recurse with head of first added to the prefix. Removing the head will modify first so we'll need to put it back where we found it afterwards
+  var headFirst = first.shift();
+  prefix.push(headFirst);
+  weaveLists(first, second, results, prefix);
+  prefix.pop();
+  first.unshift(headFirst);
+
+  // do the same thing with second
+  var headSecond = second.shift();
+  prefix.push(headSecond);
+  weaveLists(first, second, results, prefix);
+  prefix.pop();
+  second.unshift(headSecond);
+}
+
+//console.log(allSequences(root))
+
+/* CtCI 8.1 - n steps
+function nSteps(n, memo) {
+  if (n < 0) {
+    return 0;
+  }
+  if (n === 0) {
+    return 1;
+  }
+  if (memo[n] !== undefined) {
+    return memo[n];
+  }
+
+  return memo[n] = nSteps(n - 1, memo) + nSteps(n - 2, memo) + nSteps(n - 3, memo);
+}
+
+console.log(nSteps(400, []));
+*/
+
+var maze = [[1, 0, 0, 0],
+            [1, 1, 0, 1],
+            [0, 1, 0, 0],
+            [1, 1, 1, 1]];
+
+function perms(arr, res) {
+  if (arr.length === 0) {
+    console.log(res);
+    return;
+  }
+
+  for (var i = 0; i < arr.length; ++i) {
+    var temp = arr[0];
+    arr[0] = arr[i];
+    arr[i] = temp;
+
+    res.push(arr[0])
+    perms(arr.slice(1), res);
+    res.pop();
+  }
+}
+
+/* CtCI 8.4 Power Set - return all subsets of a set
+*/
+function printAllSubsets(set, index, res) {
+  if (index === set.length) {
+    console.log(res);
+    return;
+  }
+
+  // push current index to subset
+  res.push(set[index]);
+  printAllSubsets(set, index + 1, res);
+  res.pop();
+
+  // don't push current index to subset
+  printAllSubsets(set, index + 1, res);
+}
+
+// printAllSubsets(['a','b','c'], 0, [])

@@ -1,5 +1,6 @@
 var fs = require("fs");
 
+/* OLD
 function Trie() {
   this.wordTree = {};
   this.words = 0;
@@ -65,7 +66,6 @@ Trie.prototype = {
   }
 };
 
-/*
 fs.readFile('text/example.txt', function(err, data) {
   if (err) throw err;
   var trie = new Trie();
@@ -75,6 +75,79 @@ fs.readFile('text/example.txt', function(err, data) {
   console.log(trie.isWord(trie.wordTree, 'HAMBURGER'));
 });
 */
+
+var Trie = function() {
+    this.root = {};
+};
+
+/**
+ * Inserts a word into the trie. 
+ * @param {string} word
+ * @return {void}
+ */
+Trie.prototype.insert = function(word) {
+    let currentNode = this.root;
+    for (let i = 0; i < word.length; ++i) {
+        if (!currentNode[word[i]]) {
+            currentNode[word[i]] = {};
+        }
+        currentNode = currentNode[word[i]];
+    }
+    currentNode['$'] = true;
+};
+
+/**
+ * Returns if the word is in the trie. 
+ * @param {string} word
+ * @return {boolean}
+ */
+Trie.prototype.search = function(word) {
+    let currentNode = this.root;
+    for (let i = 0; i < word.length; ++i) {
+        if (!currentNode[word[i]]) {
+            return false;
+        }
+        currentNode = currentNode[word[i]];
+    }
+    
+    return currentNode['$'] === true;
+};
+
+/**
+ * Returns if there is any word in the trie that starts with the given prefix. 
+ * @param {string} prefix
+ * @return {boolean}
+ */
+Trie.prototype.startsWith = function(prefix) {
+    let currentNode = this.root;
+    for (let i = 0; i < prefix.length; ++i) {
+        if (!currentNode[prefix[i]]) {
+            return false;
+        }
+        currentNode = currentNode[prefix[i]];
+    }
+    
+    return true;
+};
+
+/** 
+ * Your Trie object will be instantiated and called as such:
+ * var obj = Object.create(Trie).createNew()
+ * obj.insert(word)
+ * var param_2 = obj.search(word)
+ * var param_3 = obj.startsWith(prefix)
+ */
+
+var x = new Trie();
+x.insert('ATC')
+x.insert('ATAGA')
+x.insert('GAT')
+
+console.log(x.search('ATCD'))
+console.log(x.search('ATAGA'))
+console.log(x.startsWith('AT'))
+console.log(x.startsWith('ATD'))
+
 
 module.exports = Trie;
 

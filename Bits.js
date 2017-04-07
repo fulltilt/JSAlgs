@@ -441,5 +441,99 @@ another note is that 1 minus a power of 2, results in a number where all the dig
 15: 1111
 31: 11111
 
+A = 10 = 1010
+B =  8 = 1000
+C =  5 = 0101
 
+Union
+A | B = 10 = 2
+
+intersection
+A & B = 1000 = 8
+
+Subtraction
+A & ~B = 1010 & 0111 = 10 = 2
+
+Negation
+~A = 0101 = 5 (dev tools returns -11)
+  twos complement: ~(0101) => 1010 + 1 => 1011 => -11
+-in javascript, they use twos complement to represent negative #s. Twos complements is where you invert all the bits and then add 1
+-note on twos complement: when doing the bit operations, dont worry about twos complement. Just flipping the bits is fine
+ -apparently twos complement applies in bitwise operations when theres a negative sign so -A = 1011 (or -11)
+  so for 1010 => 0101 => 0110 = 5
+
+Set bit
+A != 1 << bit
+A |= 1 << 0 = 1011 (set 0th bit which is the bit furthest to the right)
+A |= 1 << 2 = 1010 | 0100 = 1110 = 14
+
+Clear bit
+A &= ~(1 << bit) (clear bit)
+A &= ~(1 << 1) = 1010 & ~(0010) => 1010 & 1101 => 1000 = 8
+
+Test bit
+A & 1 << bit !== 0 (test bit)
+(A & (1 << 0)) !== 0 (false)
+(A & (1 << 1)) !== 0 (true)
+
+Extract last bit
+A & -A or A & ~(A - 1) or A ^ (A & (A - 1))
+A & -A = 1010 & 1011 = 10 (or 2); C & -C = 0101 & 1011 = 1 (or 1)
+A & ~(A - 1) = 1010 & ~(1010 - 1) = 1010 & ~(1000) = 1010 & 0111 = 0010 (or 2)
+ note: (1010 - 1) = 1010 - 0001 = 1001(using borrow method since theres a 0 - 1) - 0001 = 1000
+A ^ (A & (A - 1)) = 1010 ^ (1010 & 1000) = 1010 ^ 1000 = 10 (or 2)
+
+Remove last bit (or another way to say this is to remove the bit furthest to the right)
+A & (A - 1) = 1010 & 1000 = 1000
+
+Get all 1-bits
+~0
 */
+
+// Count the number of ones in the binary representation of the given number
+let countOnes = function(n) {
+  let count = 0;
+
+  while (n) {
+    n = n & (n - 1);  // remove last bit
+    count++;
+  }
+  return count;
+}
+
+console.log(countOnes(13)); // 1101 = 3
+console.log(countOnes(111));  // 1101111 = 6
+
+let isPowerOfTwo = function(n) {
+  return (n & (n - 1)) === 0;
+}
+
+console.log(isPowerOfTwo(32));
+console.log(isPowerOfTwo(2342897));
+
+let getSum = function(a, b) {
+  return b === 0 ? a : getSum(a ^ b, (a & b) << 1);
+}
+
+console.log(getSum(9, 5)); //1001, 0101 = 14 (1110)
+// 1: getSum(1001 ^ 0101, (1001 & 0101) << 1) => getSum(1100, 0001 << 1) => getSum(1100, 0010)
+// 2: getSum(1100 ^ 0010, (1100 & 0010) << 1) => getSum(1110, 0 << 1) => getSum(1110, 0)
+// 3: return 1110
+
+// 268. Missing Number
+// Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array. For example, Given nums = [0, 1, 3] return 2. (Of course, you can do this by math.)
+var missingNumber = function(nums) {
+    let missing = 0,
+        i = 0;
+    for (i = 0; i < nums.length; ++i) {
+        missing ^= i;
+        missing ^= nums[i];
+    }
+    
+    return missing ^ nums.length;
+};
+// ex.  [0, 1, 3]
+// 1: 0 ^= 0 = 0; 0 ^= 0 = 0
+// 2: 0 ^= 1 = 1; 1 ^= 1 = 0
+// 3: 0 ^= 2 = 10; 10 ^= 11 = 1
+// 4(out of loop): 1 ^ 11 = 10 (2)

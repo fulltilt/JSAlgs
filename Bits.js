@@ -412,6 +412,7 @@ function divisionUsingAllInts() {
 module.exports = Bits;
 
 /* NOTES
+-https://discuss.leetcode.com/topic/50315/a-summary-how-to-use-bit-manipulation-to-solve-problems-easily-and-efficiently/32
 -least significant bit is the normally the right-most bit. It has many uses such as determining whether a number is even or odd
  http://stackoverflow.com/questions/16535335/what-does-least-significant-byte-mean; http://stackoverflow.com/questions/22919049/clearing-least-significant-bit
 
@@ -537,3 +538,81 @@ var missingNumber = function(nums) {
 // 2: 0 ^= 1 = 1; 1 ^= 1 = 0
 // 3: 0 ^= 2 = 10; 10 ^= 11 = 1
 // 4(out of loop): 1 ^ 11 = 10 (2)
+
+
+let reverseBits = function(n) {
+  var re = 0;
+  for (let i = 0; i < 32; i++ ) {
+    re = (re << 1) | (n & 1);
+    n >>>= 1;
+  }
+
+  return re >>> 0;  // use unsignedness of >>> to cast to an unsigned integer
+}
+
+
+console.log(reverseBits(15));
+console.log(reverseBits(14));
+
+// Given a range [m, n] where 0 <= m <= n <= 2147483647, return the bitwise AND of all numbers in this 
+// range, inclusive. For example, given the range [5, 7], you should return 4.
+// 5 = 0101
+// 6 = 0101
+// 7 = 0111
+// 5 & 6 & 7 = 0100 = 4
+let rangeBitwiseAnd = function(m, n) {
+  let a = 0;
+  while (m !== n) {
+    m >>= 1;
+    n >>= 1;
+    a++;
+  }
+
+  return m << a;
+}
+
+console.log(rangeBitwiseAnd(5, 7));
+/*
+1:
+5 >>= 1 => 0101 >> 1 = 0010
+7 >>= 1 => 0111 >> 1 = 0011
+a = 1
+
+2:
+2 >>= 1 => 0001
+3 >>= 1 => 0001
+a = 2
+
+return 0001 << 2 = 0100 = 4
+*/
+
+// also known as hamming weight
+let numberOfOneBits = function(n) {
+  let count = 0;
+
+  while (n) {
+    n = n & (n - 1);
+    count++;
+  }
+
+  return count;
+}
+
+console.log(numberOfOneBits(5))
+console.log(numberOfOneBits(6))
+console.log(numberOfOneBits(7))
+
+let hammingDistance = function(x, y) {
+  let distance = 0;
+  while (x || y) {
+    if ((x & 1) ^ (y & 1) === 1) {
+      distance++;
+    }
+    x >>= 1;
+    y >>= 1;
+  }
+
+  return distance;
+}
+
+console.log(hammingDistance(1, 4));

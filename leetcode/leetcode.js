@@ -8,6 +8,15 @@
 -input.replace(/\W/g, '');	//remove nonalphanumeric
 -overflow optimization: instead of (lo + hi) / 2, do start + (end - start) / 2
 -https://discuss.leetcode.com/topic/50315/a-summary-how-to-use-bit-manipulation-to-solve-problems-easily-and-efficiently/32
+-sort descending: nums.slice(0).sort((a, b) => b - a);  // make sure you use b - a and not a < b as a < b returns a boolean and 
+ for sort to work correctly, you have to pass an integer value
+
+
+TIPS
+-an optimization could be to preprocess the data
+-sometimes you have to go through more than 2-3 examples to see a pattern (see Nim game)
+-it's super important to have one or a couple of examples
+
 */
 
 let TreeNode = function(val) {
@@ -576,19 +585,111 @@ NumArray.prototype.sumRange = function(i, j) {
 };
 
 var obj = new NumArray([-2, 0, 3, -5, 2, -1])
-console.log(obj.sumRange(0, 2));
-console.log(obj.sumRange(2, 5));
-console.log(obj.sumRange(0, 5));
+// console.log(obj.sumRange(0, 2));
+// console.log(obj.sumRange(2, 5));
+// console.log(obj.sumRange(0, 5));
 
-var reverseWords = function(s) {
-	let s2 = s.split('');
-  for (let i = 0; i < Math.floor(s2.length / 2); i++) {
-  	let temp = s2[i];
-  	s2[i] = s2[s2.length - i - 1];
-  	s2[s2.length - i - 1] = temp;
+var swap = function(nums, x, y) {
+	let temp = nums[x];
+	nums[x] = nums[y];
+	nums[y] = temp;
+}
+
+var findDisappearedNumbers = function(nums) {
+  for (let i = 0; i < nums.length; ++i) {
+  	while ((nums[i] !== i + 1) && (nums[i] !== (nums[nums[i] - 1]))) {	// *tricky part (namely the 2nd condition)
+  		swap(nums, i, nums[i] - 1);
+  	}
   }
-  console.log(s2)
+
+  let results = [];
+  for (let i = 0; i < nums.length; ++i) {
+  	if (nums[i] !== i + 1) {
+  		results.push(i + 1);
+  	}
+  }
+
+  return results;
+};
+// console.log(findDisappearedNumbers([4,3,2,7,8,2,3,1]));
+
+// https://leetcode.com/problems/move-zeroes/#/description
+// example of having a placeholder and a leading index where you swap on a condition
+var moveZeroes = function(nums) {
+  if (nums === null || nums.length < 2) {
+  	return nums;
+  }
+
+  let insertPos = 0;
+  for (let i = 0; i < nums.length; ++i) {
+  	if (nums[i] !== 0) {
+  		nums[insertPos++] = nums[i];
+  	}
+  }
+
+  for( ; insertPos < nums.length; insertPos++) {
+  	nums[insertPos] = 0;
+  }
+
+  console.log(nums)
 };
 
-console.log(reverseWords('fasdufiewhv'))
-console.log(reverseWords('fasdufiewh'))
+// moveZeroes([0, 1, 0, 3, 12]);
+
+
+var findRelativeRanks = function(nums) {
+	let sortedNums = nums.slice(0).sort((a, b) => b - a);	// sort descending
+	
+	let sortedNumsMapping = {};
+  sortedNums.forEach((num, index) => sortedNumsMapping[num] = String(index + 1));
+
+	return nums.map(x => {
+		if (sortedNumsMapping[String(x)] === '1') {
+			return 'Gold Medal';
+		} else if (sortedNumsMapping[String(x)] === '2') {
+			return 'Silver Medal';
+		} else if (sortedNumsMapping[String(x)] === '3') {
+			return 'Bronze Medal';
+		} else {
+			return sortedNumsMapping[String(x)];
+		}
+	}); 
+}
+
+console.log(findRelativeRanks([5,4,3,2,1]));
+// console.log(findRelativeRanks([10,3,8,9,4]));
+//[10,3,8,9,4]	// ["Gold Medal","5","Bronze Medal","Silver Medal","4"]
+
+// https://leetcode.com/problems/base-7/#/description
+// convert a decimal to any base number using repeated multiplication algorithm
+var convertFromDecimalToAnyBase = function(num, base) {
+	if (num === 0) return '0';
+
+	let negative = false;
+	if (num < 0) {
+		negative = true;
+		num = Math.abs(num);
+	}
+
+	let res = '';
+	while (num / base > 0) {
+		res = num % base + res;	// add the modulo before res
+		num = Math.floor(num / base);
+	}
+	
+	return negative ? '-' + res : res;
+}
+
+console.log(convertFromDecimalToAnyBase(100, 7));
+console.log(convertFromDecimalToAnyBase(-7, 7))
+
+
+var constructRectangle = function(area) {
+  let a = Math.floor(Math.sqrt(area));
+  while (area % a !== 0) {
+  	a--;
+  }
+
+  return [Math.floor(area / a), a];
+};
+console.log(constructRectangle(4))

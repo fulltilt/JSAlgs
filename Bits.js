@@ -413,6 +413,10 @@ module.exports = Bits;
 
 /* NOTES
 -https://discuss.leetcode.com/topic/50315/a-summary-how-to-use-bit-manipulation-to-solve-problems-easily-and-efficiently/32
+-https://leetcode.com/problems/single-number/#/description
+-https://leetcode.com/problems/sum-of-two-integers/#/description
+-https://leetcode.com/problems/binary-watch/#/description
+
 -least significant bit is the normally the right-most bit. It has many uses such as determining whether a number is even or odd
  http://stackoverflow.com/questions/16535335/what-does-least-significant-byte-mean; http://stackoverflow.com/questions/22919049/clearing-least-significant-bit
 

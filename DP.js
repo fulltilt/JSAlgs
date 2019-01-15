@@ -9,12 +9,30 @@
 -I'm running into a lot of cases where I'm building out the table and my results and resulting inner logic works
  out but it doesn't jive completely with the algo Tushar has meaning I'm potentially doing something non-optimal or 
  doesn't work for all cases
+-From doing these problems it seems like there are a couple of stages
+1. build out table and find pattern
+2. initialize table/array and using what you learned from 1., determine if there needs to be padding and
+   what should the initial values will be. Usually it's all zeroes but that isn't always the case
+3. once the table is initialized determine the for loops. If there's padding, start at index 1 and iterate
+   through the length of whatever it is. Else, start at 0 and iterate right before the length
+4. with the previous all settled, setup the inner logic which should have been determined in 1.
 
+
+-for diagonal matrix problems:
+for (let length = 1; length < str.length; ++length) {
+  for (let i = 0; i < str.length - length; ++i) {
+    let j = i + length;
+    ...
+  }
+}
 
 Things to revisit:
 https://www.youtube.com/watch?v=WxpIHvsu1RI
 
 Catalan Numbers
+Matrix Chain Multiplication
+Word Break
+Coin Change (maybe find another solution as the initial column of 1's throws me off)
 */
 
 /* Optimal Strategy Game Pick from Ends of array (https://www.youtube.com/watch?v=WxpIHvsu1RI)
@@ -23,7 +41,6 @@ another player. You take turns picking a pot of gold. You may pick a pot from ei
 remove the pot, and keep the gold pieces. The player with the most gold at the end wins. Develop a 
 strategy for playing this game
 */
-
 
 function kadane(arr) {
   let max = Math.max(0, arr[0]);
@@ -45,7 +62,6 @@ function kadane(arr) {
 }
 // console.log(kadane([-2,-3,4,-1,-2,1,5,-3])); // 7
 
-
 function fibonacci(n) {
   let i = 2;
   let table = [0, 1];
@@ -53,7 +69,7 @@ function fibonacci(n) {
   if (n === 0 || n === 1) {
     return table[i];
   }
-  
+
   while (i <= n) {
     table[i] = table[i - 2] + table[i - 1];
     ++i;
@@ -89,13 +105,13 @@ BOTTOM UP
 
 // Minimum Path Sum (https://leetcode.com/problems/minimum-path-sum/description/) (BOTTOM UP)
 // -in order to do bottom up, we need the values for dp[i + 1][j] and dp[i][j + 1]. A way to do that is to start from the bottom right
-//  and sweep from right to left and go up once you are done sweeping the row. 
+//  and sweep from right to left and go up once you are done sweeping the row.
 // -due to the fact that we have those "+1's", we add a dummy layer of padding to the right and bottom edges and since we're trying to find
 //  the min, we set the values to Infinity. If we were looking for the max, we'd set those to -Infinity
 var minPathSum = function(grid) {
   let height = grid.length,
-      width = grid[0].length,
-      dp = [];
+    width = grid[0].length,
+    dp = [];
 
   // initialize dp table and add outer padding
   for (let i = 0; i <= height; ++i) {
@@ -108,7 +124,7 @@ var minPathSum = function(grid) {
     }
     dp.push(temp);
   }
-  
+
   for (let i = height - 1; i >= 0; --i) {
     for (let j = width - 1; j >= 0; --j) {
       if (i === height - 1 && j === width - 1) {
@@ -122,11 +138,7 @@ var minPathSum = function(grid) {
   return dp[0][0];
 };
 
-var matrix = [
-  [1,3,1],
-  [1,5,1],
-  [4,2,1]
-];
+var matrix = [[1, 3, 1], [1, 5, 1], [4, 2, 1]];
 // minPathSum(matrix)
 
 /*
@@ -152,13 +164,15 @@ function bytelandian(n) {
   dp[2] = 2;
 
   for (let i = 3; i <= n; ++i) {
-    dp[i] = Math.max(i, Math.floor(i / 2) + Math.floor(i / 3) + Math.floor(i / 4));
+    dp[i] = Math.max(
+      i,
+      Math.floor(i / 2) + Math.floor(i / 3) + Math.floor(i / 4)
+    );
   }
   return dp[n];
 }
 // console.log(bytelandian(12))
 // console.log(bytelandian(200))
-
 
 /* Ski slope problem ()
 Top down:
@@ -171,9 +185,9 @@ Bottom up: not so clear as you can't necessarily sweep since you can go 4 direct
 var longestIncreasingPath = function(matrix) {
   if (matrix === null || matrix.length === 0) return 0;
   let h = matrix.length,
-      w = matrix[0].length,
-      dp = [],
-      max = -Infinity;
+    w = matrix[0].length,
+    dp = [],
+    max = -Infinity;
 
   for (let i = 0; i < h; ++i) {
     dp.push(Array(w).fill(null));
@@ -185,18 +199,18 @@ var longestIncreasingPath = function(matrix) {
       max = Math.max(max, dfs(i, j, matrix, dp));
     }
   }
-  
+
   return max;
 };
 
 function dfs(i, j, m, cache) {
-  // after every run of dfs in the main fxn, the max path length is calculated for that cell so if there's a value 
+  // after every run of dfs in the main fxn, the max path length is calculated for that cell so if there's a value
   // in the cache, just return that value. This is our base case that makes sure no work is duplicated
   if (cache[i][j]) {
     return cache[i][j];
   }
   let w = cache[0].length,
-      h = cache.length;
+    h = cache.length;
 
   cache[i][j] = 1;
   if (i - 1 >= 0 && m[i - 1][j] > m[i][j]) {
@@ -217,18 +231,13 @@ function dfs(i, j, m, cache) {
 
   return cache[i][j];
 }
-var matrix = [
-  [3,4,5],
-  [3,2,6],
-  [2,2,1]
-];
+var matrix = [[3, 4, 5], [3, 2, 6], [2, 2, 1]];
 // console.log(longestIncreasingPath(matrix))
 
-
 /* 0-1 Knapsack
-*/
-let values = [6,10,12];
-let weights = [1,2,3];
+ */
+let values = [6, 10, 12];
+let weights = [1, 2, 3];
 let maxWeight = 5;
 
 // 0 0  1  2  3  4  5
@@ -243,26 +252,26 @@ function knapsack(values, weights, maxWeight) {
     if (i === 0) {
       dp.push(Array(maxWeight + 1).fill(0));
     } else {
-      dp.push([0])
+      dp.push([0]);
     }
   }
 
   for (let i = 1; i <= values.length; ++i) {
     for (let j = 1; j <= maxWeight; ++j) {
-      if (weights[i - 1] <= j) { // j - weights[i - 1] >= 0:  I had this originally but doing inequality math, you can simplify this
+      if (weights[i - 1] <= j) {
+        // j - weights[i - 1] >= 0:  I had this originally but doing inequality math, you can simplify this
         dp[i][j] = Math.max(
-          dp[i - 1][j],                                 // use previous max
+          dp[i - 1][j], // use previous max
           values[i - 1] + dp[i - 1][j - weights[i - 1]] // use current value + previous value
         );
       } else {
-        dp[i][j] = dp[i - 1][j];  // use previous max
+        dp[i][j] = dp[i - 1][j]; // use previous max
       }
     }
   }
   return dp[values.length][maxWeight];
 }
 // console.log(knapsack(values,weights,maxWeight))
-
 
 /* Catalan Numbers (https://www.youtube.com/watch?v=pmEABou6X7M&index=7&list=PLRKxhQQOfTrmGI32jyGmUyH3AVQl1Jc0X)
 -find the number of ways you can form a binary search tree given a sorted array
@@ -279,7 +288,6 @@ O(n) = O(n) time per state * O(n) space = O(n^2)
 f(array) = Math.min over all 0 <= i <= array.length - 1 (f(array[0:i - 1])) + f(array[:len - 1])
                 + sum(array[0:i - 1]) % M + sum(array[i:len - 1]) % M
 */
-
 
 /* House Robber
 f(n) = Math.max(f(n + 1), arr[i] + f(n + 2))
@@ -322,7 +330,6 @@ function robber(nums) {
 }
 // console.log(robber([2,7,9,3,1]));
 
-
 /* Longest Increasing Subsequence (https://www.youtube.com/watch?v=CE2b_-XfVDk)
 Given an array find longest increasing subsequence in this array
 3 4 -1 0 6 2 3
@@ -344,7 +351,6 @@ function lis(arr) {
 }
 // console.log(lis([3,4,-1,0,6,2,3]));
 
-
 /* Coin Change Number of Ways (https://www.youtube.com/watch?v=_fgjrs570YE)
 Given coins of certain denominations and a total, how many ways these coins can be combined to get the total
 
@@ -363,7 +369,9 @@ coins = [1,2,3], total=5
 
 -while working out the problem, since I found that I had to reference the previous row, that's when I knew I 
  had to add padding
- -there is a trick though: the padded columns is full of 1's (don't know the reasoning why yet)
+ -there is a trick though: the padded columns is full of 1's (don't know the reasoning why yet. I'm thinking
+  without understanding this, revisiting this problem in the future may be problematic and for now I'd have
+  to rely on remembering the "trick" of having the initial column be 1's)
 -while going row by row, the total for that cell is the the sum of the cell above it plus the value of j - coins[i] on the same row.
  This is how you don't have to worry about j % coins[i] === 0 which is a trap
 -as of this point of writing this, the way the table is used is not quite typical
@@ -391,7 +399,6 @@ function coinChange(coins, total) {
   return t[coins.length][total];
 }
 // console.log(coinChange([1,2,3], 5));
-
 
 /* Minimum Coin Change (https://www.youtube.com/watch?v=Y0ZqKpToTic)
 Given coins of certain denominations and a total, how many minimum coins would you need to make this total.
@@ -436,7 +443,6 @@ function minCoin(coins, total) {
 }
 // console.log(minCoin([1,5,6,8], 11));
 
-
 /* Cutting Rod (https://www.youtube.com/watch?v=IRwVmTmN6g)
 Given a rod of length and prices at which different length of this rod can sell, how do you cut this rod to maximize profit
 length = 5
@@ -471,7 +477,6 @@ function rod(vals, length) {
   return t[vals.length][length];
 }
 // console.log(rod([2,5,7,8], 5))
-
 
 /* Weighted Job Scheduling (https://www.youtube.com/watch?v=cr6Ip0J9izc)
 Given certain jobs with start and end time and amount you make on finishing the job, 
@@ -539,7 +544,6 @@ function jobScheduling(arr) {
 //   }
 // ]));
 
-
 /* Longest Bitonic Subsequence (https://www.youtube.com/watch?v=TWHytKnOPaQ)
 Find longest bitonic subsequence in given array. Bitonic subsequence first increases then decreases
 
@@ -595,7 +599,6 @@ function bitonic(arr) {
 }
 // console.log(bitonic([2,-1,4,3,5,-1,3,2]));
 
-
 /* Longest Common Subsequence (https://www.youtube.com/watch?v=NnD96abizww)
 Given two strings, find longest common subsequence between them
 
@@ -629,7 +632,8 @@ function lcsub(str1, str2) {
 
   for (let i = 1; i <= str2.length; ++i) {
     for (let j = 1; j <= str1.length; ++j) {
-      if (str2[i - 1] === str1[j - 1]) {  // - 1's are to account for the extra padding from the for loops
+      if (str2[i - 1] === str1[j - 1]) {
+        // - 1's are to account for the extra padding from the for loops
         t[i][j] = 1 + t[i - 1][j - 1];
       } else {
         t[i][j] = Math.max(t[i - 1][j], t[i][j - 1]);
@@ -674,7 +678,8 @@ function lcsubstring(str1, str2) {
   let max = -Infinity;
   for (let i = 1; i <= str2.length; ++i) {
     for (let j = 1; j <= str1.length; ++j) {
-      if (str1[j - 1] === str2[i - 1]) {  // - 1's are to account for the extra padding from the for loops
+      if (str1[j - 1] === str2[i - 1]) {
+        // - 1's are to account for the extra padding from the for loops
         t[i][j] = 1 + t[i - 1][j - 1];
       } else {
         t[i][j] = 0;
@@ -685,7 +690,6 @@ function lcsubstring(str1, str2) {
   return max;
 }
 // console.log(lcsubstring('abcdaf', 'zbcdf'));
-
 
 /* Minimum Edit Distance (https://www.youtube.com/watch?v=We3YDTzNXEk)
 Given two strings and operations edit, delete and add, how many minimum operations would it take to 
@@ -725,13 +729,12 @@ function minEditDistance(str1, str2) {
       t[i][j] = Math.min(t[i][j - 1], t[i - 1][j - 1], t[i - 1][j]);
       if (str1[j - 1] !== str2[i - 1]) {
         ++t[i][j];
-      }     
+      }
     }
   }
   return t[str2.length][str1.length];
 }
 // console.log(minEditDistance('abcdef', 'azced'));
-
 
 /* Maximum Subsquare Matrix (https://www.youtube.com/watch?v=_Lf1looyJMU)
 Given a matrix of 0s and 1s. Find biggest sub-square matrix entirely of 1s in this matrix
@@ -783,7 +786,6 @@ function maxSubMatrix(mat) {
 //   [1,0,1,1,1]
 // ]));
 
-
 /* Total Ways in Matrix (https://www.youtube.com/watch?v=GO5QHC_BmvM)
 Given a 2 dimensional matrix, how many ways you can reach bottom right from top left 
 provided you can only move down and right
@@ -821,16 +823,245 @@ function matrixWays(mat) {
 //   [1,1,1,1]
 // ]));
 
-
 /* Min Cost Path (https://www.youtube.com/watch?v=lBRtnuxg-gU) 
 Given a 2 dimensional matrix, find minimum cost path to reach bottom right from top left provided 
 you can only from down and right
+
+1 3 5 8
+4 2 1 7
+4 3 2 3
+
+1 4 9 17
+5 6 7 14 
+9 9 9 12
+
+-you can calculate the first column and row since there's only 1 way to get there
+-for each cell [i][j], take the min from top and left and add mat[i][j]
 */
 function minPath(mat) {
+  let t = [[mat[0][0]]];
+  for (let i = 1; i < mat[0].length; ++i) {
+    t[0][i] = t[0][i - 1] + mat[0][i];
+  }
+  for (let i = 1; i < mat.length; ++i) {
+    t.push([]);
+    t[i][0] = t[i - 1][0] + mat[i][0];
+  }
 
+  for (let i = 1; i < mat.length; ++i) {
+    for (let j = 1; j < mat[0].length; ++j) {
+      t[i][j] = mat[i][j] + Math.min(t[i - 1][j], t[i][j - 1]);
+    }
+  }
+  return t[mat.length - 1][mat[0].length - 1];
 }
-console.log(minPath([
-  [1,3,5,8],
-  [4,2,1,7],
-  [4,3,2,3]
-]));
+// console.log(minPath([
+//   [1,3,5,8],
+//   [4,2,1,7],
+//   [4,3,2,3]
+// ]));
+
+/* Longest Palindromic Subsequence (https://www.youtube.com/watch?v=_nCsPn7_OgI)
+Given a string, find longest palindromic subsequence in this string
+
+agbdba => abdba
+
+    a g b d b a
+ 
+  a g b d b a  
+a 1 1 1 1 3 5
+g   1 1 1 3 3
+b     1 1 3 3
+d       1 1 1
+b         1 1
+a           1
+
+-diagonal matrix
+-iterate for substrings from length 1 through n
+-first diagonal is all 1's since a string of length 1 is a palindrome of length 1
+-from n >= 2, if first and last letter in substring are equal, 2 + max(bottom, left). If not,
+ max(bottom, left)
+-to help thinking about how to build the for loops, after you initialize the initial diagonal, think about
+ the order in which you fill out the table. For the second set of diagonals you go:
+ [0,1] -> [1,2] -> [2,3]...
+ 
+ and for the third:
+ 
+ [0,2] -> [1,3]...
+ 
+ I've independently come across two (maybe even 3) ways to do this so there's no one right way. Ideally I 
+ would like to have it mirror it like I do the other DP problems.
+-for the inner loop logic and the substring comparisons, using the same reasoning as before, let's list the 
+ indices that need to be compared for the second iteration:
+ [0,0] and [0,1] -> [1,1] and [1,2] -> [2,2] and [2,3]...
+ 
+ and for the third:
+ 
+ [0,0] and [0,2] -> [1,1] and [1,3]...
+
+ Notice that the first value of the first cell and the second value of the first cell match the cell which gets
+ filled in in the previous step. With that said, the first value corresponds to i below and the second value
+ corresponds to i plus length so: if (str[i] === str[i + length]) 
+-to make things similar to the other DP problems, set j to be: i + length
+*/
+function lpsub(str) {
+  let t = [];
+  for (let i = 0; i < str.length; ++i) {
+    t.push([]);
+    t[i][i] = 1;
+  }
+
+  for (let length = 1; length < str.length; ++length) {
+    for (let i = 0; i < str.length - length; ++i) {
+      let j = i + length;
+      if (str[i] === str[j]) {
+        t[i][j] = 2 + Math.max(t[i + 1][j], t[i][j - 1]);
+      } else {
+        t[i][j] = Math.max(t[i + 1][j], t[i][j - 1]);
+      }
+    }
+  }
+  return t[0][str.length - 1];
+}
+// console.log(lpsub('agbdba'));
+
+/* Palindrome Partition (https://www.youtube.com/watch?v=lDYIvtBVmgo)
+Given a string, how many minimum splits would it take so that each partition after split is a palindrome
+abcbm
+
+  a b c b m
+a 0 1 2 1 2
+b   0 1 0 1
+c     0 1 2
+b       0 1
+m         0
+
+-diagonal matrix
+-initial diagonal with all zeroes as a string of length 1 needs no splits to be a palindrome
+-set initial length to 1. Iterate through all lengths and combinations and if first and last letter in
+ substring do not equal each other, add one to min(left, bottom) else subtract one from min(left, bottom)
+-my inner logic looks different from Tushar's but it seems to work. It's also a lot cleaner and didn't 
+ have weird +/- 1's like I did when I solved this a few days prior to writing this even though I used 
+ the same for and inner loop logic
+*/
+function palindromeP(str) {
+  let t = [];
+  for (let i = 0; i < str.length; ++i) {
+    t.push([]);
+    t[i][i] = 0;
+  }
+
+  for (let length = 1; length < str.length; ++length) {
+    for (let i = 0; i < str.length - length; ++i) {
+      let j = i + length;
+      let minNeighbor = Math.min(t[i + 1][j], t[i][j - 1]);
+      console.log(minNeighbor);
+      if (str[i] === str[j]) {
+        t[i][j] = Math.max(0, minNeighbor - 1);
+      } else {
+        t[i][j] = minNeighbor + 1;
+      }
+    }
+  }
+  return t[0][str.length - 1];
+}
+// console.log(palindromeP('abcbm'));
+
+/* ***Matrix Chain Multiplication (https://www.youtube.com/watch?v=vgLJZMUfnsU)
+Given some matrices, in what order you would multiply them to minimize cost of multiplication
+
+note: [2,3][3,6] = 2*3*6 = 36
+for cell/range [0,2] (length = 3) we get the min of the following:
+from k = 0 to length - 1
+1. 0 * (1 * 2) = 72 + 2*3*4 = 96
+2. (0 * 1) * 2 = 36 + 2*6*4 = 84
+
+
+input:
+[2,3][3,6][6,4][4,5] (which is in the format [2,3,6,4,5])
+
+0  36 84 124
+   0  72 360
+      0  120
+         0
+-for length = 1, a matrix by itself is just 0
+-for length = 2, arr[i][0] * arr[i][1] (or arr[i + 1][0]) * arr[i + 1][1]
+-for length = 3, 
+
+*/
+function matrixChain(arr) {
+  let t = [];
+  for (let i = 0; i < arr.length; ++i) {
+    t.push([0]);
+    t[i][i] = 0;
+  }
+
+  for (let length = 1; length < arr.length; ++length) {
+    for (let i = 0; i < arr.length - length; ++i) {
+      let j = i + length;
+      t[i][j] = Infinity;
+      for (let k = i + 1; k < j; k++) {
+        // k is between i and j
+        let temp = t[i][k] + arr[i] * arr[k] * arr[j] + t[k][j];
+        console.log(temp);
+        t[i][j] = Math.min(t[i][j], temp);
+      }
+    }
+  }
+  console.log(t);
+  return t[0][arr.length - 1];
+}
+// console.log(matrixChain([2,3,6,4,5]));
+
+/* Word Break (https://www.youtube.com/watch?v=WepWFGxiwRs)
+Given a string and a dictionary, return true if string can be split into multiple words such that each word 
+is in dictionary. If not return false
+
+Iamace => I am ace (true)
+Iamc => (can't break)
+
+let dict = ['i', 'a', 'ace', 'am']
+
+  0 1 2 3 4 5
+0 t t t t f t
+1   t t f f t 
+2     f f f f
+3       t f t
+4         f f
+5           t
+
+-go by lengths as before
+-for each substring length, check if it's a valid word. If so, set to true
+-if substring isn't a valid word, check each split by index using previously filled cells if 
+ split, set to false
+*/
+
+/* Egg Dropping (https://www.youtube.com/watch?v=3hcaVyX00_4)
+Given some number of floors and some number of eggs, what is the minimum number of attempts it will take 
+to find out from which floor egg will break
+
+floors = 6; eggs = 2
+
+  1 2 3 4 5 6
+1 1 2 3 4 5 6
+2
+
+1 + max(breaks, doesn't break)
+
+note: the 0 on the first he says we already found our answer which I think he meand that the 1 refers to
+      the attmept and if it breaks, it's 0 as the 1 already accounts for the attempt. I don't quite get how that
+      also applies to the last 0 on the last floor
+
+[2,2]
+second floor (2 eggs)
+1: 1 + max(0, 1) = 2 # the 1 comes from you have 1 floor and 1 egg to work with [1,1]
+2: 1 + max(1, 0) = 2 # the 1 comes from the same 2 as above
+min(floor 1, floor 2) = 2
+
+[2,3]
+third floor (2 eggs)
+1: 1 + max(0, 2) = 3  # 2 comes from [1,2]
+1: 1 + max(1, 1) = 3  # first 1 comes from [1,1] and second 1 comes from [2,1]
+1: 1 + max(2, 0) = 3  # 2 comes from [1,2]
+min(floor 1, floor 2, floor 3) = 2
+*/
